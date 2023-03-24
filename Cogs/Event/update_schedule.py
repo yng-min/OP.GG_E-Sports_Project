@@ -42,7 +42,6 @@ try:
     botDB = sqlite3.connect(rf"./Data/bot.sqlite", isolation_level=None)
     botCURSOR = botDB.cursor()
     channel_event = botCURSOR.execute("SELECT ChannelEvent FROM main").fetchone()[0]
-    botCURSOR.close()
     botDB.close()
 except Exception as error:
     print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
@@ -92,7 +91,7 @@ class UpdateScheduleTASK(commands.Cog):
                 "Content-Type": "application/json"
             }
             webhook_data = {
-                "username": "QWER.GG Log",
+                "username": "OP.GG Esports Log",
                 "content": content_msg
             }
             webhook_result = requests.post(webhook_url, json=webhook_data, headers=webhook_headers)

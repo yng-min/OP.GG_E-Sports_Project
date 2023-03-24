@@ -2,12 +2,14 @@
 
 # 패키지 라이브러리 설정
 import opgg
-from discord.ext import commands, tasks
+import discord
+from discord.ext import commands
 import sqlite3
 import json
 import datetime
 import pytz
 import traceback
+import os
 import requests
 
 # config.json Config 파일 불러오기
@@ -17,6 +19,8 @@ try:
 except:
     print("config.json이 로드되지 않음")
 
+id_owner = config['id_owner']
+prefix_developer = config['prefix_developer']
 time_difference = config['time_difference']
 webhook_url = config['webhook_url']
 leagues = {
@@ -37,19 +41,99 @@ leagues = {
     14: {"id": "99", "name": "League of Legends Champions Korea", "shortName": "LCK", "region": "KR"},
     15: {"id": "100", "name": "Mid-Season Invitational", "shortName": "MSI", "region": "INT"}
 }
+colorMap = {
+    "default": 0x2F3136,
+    "red": 0xf60c50,
+    "green": 0x90ee90
+}
 
 
-class save_scheduleTASK(commands.Cog):
+class DeveloperCMD(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.Cog.listener()
-    async def on_ready(self):
-        self._routine_1_TASK.start()
+    @commands.command(name="모듈로드", aliases=['로드'])
+    async def _load(self, ctx, *, module: str):
 
-    @tasks.loop(seconds=60)
-    async def _routine_1_TASK(self):
+        if ctx.author.id != id_owner:
+            return await ctx.send("> ⛔ 이 명령어는 개발자 전용 명령어입니다.")
+
+        if module is None:
+            return await ctx.send("> ⚠️ 로드할 모듈을 입력해주세요.")
+
+        # module = module.lower()
+
+        try:
+            self.bot.load_extension(f"Cogs.{module}")
+
+        except Exception as error:
+            print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
+            print(traceback.format_exc())
+            await ctx.send(f"> ⚠️ 알 수 없는 오류로 인해 모듈을 불러오지 못했습니다.\nERROR: `{error}`")
+
+        else:
+            await ctx.message.delete()
+            await ctx.send(f"> ✅ 성공적으로 `{module}` 모듈을 불러왔습니다.", delete_after=5)
+
+    @commands.command(name="모듈언로드", aliases=['언로드'])
+    async def _unload(self, ctx, *, module: str):
+
+        if ctx.author.id != id_owner:
+            return await ctx.send("> ⛔ 이 명령어는 개발자 전용 명령어입니다.")
+
+        if module is None:
+            return await ctx.send("> ⚠️ 언로드할 모듈을 입력해주세요.")
+
+        # module = module.lower()
+
+        try:
+            self.bot.unload_extension(f"Cogs.{module}")
+
+        except Exception as error:
+            print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
+            print(traceback.format_exc())
+            await ctx.send(f"> ⚠️ 알 수 없는 오류로 인해 모듈을 불러오지 못했습니다.\nERROR: `{error}`")
+
+        else:
+            await ctx.message.delete()
+            await ctx.send(f"> ✅ 성공적으로 `{module}` 모듈을 내보냈습니다.", delete_after=5)
+
+    @commands.command(name="모듈리로드", aliases=['리로드'])
+    async def _reload(self, ctx, *, module: str):
+
+        if ctx.author.id != id_owner:
+            return await ctx.send("> ⛔ 이 명령어는 개발자 전용 명령어입니다.")
+
+        if module is None:
+            return await ctx.send("> ⚠️ 리로드할 모듈을 입력해주세요.")
+
+        # module = module.lower()
+
+        try:
+            if module == ".":
+                for cog_files in os.listdir(r"./Cogs"):
+                    if cog_files.endswith(".py"):
+                        self.bot.reload_extension("Cogs." + cog_files[:-3])
+
+            else:
+                self.bot.reload_extension(f"Cogs.{module}")
+
+        except Exception as error:
+            print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
+            print(traceback.format_exc())
+            await ctx.send(f"> ⚠️ 알 수 없는 오류로 인해 모듈을 불러오지 못했습니다.\nERROR: `{error}`")
+
+        else:
+            await ctx.message.delete()
+            await ctx.send(f"> ✅ 성공적으로 `{module}` 모듈을 불러왔습니다.", delete_after=5)
+
+    @commands.command(name="일정저장", aliases=['save-schedule'])
+    async def _developer_save_schedule(self, ctx):
+
+        if ctx.author.id != id_owner:
+            embed = discord.Embed(title="", description="> ⛔ 해당 명령어는 개발자 전용 명령어입니다.", color=colorMap['red'])
+            return await ctx.reply(embed=embed, mention_author=False)
 
         # 경기 일정 저장
         try:
@@ -103,13 +187,10 @@ class save_scheduleTASK(commands.Cog):
 
                     scheduleDB = sqlite3.connect(r"./Data/schedule.sqlite", isolation_level=None)
                     scheduleCURSOR = scheduleDB.cursor()
-                    # bettingDB = sqlite3.connect(r"./Data/betting.sqlite", isolation_level=None)
-                    # bettingCURSOR = bettingDB.cursor()
 
                     # DB 초기화
                     for i in range(16):
                         scheduleCURSOR.execute(f"DELETE FROM {leagues[i]['shortName']}")
-                        scheduleCURSOR.execute(f"DELETE FROM general")
                     print("- Table Deleted.")
 
                     webhook_data = {
@@ -128,7 +209,6 @@ class save_scheduleTASK(commands.Cog):
                             except: match_name = schedules['data'][i]['name']
                             if schedules['data'][i]['tournament']['serie']['league']['shortName'] == leagues[j]['shortName']:
                                 scheduleCURSOR.execute(f"INSERT INTO {leagues[j]['shortName']}(ID, TournamentID, Name, OriginalScheduledAt, ScheduledAt, Status) VALUES(?, ?, ?, ?, ?, ?)", (schedules['data'][i]['id'], schedules['data'][i]['tournamentId'], match_name, box_originalScheduledAt[i], box_scheduledAt[i], schedules['data'][i]['status']))
-                                # bettingCURSOR.execute(f"INSERT INTO {leagues[j]['shortName']}(ID, TournamentID, Name, TotalBet, TotalPoint, HomeBet, HomePoint, AwayBet, AwayPoint) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", (schedules['data'][i]['id'], schedules['data'][i]['tournamentId'], match_name, 0, 0, 0, 0, 0, 0))
                         print(f"- Saved match: [{schedules['data'][i]['tournament']['serie']['league']['shortName']}] {match_name} ({schedules['data'][i]['id']})")
 
                         content_msg += f"\n- Saved match: `[{schedules['data'][i]['tournament']['serie']['league']['shortName']}] {match_name} ({schedules['data'][i]['id']})`"
@@ -145,7 +225,6 @@ class save_scheduleTASK(commands.Cog):
 
                     scheduleCURSOR.execute(f"INSERT INTO general(LastSavedDataAt) VALUES(?)", (nowTime,))
                     scheduleDB.close()
-                    # bettingDB.close()
 
                 else:
                     print(f"{schedules['code']}: {schedules['message']}")
@@ -157,5 +236,5 @@ class save_scheduleTASK(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(save_scheduleTASK(bot))
-    print("save_schedule.py 로드 됨")
+    bot.add_cog(DeveloperCMD(bot))
+    print("developer.py 로드 됨")
