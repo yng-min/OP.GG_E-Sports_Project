@@ -46,69 +46,72 @@ class DatabaseSETUP(commands.Cog):
 
         # bot.sqlite DB 파일 생성
         if not os.path.isfile(rf"./Data/bot.sqlite"):
-            botDB = sqlite3.connect(r"./Data/bot.sqlite", isolation_level=None)
-            botCURSOR = botDB.cursor()
-            botCURSOR.execute("""
-                CREATE TABLE IF NOT EXISTS main(
-                DBVersionUser INTEGER,
-                DBVersionGuild INTEGER,
-                ChannelAdmin INTEGER,
-                ChannelLog INTEGER,
-                ChannelEvent INTEGER,
-                ChannelFeedback INTEGER
-                )
-            """)
-            # botCURSOR.execute("INSERT INTO main VALUES(?, ?, ?, ?, ?, ?)", (1, 1, 738313164965543946, 1003271459344498748, 999942267752169543, 1004826924599738509))
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
             print("bot.sqlite DB 파일 생성 완료")
+        botDB = sqlite3.connect(r"./Data/bot.sqlite", isolation_level=None)
+        botCURSOR = botDB.cursor()
+        botCURSOR.execute("""
+            CREATE TABLE IF NOT EXISTS main(
+            DBVersionUser INTEGER,
+            DBVersionGuild INTEGER,
+            ChannelAdmin INTEGER,
+            ChannelLog INTEGER,
+            ChannelEvent INTEGER,
+            ChannelFeedback INTEGER
+            )
+        """)
+        botCURSOR.execute("INSERT INTO main VALUES(?, ?, ?, ?, ?, ?)", (1, 1, 738313164965543946, 1003271459344498748, 999942267752169543, 1004826924599738509))
+        botDB.close()
 
 
         # schedule.sqlite DB 파일 생성
         if not os.path.isfile(rf"./Data/schedule.sqlite"):
-            scheduleDB = sqlite3.connect(r"./Data/schedule.sqlite", isolation_level=None)
-            scheduleCURSOR = scheduleDB.cursor()
-            scheduleCURSOR.execute(f"""
-                CREATE TABLE IF NOT EXISTS general(
-                LastSavedDataAt TEXT
-                )
-            """)
-
-            for i in range(16):
-                scheduleCURSOR.execute(f"""
-                    CREATE TABLE IF NOT EXISTS {leagues[i]['shortName']}(
-                    ID TEXT,
-                    TournamentID TEXT,
-                    Name TEXT,
-                    OriginalScheduledAt TEXT,
-                    ScheduledAt TEXT,
-                    Status TEXT
-                    )
-                """)
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
             print("schedule.sqlite DB 파일 생성 완료")
+        scheduleDB = sqlite3.connect(r"./Data/schedule.sqlite", isolation_level=None)
+        scheduleCURSOR = scheduleDB.cursor()
+        scheduleCURSOR.execute(f"""
+            CREATE TABLE IF NOT EXISTS general(
+            LastSavedDataAt TEXT
+            )
+        """)
+
+        for i in range(16):
+            scheduleCURSOR.execute(f"""
+                CREATE TABLE IF NOT EXISTS {leagues[i]['shortName']}(
+                ID TEXT,
+                TournamentID TEXT,
+                Name TEXT,
+                OriginalScheduledAt TEXT,
+                ScheduledAt TEXT,
+                Status TEXT
+                )
+            """)
+        scheduleDB.close()
 
 
         # betting.sqlite DB 파일 생성
         if not os.path.isfile(rf"./Data/betting.sqlite"):
-            bettingDB = sqlite3.connect(r"./Data/betting.sqlite", isolation_level=None)
-            bettingCURSOR = bettingDB.cursor()
-
-            for i in range(16):
-                bettingCURSOR.execute(f"""
-                    CREATE TABLE IF NOT EXISTS {leagues[i]['shortName']}(
-                    ID TEXT,
-                    TournamentID TEXT,
-                    Name TEXT,
-                    TotalBet INTEGER,
-                    TotalPoint INTEGER,
-                    HomeBet INTEGER,
-                    HomePoint INTEGER,
-                    AwayBet INTEGER,
-                    AwayPoint INTEGER
-                    )
-                """)
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
             print("betting.sqlite DB 파일 생성 완료")
+        bettingDB = sqlite3.connect(r"./Data/betting.sqlite", isolation_level=None)
+        bettingCURSOR = bettingDB.cursor()
+
+        for i in range(16):
+            bettingCURSOR.execute(f"""
+                CREATE TABLE IF NOT EXISTS {leagues[i]['shortName']}(
+                ID TEXT,
+                TournamentID TEXT,
+                Name TEXT,
+                TotalBet INTEGER,
+                TotalPoint INTEGER,
+                HomeBet INTEGER,
+                HomePoint INTEGER,
+                AwayBet INTEGER,
+                AwayPoint INTEGER
+                )
+            """)
+        bettingDB.close()
 
 
         # # beta.sqlite DB 파일 생성

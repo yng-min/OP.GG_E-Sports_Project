@@ -22,8 +22,8 @@ token_key = config['token_key']
 prefix_developer = config['prefix_developer']
 
 intents = discord.Intents().all()
-# bot = commands.AutoShardedBot(command_prefix=prefix_developer, intents=intents, shard_count=2)
-bot = commands.Bot(command_prefix=prefix_developer, intents=intents)
+bot = commands.AutoShardedBot(command_prefix=prefix_developer, intents=intents, shard_count=2)
+# bot = commands.Bot(command_prefix=prefix_developer, intents=intents)
 bot.remove_command("help")
 
 
