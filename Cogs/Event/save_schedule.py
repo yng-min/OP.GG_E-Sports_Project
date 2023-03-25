@@ -103,8 +103,8 @@ class save_scheduleTASK(commands.Cog):
 
                     scheduleDB = sqlite3.connect(r"./Data/schedule.sqlite", isolation_level=None)
                     scheduleCURSOR = scheduleDB.cursor()
-                    # bettingDB = sqlite3.connect(r"./Data/betting.sqlite", isolation_level=None)
-                    # bettingCURSOR = bettingDB.cursor()
+                    bettingDB = sqlite3.connect(r"./Data/betting.sqlite", isolation_level=None)
+                    bettingCURSOR = bettingDB.cursor()
 
                     # DB 초기화
                     for i in range(16):
@@ -128,7 +128,7 @@ class save_scheduleTASK(commands.Cog):
                             except: match_name = schedules['data'][i]['name']
                             if schedules['data'][i]['tournament']['serie']['league']['shortName'] == leagues[j]['shortName']:
                                 scheduleCURSOR.execute(f"INSERT INTO {leagues[j]['shortName']}(ID, TournamentID, Name, OriginalScheduledAt, ScheduledAt, Status) VALUES(?, ?, ?, ?, ?, ?)", (schedules['data'][i]['id'], schedules['data'][i]['tournamentId'], match_name, box_originalScheduledAt[i], box_scheduledAt[i], schedules['data'][i]['status']))
-                                # bettingCURSOR.execute(f"INSERT INTO {leagues[j]['shortName']}(ID, TournamentID, Name, TotalBet, TotalPoint, HomeBet, HomePoint, AwayBet, AwayPoint) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", (schedules['data'][i]['id'], schedules['data'][i]['tournamentId'], match_name, 0, 0, 0, 0, 0, 0))
+                                bettingCURSOR.execute(f"INSERT INTO {leagues[j]['shortName']}(ID, TournamentID, Name, TotalBet, TotalPoint, HomeBet, HomePoint, AwayBet, AwayPoint) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", (schedules['data'][i]['id'], schedules['data'][i]['tournamentId'], match_name, 0, 0, 0, 0, 0, 0))
                         print(f"- Saved match: [{schedules['data'][i]['tournament']['serie']['league']['shortName']}] {match_name} ({schedules['data'][i]['id']})")
 
                         content_msg += f"\n- Saved match: `[{schedules['data'][i]['tournament']['serie']['league']['shortName']}] {match_name} ({schedules['data'][i]['id']})`"
@@ -145,7 +145,7 @@ class save_scheduleTASK(commands.Cog):
 
                     scheduleCURSOR.execute(f"INSERT INTO general(LastSavedDataAt) VALUES(?)", (nowTime,))
                     scheduleDB.close()
-                    # bettingDB.close()
+                    bettingDB.close()
 
                 else:
                     print(f"{schedules['code']}: {schedules['message']}")

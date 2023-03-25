@@ -275,9 +275,9 @@ class GuildSettingCMD(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    _settings = SlashCommandGroup(name="설정", description="설정 명령어", guild_only=True, default_member_permissions=discord.Permissions(administrator=True))
+    _guild_settings = SlashCommandGroup(name="설정", description="설정 명령어", guild_only=True, default_member_permissions=discord.Permissions(administrator=True))
 
-    @_settings.command(
+    @_guild_settings.command(
         name="셋업",
         description="서비스 이용을 위한 필수 서버 설정을 진행해요."
     )
@@ -365,7 +365,7 @@ class GuildSettingCMD(commands.Cog):
         try: guildDB.close()
         except: pass
 
-    @_settings.command(
+    @_guild_settings.command(
         name="리그",
         description="서버에서 알림 받을 리그를 선택할 수 있어요.",
     )
@@ -375,7 +375,7 @@ class GuildSettingCMD(commands.Cog):
         msg = await ctx.respond(embed=embed)
         await msg.edit_original_response(content="", embed=embed, view=LeagueView(self.bot, ctx, msg))
 
-    @_settings.command(
+    @_guild_settings.command(
         name="변경",
         description="서버 설정을 변경 또는 수정해요.",
     )
