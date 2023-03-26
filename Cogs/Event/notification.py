@@ -130,7 +130,7 @@ class NotificationTASK(commands.Cog):
                                 team_1_deaths = match_data['data']['teamStats'][0]['deaths'].__round__(2)
                                 team_1_assists = match_data['data']['teamStats'][0]['assists'].__round__(2)
                                 team_1_kda_msg = f"{team_1_kda} 평점 `({team_1_kills} / {team_1_deaths} / {team_1_assists})`"
-                                team_1_winRate = f"{((match_data['data']['teamStats'][0]['winRate'] * 100).__round__(1) * 100).__round__(1)}"
+                                team_1_winRate = f"{(match_data['data']['teamStats'][0]['winRate'] * 100).__round__(1)}"
                                 team_1_firstTower = f"{(match_data['data']['teamStats'][0]['firstTower'] * 100).__round__(1)}"
                                 team_1_firstBaron = f"{(match_data['data']['teamStats'][0]['firstBaron'] * 100).__round__(1)}"
                                 team_1_firstBlood = f"{(match_data['data']['teamStats'][0]['firstBlood'] * 100).__round__(1)}"
@@ -144,7 +144,7 @@ class NotificationTASK(commands.Cog):
                                 team_2_deaths = match_data['data']['teamStats'][1]['deaths'].__round__(2)
                                 team_2_assists = match_data['data']['teamStats'][1]['assists'].__round__(2)
                                 team_2_kda_msg = f"{team_2_kda} 평점 `({team_2_kills} / {team_2_deaths} / {team_2_assists})`"
-                                team_2_winRate = f"{((match_data['data']['teamStats'][1]['winRate'] * 100).__round__(1) * 100).__round__(1)}"
+                                team_2_winRate = f"{(match_data['data']['teamStats'][1]['winRate'] * 100).__round__(1)}"
                                 team_2_firstTower = f"{(match_data['data']['teamStats'][1]['firstTower'] * 100).__round__(1)}"
                                 team_2_firstBaron = f"{(match_data['data']['teamStats'][1]['firstBaron'] * 100).__round__(1)}"
                                 team_2_firstBlood = f"{(match_data['data']['teamStats'][1]['firstBlood'] * 100).__round__(1)}"
