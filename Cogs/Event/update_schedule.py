@@ -100,8 +100,9 @@ class UpdateScheduleTASK(commands.Cog):
 
             scheduleDB.close()
 
-        else:
-            print(f"{match_data['code']}: {match_data['message']}")
+        elif match_data['error'] == True:
+            # print(f"{match_data['code']}: {match_data['message']}")
+            pass # match_complete 파일이랑 에러 메시지가 겹침
 
 
 

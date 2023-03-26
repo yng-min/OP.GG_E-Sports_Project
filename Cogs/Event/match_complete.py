@@ -12,6 +12,8 @@ import pytz
 import traceback
 import os
 
+from Extensions.deposit import DepositPoint
+
 # config.json Config 파일 불러오기
 try:
     with open(r"./config.json", "rt", encoding="UTF8") as configJson:
@@ -102,7 +104,7 @@ class MatchCompleteTASK(commands.Cog):
                 time_nowDay = datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%Y-%m-%d")
                 time_nowTime = datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("X%m월 X%d일").replace("X0", "").replace("X", "")
 
-                # bet_box = []
+                bet_box = []
 
                 for data_guild in os.listdir(r"./Data/Guild"):
 
@@ -146,6 +148,7 @@ class MatchCompleteTASK(commands.Cog):
                                 msg_description = f"```{match_name} ({box_league[0]})```"
                                 msg_team_1 = f"{match_name.split(' vs ')[0]} 팀 정보"
                                 msg_team_2 = f"{match_name.split(' vs ')[1]} 팀 정보"
+                                banner_image_url = random.choice(config['banner_image_url'])
 
                                 if match_data['data']['dpm'] == "": match_data['data']['dpm'] = "-"
                                 if match_data['data']['dtpm'] == "": match_data['data']['dtpm'] = "-"
@@ -154,89 +157,87 @@ class MatchCompleteTASK(commands.Cog):
                                 if match_data['data']['firstBlood'] == "": match_data['data']['firstBlood'] = "-"
                                 if match_data['data']['mvp'] == "": match_data['data']['mvp'] = "-"
 
-                                # if match_data['data']['match_set'] == 1:
-                                #     bettingDB = sqlite3.connect(rf"./Data/betting.sqlite", isolation_level=None)
-                                #     bettingCURSOR = bettingDB.cursor()
+                                if match_data['data']['match_set'] == 1:
+                                    bettingDB = sqlite3.connect(rf"./Data/betting.sqlite", isolation_level=None)
+                                    bettingCURSOR = bettingDB.cursor()
 
-                                #     box_matches = []
-                                #     box_match = []
-                                #     for i in range(16):
-                                #         result = bettingCURSOR.execute(f"SELECT * FROM {leagues[i]['shortName']}").fetchall()
-                                #         box_matches.append(result)
-                                #         if box_matches[i] != []:
-                                #             for j in range(len(result)):
-                                #                 box_match.append(box_matches[i][j])
+                                    box_matches = []
+                                    box_match = []
+                                    for i in range(16):
+                                        result = bettingCURSOR.execute(f"SELECT * FROM {leagues[i]['shortName']}").fetchall()
+                                        box_matches.append(result)
+                                        if box_matches[i] != []:
+                                            for j in range(len(result)):
+                                                box_match.append(box_matches[i][j])
 
-                                #     bettingDB.close()
+                                    bettingDB.close()
 
-                                #     data_bet = []
-                                #     for i in range(len(box_match)):
-                                #         if str(box_match[i][0]) == str(match_data['data']['matchId']):
-                                #             bet_box.append(box_match[i][4])
-                                #             bet_box.append(box_match[i][5])
-                                #             bet_box.append(box_match[i][7])
-                                #             data_bet.append(box_match[i][5])
-                                #             data_bet.append(box_match[i][6])
-                                #             data_bet.append(box_match[i][7])
-                                #             data_bet.append(box_match[i][8])
+                                    data_bet = []
+                                    for i in range(len(box_match)):
+                                        if str(box_match[i][0]) == str(match_data['data']['match_id']):
+                                            bet_box.append(box_match[i][4])
+                                            bet_box.append(box_match[i][5])
+                                            bet_box.append(box_match[i][7])
+                                            data_bet.append(box_match[i][5])
+                                            data_bet.append(box_match[i][6])
+                                            data_bet.append(box_match[i][7])
+                                            data_bet.append(box_match[i][8])
 
-                                #     try:
-                                #         team_user_1 = data_bet[0]
-                                #         team_user_2 = data_bet[2]
-                                #         team_point_1 = data_bet[1]
-                                #         team_point_2 = data_bet[3]
+                                    try:
+                                        team_user_1 = data_bet[0]
+                                        team_user_2 = data_bet[2]
+                                        team_point_1 = data_bet[1]
+                                        team_point_2 = data_bet[3]
 
-                                #         try: match_name = match_data['data']['title'].split(': ')[1]
-                                #         except: match_name = match_data['data']['title']
+                                        match_name = f"{match_data['data']['team_1']} vs {match_data['data']['team_2']}"
 
-                                #         if (match_data['data']['winner'] == match_name.split(' vs ')[0]):
-                                #             try: reward = (bet_box[0] / bet_box[1]).__round__()
-                                #             except ZeroDivisionError: reward = 0
-                                #         elif (match_data['data']['winner'] == match_name.split(' vs ')[1]):
-                                #             try: reward = (bet_box[0] / bet_box[2]).__round__()
-                                #             except ZeroDivisionError: reward = 0
+                                        if (match_data['data']['match_winner_shortName'] == match_name.split(' vs ')[0]):
+                                            try: reward = (bet_box[0] / bet_box[1]).__round__()
+                                            except ZeroDivisionError: reward = 0
+                                        elif (match_data['data']['match_winner_shortName'] == match_name.split(' vs ')[1]):
+                                            try: reward = (bet_box[0] / bet_box[2]).__round__()
+                                            except ZeroDivisionError: reward = 0
 
-                                #         msg_user_1 = f"총 _**{team_user_1:,}**_명"
-                                #         msg_user_2 = f"총 _**{team_user_2:,}**_명"
-                                #         msg_point_1 = f"합계 _**{team_point_1:,}**_포인트"
-                                #         msg_point_2 = f"합계 _**{team_point_2:,}**_포인트"
-                                #         msg_reward = f"_**{reward:,}**_포인트"
+                                        msg_user_1 = f"총 _**{team_user_1:,}**_명"
+                                        msg_user_2 = f"총 _**{team_user_2:,}**_명"
+                                        msg_point_1 = f"합계 _**{team_point_1:,}**_포인트"
+                                        msg_point_2 = f"합계 _**{team_point_2:,}**_포인트"
+                                        msg_reward = f"_**{reward:,}**_포인트"
 
-                                #         embed = discord.Embed(title=msg_title, description=msg_description, color=colorMap['red'])
-                                #         # embed.set_footer(text="Powered by QWER.GG", icon_url=self.bot.user.display_avatar.url)
-                                #         embed.set_image(url=banner_image_url)
-                                #         embed.add_field(name="\u200b", value=f"**> __{match_data['data']['winnerName']} ({match_data['data']['winner']})__ 승리 [{match_data['data']['set']}세트]**", inline=False)
-                                #         embed.add_field(name="MVP 선수", value=match_data['data']['mvp'], inline=True)
-                                #         embed.add_field(name="가한 피해량 1위", value=match_data['data']['dpm'], inline=True)
-                                #         embed.add_field(name="받은 피해량 1위", value=match_data['data']['dtpm'], inline=True)
-                                #         embed.add_field(name="획득한 골드 1위", value=match_data['data']['gold'], inline=True)
-                                #         embed.add_field(name="CS 1위", value=match_data['data']['cs'], inline=True)
-                                #         embed.add_field(name="선취점", value=match_data['data']['firstBlood'], inline=True)
-                                #         embed.add_field(name="\u200b", value=f"**> 리그 승부 예측 결과**", inline=False)
-                                #         embed.add_field(name=msg_team_1, value=f"{msg_user_1}\n{msg_point_1}", inline=True)
-                                #         embed.add_field(name=msg_team_2, value=f"{msg_user_2}\n{msg_point_2}", inline=True)
-                                #         embed.add_field(name="포인트 정산", value=f"__**{match_data['data']['winner']}**__ 팀에 베팅한 유저에게 각각 {msg_reward}가 지급됩니다.", inline=False)
-                                #         await channel_notice.send(msg_content, embed=embed, view=LinkButton(scheduleURL))
+                                        embed = discord.Embed(title=msg_title, description=msg_description, color=colorMap['red'])
+                                        # embed.set_footer(text="Powered by QWER.GG", icon_url=self.bot.user.display_avatar.url)
+                                        embed.set_image(url=banner_image_url)
+                                        embed.add_field(name="\u200b", value=f"**> __{match_data['data']['match_winner_name']} ({match_data['data']['match_winner_shortName']})__ 승리 [{match_data['data']['match_set']}세트]**", inline=False)
+                                        embed.add_field(name="MVP 선수", value=match_data['data']['mvp'], inline=True)
+                                        embed.add_field(name="가한 피해량 1위", value=match_data['data']['dpm'], inline=True)
+                                        embed.add_field(name="받은 피해량 1위", value=match_data['data']['dtpm'], inline=True)
+                                        embed.add_field(name="획득한 골드 1위", value=match_data['data']['gold'], inline=True)
+                                        embed.add_field(name="CS 1위", value=match_data['data']['cs'], inline=True)
+                                        embed.add_field(name="선취점", value=match_data['data']['firstBlood'], inline=True)
+                                        embed.add_field(name="\u200b", value=f"**> 리그 승부 예측 결과**", inline=False)
+                                        embed.add_field(name=msg_team_1, value=f"{msg_user_1}\n{msg_point_1}", inline=True)
+                                        embed.add_field(name=msg_team_2, value=f"{msg_user_2}\n{msg_point_2}", inline=True)
+                                        embed.add_field(
+                                            name="포인트 정산", value=f"__**{match_data['data']['match_winner_name']}**__ 팀에 베팅한 유저에게 각각 {msg_reward}가 지급됩니다.", inline=False)
+                                        await channel_notice.send(msg_content, embed=embed, view=LinkButton(scheduleURL))
 
-                                #     except:
-                                #         embed = discord.Embed(title=msg_title, description=msg_description, color=colorMap['red'])
-                                #         embed.set_footer(text="(Error: 베팅 데이터를 불러올 수 없습니다.)", icon_url=self.bot.user.display_avatar.url)
-                                #         embed.set_image(url=banner_image_url)
-                                #         embed.add_field(name="\u200b", value=f"**> __{match_data['data']['winnerName']} ({match_data['data']['winner']})__ 승리 [{match_data['data']['set']}세트]**", inline=False)
-                                #         embed.add_field(name="MVP 선수", value=match_data['data']['mvp'], inline=True)
-                                #         embed.add_field(name="가한 피해량 1위", value=match_data['data']['dpm'], inline=True)
-                                #         embed.add_field(name="받은 피해량 1위", value=match_data['data']['dtpm'], inline=True)
-                                #         embed.add_field(name="획득한 골드 1위", value=match_data['data']['gold'], inline=True)
-                                #         embed.add_field(name="CS 1위", value=match_data['data']['cs'], inline=True)
-                                #         embed.add_field(name="선취점", value=match_data['data']['firstBlood'], inline=True)
-                                #         await channel_notice.send(msg_content, embed=embed, view=LinkButton(scheduleURL))
+                                    except:
+                                        embed = discord.Embed(title=msg_title, description=msg_description, color=colorMap['red'])
+                                        embed.set_footer(text="(Issue: 베팅 데이터를 불러올 수 없습니다.)", icon_url=self.bot.user.display_avatar.url)
+                                        embed.set_image(url=banner_image_url)
+                                        embed.add_field(name="\u200b", value=f"**> __{match_data['data']['match_winner_name']} ({match_data['data']['match_winner_shortName']})__ 승리 [{match_data['data']['match_set']}세트]**", inline=False)
+                                        embed.add_field(name="MVP 선수", value=match_data['data']['mvp'], inline=True)
+                                        embed.add_field(name="가한 피해량 1위", value=match_data['data']['dpm'], inline=True)
+                                        embed.add_field(name="받은 피해량 1위", value=match_data['data']['dtpm'], inline=True)
+                                        embed.add_field(name="획득한 골드 1위", value=match_data['data']['gold'], inline=True)
+                                        embed.add_field(name="CS 1위", value=match_data['data']['cs'], inline=True)
+                                        embed.add_field(name="선취점", value=match_data['data']['firstBlood'], inline=True)
+                                        await channel_notice.send(msg_content, embed=embed, view=LinkButton(scheduleURL))
 
-                                #         print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
-                                #         print("경기 베팅 데이터를 불러올 수 없습니다.")
+                                        print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
+                                        print(f"[{box_league[0]}] {match_name} ({match_data['data']['match_id']}) | 경기 베팅 데이터를 불러올 수 없습니다.")
 
                                 else:
-                                    banner_image_url = random.choice(config['banner_image_url'])
-
                                     embed = discord.Embed(title=msg_title, description=msg_description, color=colorMap['red'])
                                     # embed.set_footer(text="Powered by QWER.GG", icon_url=self.bot.user.display_avatar.url)
                                     embed.set_image(url=banner_image_url)
@@ -249,62 +250,16 @@ class MatchCompleteTASK(commands.Cog):
                                     embed.add_field(name="선취점", value=match_data['data']['firstBlood'], inline=True)
                                     await channel_notice.send(msg_content, embed=embed, view=LinkButton(scheduleURL))
 
-                # if match_data['data']['set'] == 1:
-                #     for data_user in os.listdir(r"./Data/User"):
-                #         try: match_name = match_data['data']['title'].split(': ')[1]
-                #         except: match_name = match_data['data']['title']
-
-                #         if data_user.endswith(".sqlite"):
-                #             userID = int(data_user.replace("user_", "").split(".")[0])
-
-                #             userDB = sqlite3.connect(rf"./Data/User/{data_user}", isolation_level=None)
-                #             userCURSOR = userDB.cursor()
-
-                #             try:
-                #                 betting_result = userCURSOR.execute(f"SELECT * FROM \"{match_data['data']['matchId']}\"").fetchone()
-                #                 result = userCURSOR.execute(f"SELECT * FROM data WHERE UserID = {userID}").fetchone()
-                #                 userCURSOR.execute(f"DROP TABLE \"{match_data['data']['matchId']}\"")
-
-                #                 if (betting_result[1] == match_data['data']['winner']):
-                #                     if (betting_result[1] == match_name.split(' vs ')[0]): reward = (bet_box[0] / bet_box[1]).__round__()
-                #                     elif (betting_result[1] == match_name.split(' vs ')[1]): reward = (bet_box[0] / bet_box[2]).__round__()
-                #                     # userCURSOR.execute("UPDATE data SET TotalPoint = ?, Point = ?, CorrectAnswer = ? WHERE UserID = ?", ((result[1] + reward), (result[2] + betting_result[2] + reward), (result[4] + 1), userID))
-                #                     userCURSOR.execute("UPDATE data SET TotalPoint = ?, Point = ?, CorrectAnswer = ? WHERE UserID = ?", ((result[1] + reward), (result[2] + reward), (result[4] + 1), userID))
-
-                #                 else:
-                #                     userCURSOR.execute("UPDATE data SET WrongAnswer = ? WHERE UserID = ?", ((result[5] + 1), userID))
-                #             except:
-                #                 pass
-
-                #             userDB.close()
-
-                # else:
-                #     pass
+                DepositPoint.deposit_point(match_data=match_data, bet_box=bet_box)
 
             except Exception as error:
                 print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
                 print(traceback.format_exc())
 
-            # if match_data['data']['set'] == 1:
-            #     bettingDB = sqlite3.connect(rf"./Data/betting.sqlite", isolation_level=None)
-            #     bettingCURSOR = bettingDB.cursor()
-
-            #     box_matches = []
-            #     box_match = []
-            #     for i in range(16):
-            #         result = bettingCURSOR.execute(f"SELECT * FROM {leagues[i]['shortName']}").fetchall()
-            #         try: bettingCURSOR.execute(f"DELETE FROM {leagues[i]['shortName']} WHERE ID = '{match_data['data']['matchId']}'")
-            #         except:
-            #             pass
-            #             # print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
-            #             # print(traceback.format_exc())
-
-            #     bettingDB.close()
-
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
             print("경기 결과 알림 전송 완료")
 
-        else:
+        elif match_data['error'] == True:
             print(f"{match_data['code']}: {match_data['message']}")
 
 
