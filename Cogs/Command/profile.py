@@ -13,7 +13,7 @@ import os
 
 colorMap = {
     "default": 0x2F3136,
-    "red": 0xf60c50,
+    "red": 0xff4438,
     "green": 0x90ee90
 }
 
