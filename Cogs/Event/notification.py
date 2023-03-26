@@ -110,12 +110,12 @@ class NotificationTASK(commands.Cog):
                     tournamentID = box_info[j].split(" ")[1]
                     matchTitle = box_teams[j]
 
+                    banner_image_url = random.choice(config['banner_image_url'])
+
                     # 경기 시작 알림
                     if date_detail == time_nowDetail:
                         print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
                         print("경기 일정 알림 전송 중...")
-
-                        banner_image_url = random.choice(config['banner_image_url'])
 
                         match_data = opgg.match_started(match_id=matchID, tournament_id=tournamentID, status="not_started")
 

@@ -397,22 +397,20 @@ class ScheduleCMD(commands.Cog):
         msg = await ctx.respond(embed=embed)
 
         try:
+            YesterdayTime = (datetime.datetime.now(pytz.timezone("Asia/Seoul")) + datetime.timedelta(days=-1)).strftime("%Y-%m-%d")
+            time = datetime.datetime.strptime(YesterdayTime, "%Y-%m-%d")
+            YesterdayTime = time.strftime("%Y-%m-%d")
+
             nowTime = datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%Y-%m-%d")
-            date_temp = datetime.datetime.strptime(nowTime, "%Y-%m-%d")
-            date_delta = datetime.timedelta(hours=time_difference)
-            time = date_temp + date_delta
+            time = datetime.datetime.strptime(nowTime, "%Y-%m-%d")
             nowTime = time.strftime("%Y-%m-%d")
 
             tomorrowTime = (datetime.datetime.now(pytz.timezone("Asia/Seoul")) + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
-            date_temp = datetime.datetime.strptime(tomorrowTime, "%Y-%m-%d")
-            date_delta = datetime.timedelta(hours=time_difference)
-            time = date_temp + date_delta
+            time = datetime.datetime.strptime(tomorrowTime, "%Y-%m-%d")
             tomorrowTime = time.strftime("%Y-%m-%d")
 
             dayAfterTomorrowTime = (datetime.datetime.now(pytz.timezone("Asia/Seoul")) + datetime.timedelta(days=2)).strftime("%Y-%m-%d")
-            date_temp = datetime.datetime.strptime(dayAfterTomorrowTime, "%Y-%m-%d")
-            date_delta = datetime.timedelta(hours=time_difference)
-            time = date_temp + date_delta
+            time = datetime.datetime.strptime(dayAfterTomorrowTime, "%Y-%m-%d")
             dayAfterTomorrowTime = time.strftime("%Y-%m-%d")
 
             box_1_match_schedule_1 = []
@@ -425,22 +423,14 @@ class ScheduleCMD(commands.Cog):
             box_3_match_schedule_2 = []
             box_3_match_info = []
 
-            for i in range(3):
-                if i == 0: dateTime = nowTime
-                elif i == 1: dateTime = tomorrowTime
-                elif i == 2: dateTime = dayAfterTomorrowTime
+            for i in range(4):
+                if i == 0: dateTime = YesterdayTime
+                elif i == 1: dateTime = nowTime
+                elif i == 2: dateTime = tomorrowTime
+                elif i == 3: dateTime = dayAfterTomorrowTime
                 matches = opgg.load_schedule(date=dateTime)
 
                 if matches['error'] == False:
-
-                    temp_originalScheduledAt = []
-                    box_originalScheduledAt = []
-                    for i in range(len(matches['data'])):
-                        temp_originalScheduledAt.append(matches['data'][i]['originalScheduledAt'].replace("T", " ").split(".000Z")[0])
-                        date_temp = datetime.datetime.strptime(temp_originalScheduledAt[i], "%Y-%m-%d %H:%M:%S")
-                        date_delta = datetime.timedelta(hours=time_difference)
-                        time = date_temp + date_delta
-                        box_originalScheduledAt.append(time.strftime("%Y-%m-%d %H:%M:%S"))
 
                     temp_scheduledAt = []
                     box_scheduledAt = []
