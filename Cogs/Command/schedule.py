@@ -53,6 +53,16 @@ class ScheduleButton(discord.ui.View):
         self.msg = msg
         self.banner = banner
 
+        # print(box_1_match_schedule_2)
+        # print(msg_schedule_info_1)
+        # print(msg_schedule_info_1_2)
+        # print(box_2_match_schedule_2)
+        # print(msg_schedule_info_2)
+        # print(msg_schedule_info_2_2)
+        # print(box_3_match_schedule_2)
+        # print(msg_schedule_info_3)
+        # print(msg_schedule_info_3_2)
+
         if box_1_match_schedule_2 == "해당 일자의 리그 일정이 없습니다.":
             self.schedule_1_1 = []
             self.schedule_1_2 = []
@@ -445,7 +455,7 @@ class ScheduleCMD(commands.Cog):
                     temp_scheduledAt = []
                     box_scheduledAt = []
                     for i in range(len(matches['data'])):
-                        temp_scheduledAt.append(matches['data'][i]['originalScheduledAt'].replace("T", " ").split(".000Z")[0])
+                        temp_scheduledAt.append(matches['data'][i]['scheduledAt'].replace("T", " ").split(".000Z")[0])
                         date_temp = datetime.datetime.strptime(temp_scheduledAt[i], "%Y-%m-%d %H:%M:%S")
                         date_delta = datetime.timedelta(hours=time_difference)
                         time = date_temp + date_delta
