@@ -1,0 +1,16 @@
+{
+    "prefix_normal": " ",
+    "prefix_developer": " ",
+    "client_version": " ",
+    "id_owner": ,
+    "time_difference": ,
+    "webhook_url": " ",
+    "banner_image_url": [
+        " "
+    ],
+
+    "token_key": " ",
+    "invite_code": " ",
+
+    "role_name_league_notification": " "
+}
