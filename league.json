@@ -1,0 +1,115 @@
+{
+    "leagues": [
+        {
+            "id": "85",
+            "tournamentId": ["None"],
+            "name": "League of Legends Circuit Oceania",
+            "shortName": "LCO",
+            "region": "OCE"
+        },
+        {
+            "id": "86",
+            "tournamentId": ["1040", "1048"],
+            "name": "Pacific Championship Series",
+            "shortName": "PCS",
+            "region": "SEA"
+        },
+        {
+            "id": "87",
+            "tournamentId": ["1021", "1047"],
+            "name": "Liga Latinoamérica",
+            "shortName": "LLA",
+            "region": "LAT"
+        },
+        {
+            "id": "88",
+            "tournamentId": ["1017", "1049"],
+            "name": "League of Legends Championship Series",
+            "shortName": "LCS",
+            "region": "NA"
+        },
+        {
+            "id": "89",
+            "tournamentId": ["1045"],
+            "name": "League of Legends European Championship",
+            "shortName": "LEC",
+            "region": "EU"
+        },
+        {
+            "id": "90",
+            "tournamentId": ["1044"],
+            "name": "Vietnam Championship Series",
+            "shortName": "VCS",
+            "region": "VN"
+        },
+        {
+            "id": "91",
+            "tournamentId": ["899"],
+            "name": "League of Legends Continental League",
+            "shortName": "LCL",
+            "region": "CIS"
+        },
+        {
+            "id": "92",
+            "tournamentId": ["1039", "1046"],
+            "name": "League of Legends Japan League",
+            "shortName": "LJL",
+            "region": "JP"
+        },
+        {
+            "id": "93",
+            "tournamentId": ["1013", "1050"],
+            "name": "Turkish Championship League",
+            "shortName": "TCL",
+            "region": "TR"
+        },
+        {
+            "id": "94",
+            "tournamentId": ["1015", "1051"],
+            "name": "Campeonato Brasileiro de League of Legends",
+            "shortName": "CBLOL",
+            "region": "BR"
+        },
+        {
+            "id": "95",
+            "tournamentId": ["None"],
+            "name": "Oceanic Pro League",
+            "shortName": "OPL",
+            "region": "COE"
+        },
+        {
+            "id": "96",
+            "tournamentId": ["None"],
+            "name": "League of Legends World Championship",
+            "shortName": "Worlds",
+            "region": "INT"
+        },
+        {
+            "id": "97",
+            "tournamentId": ["None"],
+            "name": "League of Legends Master Series",
+            "shortName": "LMS",
+            "region": "LMS"
+        },
+        {
+            "id": "98",
+            "tournamentId": ["1019", "1052"],
+            "name": "League of Legends Pro League",
+            "shortName": "LPL",
+            "region": "CN"
+        },
+        {
+            "id": "99",
+            "tournamentId": ["1016", "1018"],
+            "name": "League of Legends Champions Korea",
+            "shortName": "LCK",
+            "region": "KR"
+        },
+        {
+            "id": "100",
+            "name": "Mid-Season Invitational",
+            "shortName": "MSI",
+            "region": "INT"
+        }
+    ]
+}

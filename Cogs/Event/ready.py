@@ -6,7 +6,7 @@ import json
 import datetime
 import pytz
 
-# config.json Config 파일 불러오기
+# config.json 파일 불러오기
 try:
     with open(r"./config.json", "rt", encoding="UTF8") as configJson:
         config = json.load(configJson)

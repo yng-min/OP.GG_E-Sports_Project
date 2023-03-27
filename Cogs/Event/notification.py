@@ -14,37 +14,21 @@ import os
 
 from Extensions.betting import BettingButton
 
-# config.json Config 파일 불러오기
+# config.json 파일 불러오기
 try:
     with open(r"./config.json", "rt", encoding="UTF8") as configJson:
         config = json.load(configJson)
 except:
     print("config.json이 로드되지 않음")
 
+# league.json 파일 불러오기
+try:
+    with open(r"./league.json", "rt", encoding="UTF8") as leagueJson:
+        leagues = json.load(leagueJson)['leagues']
+except: print("league.json이 로드되지 않음")
+
 time_difference = config['time_difference']
-leagues = {
-    0: {"id": "85", "name": "League of Legends Circuit Oceania", "shortName": "LCO", "region": "OCE"},
-    1: {"id": "86", "name": "Pacific Championship Series", "shortName": "PCS", "region": "SEA"},
-    2: {"id": "87", "name": "Liga Latinoamérica", "shortName": "LLA", "region": "LAT"},
-    3: {"id": "88", "name": "League of Legends Championship Series", "shortName": "LCS", "region": "NA"},
-    4: {"id": "89", "name": "League of Legends European Championship", "shortName": "LEC", "region": "EU"},
-    5: {"id": "90", "name": "Vietnam Championship Series", "shortName": "VCS", "region": "VN"},
-    6: {"id": "91", "name": "League of Legends Continental League", "shortName": "LCL", "region": "CIS"},
-    7: {"id": "92", "name": "League of Legends Japan League", "shortName": "LJL", "region": "JP"},
-    8: {"id": "93", "name": "Turkish Championship League", "shortName": "TCL", "region": "TR"},
-    9: {"id": "94", "name": "Campeonato Brasileiro de League of Legends", "shortName": "CBLOL", "region": "BR"},
-    10: {"id": "95", "name": "Oceanic Pro League", "shortName": "OPL", "region": "COE"},
-    11: {"id": "96", "name": "League of Legends World Championship", "shortName": "Worlds", "region": "INT"},
-    12: {"id": "97", "name": "League of Legends Master Series", "shortName": "LMS", "region": "LMS"},
-    13: {"id": "98", "name": "League of Legends Pro League", "shortName": "LPL", "region": "CN"},
-    14: {"id": "99", "name": "League of Legends Champions Korea", "shortName": "LCK", "region": "KR"},
-    15: {"id": "100", "name": "Mid-Season Invitational", "shortName": "MSI", "region": "INT"}
-}
-colorMap = {
-    "default": 0x2F3136,
-    "red": 0xff4438,
-    "green": 0x90ee90
-}
+colorMap = config['colorMap']
 
 
 class LinkButton(discord.ui.View):
@@ -93,8 +77,8 @@ class NotificationTASK(commands.Cog):
             # time_nowDetail = "15:00:00" # 테스트용
 
             for j in range(len(box_dates)):
-                date_day = box_dates[j].split(" ")[0]
-                date_detail = box_dates[j].split(" ")[1]
+                date_day = box_dates[j].split("T")[0]
+                date_detail = box_dates[j].split("T")[1]
 
                 if date_day == time_nowDay:
                     # 전송 시간
@@ -164,26 +148,26 @@ class NotificationTASK(commands.Cog):
                                     if data_guild.endswith(".sqlite"):
                                         guildDB = sqlite3.connect(rf"./Data/Guild/{data_guild}", isolation_level=None)
                                         guildCURSOR = guildDB.cursor()
-                                        notice_answer = guildCURSOR.execute("SELECT * FROM main").fetchall()[0][1]
-                                        channel_id = guildCURSOR.execute("SELECT * FROM main").fetchall()[0][4]
-                                        role_id = guildCURSOR.execute("SELECT * FROM main").fetchall()[0][5]
+                                        notice_answer = guildCURSOR.execute("SELECT NoticeAnswer FROM main").fetchone()[0]
+                                        channel_id = guildCURSOR.execute("SELECT NoticeChannelID FROM main").fetchone()[0]
+                                        role_id = guildCURSOR.execute("SELECT NoticeRoleID FROM main").fetchone()[0]
 
-                                        leagueLCO = guildCURSOR.execute("SELECT * FROM league").fetchall()[0][1]
-                                        leaguePCS = guildCURSOR.execute("SELECT * FROM league").fetchall()[0][2]
-                                        leagueLLA = guildCURSOR.execute("SELECT * FROM league").fetchall()[0][3]
-                                        leagueLCS = guildCURSOR.execute("SELECT * FROM league").fetchall()[0][4]
-                                        leagueLEC = guildCURSOR.execute("SELECT * FROM league").fetchall()[0][5]
-                                        leagueVCS = guildCURSOR.execute("SELECT * FROM league").fetchall()[0][6]
-                                        leagueLCL = guildCURSOR.execute("SELECT * FROM league").fetchall()[0][7]
-                                        leagueLJL = guildCURSOR.execute("SELECT * FROM league").fetchall()[0][8]
-                                        leagueTCL = guildCURSOR.execute("SELECT * FROM league").fetchall()[0][9]
-                                        leagueCBLOL = guildCURSOR.execute("SELECT * FROM league").fetchall()[0][10]
-                                        leagueOPL = guildCURSOR.execute("SELECT * FROM league").fetchall()[0][11]
-                                        leagueWorlds = guildCURSOR.execute("SELECT * FROM league").fetchall()[0][12]
-                                        leagueLMS = guildCURSOR.execute("SELECT * FROM league").fetchall()[0][13]
-                                        leagueLPL = guildCURSOR.execute("SELECT * FROM league").fetchall()[0][14]
-                                        leagueLCK = guildCURSOR.execute("SELECT * FROM league").fetchall()[0][15]
-                                        leagueMSI = guildCURSOR.execute("SELECT * FROM league").fetchall()[0][16]
+                                        leagueLCO = guildCURSOR.execute("SELECT LCO FROM league").fetchone()[0]
+                                        leaguePCS = guildCURSOR.execute("SELECT PCS FROM league").fetchone()[0]
+                                        leagueLLA = guildCURSOR.execute("SELECT LLA FROM league").fetchone()[0]
+                                        leagueLCS = guildCURSOR.execute("SELECT LCS FROM league").fetchone()[0]
+                                        leagueLEC = guildCURSOR.execute("SELECT LEC FROM league").fetchone()[0]
+                                        leagueVCS = guildCURSOR.execute("SELECT VCS FROM league").fetchone()[0]
+                                        leagueLCL = guildCURSOR.execute("SELECT LCL FROM league").fetchone()[0]
+                                        leagueLJL = guildCURSOR.execute("SELECT LJL FROM league").fetchone()[0]
+                                        leagueTCL = guildCURSOR.execute("SELECT TCL FROM league").fetchone()[0]
+                                        leagueCBLOL = guildCURSOR.execute("SELECT CBLOL FROM league").fetchone()[0]
+                                        leagueOPL = guildCURSOR.execute("SELECT OPL FROM league").fetchone()[0]
+                                        leagueWorlds = guildCURSOR.execute("SELECT Worlds FROM league").fetchone()[0]
+                                        leagueLMS = guildCURSOR.execute("SELECT LMS FROM league").fetchone()[0]
+                                        leagueLPL = guildCURSOR.execute("SELECT LPL FROM league").fetchone()[0]
+                                        leagueLCK = guildCURSOR.execute("SELECT LCK FROM league").fetchone()[0]
+                                        leagueMSI = guildCURSOR.execute("SELECT MSI FROM league").fetchone()[0]
 
                                         guildDB.close()
 
@@ -252,26 +236,26 @@ class NotificationTASK(commands.Cog):
                                 if data_guild.endswith(".sqlite"):
                                     guildDB = sqlite3.connect(rf"./Data/Guild/{data_guild}", isolation_level=None)
                                     guildCURSOR = guildDB.cursor()
-                                    notice_answer = guildCURSOR.execute("SELECT * FROM main").fetchall()[0][2]
-                                    channel_id = guildCURSOR.execute("SELECT * FROM main").fetchall()[0][4]
-                                    role_id = guildCURSOR.execute("SELECT * FROM main").fetchall()[0][5]
+                                    notice_answer = guildCURSOR.execute("SELECT NoticeEarlyAnswer FROM main").fetchone()[0]
+                                    channel_id = guildCURSOR.execute("SELECT NoticeChannelID FROM main").fetchone()[0]
+                                    role_id = guildCURSOR.execute("SELECT NoticeRoleID FROM main").fetchone()[0]
 
-                                    leagueLCO = guildCURSOR.execute("SELECT * FROM league").fetchall()[0][1]
-                                    leaguePCS = guildCURSOR.execute("SELECT * FROM league").fetchall()[0][2]
-                                    leagueLLA = guildCURSOR.execute("SELECT * FROM league").fetchall()[0][3]
-                                    leagueLCS = guildCURSOR.execute("SELECT * FROM league").fetchall()[0][4]
-                                    leagueLEC = guildCURSOR.execute("SELECT * FROM league").fetchall()[0][5]
-                                    leagueVCS = guildCURSOR.execute("SELECT * FROM league").fetchall()[0][6]
-                                    leagueLCL = guildCURSOR.execute("SELECT * FROM league").fetchall()[0][7]
-                                    leagueLJL = guildCURSOR.execute("SELECT * FROM league").fetchall()[0][8]
-                                    leagueTCL = guildCURSOR.execute("SELECT * FROM league").fetchall()[0][9]
-                                    leagueCBLOL = guildCURSOR.execute("SELECT * FROM league").fetchall()[0][10]
-                                    leagueOPL = guildCURSOR.execute("SELECT * FROM league").fetchall()[0][11]
-                                    leagueWorlds = guildCURSOR.execute("SELECT * FROM league").fetchall()[0][12]
-                                    leagueLMS = guildCURSOR.execute("SELECT * FROM league").fetchall()[0][13]
-                                    leagueLPL = guildCURSOR.execute("SELECT * FROM league").fetchall()[0][14]
-                                    leagueLCK = guildCURSOR.execute("SELECT * FROM league").fetchall()[0][15]
-                                    leagueMSI = guildCURSOR.execute("SELECT * FROM league").fetchall()[0][16]
+                                    leagueLCO = guildCURSOR.execute("SELECT LCO FROM league").fetchone()[0]
+                                    leaguePCS = guildCURSOR.execute("SELECT PCS FROM league").fetchone()[0]
+                                    leagueLLA = guildCURSOR.execute("SELECT LLA FROM league").fetchone()[0]
+                                    leagueLCS = guildCURSOR.execute("SELECT LCS FROM league").fetchone()[0]
+                                    leagueLEC = guildCURSOR.execute("SELECT LEC FROM league").fetchone()[0]
+                                    leagueVCS = guildCURSOR.execute("SELECT VCS FROM league").fetchone()[0]
+                                    leagueLCL = guildCURSOR.execute("SELECT LCL FROM league").fetchone()[0]
+                                    leagueLJL = guildCURSOR.execute("SELECT LJL FROM league").fetchone()[0]
+                                    leagueTCL = guildCURSOR.execute("SELECT TCL FROM league").fetchone()[0]
+                                    leagueCBLOL = guildCURSOR.execute("SELECT CBLOL FROM league").fetchone()[0]
+                                    leagueOPL = guildCURSOR.execute("SELECT OPL FROM league").fetchone()[0]
+                                    leagueWorlds = guildCURSOR.execute("SELECT Worlds FROM league").fetchone()[0]
+                                    leagueLMS = guildCURSOR.execute("SELECT LMS FROM league").fetchone()[0]
+                                    leagueLPL = guildCURSOR.execute("SELECT LPL FROM league").fetchone()[0]
+                                    leagueLCK = guildCURSOR.execute("SELECT LCK FROM league").fetchone()[0]
+                                    leagueMSI = guildCURSOR.execute("SELECT MSI FROM league").fetchone()[0]
 
                                     guildDB.close()
 

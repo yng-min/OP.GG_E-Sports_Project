@@ -4,7 +4,7 @@
 import opgg
 import discord
 from discord.ext import commands
-from discord.commands import SlashCommandGroup
+from discord.commands import SlashCommandGroup, option
 import random
 import json
 import datetime
@@ -23,12 +23,41 @@ try:
         leagues = json.load(leagueJson)['leagues']
 except: print("league.json이 로드되지 않음")
 
+esports_op_gg_mvp = "https://esports.op.gg/players"
 time_difference = config['time_difference']
 colorMap = config['colorMap']
-esports_op_gg_schedules = "https://esports.op.gg/schedules"
+
+def get_league(ctx: discord.AutocompleteContext):
+
+    picked_league = ctx.options['리그']
+
+    if picked_league == "LCK":
+        return ["LCK"]
+    elif picked_league == "LPL":
+        return ["LPL"]
+    elif picked_league == "LEC":
+        return ["LEC"]
+    elif picked_league == "LCS":
+        return ["LCS"]
+    elif picked_league == "CBLOL":
+        return ["CBLOL"]
+    elif picked_league == "VCS":
+        return ["VCS"]
+    elif picked_league == "LCL":
+        return ["LCL"]
+    elif picked_league == "TCL":
+        return ["TCL"]
+    elif picked_league == "PCS":
+        return ["PCS"]
+    elif picked_league == "LLA":
+        return ["LLA"]
+    elif picked_league == "LJL":
+        return ["LJL"]
+    else:
+        return ["LCK", "LPL", "LEC", "LCS", "CBLOL", "VCS", "LCL", "TCL", "PCS", "LLA", "LJL"]
 
 
-class ScheduleButton(discord.ui.View):
+class MvpButton(discord.ui.View):
 
     def __init__(self, bot, ctx, msg, banner, box_1_match_schedule_2, msg_schedule_info_1, msg_schedule_info_1_2, box_2_match_schedule_2, msg_schedule_info_2, msg_schedule_info_2_2, box_3_match_schedule_2, msg_schedule_info_3, msg_schedule_info_3_2):
         super().__init__(timeout=60)
@@ -37,28 +66,28 @@ class ScheduleButton(discord.ui.View):
         self.msg = msg
         self.banner = banner
 
-        if box_1_match_schedule_2 == "해당 일자의 경기 일정이 없습니다.":
+        if box_1_match_schedule_2 == "해당 일자의 리그 일정이 없습니다.":
             self.schedule_1_1 = []
             self.schedule_1_2 = []
-            self.schedule_1_3 = ["해당 일자의 경기 일정이 없습니다."]
+            self.schedule_1_3 = ["해당 일자의 리그 일정이 없습니다."]
         else:
             self.schedule_1_1 = box_1_match_schedule_2
             self.schedule_1_2 = msg_schedule_info_1
             self.schedule_1_3 = msg_schedule_info_1_2
 
-        if box_2_match_schedule_2 == "해당 일자의 경기 일정이 없습니다.":
+        if box_2_match_schedule_2 == "해당 일자의 리그 일정이 없습니다.":
             self.schedule_2_1 = []
             self.schedule_2_2 = []
-            self.schedule_2_3 = ["해당 일자의 경기 일정이 없습니다."]
+            self.schedule_2_3 = ["해당 일자의 리그 일정이 없습니다."]
         else:
             self.schedule_2_1 = box_2_match_schedule_2
             self.schedule_2_2 = msg_schedule_info_2
             self.schedule_2_3 = msg_schedule_info_2_2
 
-        if box_3_match_schedule_2 == "해당 일자의 경기 일정이 없습니다.":
+        if box_3_match_schedule_2 == "해당 일자의 리그 일정이 없습니다.":
             self.schedule_3_1 = []
             self.schedule_3_2 = []
-            self.schedule_3_3 = ["해당 일자의 경기 일정이 없습니다."]
+            self.schedule_3_3 = ["해당 일자의 리그 일정이 없습니다."]
         else:
             self.schedule_3_1 = box_3_match_schedule_2
             self.schedule_3_2 = msg_schedule_info_3
@@ -76,14 +105,14 @@ class ScheduleButton(discord.ui.View):
         self.league_3_max = False
         self.button = ""
         self.callback_select = False
-        self.add_item(discord.ui.Button(label="OP.GG Esports에서 보기", url=esports_op_gg_schedules, row=1))
+        self.add_item(discord.ui.Button(label="OP.GG Esports에서 보기", url=esports_op_gg_mvp, row=1))
 
     @discord.ui.select(
         placeholder="리그 선택하기",
         min_values=1,
-        max_values=17,
+        max_values=16,
         options=[
-            discord.SelectOption(label="모든 리그", value="0", description="모든 리그의 정보를 보고 싶어요!"),
+            # discord.SelectOption(label="모든 리그", value="0", description="모든 리그의 정보를 보고 싶어요!"),
             discord.SelectOption(label="LCK / KR", value="1", description="League of Legends Champions Korea"),
             discord.SelectOption(label="LPL / CN ", value="2", description="League of Legends Pro League"),
             discord.SelectOption(label="LEC / EU", value="3", description="League of Legends European Championship"),
@@ -199,7 +228,7 @@ class ScheduleButton(discord.ui.View):
         if self.box_select[0] == "all":
             self.msg_schedule_1 = self.schedule_1_3
         elif (self.box_select != "all") and (self.schedules_1 == []):
-            self.msg_schedule_1 = "해당 일자의 경기 일정이 없습니다."
+            self.msg_schedule_1 = "해당 일자의 리그 일정이 없습니다."
         else:
             for i in range(len(self.schedules_1)):
                 self.msg_schedule_1 += (f"\n{self.schedules_1[i]}")
@@ -207,7 +236,7 @@ class ScheduleButton(discord.ui.View):
         if self.box_select[0] == "all":
             self.msg_schedule_2 = self.schedule_2_3
         elif (self.box_select != "all") and (self.schedules_2 == []):
-            self.msg_schedule_2 = "해당 일자의 경기 일정이 없습니다."
+            self.msg_schedule_2 = "해당 일자의 리그 일정이 없습니다."
         else:
             for i in range(len(self.schedules_2)):
                 self.msg_schedule_2 += (f"\n{self.schedules_2[i]}")
@@ -215,7 +244,7 @@ class ScheduleButton(discord.ui.View):
         if self.box_select[0] == "all":
             self.msg_schedule_3 = self.schedule_3_3
         elif (self.box_select != "all") and (self.schedules_3 == []):
-            self.msg_schedule_3 = "해당 일자의 경기 일정이 없습니다."
+            self.msg_schedule_3 = "해당 일자의 리그 일정이 없습니다."
         else:
             for i in range(len(self.schedules_3)):
                 self.msg_schedule_3 += (f"\n{self.schedules_3[i]}")
@@ -251,7 +280,7 @@ class ScheduleButton(discord.ui.View):
         else:
             self.msg_schedule_3_2 += self.msg_schedule_3
 
-        embed = discord.Embed(title="> 🗓️ 경기 일정", description="리그 오브 레전드의 리그 경기 일정 정보입니다.", color=colorMap['red'])
+        embed = discord.Embed(title="> 🗓️ 리그 일정", description="리그 오브 레전드의 리그 경기 일정 정보입니다.", color=colorMap['red'])
         embed.set_footer(text="TIP: 아래 버튼을 눌러 다른 일자의 일정도 살펴볼 수 있어요.", icon_url=self.bot.user.display_avatar.url)
         embed.set_image(url=self.banner)
         if (self.button == "1") or (self.button == ""):
@@ -282,9 +311,9 @@ class ScheduleButton(discord.ui.View):
         else:
             self.msg_schedule_1_3 += self.schedule_1_2
 
-        if self.schedule_1_3 == "해당 일자의 경기 일정이 없습니다.": self.msg_schedule_1_3 = "해당 일자의 경기 일정이 없습니다."
+        if self.schedule_1_3 == "해당 일자의 리그 일정이 없습니다.": self.msg_schedule_1_3 = "해당 일자의 리그 일정이 없습니다."
 
-        embed = discord.Embed(title="> 🗓️ 경기 일정", description="리그 오브 레전드의 리그 경기 일정 정보입니다.", color=colorMap['red'])
+        embed = discord.Embed(title="> 🗓️ 리그 일정", description="리그 오브 레전드의 리그 경기 일정 정보입니다.", color=colorMap['red'])
         embed.set_footer(text="TIP: 아래 버튼을 눌러 다른 일자의 일정도 살펴볼 수 있어요.", icon_url=self.bot.user.display_avatar.url)
         embed.set_image(url=self.banner)
         if self.callback_select == True:
@@ -309,9 +338,9 @@ class ScheduleButton(discord.ui.View):
         else:
             self.msg_schedule_2_3 += self.schedule_2_2
 
-        if self.schedule_2_3 == "해당 일자의 경기 일정이 없습니다.": self.msg_schedule_2_3 = "해당 일자의 경기 일정이 없습니다."
+        if self.schedule_2_3 == "해당 일자의 리그 일정이 없습니다.": self.msg_schedule_2_3 = "해당 일자의 리그 일정이 없습니다."
 
-        embed = discord.Embed(title="> 🗓️ 경기 일정", description="리그 오브 레전드의 리그 경기 일정 정보입니다.", color=colorMap['red'])
+        embed = discord.Embed(title="> 🗓️ 리그 일정", description="리그 오브 레전드의 리그 경기 일정 정보입니다.", color=colorMap['red'])
         embed.set_footer(text="TIP: 아래 버튼을 눌러 다른 일자의 일정도 살펴볼 수 있어요.", icon_url=self.bot.user.display_avatar.url)
         embed.set_image(url=self.banner)
         if self.callback_select == True:
@@ -335,9 +364,9 @@ class ScheduleButton(discord.ui.View):
         else:
             self.msg_schedule_3_3 += self.schedule_3_2
 
-        if self.schedule_3_3 == "해당 일자의 경기 일정이 없습니다.": self.msg_schedule_3_3 = "해당 일자의 경기 일정이 없습니다."
+        if self.schedule_3_3 == "해당 일자의 리그 일정이 없습니다.": self.msg_schedule_3_3 = "해당 일자의 리그 일정이 없습니다."
 
-        embed = discord.Embed(title="> 🗓️ 경기 일정", description="리그 오브 레전드의 리그 경기 일정 정보입니다.", color=colorMap['red'])
+        embed = discord.Embed(title="> 🗓️ 리그 일정", description="리그 오브 레전드의 리그 경기 일정 정보입니다.", color=colorMap['red'])
         embed.set_footer(text="TIP: 아래 버튼을 눌러 다른 일자의 일정도 살펴볼 수 있어요.", icon_url=self.bot.user.display_avatar.url)
         embed.set_image(url=self.banner)
         if self.callback_select == True:
@@ -359,240 +388,111 @@ class DisabledButton(discord.ui.View):
         self.add_item(discord.ui.Button(emoji="1️⃣", disabled=True, row=1))
         self.add_item(discord.ui.Button(emoji="2️⃣", disabled=True, row=1))
         self.add_item(discord.ui.Button(emoji="3️⃣", disabled=True, row=1))
-        self.add_item(discord.ui.Button(label="OP.GG Esports에서 보기", url=esports_op_gg_schedules, row=1))
+        self.add_item(discord.ui.Button(label="OP.GG Esports에서 보기", url=esports_op_gg_mvp, row=1))
 
 
-class ScheduleCMD(commands.Cog):
+class MvpCMD(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
 
-    _matches = SlashCommandGroup(name="경기", description="경기 명령어", guild_only=False)
+    _mvps = SlashCommandGroup(name="베스트", description="MVP 명령어", guild_only=False)
 
-    @_matches.command(
-        name="일정",
-        description="리그 오브 레전드 리그의 경기 일정을 불러와요.",
+    @_mvps.command(
+        name="플레이어",
+        description="리그 오브 레전드 리그의 베스트 플레이어 정보를 보여줘요.",
     )
-    async def _scheduleCMD(self, ctx):
+    @option("리그", description="리그를 선택해주세요.", required=True, autocomplete=get_league)
+    async def _mvpCMD(self, ctx: discord.AutocompleteContext, 리그: str):
 
+        picked_lane = "모든 라인"
         banner_image_url = random.choice(config['banner_image_url'])
 
         embed = discord.Embed(title="", description="⌛ 정보를 불러오는 중...", color=colorMap['red'])
         msg = await ctx.respond(embed=embed)
 
         try:
-            YesterdayTime = (datetime.datetime.now(pytz.timezone("Asia/Seoul")) + datetime.timedelta(days=-1)).strftime("%Y-%m-%d")
-            time = datetime.datetime.strptime(YesterdayTime, "%Y-%m-%d")
-            YesterdayTime = time.strftime("%Y-%m-%d")
+            for i in range(16):
+                if   (리그 == "LCK") and (leagues[i]['id'] == "99"):   tournamentId = leagues[i]['tournamentId']
+                if   (리그 == "LCK") and (leagues[i]['id'] == "99"):   tournamentId = leagues[i]['tournamentId']
+                elif (리그 == "LPL") and (leagues[i]['id'] == "98"):   tournamentId = leagues[i]['tournamentId']
+                elif (리그 == "LEC") and (leagues[i]['id'] == "89"):   tournamentId = leagues[i]['tournamentId']
+                elif (리그 == "LCS") and (leagues[i]['id'] == "88"):   tournamentId = leagues[i]['tournamentId']
+                elif (리그 == "CBLOL") and (leagues[i]['id'] == "94"): tournamentId = leagues[i]['tournamentId']
+                elif (리그 == "VCS") and (leagues[i]['id'] == "90"):   tournamentId = leagues[i]['tournamentId']
+                elif (리그 == "LCL") and (leagues[i]['id'] == "91"):   tournamentId = leagues[i]['tournamentId']
+                elif (리그 == "TCL") and (leagues[i]['id'] == "93"):   tournamentId = leagues[i]['tournamentId']
+                elif (리그 == "PCS") and (leagues[i]['id'] == "86"):   tournamentId = leagues[i]['tournamentId']
+                elif (리그 == "LLA") and (leagues[i]['id'] == "87"):   tournamentId = leagues[i]['tournamentId']
+                elif (리그 == "LJL") and (leagues[i]['id'] == "92"):   tournamentId = leagues[i]['tournamentId']
 
-            nowTime = datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%Y-%m-%d")
-            time = datetime.datetime.strptime(nowTime, "%Y-%m-%d")
-            nowTime = time.strftime("%Y-%m-%d")
+            players = opgg.player_mvp_rank(tournamentId=tournamentId[0])
 
-            tomorrowTime = (datetime.datetime.now(pytz.timezone("Asia/Seoul")) + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
-            time = datetime.datetime.strptime(tomorrowTime, "%Y-%m-%d")
-            tomorrowTime = time.strftime("%Y-%m-%d")
+            if players['error'] == False:
 
-            dayAfterTomorrowTime = (datetime.datetime.now(pytz.timezone("Asia/Seoul")) + datetime.timedelta(days=2)).strftime("%Y-%m-%d")
-            time = datetime.datetime.strptime(dayAfterTomorrowTime, "%Y-%m-%d")
-            dayAfterTomorrowTime = time.strftime("%Y-%m-%d")
+                box_mvp_player_id = []
+                box_mvp_player_nickName = []
+                box_mvp_player_nationality = []
+                box_mvp_player_image = []
+                box_mvp_player_position = []
+                box_mvp_player_currently = []
+                box_mvp_player_previously = []
+                box_mvp_player_mvpPoint = []
+                box_mvp_player_games = []
+                box_mvp_player_kda = []
+                box_mvp_player_kills = []
+                box_mvp_player_deaths = []
+                box_mvp_player_assists = []
+                box_mvp_team_id = []
+                box_mvp_team_name = []
+                box_mvp_team_acronym = []
+                box_mvp_team_image = []
 
-            box_1_match_schedule_1 = []
-            box_1_match_schedule_2 = []
-            box_1_match_info = []
-            box_2_match_schedule_1 = []
-            box_2_match_schedule_2 = []
-            box_2_match_info = []
-            box_3_match_schedule_1 = []
-            box_3_match_schedule_2 = []
-            box_3_match_info = []
+                for i in range(len(players['data']['mvps'])):
+                    mvp_player_id = players['data']['mvps'][i]['player']['id']
+                    mvp_player_nickName = players['data']['mvps'][i]['player']['nickName']
+                    mvp_player_nationality = players['data']['mvps'][i]['player']['nationality']
+                    mvp_player_image = players['data']['mvps'][i]['player']['imageUrl']
+                    mvp_player_position = (players['data']['mvps'][i]['position']).replace("top", "탑").replace("jun", "정글").replace("mid", "미드").replace("adc", "원딜").replace("sup", "서포터")
+                    mvp_player_currently = players['data']['mvps'][i]['currently']
+                    mvp_player_previously = players['data']['mvps'][i]['previously']
+                    mvp_player_mvpPoint = players['data']['mvps'][i]['mvpPoint']
+                    mvp_player_games = players['data']['mvps'][i]['games']
+                    mvp_player_kda = (players['data']['mvps'][i]['kda']).__round__(2)
+                    mvp_player_kills = (players['data']['mvps'][i]['kills']).__round__(2)
+                    mvp_player_deaths = (players['data']['mvps'][i]['deaths']).__round__(2)
+                    mvp_player_assists = (players['data']['mvps'][i]['assists']).__round__(2)
+                    mvp_team_id = players['data']['mvps'][i]['team']['id']
+                    mvp_team_name = players['data']['mvps'][i]['team']['name']
+                    mvp_team_acronym = players['data']['mvps'][i]['team']['acronym']
 
-            for i in range(4):
-                if i == 0: dateTime = YesterdayTime
-                elif i == 1: dateTime = nowTime
-                elif i == 2: dateTime = tomorrowTime
-                elif i == 3: dateTime = dayAfterTomorrowTime
-                matches = opgg.load_schedule(date=dateTime)
+                    box_mvp_player_id.append(mvp_player_id)
+                    box_mvp_player_nickName.append(mvp_player_nickName)
+                    box_mvp_player_nationality.append(mvp_player_nationality)
+                    box_mvp_player_image.append(mvp_player_image)
+                    box_mvp_player_position.append(mvp_player_position)
+                    box_mvp_player_currently.append(mvp_player_currently)
+                    box_mvp_player_previously.append(mvp_player_previously)
+                    box_mvp_player_mvpPoint.append(mvp_player_mvpPoint)
+                    box_mvp_player_games.append(mvp_player_games)
+                    box_mvp_player_kda.append(mvp_player_kda)
+                    box_mvp_player_kills.append(mvp_player_kills)
+                    box_mvp_player_deaths.append(mvp_player_deaths)
+                    box_mvp_player_assists.append(mvp_player_assists)
+                    box_mvp_team_id.append(mvp_team_id)
+                    box_mvp_team_name.append(mvp_team_name)
+                    box_mvp_team_acronym.append(mvp_team_acronym)
 
-                if matches['error'] == False:
+                msg_mvp_info_1 = ""
+                for i in range(len(box_mvp_player_id)):
+                    msg_mvp_info_1 = f"{msg_mvp_info_1}**{i + 1}위** - {box_mvp_team_acronym[i]} {box_mvp_player_nickName[i]} ({box_mvp_player_position[i]})\n└ {box_mvp_player_kda[i]} 평점 `({box_mvp_player_kills[i]} / {box_mvp_player_deaths[i]} / {box_mvp_player_assists[i]})`\n\n"
 
-                    temp_scheduledAt = []
-                    box_scheduledAt = []
-                    for i in range(len(matches['data'])):
-                        temp_scheduledAt.append(matches['data'][i]['scheduledAt'].replace("T", " ").split(".000Z")[0])
-                        date_temp = datetime.datetime.strptime(temp_scheduledAt[i], "%Y-%m-%d %H:%M:%S")
-                        date_delta = datetime.timedelta(hours=time_difference)
-                        time = date_temp + date_delta
-                        box_scheduledAt.append(time.strftime("%Y-%m-%d %H:%M:%S"))
-
-                    for i in range(len(matches['data'])):
-                        for j in range(16):
-                            if matches['data'][i]['tournament']['serie']['league']['shortName'] == leagues[j]['shortName']:
-                                try: match_acronym = matches['data'][i]['name'].split(': ')[1]
-                                except: match_acronym = matches['data'][i]['name']
-                                match_schedule_1 = box_scheduledAt[i].split(" ")[0]
-                                match_schedule_2 = box_scheduledAt[i].split(" ")[1][0:5]
-                                match_schedule_3 = datetime.datetime.strptime(match_schedule_1, "%Y-%m-%d").strftime("X%Y년 X%m월 X%d일").replace("X0", "").replace("X", "")
-                                match_league = leagues[j]['shortName']
-                                match_region = leagues[j]['region']
-                                match_info = f"[{match_schedule_2}] {match_acronym} ({match_league}/{match_region})"
-
-                                if match_schedule_1 == nowTime:
-                                    box_1_match_schedule_1.append(match_schedule_1)
-                                    box_1_match_schedule_2.append(match_schedule_3)
-                                    box_1_match_info.append(match_info)
-                                if match_schedule_1 == tomorrowTime:
-                                    box_2_match_schedule_1.append(match_schedule_1)
-                                    box_2_match_schedule_2.append(match_schedule_3)
-                                    box_2_match_info.append(match_info)
-                                if match_schedule_1 == dayAfterTomorrowTime:
-                                    box_3_match_schedule_1.append(match_schedule_1)
-                                    box_3_match_schedule_2.append(match_schedule_3)
-                                    box_3_match_info.append(match_info)
-
-                else:
-                    print(f"{matches['code']}: {matches['message']}")
-
-            if box_1_match_schedule_1 == []:
-                box_1_match_schedule_1 = [""]
-                box_1_match_schedule_2 = [datetime.datetime.strptime(nowTime, "%Y-%m-%d").strftime("X%Y년 X%m월 X%d일").replace("X0", "").replace("X", "")]
-
-            if box_2_match_schedule_1 == []:
-                box_2_match_schedule_1 = [""]
-                box_2_match_schedule_2 = [datetime.datetime.strptime(tomorrowTime, "%Y-%m-%d").strftime("X%Y년 X%m월 X%d일").replace("X0", "").replace("X", "")]
-
-            if box_3_match_schedule_1 == []:
-                box_3_match_schedule_1 = [""]
-                box_3_match_schedule_2 = [datetime.datetime.strptime(dayAfterTomorrowTime, "%Y-%m-%d").strftime("X%Y년 X%m월 X%d일").replace("X0", "").replace("X", "")]
-
-            if (box_1_match_schedule_1[0] == nowTime) and (box_1_match_info):
-
-                msg_schedule_info_1 = ""
-                for i in range(len(box_1_match_info)):
-                    if len(box_1_match_info) != 0:
-                        msg_schedule_info_1 += "".join(f"\n{box_1_match_info[i]}")
-
-                msg_schedule_info_2 = ""
-                for i in range(len(box_2_match_info)):
-                    if len(box_2_match_info) != 0:
-                        msg_schedule_info_2 += "".join(f"\n{box_2_match_info[i]}")
-
-                msg_schedule_info_3 = ""
-                for i in range(len(box_3_match_info)):
-                    if len(box_3_match_info) != 0:
-                        msg_schedule_info_3 += "".join(f"\n{box_3_match_info[i]}")
-
-                msg_schedule_info_1_1 = ""
-                msg_schedule_info_1_2 = ""
-                if len(msg_schedule_info_1.split("\n")) > 25:
-                    for k in range(len(msg_schedule_info_1.split("\n"))):
-                        if k > 25: break
-                        msg_schedule_info_1_1 += "".join("\n" + msg_schedule_info_1.split("\n")[k])
-                    msg_schedule_info_1_2 += "".join(f"{msg_schedule_info_1_1}\n...")
-                else:
-                    msg_schedule_info_1_2 += msg_schedule_info_1
-
-                msg_schedule_info_2_1 = ""
-                msg_schedule_info_2_2 = ""
-                if len(msg_schedule_info_2.split("\n")) > 25:
-                    msg_schedule_info_2_1 = ""
-                    for k in range(len(msg_schedule_info_2.split("\n"))):
-                        if k > 25: break
-                        msg_schedule_info_2_1 += "".join("\n" + msg_schedule_info_2.split("\n")[k])
-                    msg_schedule_info_2_2 += "".join(f"{msg_schedule_info_2_1}\n...")
-                else:
-                    msg_schedule_info_2_2 += msg_schedule_info_2
-
-                msg_schedule_info_3_1 = ""
-                msg_schedule_info_3_2 = ""
-                if len(msg_schedule_info_3.split("\n")) > 25:
-                    for k in range(len(msg_schedule_info_3.split("\n"))):
-                        if k > 25: break
-                        msg_schedule_info_3_1 += "".join("\n" + msg_schedule_info_3.split("\n")[k])
-                    msg_schedule_info_3_2 += "".join(f"{msg_schedule_info_3_1}\n...")
-                else:
-                    msg_schedule_info_3_2 += msg_schedule_info_3
-
-            elif (box_2_match_schedule_1[0] == tomorrowTime) and (box_2_match_info):
-
-                msg_schedule_info_1 = ""
-                msg_schedule_info_1_1 = ""
-                msg_schedule_info_1_2 = "해당 일자의 경기 일정이 없습니다."
-
-                msg_schedule_info_2 = ""
-                for i in range(len(box_2_match_info)):
-                    if len(box_2_match_info) != 0:
-                        msg_schedule_info_2 += "".join(f"\n{box_2_match_info[i]}")
-
-                msg_schedule_info_3 = ""
-                for i in range(len(box_3_match_info)):
-                    if len(box_3_match_info) != 0:
-                        msg_schedule_info_3 += "".join(f"\n{box_3_match_info[i]}")
-
-                msg_schedule_info_2_1 = ""
-                msg_schedule_info_2_2 = ""
-                if len(msg_schedule_info_2.split("\n")) > 25:
-                    msg_schedule_info_2_1 = ""
-                    for k in range(len(msg_schedule_info_2.split("\n"))):
-                        if k > 25: break
-                        msg_schedule_info_2_1 += "".join("\n" + msg_schedule_info_2.split("\n")[k])
-                    msg_schedule_info_2_2 += "".join(f"{msg_schedule_info_2_1}\n...")
-                else:
-                    msg_schedule_info_2_2 += msg_schedule_info_2
-
-                msg_schedule_info_3_1 = ""
-                msg_schedule_info_3_2 = ""
-                if len(msg_schedule_info_3.split("\n")) > 25:
-                    for k in range(len(msg_schedule_info_3.split("\n"))):
-                        if k > 25: break
-                        msg_schedule_info_3_1 += "".join("\n" + msg_schedule_info_3.split("\n")[k])
-                    msg_schedule_info_3_2 += "".join(f"{msg_schedule_info_3_1}\n...")
-                else:
-                    msg_schedule_info_3_2 += msg_schedule_info_3
-
-            elif (box_3_match_schedule_1[0] == dayAfterTomorrowTime) and (box_3_match_info):
-
-                msg_schedule_info_1 = ""
-                msg_schedule_info_1_1 = ""
-                msg_schedule_info_1_2 = "해당 일자의 경기 일정이 없습니다."
-
-                msg_schedule_info_2 = ""
-                msg_schedule_info_1_1 = ""
-                msg_schedule_info_2_2 = "해당 일자의 경기 일정이 없습니다."
-
-                msg_schedule_info_3 = ""
-                for i in range(len(box_3_match_info)):
-                    if len(box_3_match_info) != 0:
-                        msg_schedule_info_3 += "".join(f"\n{box_3_match_info[i]}")
-
-                msg_schedule_info_3_1 = ""
-                msg_schedule_info_3_2 = ""
-                if len(msg_schedule_info_3.split("\n")) > 25:
-                    for k in range(len(msg_schedule_info_3.split("\n"))):
-                        if k > 25: break
-                        msg_schedule_info_3_1 += "".join("\n" + msg_schedule_info_3.split("\n")[k])
-                    msg_schedule_info_3_2 += "".join(f"{msg_schedule_info_3_1}\n...")
-                else:
-                    msg_schedule_info_3_2 += msg_schedule_info_3
-
-            else:
-                msg_schedule_info_1 = ""
-                msg_schedule_info_1_1 = ""
-                msg_schedule_info_1_2 = "해당 일자의 경기 일정이 없습니다."
-
-                msg_schedule_info_2 = ""
-                msg_schedule_info_1_1 = ""
-                msg_schedule_info_2_2 = "해당 일자의 경기 일정이 없습니다."
-
-                msg_schedule_info_3 = ""
-                msg_schedule_info_1_1 = ""
-                msg_schedule_info_3_2 = "해당 일자의 경기 일정이 없습니다."
-
-            embed = discord.Embed(title="> 🗓️ 경기 일정", description="리그 오브 레전드의 리그 경기 일정 정보입니다.", color=colorMap['red'])
-            embed.set_footer(text="TIP: 아래 버튼을 눌러 다른 일자의 일정도 살펴볼 수 있어요.", icon_url=self.bot.user.display_avatar.url)
-            embed.set_image(url=banner_image_url)
-            embed.add_field(name=f"{box_1_match_schedule_2[0]} 일정", value=f"└ (총 **3**페이지 중 **1**번째 페이지)\n```{msg_schedule_info_1_2}```", inline=False)
-            await msg.edit_original_response(content="", embed=embed, view=ScheduleButton(self.bot, ctx, msg, banner_image_url, box_1_match_schedule_2, msg_schedule_info_1, msg_schedule_info_1_2, box_2_match_schedule_2, msg_schedule_info_2, msg_schedule_info_2_2, box_3_match_schedule_2, msg_schedule_info_3, msg_schedule_info_3_2))
+                embed = discord.Embed(title="> 🏆 베스트 플레이어", description="리그 오브 레전드의 리그 베스트 플레이어 정보입니다.", color=colorMap['red'])
+                embed.set_footer(text="TIP: 아래 버튼을 눌러 다른 포지션의 랭킹도 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
+                embed.set_image(url=banner_image_url)
+                embed.add_field(name=f"'{picked_lane}' 포지션", value=f"{msg_mvp_info_1}", inline=False)
+                # await msg.edit_original_response(content="", embed=embed, view=MvpButton(self.bot, ctx, msg, banner_image_url, box_1_match_schedule_2, msg_schedule_info_1, msg_schedule_info_1_2, box_2_match_schedule_2, msg_schedule_info_2, msg_schedule_info_2_2, box_3_match_schedule_2, msg_schedule_info_3, msg_schedule_info_3_2))
+                await msg.edit_original_response(content="", embed=embed)
 
         except Exception as error:
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
@@ -601,5 +501,5 @@ class ScheduleCMD(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(ScheduleCMD(bot))
-    print("schedule.py 로드 됨")
+    bot.add_cog(MvpCMD(bot))
+    print("mvp.py 로드 됨")

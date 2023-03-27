@@ -11,20 +11,14 @@ import pytz
 import traceback
 import os
 
-# config.json Config 파일 불러오기
+# config.json 파일 불러오기
 try:
     with open(r"./config.json", "rt", encoding="UTF8") as configJson:
         config = json.load(configJson)
 except:
     print("config.json이 로드되지 않음")
 
-colorMap = {
-    "default": 0x2F3136,
-    "red": 0xff4438,
-    "green": 0x90ee90
-}
-
-# bot.sqlite Config 파일 불러오기
+# bot.sqlite 파일 불러오기
 try:
     botDB = sqlite3.connect(rf"./Data/bot.sqlite", isolation_level=None)
     botCURSOR = botDB.cursor()
@@ -33,6 +27,8 @@ try:
 except Exception as error:
     print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
     print(traceback.format_exc())
+
+colorMap = config['colorMap']
 
 
 class UserSettingCMD(commands.Cog):

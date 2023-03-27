@@ -10,33 +10,21 @@ import pytz
 import traceback
 import requests
 
-# config.json Config 파일 불러오기
+# config.json 파일 불러오기
 try:
     with open(r"./config.json", "rt", encoding="UTF8") as configJson:
         config = json.load(configJson)
 except:
     print("config.json이 로드되지 않음")
 
+# league.json 파일 불러오기
+try:
+    with open(r"./league.json", "rt", encoding="UTF8") as leagueJson:
+        leagues = json.load(leagueJson)['leagues']
+except: print("league.json이 로드되지 않음")
+
 time_difference = config['time_difference']
 webhook_url = config['webhook_url']
-leagues = {
-    0: {"id": "85", "name": "League of Legends Circuit Oceania", "shortName": "LCO", "region": "OCE"},
-    1: {"id": "86", "name": "Pacific Championship Series", "shortName": "PCS", "region": "SEA"},
-    2: {"id": "87", "name": "Liga Latinoamérica", "shortName": "LLA", "region": "LAT"},
-    3: {"id": "88", "name": "League of Legends Championship Series", "shortName": "LCS", "region": "NA"},
-    4: {"id": "89", "name": "League of Legends European Championship", "shortName": "LEC", "region": "EU"},
-    5: {"id": "90", "name": "Vietnam Championship Series", "shortName": "VCS", "region": "VN"},
-    6: {"id": "91", "name": "League of Legends Continental League", "shortName": "LCL", "region": "CIS"},
-    7: {"id": "92", "name": "League of Legends Japan League", "shortName": "LJL", "region": "JP"},
-    8: {"id": "93", "name": "Turkish Championship League", "shortName": "TCL", "region": "TR"},
-    9: {"id": "94", "name": "Campeonato Brasileiro de League of Legends", "shortName": "CBLOL", "region": "BR"},
-    10: {"id": "95", "name": "Oceanic Pro League", "shortName": "OPL", "region": "COE"},
-    11: {"id": "96", "name": "League of Legends World Championship", "shortName": "Worlds", "region": "INT"},
-    12: {"id": "97", "name": "League of Legends Master Series", "shortName": "LMS", "region": "LMS"},
-    13: {"id": "98", "name": "League of Legends Pro League", "shortName": "LPL", "region": "CN"},
-    14: {"id": "99", "name": "League of Legends Champions Korea", "shortName": "LCK", "region": "KR"},
-    15: {"id": "100", "name": "Mid-Season Invitational", "shortName": "MSI", "region": "INT"}
-}
 
 
 class save_scheduleTASK(commands.Cog):
@@ -124,14 +112,12 @@ class save_scheduleTASK(commands.Cog):
                     content_msg = ""
                     for i in range(len(box_scheduledAt)):
                         for j in range(16):
-                            try: match_name = schedules['data'][i]['name'].split(': ')[1]
-                            except: match_name = schedules['data'][i]['name']
                             if schedules['data'][i]['tournament']['serie']['league']['shortName'] == leagues[j]['shortName']:
-                                scheduleCURSOR.execute(f"INSERT INTO {leagues[j]['shortName']}(ID, TournamentID, Name, OriginalScheduledAt, ScheduledAt, Status) VALUES(?, ?, ?, ?, ?, ?)", (schedules['data'][i]['id'], schedules['data'][i]['tournamentId'], match_name, box_originalScheduledAt[i], box_scheduledAt[i], schedules['data'][i]['status']))
-                                bettingCURSOR.execute(f"INSERT INTO {leagues[j]['shortName']}(ID, TournamentID, Name, TotalBet, TotalPoint, HomeBet, HomePoint, AwayBet, AwayPoint) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", (schedules['data'][i]['id'], schedules['data'][i]['tournamentId'], match_name, 0, 0, 0, 0, 0, 0))
-                        print(f"- Saved match: [{schedules['data'][i]['tournament']['serie']['league']['shortName']}] {match_name} ({schedules['data'][i]['id']})")
+                                scheduleCURSOR.execute(f"INSERT INTO {leagues[j]['shortName']}(ID, TournamentID, Name, OriginalScheduledAt, ScheduledAt, Status) VALUES(?, ?, ?, ?, ?, ?)", (schedules['data'][i]['id'], schedules['data'][i]['tournamentId'], schedules['data'][i]['name'], schedules['data'][i]['originalScheduledAt'], schedules['data'][i]['scheduledAt'], schedules['data'][i]['status']))
+                                bettingCURSOR.execute(f"INSERT INTO {leagues[j]['shortName']}(ID, TournamentID, Name, TotalBet, TotalPoint, HomeBet, HomePoint, AwayBet, AwayPoint) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", (schedules['data'][i]['id'], schedules['data'][i]['tournamentId'], schedules['data'][i]['name'], 0, 0, 0, 0, 0, 0))
+                        print(f"- Saved match: [{schedules['data'][i]['tournament']['serie']['league']['shortName']}] {schedules['data'][i]['name']} ({schedules['data'][i]['id']})")
 
-                        content_msg += f"\n- Saved match: `[{schedules['data'][i]['tournament']['serie']['league']['shortName']}] {match_name} ({schedules['data'][i]['id']})`"
+                        content_msg += f"\n- Saved match: `[{schedules['data'][i]['tournament']['serie']['league']['shortName']}] {schedules['data'][i]['name']} ({schedules['data'][i]['id']})`"
 
                     if content_msg == "": content_msg = "- No matches."
 

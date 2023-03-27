@@ -5,7 +5,6 @@ import opgg
 import asyncio
 import discord
 from discord.ext import commands, tasks
-import json
 import datetime
 import pytz
 import traceback

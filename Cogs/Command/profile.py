@@ -11,11 +11,13 @@ import pytz
 import traceback
 import os
 
-colorMap = {
-    "default": 0x2F3136,
-    "red": 0xff4438,
-    "green": 0x90ee90
-}
+# config.json 파일 불러오기
+try:
+    with open(r"./config.json", "rt", encoding="UTF8") as configJson:
+        config = json.load(configJson)
+except: print("config.json이 로드되지 않음")
+
+colorMap = config['colorMap']
 
 
 class ProfileCMD(commands.Cog):
