@@ -24,8 +24,11 @@ try:
 except: print("league.json이 로드되지 않음")
 
 esports_op_gg_mvp = "https://esports.op.gg/players"
+esports_op_gg_player = "https://esports.op.gg/players/"
+esports_op_gg_team = "https://esports.op.gg/teams/"
 time_difference = config['time_difference']
 colorMap = config['colorMap']
+
 
 def get_league(ctx: discord.AutocompleteContext):
 
@@ -59,322 +62,404 @@ def get_league(ctx: discord.AutocompleteContext):
 
 class MvpButton(discord.ui.View):
 
-    def __init__(self, bot, ctx, msg, banner, box_1_match_schedule_2, msg_schedule_info_1, msg_schedule_info_1_2, box_2_match_schedule_2, msg_schedule_info_2, msg_schedule_info_2_2, box_3_match_schedule_2, msg_schedule_info_3, msg_schedule_info_3_2):
+    def __init__(self, bot, ctx, msg, banner, picked_league, picked_lane, button_select, box_LCK, box_LPL, box_LEC, box_LCS, box_LCO, box_PCS, box_LLA, box_VCS, box_LCL, box_LJL, box_TCL, box_CBLOL):
         super().__init__(timeout=60)
         self.bot = bot
         self.ctx = ctx
         self.msg = msg
         self.banner = banner
+        self.picked_league = picked_league
+        self.picked_lane = picked_lane
+        self.box_LCK = box_LCK
+        self.box_LPL = box_LPL
+        self.box_LEC = box_LEC
+        self.box_LCS = box_LCS
+        self.box_LCO = box_LCO
+        self.box_PCS = box_PCS
+        self.box_LLA = box_LLA
+        self.box_VCS = box_VCS
+        self.box_LCL = box_LCL
+        self.box_LJL = box_LJL
+        self.box_TCL = box_TCL
+        self.box_CBLOL = box_CBLOL
 
-        if box_1_match_schedule_2 == "해당 일자의 리그 일정이 없습니다.":
-            self.schedule_1_1 = []
-            self.schedule_1_2 = []
-            self.schedule_1_3 = ["해당 일자의 리그 일정이 없습니다."]
+        self.box_data = {}
+        self.box_lane_data = []
+        self.msg_mvp_1 = ""
+        self.msg_mvp_2 = ""
+        self.button_select = button_select
+        self.add_item(discord.ui.Button(label="OP.GG Esports에서 보기", url=esports_op_gg_mvp, row=2))
+        self.add_button()
+
+    def add_button(self):
+        if (self.button_select == True) and (self.picked_lane == "탑"):
+            button_top = discord.ui.Button(label="탑", style=discord.ButtonStyle.blurple, row=1)
         else:
-            self.schedule_1_1 = box_1_match_schedule_2
-            self.schedule_1_2 = msg_schedule_info_1
-            self.schedule_1_3 = msg_schedule_info_1_2
-
-        if box_2_match_schedule_2 == "해당 일자의 리그 일정이 없습니다.":
-            self.schedule_2_1 = []
-            self.schedule_2_2 = []
-            self.schedule_2_3 = ["해당 일자의 리그 일정이 없습니다."]
+            button_top = discord.ui.Button(label="탑", style=discord.ButtonStyle.gray, row=1)
+        if (self.button_select == True) and (self.picked_lane == "정글"):
+            button_jun = discord.ui.Button(label="정글", style=discord.ButtonStyle.blurple, row=1)
         else:
-            self.schedule_2_1 = box_2_match_schedule_2
-            self.schedule_2_2 = msg_schedule_info_2
-            self.schedule_2_3 = msg_schedule_info_2_2
-
-        if box_3_match_schedule_2 == "해당 일자의 리그 일정이 없습니다.":
-            self.schedule_3_1 = []
-            self.schedule_3_2 = []
-            self.schedule_3_3 = ["해당 일자의 리그 일정이 없습니다."]
+            button_jun = discord.ui.Button(label="정글", style=discord.ButtonStyle.gray, row=1)
+        if (self.button_select == True) and (self.picked_lane == "미드"):
+            button_mid = discord.ui.Button(label="미드", style=discord.ButtonStyle.blurple, row=1)
         else:
-            self.schedule_3_1 = box_3_match_schedule_2
-            self.schedule_3_2 = msg_schedule_info_3
-            self.schedule_3_3 = msg_schedule_info_3_2
+            button_mid = discord.ui.Button(label="미드", style=discord.ButtonStyle.gray, row=1)
+        if (self.button_select == True) and (self.picked_lane == "원딜"):
+            button_adc = discord.ui.Button(label="원딜", style=discord.ButtonStyle.blurple, row=1)
+        else:
+            button_adc = discord.ui.Button(label="원딜", style=discord.ButtonStyle.gray, row=1)
+        if (self.button_select == True) and (self.picked_lane == "서포터"):
+            button_sup = discord.ui.Button(label="서포터", style=discord.ButtonStyle.blurple, row=1)
+        else:
+            button_sup = discord.ui.Button(label="서포터", style=discord.ButtonStyle.gray, row=1)
 
-        self.box_select = []
-        self.schedules_1 = []
-        self.schedules_2 = []
-        self.schedules_3 = []
-        self.msg_schedule_1 = ""
-        self.msg_schedule_2 = ""
-        self.msg_schedule_3 = ""
-        self.league_1_max = False
-        self.league_2_max = False
-        self.league_3_max = False
-        self.button = ""
-        self.callback_select = False
-        self.add_item(discord.ui.Button(label="OP.GG Esports에서 보기", url=esports_op_gg_mvp, row=1))
+        embed = discord.Embed(title="> 🏆 베스트 플레이어", description="리그 오브 레전드의 리그 베스트 플레이어 정보입니다.", color=colorMap['red'])
+        embed.set_footer(text="TIP: 아래 버튼을 눌러 다른 포지션의 랭킹도 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
+        embed.set_image(url=self.banner)
+
+        async def callback_all(interaction: discord.Interaction):
+            self.picked_lane = "모든 라인"
+
+            if self.picked_league == "LCK": self.box_data = self.box_LCK
+            elif self.picked_league == "LPL": self.box_data = self.box_LPL
+            elif self.picked_league == "LEC": self.box_data = self.box_LEC
+            elif self.picked_league == "LCS": self.box_data = self.box_LCS
+            elif self.picked_league == "LCO": self.box_data = self.box_LCO
+            elif self.picked_league == "PCS": self.box_data = self.box_PCS
+            elif self.picked_league == "LLA": self.box_data = self.box_LLA
+            elif self.picked_league == "VCS": self.box_data = self.box_VCS
+            elif self.picked_league == "LCL": self.box_data = self.box_LCL
+            elif self.picked_league == "LJL": self.box_data = self.box_LJL
+            elif self.picked_league == "TCL": self.box_data = self.box_TCL
+            elif self.picked_league == "CBLOL": self.box_data = self.box_CBLOL
+
+            k = 0
+            for i in range(5):
+                for j in range(len(self.box_data)):
+                    self.msg_mvp_1 = f"{self.msg_mvp_1}**▫️ {i + 1}위 -** [{self.box_data[k]['team_acronym']}]({esports_op_gg_team}{self.box_data[k]['team_id']}) [{self.box_data[k]['nickName']}]({esports_op_gg_player}{self.box_data[k]['id']})\n> [{self.box_data[k]['position']}] {self.box_data[k]['kda']} 평점\n> `({self.box_data[k]['kills']} / {self.box_data[k]['deaths']} / {self.box_data[k]['assists']})`\n"
+                    k += 1
+                    break
+
+            k = 5
+            for i in range(5, 10):
+                for j in range(len(self.box_data)):
+                    self.msg_mvp_2 = f"{self.msg_mvp_2}**▫️ {i + 1}위 -** [{self.box_data[k]['team_acronym']}]({esports_op_gg_team}{self.box_data[k]['team_id']}) [{self.box_data[k]['nickName']}]({esports_op_gg_player}{self.box_data[k]['id']})\n> [{self.box_data[k]['position']}] {self.box_data[k]['kda']} 평점\n> `({self.box_data[k]['kills']} / {self.box_data[k]['deaths']} / {self.box_data[k]['assists']})`\n"
+                    k += 1
+                    break
+
+            if self.msg_mvp_1 == "":
+                self.msg_mvp_1 = "플레이어 정보가 없습니다."
+
+            self.button_select = False
+            embed.add_field(name=f"> '{self.picked_lane}' 포지션 ({self.picked_league})", value=self.msg_mvp_1, inline=True)
+            embed.add_field(name="\u200b", value=self.msg_mvp_2, inline=True)
+            await interaction.response.edit_message(content="", embed=embed, view=MvpButton(self.bot, self.ctx, self.msg, self.banner, self.picked_league, self.picked_lane, self.button_select, self.box_LCK, self.box_LPL, self.box_LEC, self.box_LCS, self.box_LCO, self.box_PCS, self.box_LLA, self.box_VCS, self.box_LCL, self.box_LJL, self.box_TCL, self.box_CBLOL))
+
+        async def callback_top(interaction: discord.Interaction):
+            self.picked_lane = "탑"
+
+            if self.picked_league == "LCK": self.box_data = self.box_LCK
+            elif self.picked_league == "LPL": self.box_data = self.box_LPL
+            elif self.picked_league == "LEC": self.box_data = self.box_LEC
+            elif self.picked_league == "LCS": self.box_data = self.box_LCS
+            elif self.picked_league == "LCO": self.box_data = self.box_LCO
+            elif self.picked_league == "PCS": self.box_data = self.box_PCS
+            elif self.picked_league == "LLA": self.box_data = self.box_LLA
+            elif self.picked_league == "VCS": self.box_data = self.box_VCS
+            elif self.picked_league == "LCL": self.box_data = self.box_LCL
+            elif self.picked_league == "LJL": self.box_data = self.box_LJL
+            elif self.picked_league == "TCL": self.box_data = self.box_TCL
+            elif self.picked_league == "CBLOL": self.box_data = self.box_CBLOL
+
+            for i in range(len(self.box_data)):
+                if self.box_data[i]['position'] == "탑":
+                    self.box_lane_data.append(self.box_data[i])
+
+            for i in range(5):
+                for j in range(len(self.box_lane_data)):
+                    self.msg_mvp_1 = f"{self.msg_mvp_1}**▫️ {j + 1}위 -** [{self.box_lane_data[j]['team_acronym']}]({esports_op_gg_team}{self.box_lane_data[j]['team_id']}) [{self.box_lane_data[j]['nickName']}]({esports_op_gg_player}{self.box_lane_data[j]['id']})\n> [{self.box_lane_data[j]['position']}] {self.box_lane_data[j]['kda']} 평점\n> `({self.box_lane_data[j]['kills']} / {self.box_lane_data[j]['deaths']} / {self.box_lane_data[j]['assists']})`\n"
+                break
+
+            for i in range(5, 10):
+                for j in range(len(self.box_lane_data)):
+                    if j < 5: break
+                    self.msg_mvp_2 = f"{self.msg_mvp_2}**▫️ {j + 1}위 -** [{self.box_lane_data[j]['team_acronym']}]({esports_op_gg_team}{self.box_lane_data[j]['team_id']}) [{self.box_lane_data[j]['nickName']}]({esports_op_gg_player}{self.box_lane_data[j]['id']})\n> [{self.box_lane_data[j]['position']}] {self.box_lane_data[j]['kda']} 평점\n> `({self.box_lane_data[j]['kills']} / {self.box_lane_data[j]['deaths']} / {self.box_lane_data[j]['assists']})`\n"
+                break
+
+            if self.msg_mvp_1 == "":
+                self.msg_mvp_1 = "플레이어 정보가 없습니다."
+
+            self.button_select = True
+            embed.add_field(name=f"> '{self.picked_lane}' 포지션 ({self.picked_league})", value=self.msg_mvp_1, inline=True)
+            embed.add_field(name="\u200b", value=self.msg_mvp_2, inline=True)
+            await interaction.response.edit_message(content="", embed=embed, view=MvpButton(self.bot, self.ctx, self.msg, self.banner, self.picked_league, self.picked_lane, self.button_select, self.box_LCK, self.box_LPL, self.box_LEC, self.box_LCS, self.box_LCO, self.box_PCS, self.box_LLA, self.box_VCS, self.box_LCL, self.box_LJL, self.box_TCL, self.box_CBLOL))
+
+        async def callback_jun(interaction: discord.Interaction):
+            self.picked_lane = "정글"
+
+            if self.picked_league == "LCK": self.box_data = self.box_LCK
+            elif self.picked_league == "LPL": self.box_data = self.box_LPL
+            elif self.picked_league == "LEC": self.box_data = self.box_LEC
+            elif self.picked_league == "LCS": self.box_data = self.box_LCS
+            elif self.picked_league == "LCO": self.box_data = self.box_LCO
+            elif self.picked_league == "PCS": self.box_data = self.box_PCS
+            elif self.picked_league == "LLA": self.box_data = self.box_LLA
+            elif self.picked_league == "VCS": self.box_data = self.box_VCS
+            elif self.picked_league == "LCL": self.box_data = self.box_LCL
+            elif self.picked_league == "LJL": self.box_data = self.box_LJL
+            elif self.picked_league == "TCL": self.box_data = self.box_TCL
+            elif self.picked_league == "CBLOL": self.box_data = self.box_CBLOL
+
+            for i in range(len(self.box_data)):
+                if self.box_data[i]['position'] == "정글":
+                    self.box_lane_data.append(self.box_data[i])
+
+            for i in range(5):
+                for j in range(len(self.box_lane_data)):
+                    self.msg_mvp_1 = f"{self.msg_mvp_1}**▫️ {j + 1}위 -** [{self.box_lane_data[j]['team_acronym']}]({esports_op_gg_team}{self.box_lane_data[j]['team_id']}) [{self.box_lane_data[j]['nickName']}]({esports_op_gg_player}{self.box_lane_data[j]['id']})\n> [{self.box_lane_data[j]['position']}] {self.box_lane_data[j]['kda']} 평점\n> `({self.box_lane_data[j]['kills']} / {self.box_lane_data[j]['deaths']} / {self.box_lane_data[j]['assists']})`\n"
+                break
+
+            for i in range(5, 10):
+                for j in range(len(self.box_lane_data)):
+                    if j < 5: break
+                    self.msg_mvp_2 = f"{self.msg_mvp_2}**▫️ {j + 1}위 -** [{self.box_lane_data[j]['team_acronym']}]({esports_op_gg_team}{self.box_lane_data[j]['team_id']}) [{self.box_lane_data[j]['nickName']}]({esports_op_gg_player}{self.box_lane_data[j]['id']})\n> [{self.box_lane_data[j]['position']}] {self.box_lane_data[j]['kda']} 평점\n> `({self.box_lane_data[j]['kills']} / {self.box_lane_data[j]['deaths']} / {self.box_lane_data[j]['assists']})`\n"
+                break
+
+            if self.msg_mvp_1 == "":
+                self.msg_mvp_1 = "플레이어 정보가 없습니다."
+
+            self.button_select = True
+            embed.add_field(name=f"> '{self.picked_lane}' 포지션 ({self.picked_league})", value=self.msg_mvp_1, inline=True)
+            embed.add_field(name="\u200b", value=self.msg_mvp_2, inline=True)
+            await interaction.response.edit_message(content="", embed=embed, view=MvpButton(self.bot, self.ctx, self.msg, self.banner, self.picked_league, self.picked_lane, self.button_select, self.box_LCK, self.box_LPL, self.box_LEC, self.box_LCS, self.box_LCO, self.box_PCS, self.box_LLA, self.box_VCS, self.box_LCL, self.box_LJL, self.box_TCL, self.box_CBLOL))
+
+        async def callback_mid(interaction: discord.Interaction):
+            self.picked_lane = "미드"
+
+            if self.picked_league == "LCK": self.box_data = self.box_LCK
+            elif self.picked_league == "LPL": self.box_data = self.box_LPL
+            elif self.picked_league == "LEC": self.box_data = self.box_LEC
+            elif self.picked_league == "LCS": self.box_data = self.box_LCS
+            elif self.picked_league == "LCO": self.box_data = self.box_LCO
+            elif self.picked_league == "PCS": self.box_data = self.box_PCS
+            elif self.picked_league == "LLA": self.box_data = self.box_LLA
+            elif self.picked_league == "VCS": self.box_data = self.box_VCS
+            elif self.picked_league == "LCL": self.box_data = self.box_LCL
+            elif self.picked_league == "LJL": self.box_data = self.box_LJL
+            elif self.picked_league == "TCL": self.box_data = self.box_TCL
+            elif self.picked_league == "CBLOL": self.box_data = self.box_CBLOL
+
+            for i in range(len(self.box_data)):
+                if self.box_data[i]['position'] == "미드":
+                    self.box_lane_data.append(self.box_data[i])
+
+            for i in range(5):
+                for j in range(len(self.box_lane_data)):
+                    self.msg_mvp_1 = f"{self.msg_mvp_1}**▫️ {j + 1}위 -** [{self.box_lane_data[j]['team_acronym']}]({esports_op_gg_team}{self.box_lane_data[j]['team_id']}) [{self.box_lane_data[j]['nickName']}]({esports_op_gg_player}{self.box_lane_data[j]['id']})\n> [{self.box_lane_data[j]['position']}] {self.box_lane_data[j]['kda']} 평점\n> `({self.box_lane_data[j]['kills']} / {self.box_lane_data[j]['deaths']} / {self.box_lane_data[j]['assists']})`\n"
+                break
+
+            for i in range(5, 10):
+                for j in range(len(self.box_lane_data)):
+                    if j < 5: break
+                    self.msg_mvp_2 = f"{self.msg_mvp_2}**▫️ {j + 1}위 -** [{self.box_lane_data[j]['team_acronym']}]({esports_op_gg_team}{self.box_lane_data[j]['team_id']}) [{self.box_lane_data[j]['nickName']}]({esports_op_gg_player}{self.box_lane_data[j]['id']})\n> [{self.box_lane_data[j]['position']}] {self.box_lane_data[j]['kda']} 평점\n> `({self.box_lane_data[j]['kills']} / {self.box_lane_data[j]['deaths']} / {self.box_lane_data[j]['assists']})`\n"
+                break
+
+            if self.msg_mvp_1 == "":
+                self.msg_mvp_1 = "플레이어 정보가 없습니다."
+
+            self.button_select = True
+            embed.add_field(name=f"> '{self.picked_lane}' 포지션 ({self.picked_league})", value=self.msg_mvp_1, inline=True)
+            embed.add_field(name="\u200b", value=self.msg_mvp_2, inline=True)
+            await interaction.response.edit_message(content="", embed=embed, view=MvpButton(self.bot, self.ctx, self.msg, self.banner, self.picked_league, self.picked_lane, self.button_select, self.box_LCK, self.box_LPL, self.box_LEC, self.box_LCS, self.box_LCO, self.box_PCS, self.box_LLA, self.box_VCS, self.box_LCL, self.box_LJL, self.box_TCL, self.box_CBLOL))
+
+        async def callback_adc(interaction: discord.Interaction):
+            self.picked_lane = "원딜"
+
+            if self.picked_league == "LCK": self.box_data = self.box_LCK
+            elif self.picked_league == "LPL": self.box_data = self.box_LPL
+            elif self.picked_league == "LEC": self.box_data = self.box_LEC
+            elif self.picked_league == "LCS": self.box_data = self.box_LCS
+            elif self.picked_league == "LCO": self.box_data = self.box_LCO
+            elif self.picked_league == "PCS": self.box_data = self.box_PCS
+            elif self.picked_league == "LLA": self.box_data = self.box_LLA
+            elif self.picked_league == "VCS": self.box_data = self.box_VCS
+            elif self.picked_league == "LCL": self.box_data = self.box_LCL
+            elif self.picked_league == "LJL": self.box_data = self.box_LJL
+            elif self.picked_league == "TCL": self.box_data = self.box_TCL
+            elif self.picked_league == "CBLOL": self.box_data = self.box_CBLOL
+
+            for i in range(len(self.box_data)):
+                if self.box_data[i]['position'] == "원딜":
+                    self.box_lane_data.append(self.box_data[i])
+
+            for i in range(5):
+                for j in range(len(self.box_lane_data)):
+                    self.msg_mvp_1 = f"{self.msg_mvp_1}**▫️ {j + 1}위 -** [{self.box_lane_data[j]['team_acronym']}]({esports_op_gg_team}{self.box_lane_data[j]['team_id']}) [{self.box_lane_data[j]['nickName']}]({esports_op_gg_player}{self.box_lane_data[j]['id']})\n> [{self.box_lane_data[j]['position']}] {self.box_lane_data[j]['kda']} 평점\n> `({self.box_lane_data[j]['kills']} / {self.box_lane_data[j]['deaths']} / {self.box_lane_data[j]['assists']})`\n"
+                break
+
+            for i in range(5, 10):
+                for j in range(len(self.box_lane_data)):
+                    if j < 5: break
+                    self.msg_mvp_2 = f"{self.msg_mvp_2}**▫️ {j + 1}위 -** [{self.box_lane_data[j]['team_acronym']}]({esports_op_gg_team}{self.box_lane_data[j]['team_id']}) [{self.box_lane_data[j]['nickName']}]({esports_op_gg_player}{self.box_lane_data[j]['id']})\n> [{self.box_lane_data[j]['position']}] {self.box_lane_data[j]['kda']} 평점\n> `({self.box_lane_data[j]['kills']} / {self.box_lane_data[j]['deaths']} / {self.box_lane_data[j]['assists']})`\n"
+                break
+
+            if self.msg_mvp_1 == "":
+                self.msg_mvp_1 = "플레이어 정보가 없습니다."
+
+            self.button_select = True
+            embed.add_field(name=f"> '{self.picked_lane}' 포지션 ({self.picked_league})", value=self.msg_mvp_1, inline=True)
+            embed.add_field(name="\u200b", value=self.msg_mvp_2, inline=True)
+            await interaction.response.edit_message(content="", embed=embed, view=MvpButton(self.bot, self.ctx, self.msg, self.banner, self.picked_league, self.picked_lane, self.button_select, self.box_LCK, self.box_LPL, self.box_LEC, self.box_LCS, self.box_LCO, self.box_PCS, self.box_LLA, self.box_VCS, self.box_LCL, self.box_LJL, self.box_TCL, self.box_CBLOL))
+
+        async def callback_sup(interaction: discord.Interaction):
+            self.picked_lane = "서포터"
+
+            if self.picked_league == "LCK": self.box_data = self.box_LCK
+            elif self.picked_league == "LPL": self.box_data = self.box_LPL
+            elif self.picked_league == "LEC": self.box_data = self.box_LEC
+            elif self.picked_league == "LCS": self.box_data = self.box_LCS
+            elif self.picked_league == "LCO": self.box_data = self.box_LCO
+            elif self.picked_league == "PCS": self.box_data = self.box_PCS
+            elif self.picked_league == "LLA": self.box_data = self.box_LLA
+            elif self.picked_league == "VCS": self.box_data = self.box_VCS
+            elif self.picked_league == "LCL": self.box_data = self.box_LCL
+            elif self.picked_league == "LJL": self.box_data = self.box_LJL
+            elif self.picked_league == "TCL": self.box_data = self.box_TCL
+            elif self.picked_league == "CBLOL": self.box_data = self.box_CBLOL
+
+            for i in range(len(self.box_data)):
+                if self.box_data[i]['position'] == "서포터":
+                    self.box_lane_data.append(self.box_data[i])
+
+            for i in range(5):
+                for j in range(len(self.box_lane_data)):
+                    self.msg_mvp_1 = f"{self.msg_mvp_1}**▫️ {j + 1}위 -** [{self.box_lane_data[j]['team_acronym']}]({esports_op_gg_team}{self.box_lane_data[j]['team_id']}) [{self.box_lane_data[j]['nickName']}]({esports_op_gg_player}{self.box_lane_data[j]['id']})\n> [{self.box_lane_data[j]['position']}] {self.box_lane_data[j]['kda']} 평점\n> `({self.box_lane_data[j]['kills']} / {self.box_lane_data[j]['deaths']} / {self.box_lane_data[j]['assists']})`\n"
+                break
+
+            for i in range(5, 10):
+                for j in range(len(self.box_lane_data)):
+                    if j < 5: break
+                    self.msg_mvp_2 = f"{self.msg_mvp_2}**▫️ {j + 1}위 -** [{self.box_lane_data[j]['team_acronym']}]({esports_op_gg_team}{self.box_lane_data[j]['team_id']}) [{self.box_lane_data[j]['nickName']}]({esports_op_gg_player}{self.box_lane_data[j]['id']})\n> [{self.box_lane_data[j]['position']}] {self.box_lane_data[j]['kda']} 평점\n> `({self.box_lane_data[j]['kills']} / {self.box_lane_data[j]['deaths']} / {self.box_lane_data[j]['assists']})`\n"
+                break
+
+            if self.msg_mvp_1 == "":
+                self.msg_mvp_1 = "플레이어 정보가 없습니다."
+
+            self.button_select = True
+            embed.add_field(name=f"> '{self.picked_lane}' 포지션 ({self.picked_league})", value=self.msg_mvp_1, inline=True)
+            embed.add_field(name="\u200b", value=self.msg_mvp_2, inline=True)
+            await interaction.response.edit_message(content="", embed=embed, view=MvpButton(self.bot, self.ctx, self.msg, self.banner, self.picked_league, self.picked_lane, self.button_select, self.box_LCK, self.box_LPL, self.box_LEC, self.box_LCS, self.box_LCO, self.box_PCS, self.box_LLA, self.box_VCS, self.box_LCL, self.box_LJL, self.box_TCL, self.box_CBLOL))
+
+        if (self.button_select == True) and (self.picked_lane == "탑"):
+            button_top.callback = callback_all
+        else:
+            button_top.callback = callback_top
+        if (self.button_select == True) and (self.picked_lane == "정글"):
+            button_jun.callback = callback_all
+        else:
+            button_jun.callback = callback_jun
+        if (self.button_select == True) and (self.picked_lane == "미드"):
+            button_mid.callback = callback_all
+        else:
+            button_mid.callback = callback_mid
+        if (self.button_select == True) and (self.picked_lane == "원딜"):
+            button_adc.callback = callback_all
+        else:
+            button_adc.callback = callback_adc
+        if (self.button_select == True) and (self.picked_lane == "서포터"):
+            button_sup.callback = callback_all
+        else:
+            button_sup.callback = callback_sup
+
+        self.add_item(button_top)
+        self.add_item(button_jun)
+        self.add_item(button_mid)
+        self.add_item(button_adc)
+        self.add_item(button_sup)
 
     @discord.ui.select(
         placeholder="리그 선택하기",
         min_values=1,
-        max_values=16,
+        max_values=1,
         options=[
-            # discord.SelectOption(label="모든 리그", value="0", description="모든 리그의 정보를 보고 싶어요!"),
-            discord.SelectOption(label="LCK / KR", value="1", description="League of Legends Champions Korea"),
-            discord.SelectOption(label="LPL / CN ", value="2", description="League of Legends Pro League"),
-            discord.SelectOption(label="LEC / EU", value="3", description="League of Legends European Championship"),
-            discord.SelectOption(label="LCS / NA", value="4", description="League of Legends Championship Series"),
-            discord.SelectOption(label="LCO / OCE", value="5", description="League of Legends Circuit Oceania"),
-            discord.SelectOption(label="PCS / SEA", value="6", description="Pacific Championship Series"),
-            discord.SelectOption(label="LLA / LAT", value="7", description="Liga Latinoamérica"),
-            discord.SelectOption(label="VCS / VN", value="8", description="Vietnam Championship Series"),
-            discord.SelectOption(label="LCL / CIS", value="9", description="League of Legends Continental League"),
-            discord.SelectOption(label="LJL / JP", value="10", description="League of Legends Japan League"),
-            discord.SelectOption(label="TCL / TR", value="11", description="Turkish Championship League"),
-            discord.SelectOption(label="CBLOL / BR", value="12", description="Campeonato Brasileiro de League of Legends"),
-            discord.SelectOption(label="MSI / INT", value="13", description="Mid-Season Invitational"),
-            discord.SelectOption(label="OPL / COE", value="14", description="Oceanic Pro League"),
-            discord.SelectOption(label="LMS / LMS", value="15", description="League of Legends Master Series"),
-            discord.SelectOption(label="Worlds / INT", value="16", description="League of Legends World Championship"),
+            discord.SelectOption(label="LCK / KR", value="0", description="League of Legends Champions Korea"),
+            discord.SelectOption(label="LPL / CN ", value="1", description="League of Legends Pro League"),
+            discord.SelectOption(label="LEC / EU", value="2", description="League of Legends European Championship"),
+            discord.SelectOption(label="LCS / NA", value="3", description="League of Legends Championship Series"),
+            discord.SelectOption(label="LCO / OCE", value="4", description="League of Legends Circuit Oceania"),
+            discord.SelectOption(label="PCS / SEA", value="5", description="Pacific Championship Series"),
+            discord.SelectOption(label="LLA / LAT", value="6", description="Liga Latinoamérica"),
+            discord.SelectOption(label="VCS / VN", value="7", description="Vietnam Championship Series"),
+            discord.SelectOption(label="LCL / CIS", value="8", description="League of Legends Continental League"),
+            discord.SelectOption(label="LJL / JP", value="9", description="League of Legends Japan League"),
+            discord.SelectOption(label="TCL / TR", value="10", description="Turkish Championship League"),
+            discord.SelectOption(label="CBLOL / BR", value="11", description="Campeonato Brasileiro de League of Legends"),
         ],
         row=0
     )
     async def select_callback(self, select: discord.ui.Select, interaction):
-        self.msg_schedule_1 = ""
-        self.msg_schedule_2 = ""
-        self.msg_schedule_3 = ""
-        self.league_1_max = False
-        self.league_2_max = False
-        self.league_3_max = False
 
-        for i in range(len(select.values)):
-            if select.values[i] == "0": self.box_select.append("all")
-            elif select.values[i] == "1": self.box_select.append("LCK")
-            elif select.values[i] == "2": self.box_select.append("LPL")
-            elif select.values[i] == "3": self.box_select.append("LEC")
-            elif select.values[i] == "4": self.box_select.append("LCS")
-            elif select.values[i] == "5": self.box_select.append("LCO")
-            elif select.values[i] == "6": self.box_select.append("PCS")
-            elif select.values[i] == "7": self.box_select.append("LLA")
-            elif select.values[i] == "8": self.box_select.append("VCS")
-            elif select.values[i] == "9": self.box_select.append("LCL")
-            elif select.values[i] == "10": self.box_select.append("LJL")
-            elif select.values[i] == "11": self.box_select.append("TCL")
-            elif select.values[i] == "12": self.box_select.append("CBLOL")
-            elif select.values[i] == "13": self.box_select.append("MSI")
-            elif select.values[i] == "14": self.box_select.append("OPL")
-            elif select.values[i] == "15": self.box_select.append("LMS")
-            elif select.values[i] == "16": self.box_select.append("Worlds")
-            else: pass
+        if select.values[0] == "0":
+            self.picked_league = "LCK"
+            self.box_data = self.box_LCK
+        elif select.values[0] == "1":
+            self.picked_league = "LPL"
+            self.box_data = self.box_LPL
+        elif select.values[0] == "2":
+            self.picked_league = "LEC"
+            self.box_data = self.box_LEC
+        elif select.values[0] == "3":
+            self.picked_league = "LCS"
+            self.box_data = self.box_LCS
+        elif select.values[0] == "4":
+            self.picked_league = "LCO"
+            self.box_data = self.box_LCO
+        elif select.values[0] == "5":
+            self.picked_league = "PCS"
+            self.box_data = self.box_PCS
+        elif select.values[0] == "6":
+            self.picked_league = "LLA"
+            self.box_data = self.box_LLA
+        elif select.values[0] == "7":
+            self.picked_league = "VCS"
+            self.box_data = self.box_VCS
+        elif select.values[0] == "8":
+            self.picked_league = "LCL"
+            self.box_data = self.box_LCL
+        elif select.values[0] == "9":
+            self.picked_league = "LJL"
+            self.box_data = self.box_LJL
+        elif select.values[0] == "10":
+            self.picked_league = "TCL"
+            self.box_data = self.box_TCL
+        elif select.values[0] == "11":
+            self.picked_league = "CBLOL"
+            self.box_data = self.box_CBLOL
 
-        league_schedule_1 = self.schedule_1_2.split("\n")
-        league_schedule_2 = self.schedule_2_2.split("\n")
-        league_schedule_3 = self.schedule_3_2.split("\n")
+        k = 0
+        for i in range(5):
+            for j in range(len(self.box_data)):
+                self.msg_mvp_1 = f"{self.msg_mvp_1}**▫️ {i + 1}위 -** [{self.box_data[k]['team_acronym']}]({esports_op_gg_team}{self.box_data[k]['team_id']}) [{self.box_data[k]['nickName']}]({esports_op_gg_player}{self.box_data[k]['id']})\n> [{self.box_data[k]['position']}] {self.box_data[k]['kda']} 평점\n> `({self.box_data[k]['kills']} / {self.box_data[k]['deaths']} / {self.box_data[k]['assists']})`\n"
+                k += 1
+                break
 
-        league_schedule_1 = list(filter(len, league_schedule_1))
-        league_schedule_2 = list(filter(len, league_schedule_2))
-        league_schedule_3 = list(filter(len, league_schedule_3))
+        k = 5
+        for i in range(5, 10):
+            for j in range(len(self.box_data)):
+                self.msg_mvp_2 = f"{self.msg_mvp_2}**▫️ {i + 1}위 -** [{self.box_data[k]['team_acronym']}]({esports_op_gg_team}{self.box_data[k]['team_id']}) [{self.box_data[k]['nickName']}]({esports_op_gg_player}{self.box_data[k]['id']})\n> [{self.box_data[k]['position']}] {self.box_data[k]['kda']} 평점\n> `({self.box_data[k]['kills']} / {self.box_data[k]['deaths']} / {self.box_data[k]['assists']})`\n"
+                k += 1
+                break
 
-        if league_schedule_1 == []: self.schedules_1 = []
-        else:
-            for i in range(len(league_schedule_1)):
-                if self.box_select[0] == "all":
-                    break
-                for j in range(len(select.values)):
-                    try:
-                        league_find = league_schedule_1[i].split("(")[1].split("/")[0]
-                    except:
-                        self.league_1_max = True
+        if self.msg_mvp_1 == "":
+            self.msg_mvp_1 = "플레이어 정보가 없습니다."
 
-                    if league_find == self.box_select[j]:
-                        self.schedules_1.append(league_schedule_1[i])
-                    elif self.league_1_max == True:
-                        # self.schedules_1.append("...")
-                        self.league_1_max = False
-                    else:
-                        pass
-
-        if league_schedule_2 == []: self.schedules_2 = []
-        else:
-            for i in range(len(league_schedule_2)):
-                if self.box_select[0] == "all":
-                    break
-                for j in range(len(select.values)):
-                    try:
-                        league_find = league_schedule_2[i].split("(")[1].split("/")[0]
-                    except:
-                        self.league_2_max = True
-
-                    if league_find == self.box_select[j]:
-                        self.schedules_2.append(league_schedule_2[i])
-                    elif self.league_2_max == True:
-                        # self.schedules_2.append("...")
-                        self.league_2_max = False
-                    else:
-                        pass
-
-        if league_schedule_3 == []: self.schedules_3 = []
-        else:
-            for i in range(len(league_schedule_3)):
-                if self.box_select[0] == "all":
-                    break
-                for j in range(len(select.values)):
-                    try:
-                        league_find = league_schedule_3[i].split("(")[1].split("/")[0]
-                    except:
-                        self.league_3_max = True
-
-                    if league_find == self.box_select[j]:
-                        self.schedules_3.append(league_schedule_3[i])
-                    elif self.league_3_max == True:
-                        # self.schedules_3.append("...")
-                        self.league_3_max = False
-                    else:
-                        pass
-
-        if self.box_select[0] == "all":
-            self.msg_schedule_1 = self.schedule_1_3
-        elif (self.box_select != "all") and (self.schedules_1 == []):
-            self.msg_schedule_1 = "해당 일자의 리그 일정이 없습니다."
-        else:
-            for i in range(len(self.schedules_1)):
-                self.msg_schedule_1 += (f"\n{self.schedules_1[i]}")
-
-        if self.box_select[0] == "all":
-            self.msg_schedule_2 = self.schedule_2_3
-        elif (self.box_select != "all") and (self.schedules_2 == []):
-            self.msg_schedule_2 = "해당 일자의 리그 일정이 없습니다."
-        else:
-            for i in range(len(self.schedules_2)):
-                self.msg_schedule_2 += (f"\n{self.schedules_2[i]}")
-
-        if self.box_select[0] == "all":
-            self.msg_schedule_3 = self.schedule_3_3
-        elif (self.box_select != "all") and (self.schedules_3 == []):
-            self.msg_schedule_3 = "해당 일자의 리그 일정이 없습니다."
-        else:
-            for i in range(len(self.schedules_3)):
-                self.msg_schedule_3 += (f"\n{self.schedules_3[i]}")
-
-        self.msg_schedule_1_1 = ""
-        self.msg_schedule_1_2 = ""
-        if len(self.msg_schedule_1.split("\n")) > 25:
-            for k in range(len(self.msg_schedule_1.split("\n"))):
-                if k > 25: break
-                self.msg_schedule_1_1 += "".join("\n" + self.msg_schedule_1.split("\n")[k])
-            self.msg_schedule_1_2 += "".join(f"{self.msg_schedule_1_1}\n...")
-        else:
-            self.msg_schedule_1_2 += self.msg_schedule_1
-
-        self.msg_schedule_2_1 = ""
-        self.msg_schedule_2_2 = ""
-        if len(self.msg_schedule_2.split("\n")) > 25:
-            self.msg_schedule_2_1 = ""
-            for k in range(len(self.msg_schedule_2.split("\n"))):
-                if k > 25: break
-                self.msg_schedule_2_1 += "".join("\n" + self.msg_schedule_2.split("\n")[k])
-            self.msg_schedule_2_2 += "".join(f"{self.msg_schedule_2_1}\n...")
-        else:
-            self.msg_schedule_2_2 += self.msg_schedule_2
-
-        self.msg_schedule_3_1 = ""
-        self.msg_schedule_3_2 = ""
-        if len(self.msg_schedule_3.split("\n")) > 25:
-            for k in range(len(self.msg_schedule_3.split("\n"))):
-                if k > 25: break
-                self.msg_schedule_3_1 += "".join("\n" + self.msg_schedule_3.split("\n")[k])
-            self.msg_schedule_3_2 += "".join(f"{self.msg_schedule_3_1}\n...")
-        else:
-            self.msg_schedule_3_2 += self.msg_schedule_3
-
-        embed = discord.Embed(title="> 🗓️ 리그 일정", description="리그 오브 레전드의 리그 경기 일정 정보입니다.", color=colorMap['red'])
-        embed.set_footer(text="TIP: 아래 버튼을 눌러 다른 일자의 일정도 살펴볼 수 있어요.", icon_url=self.bot.user.display_avatar.url)
+        self.button_select = False
+        embed = discord.Embed(title="> 🏆 베스트 플레이어", description="리그 오브 레전드의 리그 베스트 플레이어 정보입니다.", color=colorMap['red'])
+        embed.set_footer(text="TIP: 아래 버튼을 눌러 다른 포지션의 랭킹도 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
         embed.set_image(url=self.banner)
-        if (self.button == "1") or (self.button == ""):
-            embed.add_field(name=f"{self.schedule_1_1[0]} 일정", value=f"└ (총 **3**페이지 중 **1**번째 페이지)\n```{self.msg_schedule_1_2}```", inline=False)
-        elif self.button == "2":
-            embed.add_field(name=f"{self.schedule_2_1[0]} 일정", value=f"└ (총 **3**페이지 중 **2**번째 페이지)\n```{self.msg_schedule_2_2}```", inline=False)
-        elif self.button == "3":
-            embed.add_field(name=f"{self.schedule_3_1[0]} 일정", value=f"└ (총 **3**페이지 중 **3**번째 페이지)\n```{self.msg_schedule_3_2}```", inline=False)
-        await interaction.response.edit_message(content="", embed=embed)
-
-        self.callback_select = True
-        self.box_select.clear()
-        self.schedules_1.clear()
-        self.schedules_2.clear()
-        self.schedules_3.clear()
-
-    @discord.ui.button(emoji="1️⃣", style=discord.ButtonStyle.gray, row=1)
-    async def _one(self, button: discord.ui.Button, interaction: discord.Interaction):
-        self.button = "1"
-
-        self.msg_schedule_1_1 = ""
-        self.msg_schedule_1_3 = ""
-        if len(self.schedule_1_2.split("\n")) > 25:
-            for k in range(len(self.schedule_1_2.split("\n"))):
-                if k > 25: break
-                self.msg_schedule_1_1 += "".join("\n" + self.schedule_1_2.split("\n")[k])
-            self.msg_schedule_1_3 += "".join(f"{self.msg_schedule_1_1}\n...")
-        else:
-            self.msg_schedule_1_3 += self.schedule_1_2
-
-        if self.schedule_1_3 == "해당 일자의 리그 일정이 없습니다.": self.msg_schedule_1_3 = "해당 일자의 리그 일정이 없습니다."
-
-        embed = discord.Embed(title="> 🗓️ 리그 일정", description="리그 오브 레전드의 리그 경기 일정 정보입니다.", color=colorMap['red'])
-        embed.set_footer(text="TIP: 아래 버튼을 눌러 다른 일자의 일정도 살펴볼 수 있어요.", icon_url=self.bot.user.display_avatar.url)
-        embed.set_image(url=self.banner)
-        if self.callback_select == True:
-            embed.add_field(name=f"{self.schedule_1_1[0]} 일정", value=f"└ (총 **3**페이지 중 **1**번째 페이지)\n```{self.msg_schedule_1_2}```", inline=False)
-        else:
-            embed.add_field(name=f"{self.schedule_1_1[0]} 일정", value=f"└ (총 **3**페이지 중 **1**번째 페이지)\n```{self.msg_schedule_1_3}```", inline=False)
-        await interaction.response.edit_message(content="", embed=embed)
-        self.box_select.clear()
-
-    @discord.ui.button(emoji="2️⃣", style=discord.ButtonStyle.gray, row=1)
-    async def _two(self, button: discord.ui.Button, interaction: discord.Interaction):
-        self.button = "2"
-
-        self.msg_schedule_2_1 = ""
-        self.msg_schedule_2_3 = ""
-        if len(self.schedule_2_2.split("\n")) > 25:
-            self.msg_schedule_2_1 = ""
-            for k in range(len(self.schedule_2_2.split("\n"))):
-                if k > 25: break
-                self.msg_schedule_2_1 += "".join("\n" + self.schedule_2_2.split("\n")[k])
-            self.msg_schedule_2_3 += "".join(f"{self.msg_schedule_2_1}\n...")
-        else:
-            self.msg_schedule_2_3 += self.schedule_2_2
-
-        if self.schedule_2_3 == "해당 일자의 리그 일정이 없습니다.": self.msg_schedule_2_3 = "해당 일자의 리그 일정이 없습니다."
-
-        embed = discord.Embed(title="> 🗓️ 리그 일정", description="리그 오브 레전드의 리그 경기 일정 정보입니다.", color=colorMap['red'])
-        embed.set_footer(text="TIP: 아래 버튼을 눌러 다른 일자의 일정도 살펴볼 수 있어요.", icon_url=self.bot.user.display_avatar.url)
-        embed.set_image(url=self.banner)
-        if self.callback_select == True:
-            embed.add_field(name=f"{self.schedule_2_1[0]} 일정", value=f"└ (총 **3**페이지 중 **2**번째 페이지)\n```{self.msg_schedule_2_2}```", inline=False)
-        else:
-            embed.add_field(name=f"{self.schedule_2_1[0]} 일정", value=f"└ (총 **3**페이지 중 **2**번째 페이지)\n```{self.msg_schedule_2_3}```", inline=False)
-        await interaction.response.edit_message(content="", embed=embed)
-        self.box_select.clear()
-
-    @discord.ui.button(emoji="3️⃣", style=discord.ButtonStyle.gray, row=1)
-    async def _three(self, button: discord.ui.Button, interaction: discord.Interaction):
-        self.button = "3"
-
-        self.msg_schedule_3_1 = ""
-        self.msg_schedule_3_3 = ""
-        if len(self.schedule_3_2.split("\n")) > 25:
-            for k in range(len(self.schedule_3_2.split("\n"))):
-                if k > 25: break
-                self.msg_schedule_3_1 += "".join("\n" + self.schedule_3_2.split("\n")[k])
-            self.msg_schedule_3_3 += "".join(f"{self.msg_schedule_3_1}\n...")
-        else:
-            self.msg_schedule_3_3 += self.schedule_3_2
-
-        if self.schedule_3_3 == "해당 일자의 리그 일정이 없습니다.": self.msg_schedule_3_3 = "해당 일자의 리그 일정이 없습니다."
-
-        embed = discord.Embed(title="> 🗓️ 리그 일정", description="리그 오브 레전드의 리그 경기 일정 정보입니다.", color=colorMap['red'])
-        embed.set_footer(text="TIP: 아래 버튼을 눌러 다른 일자의 일정도 살펴볼 수 있어요.", icon_url=self.bot.user.display_avatar.url)
-        embed.set_image(url=self.banner)
-        if self.callback_select == True:
-            embed.add_field(name=f"{self.schedule_3_1[0]} 일정", value=f"└ (총 **3**페이지 중 **3**번째 페이지)\n```{self.msg_schedule_3_2}```", inline=False)
-        else:
-            embed.add_field(name=f"{self.schedule_3_1[0]} 일정", value=f"└ (총 **3**페이지 중 **3**번째 페이지)\n```{self.msg_schedule_3_3}```", inline=False)
-        await interaction.response.edit_message(content="", embed=embed)
-        self.box_select.clear()
+        embed.add_field(name=f"> '{self.picked_lane}' 포지션 ({self.picked_league})", value=self.msg_mvp_1, inline=True)
+        embed.add_field(name="\u200b", value=self.msg_mvp_2, inline=True)
+        await interaction.response.edit_message(content="", embed=embed, view=MvpButton(self.bot, self.ctx, self.msg, self.banner, self.picked_league, self.picked_lane, self.button_select, self.box_LCK, self.box_LPL, self.box_LEC, self.box_LCS, self.box_LCO, self.box_PCS, self.box_LLA, self.box_VCS, self.box_LCL, self.box_LJL, self.box_TCL, self.box_CBLOL))
 
     async def on_timeout(self):
         await self.msg.edit_original_response(content="", view=DisabledButton())
@@ -385,10 +470,12 @@ class DisabledButton(discord.ui.View):
     def __init__(self):
         super().__init__(timeout=None)
         self.add_item(discord.ui.Select(placeholder="리그 선택하기", options=[discord.SelectOption(label="asdf", value="1", description="asdf")], disabled=True, row=0))
-        self.add_item(discord.ui.Button(emoji="1️⃣", disabled=True, row=1))
-        self.add_item(discord.ui.Button(emoji="2️⃣", disabled=True, row=1))
-        self.add_item(discord.ui.Button(emoji="3️⃣", disabled=True, row=1))
-        self.add_item(discord.ui.Button(label="OP.GG Esports에서 보기", url=esports_op_gg_mvp, row=1))
+        self.add_item(discord.ui.Button(label="탑", disabled=True, row=1))
+        self.add_item(discord.ui.Button(label="정글", disabled=True, row=1))
+        self.add_item(discord.ui.Button(label="미드", disabled=True, row=1))
+        self.add_item(discord.ui.Button(label="원딜", disabled=True, row=1))
+        self.add_item(discord.ui.Button(label="서포터", disabled=True, row=1))
+        self.add_item(discord.ui.Button(label="OP.GG Esports에서 보기", url=esports_op_gg_mvp, row=2))
 
 
 class MvpCMD(commands.Cog):
@@ -406,93 +493,142 @@ class MvpCMD(commands.Cog):
     async def _mvpCMD(self, ctx: discord.AutocompleteContext, 리그: str):
 
         picked_lane = "모든 라인"
+        picked_league = 리그
+        button_select = False
         banner_image_url = random.choice(config['banner_image_url'])
+
+        box_data = {}
+        box_LCK = []
+        box_LPL = []
+        box_LEC = []
+        box_LCS = []
+        box_LCO = []
+        box_PCS = []
+        box_LLA = []
+        box_VCS = []
+        box_LCL = []
+        box_LJL = []
+        box_TCL = []
+        box_CBLOL = []
 
         embed = discord.Embed(title="", description="⌛ 정보를 불러오는 중...", color=colorMap['red'])
         msg = await ctx.respond(embed=embed)
 
         try:
             for i in range(16):
-                if   (리그 == "LCK") and (leagues[i]['id'] == "99"):   tournamentId = leagues[i]['tournamentId']
-                if   (리그 == "LCK") and (leagues[i]['id'] == "99"):   tournamentId = leagues[i]['tournamentId']
-                elif (리그 == "LPL") and (leagues[i]['id'] == "98"):   tournamentId = leagues[i]['tournamentId']
-                elif (리그 == "LEC") and (leagues[i]['id'] == "89"):   tournamentId = leagues[i]['tournamentId']
-                elif (리그 == "LCS") and (leagues[i]['id'] == "88"):   tournamentId = leagues[i]['tournamentId']
-                elif (리그 == "CBLOL") and (leagues[i]['id'] == "94"): tournamentId = leagues[i]['tournamentId']
-                elif (리그 == "VCS") and (leagues[i]['id'] == "90"):   tournamentId = leagues[i]['tournamentId']
-                elif (리그 == "LCL") and (leagues[i]['id'] == "91"):   tournamentId = leagues[i]['tournamentId']
-                elif (리그 == "TCL") and (leagues[i]['id'] == "93"):   tournamentId = leagues[i]['tournamentId']
-                elif (리그 == "PCS") and (leagues[i]['id'] == "86"):   tournamentId = leagues[i]['tournamentId']
-                elif (리그 == "LLA") and (leagues[i]['id'] == "87"):   tournamentId = leagues[i]['tournamentId']
-                elif (리그 == "LJL") and (leagues[i]['id'] == "92"):   tournamentId = leagues[i]['tournamentId']
+                if leagues[i]['id'] == "99": tournamentId = leagues[i]['tournamentId']
+                elif leagues[i]['id'] == "98": tournamentId = leagues[i]['tournamentId']
+                elif leagues[i]['id'] == "89": tournamentId = leagues[i]['tournamentId']
+                elif leagues[i]['id'] == "88": tournamentId = leagues[i]['tournamentId']
+                elif leagues[i]['id'] == "94": tournamentId = leagues[i]['tournamentId']
+                elif leagues[i]['id'] == "90": tournamentId = leagues[i]['tournamentId']
+                elif leagues[i]['id'] == "91": tournamentId = leagues[i]['tournamentId']
+                elif leagues[i]['id'] == "93": tournamentId = leagues[i]['tournamentId']
+                elif leagues[i]['id'] == "86": tournamentId = leagues[i]['tournamentId']
+                elif leagues[i]['id'] == "87": tournamentId = leagues[i]['tournamentId']
+                elif leagues[i]['id'] == "92": tournamentId = leagues[i]['tournamentId']
+                else: pass
 
-            players = opgg.player_mvp_rank(tournamentId=tournamentId[0])
+                try:
+                    if tournamentId == []: continue
+                    elif tournamentId == None: continue
+                    players = opgg.player_mvp_rank(tournamentId=tournamentId[0])
+                    tournamentId = [] # 초기화
 
-            if players['error'] == False:
+                    if players['error'] == False:
 
-                box_mvp_player_id = []
-                box_mvp_player_nickName = []
-                box_mvp_player_nationality = []
-                box_mvp_player_image = []
-                box_mvp_player_position = []
-                box_mvp_player_currently = []
-                box_mvp_player_previously = []
-                box_mvp_player_mvpPoint = []
-                box_mvp_player_games = []
-                box_mvp_player_kda = []
-                box_mvp_player_kills = []
-                box_mvp_player_deaths = []
-                box_mvp_player_assists = []
-                box_mvp_team_id = []
-                box_mvp_team_name = []
-                box_mvp_team_acronym = []
-                box_mvp_team_image = []
+                        for j in range(len(players['data']['mvps'])):
+                            mvp_player_id = players['data']['mvps'][j]['player']['id']
+                            mvp_player_nickName = players['data']['mvps'][j]['player']['nickName']
+                            mvp_player_nationality = players['data']['mvps'][j]['player']['nationality']
+                            mvp_player_image = players['data']['mvps'][j]['player']['imageUrl']
+                            mvp_player_position = (players['data']['mvps'][j]['position']).replace("top", "탑").replace("jun", "정글").replace("mid", "미드").replace("adc", "원딜").replace("sup", "서포터")
+                            mvp_player_currently = players['data']['mvps'][j]['currently']
+                            mvp_player_previously = players['data']['mvps'][j]['previously']
+                            mvp_player_mvpPoint = players['data']['mvps'][j]['mvpPoint']
+                            mvp_player_games = players['data']['mvps'][j]['games']
+                            mvp_player_kda = (players['data']['mvps'][j]['kda']).__round__(2)
+                            mvp_player_kills = (players['data']['mvps'][j]['kills']).__round__(2)
+                            mvp_player_deaths = (players['data']['mvps'][j]['deaths']).__round__(2)
+                            mvp_player_assists = (players['data']['mvps'][j]['assists']).__round__(2)
+                            mvp_team_id = players['data']['mvps'][j]['team']['id']
+                            mvp_team_name = players['data']['mvps'][j]['team']['name']
+                            mvp_team_acronym = players['data']['mvps'][j]['team']['acronym']
 
-                for i in range(len(players['data']['mvps'])):
-                    mvp_player_id = players['data']['mvps'][i]['player']['id']
-                    mvp_player_nickName = players['data']['mvps'][i]['player']['nickName']
-                    mvp_player_nationality = players['data']['mvps'][i]['player']['nationality']
-                    mvp_player_image = players['data']['mvps'][i]['player']['imageUrl']
-                    mvp_player_position = (players['data']['mvps'][i]['position']).replace("top", "탑").replace("jun", "정글").replace("mid", "미드").replace("adc", "원딜").replace("sup", "서포터")
-                    mvp_player_currently = players['data']['mvps'][i]['currently']
-                    mvp_player_previously = players['data']['mvps'][i]['previously']
-                    mvp_player_mvpPoint = players['data']['mvps'][i]['mvpPoint']
-                    mvp_player_games = players['data']['mvps'][i]['games']
-                    mvp_player_kda = (players['data']['mvps'][i]['kda']).__round__(2)
-                    mvp_player_kills = (players['data']['mvps'][i]['kills']).__round__(2)
-                    mvp_player_deaths = (players['data']['mvps'][i]['deaths']).__round__(2)
-                    mvp_player_assists = (players['data']['mvps'][i]['assists']).__round__(2)
-                    mvp_team_id = players['data']['mvps'][i]['team']['id']
-                    mvp_team_name = players['data']['mvps'][i]['team']['name']
-                    mvp_team_acronym = players['data']['mvps'][i]['team']['acronym']
+                            box_mvp_info = {
+                                "id": mvp_player_id,
+                                "nickName": mvp_player_nickName,
+                                "nationality": mvp_player_nationality,
+                                "imageUrl": mvp_player_image,
+                                "position": mvp_player_position,
+                                "currently": mvp_player_currently,
+                                "previously": mvp_player_previously,
+                                "mvpPoint": mvp_player_mvpPoint,
+                                "games": mvp_player_games,
+                                "kda": mvp_player_kda,
+                                "kills": mvp_player_kills,
+                                "deaths": mvp_player_deaths,
+                                "assists": mvp_player_assists,
+                                "team_id": mvp_team_id,
+                                "team_name": mvp_team_name,
+                                "team_acronym": mvp_team_acronym
+                            }
 
-                    box_mvp_player_id.append(mvp_player_id)
-                    box_mvp_player_nickName.append(mvp_player_nickName)
-                    box_mvp_player_nationality.append(mvp_player_nationality)
-                    box_mvp_player_image.append(mvp_player_image)
-                    box_mvp_player_position.append(mvp_player_position)
-                    box_mvp_player_currently.append(mvp_player_currently)
-                    box_mvp_player_previously.append(mvp_player_previously)
-                    box_mvp_player_mvpPoint.append(mvp_player_mvpPoint)
-                    box_mvp_player_games.append(mvp_player_games)
-                    box_mvp_player_kda.append(mvp_player_kda)
-                    box_mvp_player_kills.append(mvp_player_kills)
-                    box_mvp_player_deaths.append(mvp_player_deaths)
-                    box_mvp_player_assists.append(mvp_player_assists)
-                    box_mvp_team_id.append(mvp_team_id)
-                    box_mvp_team_name.append(mvp_team_name)
-                    box_mvp_team_acronym.append(mvp_team_acronym)
+                            if leagues[i]['shortName'] == "LCK": box_LCK.append(box_mvp_info)
+                            elif leagues[i]['shortName'] == "LPL": box_LPL.append(box_mvp_info)
+                            elif leagues[i]['shortName'] == "LEC": box_LEC.append(box_mvp_info)
+                            elif leagues[i]['shortName'] == "LCS": box_LCS.append(box_mvp_info)
+                            elif leagues[i]['shortName'] == "LCO": box_LCO.append(box_mvp_info)
+                            elif leagues[i]['shortName'] == "PCS": box_PCS.append(box_mvp_info)
+                            elif leagues[i]['shortName'] == "LLA": box_LLA.append(box_mvp_info)
+                            elif leagues[i]['shortName'] == "VCS": box_VCS.append(box_mvp_info)
+                            elif leagues[i]['shortName'] == "LCL": box_LCL.append(box_mvp_info)
+                            elif leagues[i]['shortName'] == "LJL": box_LJL.append(box_mvp_info)
+                            elif leagues[i]['shortName'] == "TCL": box_TCL.append(box_mvp_info)
+                            elif leagues[i]['shortName'] == "CBLOL": box_CBLOL.append(box_mvp_info)
 
-                msg_mvp_info_1 = ""
-                for i in range(len(box_mvp_player_id)):
-                    msg_mvp_info_1 = f"{msg_mvp_info_1}**{i + 1}위** - {box_mvp_team_acronym[i]} {box_mvp_player_nickName[i]} ({box_mvp_player_position[i]})\n└ {box_mvp_player_kda[i]} 평점 `({box_mvp_player_kills[i]} / {box_mvp_player_deaths[i]} / {box_mvp_player_assists[i]})`\n\n"
+                except:
+                    pass
 
-                embed = discord.Embed(title="> 🏆 베스트 플레이어", description="리그 오브 레전드의 리그 베스트 플레이어 정보입니다.", color=colorMap['red'])
-                embed.set_footer(text="TIP: 아래 버튼을 눌러 다른 포지션의 랭킹도 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
-                embed.set_image(url=banner_image_url)
-                embed.add_field(name=f"'{picked_lane}' 포지션", value=f"{msg_mvp_info_1}", inline=False)
-                # await msg.edit_original_response(content="", embed=embed, view=MvpButton(self.bot, ctx, msg, banner_image_url, box_1_match_schedule_2, msg_schedule_info_1, msg_schedule_info_1_2, box_2_match_schedule_2, msg_schedule_info_2, msg_schedule_info_2_2, box_3_match_schedule_2, msg_schedule_info_3, msg_schedule_info_3_2))
-                await msg.edit_original_response(content="", embed=embed)
+            if picked_league == "LCK": box_data = box_LCK
+            elif picked_league == "LPL": box_data = box_LPL
+            elif picked_league == "LEC": box_data = box_LEC
+            elif picked_league == "LCS": box_data = box_LCS
+            elif picked_league == "LCO": box_data = box_LCO
+            elif picked_league == "PCS": box_data = box_PCS
+            elif picked_league == "LLA": box_data = box_LLA
+            elif picked_league == "VCS": box_data = box_VCS
+            elif picked_league == "LCL": box_data = box_LCL
+            elif picked_league == "LJL": box_data = box_LJL
+            elif picked_league == "TCL": box_data = box_TCL
+            elif picked_league == "CBLOL": box_data = box_CBLOL
+
+            msg_mvp_1 = ""
+            msg_mvp_2 = ""
+
+            k = 0
+            for i in range(5):
+                for j in range(len(box_data)):
+                    msg_mvp_1 = f"{msg_mvp_1}**▫️ {i + 1}위 -** [{box_data[k]['team_acronym']}]({esports_op_gg_team}{box_data[k]['team_id']}) [{box_data[k]['nickName']}]({esports_op_gg_player}{box_data[k]['id']})\n> [{box_data[k]['position']}] {box_data[k]['kda']} 평점\n> `({box_data[k]['kills']} / {box_data[k]['deaths']} / {box_data[k]['assists']})`\n"
+                    k += 1
+                    break
+
+            k = 5
+            for i in range(5, 10):
+                for j in range(len(box_data)):
+                    msg_mvp_2 = f"{msg_mvp_2}**▫️ {i + 1}위 -** [{box_data[k]['team_acronym']}]({esports_op_gg_team}{box_data[k]['team_id']}) [{box_data[k]['nickName']}]({esports_op_gg_player}{box_data[k]['id']})\n> [{box_data[k]['position']}] {box_data[k]['kda']} 평점\n> `({box_data[k]['kills']} / {box_data[k]['deaths']} / {box_data[k]['assists']})`\n"
+                    k += 1
+                    break
+
+            if msg_mvp_1 == "":
+                msg_mvp_1 = "플레이어 정보가 없습니다."
+
+            embed = discord.Embed(title="> 🏆 베스트 플레이어", description="리그 오브 레전드의 리그 베스트 플레이어 정보입니다.", color=colorMap['red'])
+            embed.set_footer(text="TIP: 아래 버튼을 눌러 다른 포지션의 랭킹도 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
+            embed.set_image(url=banner_image_url)
+            embed.add_field(name=f"> '{picked_lane}' 포지션 ({picked_league})", value=msg_mvp_1, inline=True)
+            embed.add_field(name="\u200b", value=msg_mvp_2, inline=True)
+            await msg.edit_original_response(content="", embed=embed, view=MvpButton(self.bot, ctx, msg, banner_image_url, picked_league, picked_lane, button_select, box_LCK, box_LPL, box_LEC, box_LCS, box_LCO, box_PCS, box_LLA, box_VCS, box_LCL, box_LJL, box_TCL, box_CBLOL))
 
         except Exception as error:
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))

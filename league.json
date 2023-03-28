@@ -2,28 +2,28 @@
     "leagues": [
         {
             "id": "85",
-            "tournamentId": ["None"],
+            "tournamentId": null,
             "name": "League of Legends Circuit Oceania",
             "shortName": "LCO",
             "region": "OCE"
         },
         {
             "id": "86",
-            "tournamentId": ["1040", "1048"],
+            "tournamentId": ["1040"],
             "name": "Pacific Championship Series",
             "shortName": "PCS",
             "region": "SEA"
         },
         {
             "id": "87",
-            "tournamentId": ["1021", "1047"],
+            "tournamentId": ["1021"],
             "name": "Liga Latinoamérica",
             "shortName": "LLA",
             "region": "LAT"
         },
         {
             "id": "88",
-            "tournamentId": ["1017", "1049"],
+            "tournamentId": ["1017"],
             "name": "League of Legends Championship Series",
             "shortName": "LCS",
             "region": "NA"
@@ -51,21 +51,21 @@
         },
         {
             "id": "92",
-            "tournamentId": ["1039", "1046"],
+            "tournamentId": ["1039"],
             "name": "League of Legends Japan League",
             "shortName": "LJL",
             "region": "JP"
         },
         {
             "id": "93",
-            "tournamentId": ["1013", "1050"],
+            "tournamentId": ["1013"],
             "name": "Turkish Championship League",
             "shortName": "TCL",
             "region": "TR"
         },
         {
             "id": "94",
-            "tournamentId": ["1015", "1051"],
+            "tournamentId": ["1015"],
             "name": "Campeonato Brasileiro de League of Legends",
             "shortName": "CBLOL",
             "region": "BR"
@@ -93,14 +93,14 @@
         },
         {
             "id": "98",
-            "tournamentId": ["1019", "1052"],
+            "tournamentId": ["1019"],
             "name": "League of Legends Pro League",
             "shortName": "LPL",
             "region": "CN"
         },
         {
             "id": "99",
-            "tournamentId": ["1016", "1018"],
+            "tournamentId": ["1018"],
             "name": "League of Legends Champions Korea",
             "shortName": "LCK",
             "region": "KR"
@@ -108,6 +108,7 @@
         {
             "id": "100",
             "name": "Mid-Season Invitational",
+            "tournamentId": ["None"],
             "shortName": "MSI",
             "region": "INT"
         }
