@@ -2,7 +2,7 @@
     "leagues": [
         {
             "id": "85",
-            "tournamentId": ["None"],
+            "tournamentId": null,
             "name": "League of Legends Circuit Oceania",
             "shortName": "LCO",
             "region": "OCE"
@@ -108,6 +108,7 @@
         {
             "id": "100",
             "name": "Mid-Season Invitational",
+            "tournamentId": ["None"],
             "shortName": "MSI",
             "region": "INT"
         }
