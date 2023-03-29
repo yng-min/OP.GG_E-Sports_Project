@@ -88,18 +88,18 @@ class ScheduleButton(discord.ui.View):
             discord.SelectOption(label="LPL / CN ", value="2", description="League of Legends Pro League"),
             discord.SelectOption(label="LEC / EU", value="3", description="League of Legends European Championship"),
             discord.SelectOption(label="LCS / NA", value="4", description="League of Legends Championship Series"),
-            discord.SelectOption(label="LCO / OCE", value="5", description="League of Legends Circuit Oceania"),
-            discord.SelectOption(label="PCS / SEA", value="6", description="Pacific Championship Series"),
-            discord.SelectOption(label="LLA / LAT", value="7", description="Liga Latinoamérica"),
-            discord.SelectOption(label="VCS / VN", value="8", description="Vietnam Championship Series"),
-            discord.SelectOption(label="LCL / CIS", value="9", description="League of Legends Continental League"),
-            discord.SelectOption(label="LJL / JP", value="10", description="League of Legends Japan League"),
-            discord.SelectOption(label="TCL / TR", value="11", description="Turkish Championship League"),
-            discord.SelectOption(label="CBLOL / BR", value="12", description="Campeonato Brasileiro de League of Legends"),
+            discord.SelectOption(label="CBLOL / BR", value="5", description="Campeonato Brasileiro de League of Legends"),
+            discord.SelectOption(label="VCS / VN", value="6", description="Vietnam Championship Series"),
+            discord.SelectOption(label="LCL / CIS", value="7", description="League of Legends Continental League"),
+            discord.SelectOption(label="TCL / TR", value="8", description="Turkish Championship League"),
+            discord.SelectOption(label="PCS / SEA", value="9", description="Pacific Championship Series"),
+            discord.SelectOption(label="LLA / LAT", value="10", description="Liga Latinoamérica"),
+            discord.SelectOption(label="LJL / JP", value="11", description="League of Legends Japan League"),
+            discord.SelectOption(label="LCO / OCE", value="12", description="League of Legends Circuit Oceania"),
             discord.SelectOption(label="MSI / INT", value="13", description="Mid-Season Invitational"),
             discord.SelectOption(label="OPL / COE", value="14", description="Oceanic Pro League"),
             discord.SelectOption(label="LMS / LMS", value="15", description="League of Legends Master Series"),
-            discord.SelectOption(label="Worlds / INT", value="16", description="League of Legends World Championship"),
+            discord.SelectOption(label="Worlds / INT", value="16", description="League of Legends World Championship")
         ],
         row=0
     )
@@ -117,14 +117,14 @@ class ScheduleButton(discord.ui.View):
             elif select.values[i] == "2": self.box_select.append("LPL")
             elif select.values[i] == "3": self.box_select.append("LEC")
             elif select.values[i] == "4": self.box_select.append("LCS")
-            elif select.values[i] == "5": self.box_select.append("LCO")
-            elif select.values[i] == "6": self.box_select.append("PCS")
-            elif select.values[i] == "7": self.box_select.append("LLA")
-            elif select.values[i] == "8": self.box_select.append("VCS")
-            elif select.values[i] == "9": self.box_select.append("LCL")
-            elif select.values[i] == "10": self.box_select.append("LJL")
-            elif select.values[i] == "11": self.box_select.append("TCL")
-            elif select.values[i] == "12": self.box_select.append("CBLOL")
+            elif select.values[i] == "5": self.box_select.append("CBLOL")
+            elif select.values[i] == "6": self.box_select.append("VCS")
+            elif select.values[i] == "7": self.box_select.append("LCL")
+            elif select.values[i] == "8": self.box_select.append("TCL")
+            elif select.values[i] == "9": self.box_select.append("PCS")
+            elif select.values[i] == "10": self.box_select.append("LLA")
+            elif select.values[i] == "11": self.box_select.append("LJL")
+            elif select.values[i] == "12": self.box_select.append("LCO")
             elif select.values[i] == "13": self.box_select.append("MSI")
             elif select.values[i] == "14": self.box_select.append("OPL")
             elif select.values[i] == "15": self.box_select.append("LMS")
@@ -451,7 +451,9 @@ class ScheduleCMD(commands.Cog):
                                     box_3_match_info.append(match_info)
 
                 else:
-                    print(f"{matches['code']}: {matches['message']}")
+                    print(f"[schedule.py] {matches['code']}: {matches['message']}")
+                    embed = discord.Embed(title="> ⚠️ 오류", description=f"Code: `{matches['code']}`\nMessage: {matches['message']}", color=colorMap['red'])
+                    return await msg.edit_original_response(content="", embed=embed)
 
             if box_1_match_schedule_1 == []:
                 box_1_match_schedule_1 = [""]

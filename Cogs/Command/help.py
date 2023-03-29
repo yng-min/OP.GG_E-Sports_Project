@@ -24,7 +24,7 @@ def embed_setup(bot, banner, page):
         embed = discord.Embed(title="> 📌 OP.GG Esports 봇 서비스 가이드", description="```서비스 소개 페이지```", color=colorMap['red'])
         embed.add_field(name="▫️ 소개", value=" 본 디스코드 봇은 [OP.GG Esports](https://esports.op.gg/) 서비스의 공식 디스코드 봇이며, **리그 오브 레전드**의 e스포츠 리그 관련 기능을 제공합니다.", inline=False)
         embed.add_field(name="▫️ 기능", value=" 기본적으로 리그 오브 레전드의 e스포츠 일정 조회, 경기 알림 등을 제공하지만 더욱 재밌게 승부 예측 미니게임도 즐길 수 있어요.", inline=False)
-        embed.add_field(name="▫️ 서포트 서버", value=" [OP.GG 서비스 서포트 서버](https://discord.com/invite/opgg/)에 입장해 보세요.")
+        embed.add_field(name="▫️ 서포트 서버", value=" [OP.GG 서비스 서포트 서버](https://discord.com/invite/opgg/)에 입장하여 유저들과 소통하고 OP.GG Esports 봇과 다른 서비스들의 정보를 확인해보세요!", inline=False)
 
     elif page == 2:
         embed = discord.Embed(title="> 📌 OP.GG Esports 봇 서비스 가이드", description="```기본 명령어 페이지```", color=colorMap['red'])

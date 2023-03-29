@@ -48,7 +48,7 @@ class DatabaseSETUP(commands.Cog):
             ChannelFeedback INTEGER
             )
         """)
-        botCURSOR.execute("INSERT INTO main VALUES(?, ?, ?, ?, ?, ?)", (1, 1, 738313164965543946, 1003271459344498748, 999942267752169543, 1004826924599738509))
+        # botCURSOR.execute("INSERT INTO main VALUES(?, ?, ?, ?, ?, ?)", (1, 1, 738313164965543946, 1003271459344498748, 999942267752169543, 1004826924599738509))
         botDB.close()
 
 

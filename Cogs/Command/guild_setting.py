@@ -101,14 +101,14 @@ class LeagueSelect(discord.ui.Select):
             elif self.values[i] == "2": self.st_league.append("LPL")
             elif self.values[i] == "3": self.st_league.append("LEC")
             elif self.values[i] == "4": self.st_league.append("LCS")
-            elif self.values[i] == "5": self.st_league.append("LCO")
-            elif self.values[i] == "6": self.st_league.append("PCS")
-            elif self.values[i] == "7": self.st_league.append("LLA")
-            elif self.values[i] == "8": self.st_league.append("VCS")
-            elif self.values[i] == "9": self.st_league.append("LCL")
-            elif self.values[i] == "10": self.st_league.append("LJL")
-            elif self.values[i] == "11": self.st_league.append("TCL")
-            elif self.values[i] == "12": self.st_league.append("CBLOL")
+            elif self.values[i] == "5": self.st_league.append("CBLOL")
+            elif self.values[i] == "6": self.st_league.append("VCS")
+            elif self.values[i] == "7": self.st_league.append("LCL")
+            elif self.values[i] == "8": self.st_league.append("TCL")
+            elif self.values[i] == "9": self.st_league.append("PCS")
+            elif self.values[i] == "10": self.st_league.append("LLA")
+            elif self.values[i] == "11": self.st_league.append("LJL")
+            elif self.values[i] == "12": self.st_league.append("LCO")
             elif self.values[i] == "13": self.st_league.append("MSI")
             elif self.values[i] == "14": self.st_league.append("OPL")
             elif self.values[i] == "15": self.st_league.append("LMS")
@@ -123,14 +123,14 @@ class LeagueSelect(discord.ui.Select):
             if "LPL" == self.st_league[i]: self.league_2 = 1
             if "LEC" == self.st_league[i]: self.league_3 = 1
             if "LCS" == self.st_league[i]: self.league_4 = 1
-            if "LCO" == self.st_league[i]: self.league_5 = 1
-            if "PCS" == self.st_league[i]: self.league_6 = 1
-            if "LLA" == self.st_league[i]: self.league_7 = 1
-            if "VCS" == self.st_league[i]: self.league_8 = 1
-            if "LCL" == self.st_league[i]: self.league_9 = 1
-            if "LJL" == self.st_league[i]: self.league_10 = 1
-            if "TCL" == self.st_league[i]: self.league_11 = 1
-            if "CBLOL" == self.st_league[i]: self.league_12 = 1
+            if "CBLOL" == self.st_league[i]: self.league_5 = 1
+            if "VCS" == self.st_league[i]: self.league_6 = 1
+            if "LCL" == self.st_league[i]: self.league_7 = 1
+            if "TCL" == self.st_league[i]: self.league_8 = 1
+            if "PCS" == self.st_league[i]: self.league_9 = 1
+            if "LLA" == self.st_league[i]: self.league_10 = 1
+            if "LJL" == self.st_league[i]: self.league_11 = 1
+            if "LCO" == self.st_league[i]: self.league_12 = 1
             if "MSI" == self.st_league[i]: self.league_13 = 1
             if "OPL" == self.st_league[i]: self.league_14 = 1
             if "LMS" == self.st_league[i]: self.league_15 = 1
@@ -174,21 +174,21 @@ class LeagueSelect(discord.ui.Select):
             if self.league_4 == 1:
                 guildCURSOR.execute("UPDATE league SET LCS = ? WHERE GuildID = ?", (1, self.ctx.guild.id))
             if self.league_5 == 1:
-                guildCURSOR.execute("UPDATE league SET LCO = ? WHERE GuildID = ?", (1, self.ctx.guild.id))
-            if self.league_6 == 1:
-                guildCURSOR.execute("UPDATE league SET PCS = ? WHERE GuildID = ?", (1, self.ctx.guild.id))
-            if self.league_7 == 1:
-                guildCURSOR.execute("UPDATE league SET LLA = ? WHERE GuildID = ?", (1, self.ctx.guild.id))
-            if self.league_8 == 1:
-                guildCURSOR.execute("UPDATE league SET VCS = ? WHERE GuildID = ?", (1, self.ctx.guild.id))
-            if self.league_9 == 1:
-                guildCURSOR.execute("UPDATE league SET LCL = ? WHERE GuildID = ?", (1, self.ctx.guild.id))
-            if self.league_10 == 1:
-                guildCURSOR.execute("UPDATE league SET LJL = ? WHERE GuildID = ?", (1, self.ctx.guild.id))
-            if self.league_11 == 1:
-                guildCURSOR.execute("UPDATE league SET TCL = ? WHERE GuildID = ?", (1, self.ctx.guild.id))
-            if self.league_12 == 1:
                 guildCURSOR.execute("UPDATE league SET CBLOL = ? WHERE GuildID = ?", (1, self.ctx.guild.id))
+            if self.league_6 == 1:
+                guildCURSOR.execute("UPDATE league SET VCS = ? WHERE GuildID = ?", (1, self.ctx.guild.id))
+            if self.league_7 == 1:
+                guildCURSOR.execute("UPDATE league SET LCL = ? WHERE GuildID = ?", (1, self.ctx.guild.id))
+            if self.league_8 == 1:
+                guildCURSOR.execute("UPDATE league SET TCL = ? WHERE GuildID = ?", (1, self.ctx.guild.id))
+            if self.league_9 == 1:
+                guildCURSOR.execute("UPDATE league SET PCS = ? WHERE GuildID = ?", (1, self.ctx.guild.id))
+            if self.league_10 == 1:
+                guildCURSOR.execute("UPDATE league SET LLA = ? WHERE GuildID = ?", (1, self.ctx.guild.id))
+            if self.league_11 == 1:
+                guildCURSOR.execute("UPDATE league SET LJL = ? WHERE GuildID = ?", (1, self.ctx.guild.id))
+            if self.league_12 == 1:
+                guildCURSOR.execute("UPDATE league SET LCO = ? WHERE GuildID = ?", (1, self.ctx.guild.id))
             if self.league_13 == 1:
                 guildCURSOR.execute("UPDATE league SET MSI = ? WHERE GuildID = ?", (1, self.ctx.guild.id))
             if self.league_14 == 1:
@@ -204,14 +204,14 @@ class LeagueSelect(discord.ui.Select):
             if self.league_2 == 1: leagueContent += ", LPL"
             if self.league_3 == 1: leagueContent += ", LEC"
             if self.league_4 == 1: leagueContent += ", LCS"
-            if self.league_5 == 1: leagueContent += ", LCO"
-            if self.league_6 == 1: leagueContent += ", PCS"
-            if self.league_7 == 1: leagueContent += ", LLA"
-            if self.league_8 == 1: leagueContent += ", VCS"
-            if self.league_9 == 1: leagueContent += ", LCL"
-            if self.league_10 == 1: leagueContent += ", LJL"
-            if self.league_11 == 1: leagueContent += ", TCL"
-            if self.league_12 == 1: leagueContent += ", CBLOL"
+            if self.league_5 == 1: leagueContent += ", CBLOL"
+            if self.league_6 == 1: leagueContent += ", VCS"
+            if self.league_7 == 1: leagueContent += ", LCL"
+            if self.league_8 == 1: leagueContent += ", TCL"
+            if self.league_9 == 1: leagueContent += ", PCS"
+            if self.league_10 == 1: leagueContent += ", LLA"
+            if self.league_11 == 1: leagueContent += ", LJL"
+            if self.league_12 == 1: leagueContent += ", LCO"
             if self.league_13 == 1: leagueContent += ", MSI"
             if self.league_14 == 1: leagueContent += ", OPL"
             if self.league_15 == 1: leagueContent += ", LMS"
