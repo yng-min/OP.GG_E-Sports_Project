@@ -70,18 +70,29 @@ class LeagueSelect(discord.ui.Select):
         for league in leagues:
             self.leagues.append(league)
 
-        options = []
-        for i in range(17):
-            if i == 0:
-                options.append(discord.SelectOption(label="모든 리그", value="0", description="모든 리그의 알림을 받고 싶어요!"))
-            else:
-                options.append(discord.SelectOption(label=f"{leagues[i - 1]['shortName']} / {leagues[i - 1]['region']}", value=f"{i}", description=f"{leagues[i - 1]['name']}"))
-
         super().__init__(
             placeholder="리그 선택하기",
             min_values=1,
             max_values=17,
-            options=options,
+            options=[
+            discord.SelectOption(label="모든 리그", value="0", description="모든 리그의 정보를 보고 싶어요!"),
+            discord.SelectOption(label="LCK / KR", value="1", description="League of Legends Champions Korea"),
+            discord.SelectOption(label="LPL / CN ", value="2", description="League of Legends Pro League"),
+            discord.SelectOption(label="LEC / EU", value="3", description="League of Legends European Championship"),
+            discord.SelectOption(label="LCS / NA", value="4", description="League of Legends Championship Series"),
+            discord.SelectOption(label="CBLOL / BR", value="5", description="Campeonato Brasileiro de League of Legends"),
+            discord.SelectOption(label="VCS / VN", value="6", description="Vietnam Championship Series"),
+            discord.SelectOption(label="LCL / CIS", value="7", description="League of Legends Continental League"),
+            discord.SelectOption(label="TCL / TR", value="8", description="Turkish Championship League"),
+            discord.SelectOption(label="PCS / SEA", value="9", description="Pacific Championship Series"),
+            discord.SelectOption(label="LLA / LAT", value="10", description="Liga Latinoamérica"),
+            discord.SelectOption(label="LJL / JP", value="11", description="League of Legends Japan League"),
+            discord.SelectOption(label="LCO / OCE", value="12", description="League of Legends Circuit Oceania"),
+            discord.SelectOption(label="MSI / INT", value="13", description="Mid-Season Invitational"),
+            discord.SelectOption(label="OPL / COE", value="14", description="Oceanic Pro League"),
+            discord.SelectOption(label="LMS / LMS", value="15", description="League of Legends Master Series"),
+            discord.SelectOption(label="Worlds / INT", value="16", description="League of Legends World Championship")
+            ],
             row=0
         )
 
@@ -339,6 +350,11 @@ class GuildSettingCMD(commands.Cog):
             print(f"{ctx.author}({ctx.author.id}) | 서버 셋업")
             embed = discord.Embed(title="> ✅ 설정 완료", description="서비스 이용을 위한 설정을 완료했어요.", color=colorMap['red'])
             await msg.edit_original_response(content="", embed=embed)
+
+        except discord.Forbidden: # missing permissions
+            embed = discord.Embed(title="> ⚠️ 설정 실패", description=f"서버를 설정하기 위한 권한이 없어요. 봇에게 `역할 관리하기` 권한이 있는지 확인해주세요.", color=colorMap['red'])
+            embed.set_footer(text="TIP: 봇의 권한을 '관리자' 권한으로 설정하는게 가장 좋아요.", icon_url=self.bot.user.display_avatar.url)
+            return await msg.edit_original_response(content="", embed=embed)
 
         except Exception as error:
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
