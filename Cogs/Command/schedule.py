@@ -71,9 +71,11 @@ class ScheduleButton(discord.ui.View):
         self.msg_schedule_1 = ""
         self.msg_schedule_2 = ""
         self.msg_schedule_3 = ""
-        self.league_1_max = False
-        self.league_2_max = False
-        self.league_3_max = False
+        self.league_schedule_1 = []
+        self.league_schedule_2 = []
+        self.league_schedule_3 = []
+        self.league_find = ""
+        self.check_all = False
         self.button = ""
         self.callback_select = False
         self.add_item(discord.ui.Button(label="OP.GG Esports에서 보기", url=esports_op_gg_schedules, row=1))
@@ -104,12 +106,18 @@ class ScheduleButton(discord.ui.View):
         row=0
     )
     async def select_callback(self, select: discord.ui.Select, interaction):
+        self.box_select = []
+        self.schedules_1 = []
+        self.schedules_2 = []
+        self.schedules_3 = []
         self.msg_schedule_1 = ""
         self.msg_schedule_2 = ""
         self.msg_schedule_3 = ""
-        self.league_1_max = False
-        self.league_2_max = False
-        self.league_3_max = False
+        self.league_schedule_1 = []
+        self.league_schedule_2 = []
+        self.league_schedule_3 = []
+        self.league_find = ""
+        self.check_all = False
 
         for i in range(len(select.values)):
             if select.values[i] == "0": self.box_select.append("all")
@@ -131,94 +139,94 @@ class ScheduleButton(discord.ui.View):
             elif select.values[i] == "16": self.box_select.append("Worlds")
             else: pass
 
-        league_schedule_1 = self.schedule_1_2.split("\n")
-        league_schedule_2 = self.schedule_2_2.split("\n")
-        league_schedule_3 = self.schedule_3_2.split("\n")
+        self.league_schedule_1 = self.schedule_1_2.split("\n")
+        self.league_schedule_2 = self.schedule_2_2.split("\n")
+        self.league_schedule_3 = self.schedule_3_2.split("\n")
 
-        league_schedule_1 = list(filter(len, league_schedule_1))
-        league_schedule_2 = list(filter(len, league_schedule_2))
-        league_schedule_3 = list(filter(len, league_schedule_3))
+        self.league_schedule_1 = list(filter(len, self.league_schedule_1))
+        self.league_schedule_2 = list(filter(len, self.league_schedule_2))
+        self.league_schedule_3 = list(filter(len, self.league_schedule_3))
 
-        if league_schedule_1 == []: self.schedules_1 = []
+        if self.league_schedule_1 == []:
+            pass
         else:
-            for i in range(len(league_schedule_1)):
-                if self.box_select[0] == "all":
+            for i in range(len(self.box_select)):
+                if self.box_select[i] == "all":
+                    self.schedules_1 = []
+                    self.schedules_1.append(self.schedule_1_3)
                     break
-                for j in range(len(select.values)):
-                    try:
-                        league_find = league_schedule_1[i].split("(")[1].split("/")[0]
-                    except:
-                        self.league_1_max = True
+                else:
+                    for j in range(len(self.league_schedule_1)):
+                        self.league_find = self.league_schedule_1[j].split("(")[1].split("/")[0]
+                        if self.league_find == self.box_select[i]:
+                            self.schedules_1.append(self.league_schedule_1[j])
 
-                    if league_find == self.box_select[j]:
-                        self.schedules_1.append(league_schedule_1[i])
-                    elif self.league_1_max == True:
-                        # self.schedules_1.append("...")
-                        self.league_1_max = False
-                    else:
-                        pass
-
-        if league_schedule_2 == []: self.schedules_2 = []
+        if self.league_schedule_2 == []:
+            pass
         else:
-            for i in range(len(league_schedule_2)):
-                if self.box_select[0] == "all":
+            for i in range(len(self.box_select)):
+                if self.box_select[i] == "all":
+                    self.schedules_2 = []
+                    self.schedules_2.append(self.schedule_2_3)
                     break
-                for j in range(len(select.values)):
-                    try:
-                        league_find = league_schedule_2[i].split("(")[1].split("/")[0]
-                    except:
-                        self.league_2_max = True
+                else:
+                    for j in range(len(self.league_schedule_2)):
+                        self.league_find = self.league_schedule_2[j].split("(")[1].split("/")[0]
+                        if self.league_find == self.box_select[i]:
+                            self.schedules_2.append(self.league_schedule_2[j])
 
-                    if league_find == self.box_select[j]:
-                        self.schedules_2.append(league_schedule_2[i])
-                    elif self.league_2_max == True:
-                        # self.schedules_2.append("...")
-                        self.league_2_max = False
-                    else:
-                        pass
-
-        if league_schedule_3 == []: self.schedules_3 = []
+        if self.league_schedule_3 == []:
+            pass
         else:
-            for i in range(len(league_schedule_3)):
-                if self.box_select[0] == "all":
+            for i in range(len(self.box_select)):
+                if self.box_select[i] == "all":
+                    self.schedules_3 = []
+                    self.schedules_3.append(self.schedule_3_3)
                     break
-                for j in range(len(select.values)):
-                    try:
-                        league_find = league_schedule_3[i].split("(")[1].split("/")[0]
-                    except:
-                        self.league_3_max = True
+                else:
+                    for j in range(len(self.league_schedule_3)):
+                        self.league_find = self.league_schedule_3[j].split("(")[1].split("/")[0]
+                        if self.league_find == self.box_select[i]:
+                            self.schedules_3.append(self.league_schedule_3[j])
 
-                    if league_find == self.box_select[j]:
-                        self.schedules_3.append(league_schedule_3[i])
-                    elif self.league_3_max == True:
-                        # self.schedules_3.append("...")
-                        self.league_3_max = False
-                    else:
-                        pass
+        if self.schedules_1 == []: self.msg_schedule_1 = "해당 일자의 경기 일정이 없습니다."
+        for i in range(len(self.schedules_1)):
+            for j in range(len(self.box_select)):
+                if self.box_select[j] == "all":
+                    self.check_all = True
+                    self.msg_schedule_1 = self.schedule_1_3
+                else:
+                    break
+            if self.check_all == True:
+                break
+            else:
+                self.msg_schedule_1 += f"\n{self.schedules_1[i]}"
 
-        if self.box_select[0] == "all":
-            self.msg_schedule_1 = self.schedule_1_3
-        elif (self.box_select != "all") and (self.schedules_1 == []):
-            self.msg_schedule_1 = "해당 일자의 경기 일정이 없습니다."
-        else:
-            for i in range(len(self.schedules_1)):
-                self.msg_schedule_1 += (f"\n{self.schedules_1[i]}")
+        if self.schedules_2 == []: self.msg_schedule_2 = "해당 일자의 경기 일정이 없습니다."
+        for i in range(len(self.schedules_2)):
+            for j in range(len(self.box_select)):
+                if self.box_select[j] == "all":
+                    self.check_all = True
+                    self.msg_schedule_2 = self.schedule_2_3
+                else:
+                    break
+            if self.check_all == True:
+                break
+            else:
+                self.msg_schedule_2 += f"\n{self.schedules_2[i]}"
 
-        if self.box_select[0] == "all":
-            self.msg_schedule_2 = self.schedule_2_3
-        elif (self.box_select != "all") and (self.schedules_2 == []):
-            self.msg_schedule_2 = "해당 일자의 경기 일정이 없습니다."
-        else:
-            for i in range(len(self.schedules_2)):
-                self.msg_schedule_2 += (f"\n{self.schedules_2[i]}")
-
-        if self.box_select[0] == "all":
-            self.msg_schedule_3 = self.schedule_3_3
-        elif (self.box_select != "all") and (self.schedules_3 == []):
-            self.msg_schedule_3 = "해당 일자의 경기 일정이 없습니다."
-        else:
-            for i in range(len(self.schedules_3)):
-                self.msg_schedule_3 += (f"\n{self.schedules_3[i]}")
+        if self.schedules_3 == []: self.msg_schedule_3 = "해당 일자의 경기 일정이 없습니다."
+        for i in range(len(self.schedules_3)):
+            for j in range(len(self.box_select)):
+                if self.box_select[j] == "all":
+                    self.check_all = True
+                    self.msg_schedule_3 = self.schedule_3_3
+                else:
+                    break
+            if self.check_all == True:
+                break
+            else:
+                self.msg_schedule_3 += f"\n{self.schedules_3[i]}"
 
         self.msg_schedule_1_1 = ""
         self.msg_schedule_1_2 = ""
@@ -263,10 +271,6 @@ class ScheduleButton(discord.ui.View):
         await interaction.response.edit_message(content="", embed=embed)
 
         self.callback_select = True
-        self.box_select.clear()
-        self.schedules_1.clear()
-        self.schedules_2.clear()
-        self.schedules_3.clear()
 
     @discord.ui.button(emoji="1️⃣", style=discord.ButtonStyle.gray, row=1)
     async def _one(self, button: discord.ui.Button, interaction: discord.Interaction):
@@ -348,7 +352,10 @@ class ScheduleButton(discord.ui.View):
         self.box_select.clear()
 
     async def on_timeout(self):
-        await self.msg.edit_original_response(content="", view=DisabledButton())
+        try:
+            await self.msg.edit_original_response(content="", view=DisabledButton())
+        except discord.NotFound:
+            pass
 
 
 class DisabledButton(discord.ui.View):

@@ -275,7 +275,10 @@ class StandingView(discord.ui.View):
         await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, self.box_recentMatches))
 
     async def on_timeout(self):
-        await self.msg.edit_original_response(content="", view=DisabledButton())
+        try:
+            await self.msg.edit_original_response(content="", view=DisabledButton())
+        except discord.NotFound:
+            pass
 
 
 class DisabledButton(discord.ui.View):

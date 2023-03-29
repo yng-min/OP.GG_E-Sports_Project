@@ -88,11 +88,11 @@ class LeagueSelect(discord.ui.Select):
     async def callback(self, interaction: discord.Interaction):
 
         if not self.ctx.author.guild_permissions.administrator:
-            embed = discord.Embed(title="> ⛔ 설정 불가", description="이 명령어를 사용하려면 서버의 __관리자 권한__이 필요해요.", color=colorMap['red'])
+            embed = discord.Embed(title="> ⛔ 설정 불가", description="이 명령어는 서버의 __관리자 권한__을 가진 이용자만 사용할 수 있어요.", color=colorMap['red'])
             return await interaction.response.edit_message(content="", embed=embed, view=None)
 
         if not os.path.isfile(rf"./Data/Guild/guild_{self.ctx.guild.id}.sqlite"):
-            embed = discord.Embed(title="> ⛔ 설정 불가", description=f"설정이 완료되지 않았어요. `{prefix}셋업` 명령어를 통해 초기 설정을 먼저 진행해주세요.", color=colorMap['red'])
+            embed = discord.Embed(title="> ⛔ 설정 불가", description=f"이 서버는 설정이 완료되지 않았어요. `{prefix}설정 셋업` 명령어를 통해 초기 설정을 먼저 진행해주세요.", color=colorMap['red'])
             return await interaction.response.edit_message(content="", embed=embed, view=None)
 
         for i in range(len(self.values)):
@@ -272,12 +272,12 @@ class GuildSettingCMD(commands.Cog):
         channel_notice = 채널
 
         if not ctx.author.guild_permissions.administrator:
-            embed = discord.Embed(title="> ⛔ 설정 불가", description="이 명령어를 사용하려면 서버의 __관리자 권한__이 필요해요.", color=colorMap['red'])
-            return await ctx.respond(embed=embed)
+            embed = discord.Embed(title="> ⛔ 설정 불가", description="이 명령어는 서버의 __관리자 권한__을 가진 이용자만 사용할 수 있어요.", color=colorMap['red'])
+            return await ctx.respond(embed=embed, ephemeral=True)
 
         if os.path.isfile(rf"./Data/Guild/guild_{ctx.guild.id}.sqlite"):
             embed = discord.Embed(title="> ⛔ 설정 불가", description=f"이 서버는 이미 설정이 완료된 상태예요. 만약 설정을 변경하고 싶으시다면 `{prefix}설정-변경` 명령어를 이용해주세요.", color=colorMap['red'])
-            return await ctx.respond(embed=embed)
+            return await ctx.respond(embed=embed, ephemeral=True)
 
         embed = discord.Embed(title="", description=f"⚙ 설정 진행 중...", color=colorMap['red'])
         msg = await ctx.respond(embed=embed)
@@ -355,6 +355,10 @@ class GuildSettingCMD(commands.Cog):
     )
     async def _setting_choice_leagueCMD(self, ctx):
 
+        if not os.path.isfile(rf"./Data/Guild/guild_{ctx.guild.id}.sqlite"):
+            embed = discord.Embed(title="> ⛔ 설정 불가", description=f"이 서버는 설정이 완료되지 않았어요. `{prefix}설정 셋업` 명령어를 통해 초기 설정을 먼저 진행해주세요.", color=colorMap['red'])
+            return await ctx.respond(embed=embed, ephemeral=True)
+
         embed = discord.Embed(title="> 📝 리그 알림 설정", description="서버에서 알림을 받을 리그 종류를 선택해 주세요.", color=colorMap['red'])
         msg = await ctx.respond(embed=embed)
         await msg.edit_original_response(content="", embed=embed, view=LeagueView(self.bot, ctx, msg))
@@ -387,12 +391,12 @@ class GuildSettingCMD(commands.Cog):
         except: reset_answer = None
 
         if not ctx.author.guild_permissions.administrator:
-            embed = discord.Embed(title="> ⛔ 설정 불가", description="이 명령어를 사용하려면 서버의 __관리자 권한__이 필요해요.", color=colorMap['red'])
-            return await ctx.respond(embed=embed)
+            embed = discord.Embed(title="> ⛔ 설정 불가", description="이 명령어는 서버의 __관리자 권한__을 가진 이용자만 사용할 수 있어요.", color=colorMap['red'])
+            return await ctx.respond(embed=embed, ephemeral=True)
 
         if not os.path.isfile(rf"./Data/Guild/guild_{ctx.guild.id}.sqlite"):
-            embed = discord.Embed(title="> ⛔ 설정 불가", description=f"설정이 완료되지 않았어요. `{prefix}셋업` 명령어를 통해 초기 설정을 먼저 진행해주세요.", color=colorMap['red'])
-            return await ctx.respond(embed=embed)
+            embed = discord.Embed(title="> ⛔ 설정 불가", description=f"이 서버는 설정이 완료되지 않았어요. `{prefix}설정 셋업` 명령어를 통해 초기 설정을 먼저 진행해주세요.", color=colorMap['red'])
+            return await ctx.respond(embed=embed, ephemeral=True)
 
         embed = discord.Embed(title="", description=f"⚙ 설정 진행 중...", color=colorMap['red'])
         msg = await ctx.respond(embed=embed)
@@ -440,7 +444,7 @@ class GuildSettingCMD(commands.Cog):
                 embed = discord.Embed(title="> ✅ 설정 초기화 완료", description="서버 설정을 모두 초기화했어요.", color=colorMap['red'])
                 return await msg.edit_original_response(content="", embed=embed)
             elif reset_mode == 0:
-                embed = discord.Embed(title="> 📢 설정 초기화 취소", description=f"[`초기화`:`{reset_answer}`] 정확한 문구 입력 실패로 인해 초기화가 취소되었습니다.", color=colorMap['red'])
+                embed = discord.Embed(title="> 📢 설정 초기화 취소", description=f"[`초기화`:`{reset_answer}`] 정확한 문구 입력 실패로 인해 초기화가 취소되었어요.", color=colorMap['red'])
                 return await msg.edit_original_response(content="", embed=embed)
 
             if (notice_mode_1 == 1) or (notice_mode_1 == 0):

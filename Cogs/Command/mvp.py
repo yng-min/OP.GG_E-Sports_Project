@@ -444,7 +444,10 @@ class MvpView(discord.ui.View):
         self.add_item(button_sup)
 
     async def on_timeout(self):
-        await self.msg.edit_original_response(content="", view=DisabledButton())
+        try:
+            await self.msg.edit_original_response(content="", view=DisabledButton())
+        except discord.NotFound:
+            pass
 
 
 class DisabledButton(discord.ui.View):

@@ -33,7 +33,7 @@ class ProfileCMD(commands.Cog):
 
         if not os.path.isfile(rf"./Data/User/user_{ctx.author.id}.sqlite"):
             embed = discord.Embed(title="> ⛔ 프로필 조회 불가", description="서비스에 가입하셔야 이용할 수 있는 기능입니다.", color=colorMap['red'])
-            return await ctx.respond(embed=embed)
+            return await ctx.respond(embed=embed, ephemeral=True)
 
         try:
             userDB = sqlite3.connect(rf"./Data/User/user_{ctx.author.id}.sqlite", isolation_level=None)
@@ -47,13 +47,13 @@ class ProfileCMD(commands.Cog):
             embed = discord.Embed(title="> 📋 프로필 정보", description=f"<@{ctx.author.id}> 님의 정보예요.", color=colorMap['red'])
             embed.add_field(name="포인트 통계", value=f"_**{resultData[2]:,}**_포인트\n(누적 _**{resultData[1]:,}**_포인트)", inline=True)
             embed.add_field(name="승부 예측 통계", value=f"성공 : _**{resultData[4]:,}**_번 | 실패 : _**{resultData[5]:,}**_번\n승률 : _**{winRatio}**_% (누적 _**{resultData[3]:,}**_번)", inline=True)
-            await ctx.respond(embed=embed)
+            await ctx.respond(embed=embed, ephemeral=True)
 
         except Exception as error:
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
             print(traceback.format_exc())
             embed = discord.Embed(title="> ⚠️ 프로필 조회 실패", description=f"아래의 오류로 인해 프로필 조회에 실패했어요. 해당 문제가 지속된다면 개발자에게 문의해주세요.\n`{error}`", color=colorMap['red'])
-            return await ctx.respond(embed=embed)
+            return await ctx.respond(embed=embed, ephemeral=True)
 
         try: userDB.close()
         except: pass

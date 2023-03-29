@@ -46,7 +46,7 @@ class UserSettingCMD(commands.Cog):
 
         if os.path.isfile(rf"./Data/User/user_{ctx.author.id}.sqlite"):
             embed = discord.Embed(title="> ⛔ 가입 불가", description=f"<@{ctx.author.id}> 님은 이미 서비스에 가입되어 있어요.", color=colorMap['red'])
-            return await ctx.respond(embed=embed)
+            return await ctx.respond(embed=embed, ephemeral=True)
 
         embed = discord.Embed(title="", description="⚙ 가입 진행 중...", color=colorMap['red'])
         msg = await ctx.respond(embed=embed)
@@ -132,7 +132,7 @@ class UserSettingCMD(commands.Cog):
 
         else:
             embed = discord.Embed(title="> ⛔ 탈퇴 불가", description=f"<@{ctx.author.id}> 님은 서비스에 가입되어 있지 않아요.", color=colorMap['red'])
-            return await ctx.respond(embed=embed)
+            return await ctx.respond(embed=embed, ephemeral=True)
 
 
 

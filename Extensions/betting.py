@@ -98,6 +98,9 @@ class BettingButton(discord.ui.View):
 
                     guildDB.close()
 
+        except discord.NotFound:
+            pass
+
         except Exception as error:
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
             print(traceback.format_exc())
