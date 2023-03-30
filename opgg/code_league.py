@@ -14,6 +14,9 @@ query {
     standings(tournamentId: "%s") {
         position
         previously
+        point
+        win
+        lose
         setWin
         setLose
         team{id}
@@ -75,6 +78,10 @@ query {
         player{instagram}
         player{facebook}
         player{discord}
+        playerStat{team{id}}
+        playerStat{team{name}}
+        playerStat{team{acronym}}
+        playerStat{team{imageUrl}}
         playerStat{games}
         playerStat{winRate}
         playerStat{wins}

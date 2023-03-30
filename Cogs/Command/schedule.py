@@ -259,7 +259,7 @@ class ScheduleButton(discord.ui.View):
         else:
             self.msg_schedule_3_2 += self.msg_schedule_3
 
-        embed = discord.Embed(title="> 🗓️ 경기 일정", description="리그 오브 레전드의 리그 경기 일정 정보입니다.", color=colorMap['red'])
+        embed = discord.Embed(title="> 🗓️ 경기 일정", description="리그 오브 레전드 e스포츠의 경기 일정 정보입니다.", color=colorMap['red'])
         embed.set_footer(text="TIP: 아래 버튼을 눌러 다른 일자의 일정도 살펴볼 수 있어요.", icon_url=self.bot.user.display_avatar.url)
         embed.set_image(url=self.banner)
         if (self.button == "1") or (self.button == ""):
@@ -288,7 +288,7 @@ class ScheduleButton(discord.ui.View):
 
         if self.schedule_1_3 == "해당 일자의 경기 일정이 없습니다.": self.msg_schedule_1_3 = "해당 일자의 경기 일정이 없습니다."
 
-        embed = discord.Embed(title="> 🗓️ 경기 일정", description="리그 오브 레전드의 리그 경기 일정 정보입니다.", color=colorMap['red'])
+        embed = discord.Embed(title="> 🗓️ 경기 일정", description="리그 오브 레전드 e스포츠의 경기 일정 정보입니다.", color=colorMap['red'])
         embed.set_footer(text="TIP: 아래 버튼을 눌러 다른 일자의 일정도 살펴볼 수 있어요.", icon_url=self.bot.user.display_avatar.url)
         embed.set_image(url=self.banner)
         if self.callback_select == True:
@@ -315,7 +315,7 @@ class ScheduleButton(discord.ui.View):
 
         if self.schedule_2_3 == "해당 일자의 경기 일정이 없습니다.": self.msg_schedule_2_3 = "해당 일자의 경기 일정이 없습니다."
 
-        embed = discord.Embed(title="> 🗓️ 경기 일정", description="리그 오브 레전드의 리그 경기 일정 정보입니다.", color=colorMap['red'])
+        embed = discord.Embed(title="> 🗓️ 경기 일정", description="리그 오브 레전드 e스포츠의 경기 일정 정보입니다.", color=colorMap['red'])
         embed.set_footer(text="TIP: 아래 버튼을 눌러 다른 일자의 일정도 살펴볼 수 있어요.", icon_url=self.bot.user.display_avatar.url)
         embed.set_image(url=self.banner)
         if self.callback_select == True:
@@ -341,7 +341,7 @@ class ScheduleButton(discord.ui.View):
 
         if self.schedule_3_3 == "해당 일자의 경기 일정이 없습니다.": self.msg_schedule_3_3 = "해당 일자의 경기 일정이 없습니다."
 
-        embed = discord.Embed(title="> 🗓️ 경기 일정", description="리그 오브 레전드의 리그 경기 일정 정보입니다.", color=colorMap['red'])
+        embed = discord.Embed(title="> 🗓️ 경기 일정", description="리그 오브 레전드 e스포츠의 경기 일정 정보입니다.", color=colorMap['red'])
         embed.set_footer(text="TIP: 아래 버튼을 눌러 다른 일자의 일정도 살펴볼 수 있어요.", icon_url=self.bot.user.display_avatar.url)
         embed.set_image(url=self.banner)
         if self.callback_select == True:
@@ -378,7 +378,7 @@ class ScheduleCMD(commands.Cog):
 
     @_matches.command(
         name="일정",
-        description="리그 오브 레전드 리그의 경기 일정을 불러와요.",
+        description="리그 오브 레전드 e스포츠의 경기 일정을 불러와요.",
     )
     async def _scheduleCMD(self, ctx):
 
@@ -597,7 +597,7 @@ class ScheduleCMD(commands.Cog):
                 msg_schedule_info_1_1 = ""
                 msg_schedule_info_3_2 = "해당 일자의 경기 일정이 없습니다."
 
-            embed = discord.Embed(title="> 🗓️ 경기 일정", description="리그 오브 레전드의 리그 경기 일정 정보입니다.", color=colorMap['red'])
+            embed = discord.Embed(title="> 🗓️ 경기 일정", description="리그 오브 레전드 e스포츠의 경기 일정 정보입니다.", color=colorMap['red'])
             embed.set_footer(text="TIP: 아래 버튼을 눌러 다른 일자의 일정도 살펴볼 수 있어요.", icon_url=self.bot.user.display_avatar.url)
             embed.set_image(url=banner_image_url)
             embed.add_field(name=f"{box_1_match_schedule_2[0]} 일정", value=f"└ (총 **3**페이지 중 **1**번째 페이지)\n```{msg_schedule_info_1_2}```", inline=False)

@@ -32,9 +32,9 @@ def embed_setup(bot, banner, page):
         embed.add_field(name="/서비스 가입", value="서비스를 이용을 위한 기본 설정을 진행해요.", inline=False)
         embed.add_field(name="/서비스 탈퇴", value="서비스를 탈퇴하고 데이터를 삭제해요.", inline=False)
         embed.add_field(name="/프로필", value="서비스 내의 유저 프로필 정보를 조회해요.", inline=False)
-        embed.add_field(name="/경기 일정", value="리그 오브 레전드 e스포츠 리그 일정을 확인할 수 있어요.", inline=False)
-        embed.add_field(name="/리그 순위", value="리그 오브 레전드 e스포츠 리그 팀 순위를 보여줘요.", inline=False)
-        embed.add_field(name="/베스트 플레이어", value="리그 오브 레전드 e스포츠의 MVP는 누구인지 찾아보세요!", inline=False)
+        embed.add_field(name="/경기 일정", value="리그 오브 레전드 e스포츠의 경기 일정을 확인할 수 있어요.", inline=False)
+        embed.add_field(name="/리그 순위", value="리그 오브 레전드 e스포츠의 시즌 팀 순위를 보여줘요.", inline=False)
+        embed.add_field(name="/베스트 플레이어", value="리그 오브 레전드 e스포츠의 시즌 MVP는 누구인지 찾아보세요!", inline=False)
         embed.add_field(name="/피드백", value="[Beta] OP.GG Esports 봇의 피드백 또는 의견 제안을 제출할 수 있어요.", inline=False)
 
     elif page == 3:

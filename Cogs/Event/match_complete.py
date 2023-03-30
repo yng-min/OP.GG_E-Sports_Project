@@ -12,7 +12,7 @@ import pytz
 import traceback
 import os
 
-from Extensions.deposit import DepositPoint
+from Extensions.Prediction.deposit import DepositPoint
 
 # config.json 파일 불러오기
 try:

@@ -155,25 +155,25 @@ class MvpView(discord.ui.View):
         k = 0
         for i in range(5):
             for j in range(len(self.box_data)):
-                self.msg_mvp_1 = f"{self.msg_mvp_1}**• {i + 1}위 -** [{self.box_data[k]['team_acronym']}]({esports_op_gg_team}{self.box_data[k]['team_id']}) [{self.box_data[k]['nickName']}]({esports_op_gg_player}{self.box_data[k]['id']})\n> [{self.box_data[k]['position']}] {self.box_data[k]['kda']} 평점\n> `({self.box_data[k]['kills']} / {self.box_data[k]['deaths']} / {self.box_data[k]['assists']})`\n"
+                self.msg_mvp_1 = f"{self.msg_mvp_1}> {i + 1}위 - [{self.box_data[k]['team_acronym']}]({esports_op_gg_team}{self.box_data[k]['team_id']}) [{self.box_data[k]['nickName']}]({esports_op_gg_player}{self.box_data[k]['id']})\n[{self.box_data[k]['position']}] {self.box_data[k]['kda']} 평점\n`({self.box_data[k]['kills']} / {self.box_data[k]['deaths']} / {self.box_data[k]['assists']})`\n"
                 k += 1
                 break
 
         k = 5
         for i in range(5, 10):
             for j in range(len(self.box_data)):
-                self.msg_mvp_2 = f"{self.msg_mvp_2}**• {i + 1}위 -** [{self.box_data[k]['team_acronym']}]({esports_op_gg_team}{self.box_data[k]['team_id']}) [{self.box_data[k]['nickName']}]({esports_op_gg_player}{self.box_data[k]['id']})\n> [{self.box_data[k]['position']}] {self.box_data[k]['kda']} 평점\n> `({self.box_data[k]['kills']} / {self.box_data[k]['deaths']} / {self.box_data[k]['assists']})`\n"
+                self.msg_mvp_2 = f"{self.msg_mvp_2}> {i + 1}위 - [{self.box_data[k]['team_acronym']}]({esports_op_gg_team}{self.box_data[k]['team_id']}) [{self.box_data[k]['nickName']}]({esports_op_gg_player}{self.box_data[k]['id']})\n[{self.box_data[k]['position']}] {self.box_data[k]['kda']} 평점\n`({self.box_data[k]['kills']} / {self.box_data[k]['deaths']} / {self.box_data[k]['assists']})`\n"
                 k += 1
                 break
 
         if self.msg_mvp_1 == "":
-            self.msg_mvp_1 = "플레이어 정보가 없습니다."
+            self.msg_mvp_1 = "> 플레이어 정보가 없습니다."
 
         self.button_select = False
-        embed = discord.Embed(title="> 🏆 베스트 플레이어", description="리그 오브 레전드의 리그 베스트 플레이어 정보입니다.", color=colorMap['red'])
+        embed = discord.Embed(title="> 🏆 시즌 베스트 플레이어", description="리그 오브 레전드 e스포츠의 시즌 베스트 플레이어 정보입니다.", color=colorMap['red'])
         embed.set_footer(text="TIP: 아래 버튼을 눌러 다른 포지션의 랭킹도 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
         embed.set_image(url=self.banner)
-        embed.add_field(name=f"> '{self.picked_lane}' 포지션 ({self.picked_league})", value=self.msg_mvp_1, inline=True)
+        embed.add_field(name=f"'{self.picked_lane}' 포지션 ({self.picked_league})", value=self.msg_mvp_1, inline=True)
         embed.add_field(name="\u200b", value=self.msg_mvp_2, inline=True)
         await interaction.response.edit_message(content="", embed=embed, view=MvpView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, self.picked_lane, self.button_select, self.box_LCK, self.box_LPL, self.box_LEC, self.box_LCS, self.box_CBLOL, self.box_VCS, self.box_LCL, self.box_TCL, self.box_PCS, self.box_LLA, self.box_LJL, self.box_LCO))
 
@@ -200,7 +200,7 @@ class MvpView(discord.ui.View):
         else:
             button_sup = discord.ui.Button(label="서포터", style=discord.ButtonStyle.gray, row=1)
 
-        embed = discord.Embed(title="> 🏆 베스트 플레이어", description="리그 오브 레전드의 리그 베스트 플레이어 정보입니다.", color=colorMap['red'])
+        embed = discord.Embed(title="> 🏆 시즌 베스트 플레이어", description="리그 오브 레전드 e스포츠의 시즌 베스트 플레이어 정보입니다.", color=colorMap['red'])
         embed.set_footer(text="TIP: 아래 버튼을 눌러 다른 포지션의 랭킹도 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
         embed.set_image(url=self.banner)
 
@@ -222,17 +222,17 @@ class MvpView(discord.ui.View):
 
             for i in range(5):
                 if i >= len(self.box_data): break
-                self.msg_mvp_1 = f"{self.msg_mvp_1}**• {i + 1}위 -** [{self.box_data[i]['team_acronym']}]({esports_op_gg_team}{self.box_data[i]['team_id']}) [{self.box_data[i]['nickName']}]({esports_op_gg_player}{self.box_data[i]['id']})\n> [{self.box_data[i]['position']}] {self.box_data[i]['kda']} 평점\n> `({self.box_data[i]['kills']} / {self.box_data[i]['deaths']} / {self.box_data[i]['assists']})`\n"
+                self.msg_mvp_1 = f"{self.msg_mvp_1}> {i + 1}위 - [{self.box_data[i]['team_acronym']}]({esports_op_gg_team}{self.box_data[i]['team_id']}) [{self.box_data[i]['nickName']}]({esports_op_gg_player}{self.box_data[i]['id']})\n[{self.box_data[i]['position']}] {self.box_data[i]['kda']} 평점\n`({self.box_data[i]['kills']} / {self.box_data[i]['deaths']} / {self.box_data[i]['assists']})`\n"
 
             for i in range(5, 10):
                 if i >= len(self.box_data): break
-                self.msg_mvp_2 = f"{self.msg_mvp_2}**• {i + 1}위 -** [{self.box_data[i]['team_acronym']}]({esports_op_gg_team}{self.box_data[i]['team_id']}) [{self.box_data[i]['nickName']}]({esports_op_gg_player}{self.box_data[i]['id']})\n> [{self.box_data[i]['position']}] {self.box_data[i]['kda']} 평점\n> `({self.box_data[i]['kills']} / {self.box_data[i]['deaths']} / {self.box_data[i]['assists']})`\n"
+                self.msg_mvp_2 = f"{self.msg_mvp_2}> {i + 1}위 - [{self.box_data[i]['team_acronym']}]({esports_op_gg_team}{self.box_data[i]['team_id']}) [{self.box_data[i]['nickName']}]({esports_op_gg_player}{self.box_data[i]['id']})\n[{self.box_data[i]['position']}] {self.box_data[i]['kda']} 평점\n`({self.box_data[i]['kills']} / {self.box_data[i]['deaths']} / {self.box_data[i]['assists']})`\n"
 
             if self.msg_mvp_1 == "":
-                self.msg_mvp_1 = "플레이어 정보가 없습니다."
+                self.msg_mvp_1 = "> 플레이어 정보가 없습니다."
 
             self.button_select = False
-            embed.add_field(name=f"> '{self.picked_lane}' 포지션 ({self.picked_league})", value=self.msg_mvp_1, inline=True)
+            embed.add_field(name=f"'{self.picked_lane}' 포지션 ({self.picked_league})", value=self.msg_mvp_1, inline=True)
             embed.add_field(name="\u200b", value=self.msg_mvp_2, inline=True)
             await interaction.response.edit_message(content="", embed=embed, view=MvpView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, self.picked_lane, self.button_select, self.box_LCK, self.box_LPL, self.box_LEC, self.box_LCS, self.box_CBLOL, self.box_VCS, self.box_LCL, self.box_TCL, self.box_PCS, self.box_LLA, self.box_LJL, self.box_LCO))
 
@@ -258,17 +258,17 @@ class MvpView(discord.ui.View):
 
             for i in range(5):
                 if i >= len(self.box_lane_data): break
-                self.msg_mvp_1 = f"{self.msg_mvp_1}**• {i + 1}위 -** [{self.box_lane_data[i]['team_acronym']}]({esports_op_gg_team}{self.box_lane_data[i]['team_id']}) [{self.box_lane_data[i]['nickName']}]({esports_op_gg_player}{self.box_lane_data[i]['id']})\n> [{self.box_lane_data[i]['position']}] {self.box_lane_data[i]['kda']} 평점\n> `({self.box_lane_data[i]['kills']} / {self.box_lane_data[i]['deaths']} / {self.box_lane_data[i]['assists']})`\n"
+                self.msg_mvp_1 = f"{self.msg_mvp_1}> {i + 1}위 - [{self.box_lane_data[i]['team_acronym']}]({esports_op_gg_team}{self.box_lane_data[i]['team_id']}) [{self.box_lane_data[i]['nickName']}]({esports_op_gg_player}{self.box_lane_data[i]['id']})\n[{self.box_lane_data[i]['position']}] {self.box_lane_data[i]['kda']} 평점\n`({self.box_lane_data[i]['kills']} / {self.box_lane_data[i]['deaths']} / {self.box_lane_data[i]['assists']})`\n"
 
             for i in range(5, 10):
                 if i >= len(self.box_lane_data): break
-                self.msg_mvp_2 = f"{self.msg_mvp_2}**• {i + 1}위 -** [{self.box_lane_data[i]['team_acronym']}]({esports_op_gg_team}{self.box_lane_data[i]['team_id']}) [{self.box_lane_data[i]['nickName']}]({esports_op_gg_player}{self.box_lane_data[i]['id']})\n> [{self.box_lane_data[i]['position']}] {self.box_lane_data[i]['kda']} 평점\n> `({self.box_lane_data[i]['kills']} / {self.box_lane_data[i]['deaths']} / {self.box_lane_data[i]['assists']})`\n"
+                self.msg_mvp_2 = f"{self.msg_mvp_2}> {i + 1}위 - [{self.box_lane_data[i]['team_acronym']}]({esports_op_gg_team}{self.box_lane_data[i]['team_id']}) [{self.box_lane_data[i]['nickName']}]({esports_op_gg_player}{self.box_lane_data[i]['id']})\n[{self.box_lane_data[i]['position']}] {self.box_lane_data[i]['kda']} 평점\n`({self.box_lane_data[i]['kills']} / {self.box_lane_data[i]['deaths']} / {self.box_lane_data[i]['assists']})`\n"
 
             if self.msg_mvp_1 == "":
-                self.msg_mvp_1 = "플레이어 정보가 없습니다."
+                self.msg_mvp_1 = "> 플레이어 정보가 없습니다."
 
             self.button_select = True
-            embed.add_field(name=f"> '{self.picked_lane}' 포지션 ({self.picked_league})", value=self.msg_mvp_1, inline=True)
+            embed.add_field(name=f"'{self.picked_lane}' 포지션 ({self.picked_league})", value=self.msg_mvp_1, inline=True)
             embed.add_field(name="\u200b", value=self.msg_mvp_2, inline=True)
             await interaction.response.edit_message(content="", embed=embed, view=MvpView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, self.picked_lane, self.button_select, self.box_LCK, self.box_LPL, self.box_LEC, self.box_LCS, self.box_CBLOL, self.box_VCS, self.box_LCL, self.box_TCL, self.box_PCS, self.box_LLA, self.box_LJL, self.box_LCO))
 
@@ -294,17 +294,17 @@ class MvpView(discord.ui.View):
 
             for i in range(5):
                 if i >= len(self.box_lane_data): break
-                self.msg_mvp_1 = f"{self.msg_mvp_1}**• {i + 1}위 -** [{self.box_lane_data[i]['team_acronym']}]({esports_op_gg_team}{self.box_lane_data[i]['team_id']}) [{self.box_lane_data[i]['nickName']}]({esports_op_gg_player}{self.box_lane_data[i]['id']})\n> [{self.box_lane_data[i]['position']}] {self.box_lane_data[i]['kda']} 평점\n> `({self.box_lane_data[i]['kills']} / {self.box_lane_data[i]['deaths']} / {self.box_lane_data[i]['assists']})`\n"
+                self.msg_mvp_1 = f"{self.msg_mvp_1}> {i + 1}위 - [{self.box_lane_data[i]['team_acronym']}]({esports_op_gg_team}{self.box_lane_data[i]['team_id']}) [{self.box_lane_data[i]['nickName']}]({esports_op_gg_player}{self.box_lane_data[i]['id']})\n[{self.box_lane_data[i]['position']}] {self.box_lane_data[i]['kda']} 평점\n`({self.box_lane_data[i]['kills']} / {self.box_lane_data[i]['deaths']} / {self.box_lane_data[i]['assists']})`\n"
 
             for i in range(5, 10):
                 if i >= len(self.box_lane_data): break
-                self.msg_mvp_2 = f"{self.msg_mvp_2}**• {i + 1}위 -** [{self.box_lane_data[i]['team_acronym']}]({esports_op_gg_team}{self.box_lane_data[i]['team_id']}) [{self.box_lane_data[i]['nickName']}]({esports_op_gg_player}{self.box_lane_data[i]['id']})\n> [{self.box_lane_data[i]['position']}] {self.box_lane_data[i]['kda']} 평점\n> `({self.box_lane_data[i]['kills']} / {self.box_lane_data[i]['deaths']} / {self.box_lane_data[i]['assists']})`\n"
+                self.msg_mvp_2 = f"{self.msg_mvp_2}> {i + 1}위 - [{self.box_lane_data[i]['team_acronym']}]({esports_op_gg_team}{self.box_lane_data[i]['team_id']}) [{self.box_lane_data[i]['nickName']}]({esports_op_gg_player}{self.box_lane_data[i]['id']})\n[{self.box_lane_data[i]['position']}] {self.box_lane_data[i]['kda']} 평점\n`({self.box_lane_data[i]['kills']} / {self.box_lane_data[i]['deaths']} / {self.box_lane_data[i]['assists']})`\n"
 
             if self.msg_mvp_1 == "":
-                self.msg_mvp_1 = "플레이어 정보가 없습니다."
+                self.msg_mvp_1 = "> 플레이어 정보가 없습니다."
 
             self.button_select = True
-            embed.add_field(name=f"> '{self.picked_lane}' 포지션 ({self.picked_league})", value=self.msg_mvp_1, inline=True)
+            embed.add_field(name=f"'{self.picked_lane}' 포지션 ({self.picked_league})", value=self.msg_mvp_1, inline=True)
             embed.add_field(name="\u200b", value=self.msg_mvp_2, inline=True)
             await interaction.response.edit_message(content="", embed=embed, view=MvpView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, self.picked_lane, self.button_select, self.box_LCK, self.box_LPL, self.box_LEC, self.box_LCS, self.box_CBLOL, self.box_VCS, self.box_LCL, self.box_TCL, self.box_PCS, self.box_LLA, self.box_LJL, self.box_LCO))
 
@@ -330,17 +330,17 @@ class MvpView(discord.ui.View):
 
             for i in range(5):
                 if i >= len(self.box_lane_data): break
-                self.msg_mvp_1 = f"{self.msg_mvp_1}**• {i + 1}위 -** [{self.box_lane_data[i]['team_acronym']}]({esports_op_gg_team}{self.box_lane_data[i]['team_id']}) [{self.box_lane_data[i]['nickName']}]({esports_op_gg_player}{self.box_lane_data[i]['id']})\n> [{self.box_lane_data[i]['position']}] {self.box_lane_data[i]['kda']} 평점\n> `({self.box_lane_data[i]['kills']} / {self.box_lane_data[i]['deaths']} / {self.box_lane_data[i]['assists']})`\n"
+                self.msg_mvp_1 = f"{self.msg_mvp_1}> {i + 1}위 - [{self.box_lane_data[i]['team_acronym']}]({esports_op_gg_team}{self.box_lane_data[i]['team_id']}) [{self.box_lane_data[i]['nickName']}]({esports_op_gg_player}{self.box_lane_data[i]['id']})\n[{self.box_lane_data[i]['position']}] {self.box_lane_data[i]['kda']} 평점\n`({self.box_lane_data[i]['kills']} / {self.box_lane_data[i]['deaths']} / {self.box_lane_data[i]['assists']})`\n"
 
             for i in range(5, 10):
                 if i >= len(self.box_lane_data): break
-                self.msg_mvp_2 = f"{self.msg_mvp_2}**• {i + 1}위 -** [{self.box_lane_data[i]['team_acronym']}]({esports_op_gg_team}{self.box_lane_data[i]['team_id']}) [{self.box_lane_data[i]['nickName']}]({esports_op_gg_player}{self.box_lane_data[i]['id']})\n> [{self.box_lane_data[i]['position']}] {self.box_lane_data[i]['kda']} 평점\n> `({self.box_lane_data[i]['kills']} / {self.box_lane_data[i]['deaths']} / {self.box_lane_data[i]['assists']})`\n"
+                self.msg_mvp_2 = f"{self.msg_mvp_2}> {i + 1}위 - [{self.box_lane_data[i]['team_acronym']}]({esports_op_gg_team}{self.box_lane_data[i]['team_id']}) [{self.box_lane_data[i]['nickName']}]({esports_op_gg_player}{self.box_lane_data[i]['id']})\n[{self.box_lane_data[i]['position']}] {self.box_lane_data[i]['kda']} 평점\n`({self.box_lane_data[i]['kills']} / {self.box_lane_data[i]['deaths']} / {self.box_lane_data[i]['assists']})`\n"
 
             if self.msg_mvp_1 == "":
-                self.msg_mvp_1 = "플레이어 정보가 없습니다."
+                self.msg_mvp_1 = "> 플레이어 정보가 없습니다."
 
             self.button_select = True
-            embed.add_field(name=f"> '{self.picked_lane}' 포지션 ({self.picked_league})", value=self.msg_mvp_1, inline=True)
+            embed.add_field(name=f"'{self.picked_lane}' 포지션 ({self.picked_league})", value=self.msg_mvp_1, inline=True)
             embed.add_field(name="\u200b", value=self.msg_mvp_2, inline=True)
             await interaction.response.edit_message(content="", embed=embed, view=MvpView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, self.picked_lane, self.button_select, self.box_LCK, self.box_LPL, self.box_LEC, self.box_LCS, self.box_CBLOL, self.box_VCS, self.box_LCL, self.box_TCL, self.box_PCS, self.box_LLA, self.box_LJL, self.box_LCO))
 
@@ -366,17 +366,17 @@ class MvpView(discord.ui.View):
 
             for i in range(5):
                 if i >= len(self.box_lane_data): break
-                self.msg_mvp_1 = f"{self.msg_mvp_1}**• {i + 1}위 -** [{self.box_lane_data[i]['team_acronym']}]({esports_op_gg_team}{self.box_lane_data[i]['team_id']}) [{self.box_lane_data[i]['nickName']}]({esports_op_gg_player}{self.box_lane_data[i]['id']})\n> [{self.box_lane_data[i]['position']}] {self.box_lane_data[i]['kda']} 평점\n> `({self.box_lane_data[i]['kills']} / {self.box_lane_data[i]['deaths']} / {self.box_lane_data[i]['assists']})`\n"
+                self.msg_mvp_1 = f"{self.msg_mvp_1}> {i + 1}위 - [{self.box_lane_data[i]['team_acronym']}]({esports_op_gg_team}{self.box_lane_data[i]['team_id']}) [{self.box_lane_data[i]['nickName']}]({esports_op_gg_player}{self.box_lane_data[i]['id']})\n[{self.box_lane_data[i]['position']}] {self.box_lane_data[i]['kda']} 평점\n`({self.box_lane_data[i]['kills']} / {self.box_lane_data[i]['deaths']} / {self.box_lane_data[i]['assists']})`\n"
 
             for i in range(5, 10):
                 if i >= len(self.box_lane_data): break
-                self.msg_mvp_2 = f"{self.msg_mvp_2}**• {i + 1}위 -** [{self.box_lane_data[i]['team_acronym']}]({esports_op_gg_team}{self.box_lane_data[i]['team_id']}) [{self.box_lane_data[i]['nickName']}]({esports_op_gg_player}{self.box_lane_data[i]['id']})\n> [{self.box_lane_data[i]['position']}] {self.box_lane_data[i]['kda']} 평점\n> `({self.box_lane_data[i]['kills']} / {self.box_lane_data[i]['deaths']} / {self.box_lane_data[i]['assists']})`\n"
+                self.msg_mvp_2 = f"{self.msg_mvp_2}> {i + 1}위 - [{self.box_lane_data[i]['team_acronym']}]({esports_op_gg_team}{self.box_lane_data[i]['team_id']}) [{self.box_lane_data[i]['nickName']}]({esports_op_gg_player}{self.box_lane_data[i]['id']})\n[{self.box_lane_data[i]['position']}] {self.box_lane_data[i]['kda']} 평점\n`({self.box_lane_data[i]['kills']} / {self.box_lane_data[i]['deaths']} / {self.box_lane_data[i]['assists']})`\n"
 
             if self.msg_mvp_1 == "":
-                self.msg_mvp_1 = "플레이어 정보가 없습니다."
+                self.msg_mvp_1 = "> 플레이어 정보가 없습니다."
 
             self.button_select = True
-            embed.add_field(name=f"> '{self.picked_lane}' 포지션 ({self.picked_league})", value=self.msg_mvp_1, inline=True)
+            embed.add_field(name=f"'{self.picked_lane}' 포지션 ({self.picked_league})", value=self.msg_mvp_1, inline=True)
             embed.add_field(name="\u200b", value=self.msg_mvp_2, inline=True)
             await interaction.response.edit_message(content="", embed=embed, view=MvpView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, self.picked_lane, self.button_select, self.box_LCK, self.box_LPL, self.box_LEC, self.box_LCS, self.box_CBLOL, self.box_VCS, self.box_LCL, self.box_TCL, self.box_PCS, self.box_LLA, self.box_LJL, self.box_LCO))
 
@@ -402,17 +402,17 @@ class MvpView(discord.ui.View):
 
             for i in range(5):
                 if i >= len(self.box_lane_data): break
-                self.msg_mvp_1 = f"{self.msg_mvp_1}**• {i + 1}위 -** [{self.box_lane_data[i]['team_acronym']}]({esports_op_gg_team}{self.box_lane_data[i]['team_id']}) [{self.box_lane_data[i]['nickName']}]({esports_op_gg_player}{self.box_lane_data[i]['id']})\n> [{self.box_lane_data[i]['position']}] {self.box_lane_data[i]['kda']} 평점\n> `({self.box_lane_data[i]['kills']} / {self.box_lane_data[i]['deaths']} / {self.box_lane_data[i]['assists']})`\n"
+                self.msg_mvp_1 = f"{self.msg_mvp_1}> {i + 1}위 - [{self.box_lane_data[i]['team_acronym']}]({esports_op_gg_team}{self.box_lane_data[i]['team_id']}) [{self.box_lane_data[i]['nickName']}]({esports_op_gg_player}{self.box_lane_data[i]['id']})\n[{self.box_lane_data[i]['position']}] {self.box_lane_data[i]['kda']} 평점\n`({self.box_lane_data[i]['kills']} / {self.box_lane_data[i]['deaths']} / {self.box_lane_data[i]['assists']})`\n"
 
             for i in range(5, 10):
                 if i >= len(self.box_lane_data): break
-                self.msg_mvp_2 = f"{self.msg_mvp_2}**• {i + 1}위 -** [{self.box_lane_data[i]['team_acronym']}]({esports_op_gg_team}{self.box_lane_data[i]['team_id']}) [{self.box_lane_data[i]['nickName']}]({esports_op_gg_player}{self.box_lane_data[i]['id']})\n> [{self.box_lane_data[i]['position']}] {self.box_lane_data[i]['kda']} 평점\n> `({self.box_lane_data[i]['kills']} / {self.box_lane_data[i]['deaths']} / {self.box_lane_data[i]['assists']})`\n"
+                self.msg_mvp_2 = f"{self.msg_mvp_2}> {i + 1}위 - [{self.box_lane_data[i]['team_acronym']}]({esports_op_gg_team}{self.box_lane_data[i]['team_id']}) [{self.box_lane_data[i]['nickName']}]({esports_op_gg_player}{self.box_lane_data[i]['id']})\n[{self.box_lane_data[i]['position']}] {self.box_lane_data[i]['kda']} 평점\n`({self.box_lane_data[i]['kills']} / {self.box_lane_data[i]['deaths']} / {self.box_lane_data[i]['assists']})`\n"
 
             if self.msg_mvp_1 == "":
-                self.msg_mvp_1 = "플레이어 정보가 없습니다."
+                self.msg_mvp_1 = "> 플레이어 정보가 없습니다."
 
             self.button_select = True
-            embed.add_field(name=f"> '{self.picked_lane}' 포지션 ({self.picked_league})", value=self.msg_mvp_1, inline=True)
+            embed.add_field(name=f"'{self.picked_lane}' 포지션 ({self.picked_league})", value=self.msg_mvp_1, inline=True)
             embed.add_field(name="\u200b", value=self.msg_mvp_2, inline=True)
             await interaction.response.edit_message(content="", embed=embed, view=MvpView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, self.picked_lane, self.button_select, self.box_LCK, self.box_LPL, self.box_LEC, self.box_LCS, self.box_CBLOL, self.box_VCS, self.box_LCL, self.box_TCL, self.box_PCS, self.box_LLA, self.box_LJL, self.box_LCO))
 
@@ -472,7 +472,7 @@ class MvpCMD(commands.Cog):
 
     @_mvps.command(
         name="플레이어",
-        description="리그 오브 레전드 리그의 베스트 플레이어 정보를 보여줘요.",
+        description="리그 오브 레전드 e스포츠의 시즌 베스트 플레이어 정보를 보여줘요.",
     )
     @option("리그", description="리그를 선택해주세요.", required=True, autocomplete=get_league)
     async def _mvpCMD(self, ctx: discord.AutocompleteContext, 리그: str):
@@ -599,19 +599,19 @@ class MvpCMD(commands.Cog):
 
             for i in range(5):
                 if i >= len(box_data): break
-                msg_mvp_1 = f"{msg_mvp_1}**• {i + 1}위 -** [{box_data[i]['team_acronym']}]({esports_op_gg_team}{box_data[i]['team_id']}) [{box_data[i]['nickName']}]({esports_op_gg_player}{box_data[i]['id']})\n> [{box_data[i]['position']}] {box_data[i]['kda']} 평점\n> `({box_data[i]['kills']} / {box_data[i]['deaths']} / {box_data[i]['assists']})`\n"
+                msg_mvp_1 = f"{msg_mvp_1}> {i + 1}위 - [{box_data[i]['team_acronym']}]({esports_op_gg_team}{box_data[i]['team_id']}) [{box_data[i]['nickName']}]({esports_op_gg_player}{box_data[i]['id']})\n[{box_data[i]['position']}] {box_data[i]['kda']} 평점\n`({box_data[i]['kills']} / {box_data[i]['deaths']} / {box_data[i]['assists']})`\n"
 
             for i in range(5, 10):
                 if i >= len(box_data): break
-                msg_mvp_2 = f"{msg_mvp_2}**• {i + 1}위 -** [{box_data[i]['team_acronym']}]({esports_op_gg_team}{box_data[i]['team_id']}) [{box_data[i]['nickName']}]({esports_op_gg_player}{box_data[i]['id']})\n> [{box_data[i]['position']}] {box_data[i]['kda']} 평점\n> `({box_data[i]['kills']} / {box_data[i]['deaths']} / {box_data[i]['assists']})`\n"
+                msg_mvp_2 = f"{msg_mvp_2}> {i + 1}위 - [{box_data[i]['team_acronym']}]({esports_op_gg_team}{box_data[i]['team_id']}) [{box_data[i]['nickName']}]({esports_op_gg_player}{box_data[i]['id']})\n[{box_data[i]['position']}] {box_data[i]['kda']} 평점\n`({box_data[i]['kills']} / {box_data[i]['deaths']} / {box_data[i]['assists']})`\n"
 
             if msg_mvp_1 == "":
-                msg_mvp_1 = "플레이어 정보가 없습니다."
+                msg_mvp_1 = "> 플레이어 정보가 없습니다."
 
-            embed = discord.Embed(title="> 🏆 베스트 플레이어", description="리그 오브 레전드의 리그 베스트 플레이어 정보입니다.", color=colorMap['red'])
+            embed = discord.Embed(title="> 🏆 시즌 베스트 플레이어", description="리그 오브 레전드 e스포츠의 시즌 베스트 플레이어 정보입니다.", color=colorMap['red'])
             embed.set_footer(text="TIP: 아래 버튼을 눌러 다른 포지션의 랭킹도 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
             embed.set_image(url=banner_image_url)
-            embed.add_field(name=f"> '{picked_lane}' 포지션 ({picked_league})", value=msg_mvp_1, inline=True)
+            embed.add_field(name=f"'{picked_lane}' 포지션 ({picked_league})", value=msg_mvp_1, inline=True)
             embed.add_field(name="\u200b", value=msg_mvp_2, inline=True)
             await msg.edit_original_response(content="", embed=embed, view=MvpView(self.bot, ctx, msg, banner_image_url, picked_league, picked_lane, button_select, box_LCK, box_LPL, box_LEC, box_LCS, box_CBLOL, box_VCS, box_LCL, box_TCL, box_PCS, box_LLA, box_LJL, box_LCO))
 

@@ -12,7 +12,7 @@ import pytz
 import traceback
 import os
 
-from Extensions.betting import BettingButton
+from Extensions.Prediction.betting import BettingButton
 
 # config.json 파일 불러오기
 try:
