@@ -33,7 +33,7 @@ class DatabaseSETUP(commands.Cog):
     async def on_ready(self):
 
         # bot.sqlite DB 파일 생성
-        if not os.path.isfile(rf"./Data/bot.sqlite"):
+        if not os.path.isfile(r"./Data/bot.sqlite"):
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
             print("bot.sqlite DB 파일 생성 완료")
         botDB = sqlite3.connect(r"./Data/bot.sqlite", isolation_level=None)
@@ -53,7 +53,7 @@ class DatabaseSETUP(commands.Cog):
 
 
         # schedule.sqlite DB 파일 생성
-        if not os.path.isfile(rf"./Data/schedule.sqlite"):
+        if not os.path.isfile(r"./Data/schedule.sqlite"):
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
             print("schedule.sqlite DB 파일 생성 완료")
         scheduleDB = sqlite3.connect(r"./Data/schedule.sqlite", isolation_level=None)
@@ -79,7 +79,7 @@ class DatabaseSETUP(commands.Cog):
 
 
         # betting.sqlite DB 파일 생성
-        if not os.path.isfile(rf"./Data/betting.sqlite"):
+        if not os.path.isfile(r"./Data/betting.sqlite"):
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
             print("betting.sqlite DB 파일 생성 완료")
         bettingDB = sqlite3.connect(r"./Data/betting.sqlite", isolation_level=None)

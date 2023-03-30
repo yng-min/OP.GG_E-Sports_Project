@@ -37,7 +37,7 @@ class DeveloperCMD(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(name="모듈로드", aliases=['로드'])
+    @commands.command(name="모듈로드", aliases=["로드", "load"])
     async def _load(self, ctx, *, module: str):
 
         if ctx.author.id != id_owner:
@@ -49,6 +49,7 @@ class DeveloperCMD(commands.Cog):
         # module = module.lower()
 
         try:
+            # print(f"- Loaded: Cogs.{module}")
             self.bot.load_extension(f"Cogs.{module}")
 
         except Exception as error:
@@ -57,10 +58,11 @@ class DeveloperCMD(commands.Cog):
             await ctx.send(f"> ⚠️ 알 수 없는 오류로 인해 모듈을 불러오지 못했습니다.\nERROR: `{error}`")
 
         else:
-            await ctx.message.delete()
+            try: await ctx.message.delete()
+            except discord.Forbidden: pass # missing permissions
             await ctx.send(f"> ✅ 성공적으로 `{module}` 모듈을 불러왔습니다.", delete_after=5)
 
-    @commands.command(name="모듈언로드", aliases=['언로드'])
+    @commands.command(name="모듈언로드", aliases=["언로드", "unload"])
     async def _unload(self, ctx, *, module: str):
 
         if ctx.author.id != id_owner:
@@ -72,6 +74,7 @@ class DeveloperCMD(commands.Cog):
         # module = module.lower()
 
         try:
+            # print(f"- Unloaded: Cogs.{module}")
             self.bot.unload_extension(f"Cogs.{module}")
 
         except Exception as error:
@@ -80,10 +83,11 @@ class DeveloperCMD(commands.Cog):
             await ctx.send(f"> ⚠️ 알 수 없는 오류로 인해 모듈을 불러오지 못했습니다.\nERROR: `{error}`")
 
         else:
-            await ctx.message.delete()
+            try: await ctx.message.delete()
+            except discord.Forbidden: pass # missing permissions
             await ctx.send(f"> ✅ 성공적으로 `{module}` 모듈을 내보냈습니다.", delete_after=5)
 
-    @commands.command(name="모듈리로드", aliases=['리로드'])
+    @commands.command(name="모듈리로드", aliases=["리로드", "reload"])
     async def _reload(self, ctx, *, module: str):
 
         if ctx.author.id != id_owner:
@@ -96,11 +100,14 @@ class DeveloperCMD(commands.Cog):
 
         try:
             if module == ".":
-                for cog_files in os.listdir(r"./Cogs"):
-                    if cog_files.endswith(".py"):
-                        self.bot.reload_extension("Cogs." + cog_files[:-3])
+                for cog_directory in os.listdir(r"./Cogs"):
+                    for cog_files in os.listdir(r"./Cogs/" + cog_directory):
+                        if cog_files.endswith(".py"):
+                            # print(f"- Reloaded: Cogs.{cog_directory}.{cog_files}")
+                            self.bot.reload_extension(f"Cogs.{cog_directory}.{cog_files[:-3]}")
 
             else:
+                # print(f"- Reloaded: Cogs.{module}")
                 self.bot.reload_extension(f"Cogs.{module}")
 
         except Exception as error:
@@ -109,10 +116,11 @@ class DeveloperCMD(commands.Cog):
             await ctx.send(f"> ⚠️ 알 수 없는 오류로 인해 모듈을 불러오지 못했습니다.\nERROR: `{error}`")
 
         else:
-            await ctx.message.delete()
+            try: await ctx.message.delete()
+            except discord.Forbidden: pass # missing permissions
             await ctx.send(f"> ✅ 성공적으로 `{module}` 모듈을 불러왔습니다.", delete_after=5)
 
-    @commands.command(name="일정저장", aliases=['save-schedule'])
+    @commands.command(name="일정저장", aliases=["save-schedule"])
     async def _developer_save_schedule(self, ctx):
 
         if ctx.author.id != id_owner:
