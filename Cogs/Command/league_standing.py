@@ -11,7 +11,6 @@ import pytz
 import traceback
 
 from Extensions.Process.league import get_league_standing, get_team_info
-# from Extensions.Process.match import get_recentMatches
 
 # config.json 파일 불러오기
 try:
@@ -74,7 +73,6 @@ class StandingView(discord.ui.View):
         self.banner = banner
         self.picked_league = picked_league
         self.teams_id = teams_id
-        # self.box_recentMatches = box_recentMatches
 
         self.links = ""
         self.msg_player = ""
@@ -301,7 +299,7 @@ class StandingView(discord.ui.View):
                         embed.add_field(name=f"'{self.picked_league}' 리그 정보", value="> 순위 정보가 없습니다.", inline=False)
                         return await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
 
-        async def team_1_callback(interaction: discord.Interaction):
+        async def team_callback(interaction: discord.Interaction):
             for i in range(16):
                 if (self.picked_league == "LCK") and (leagues[i]['shortName'] == "LCK"): tournamentId = leagues[i]['tournamentId']
                 elif (self.picked_league == "LEC") and (leagues[i]['shortName'] == "LEC"): tournamentId = leagues[i]['tournamentId']
@@ -349,478 +347,38 @@ class StandingView(discord.ui.View):
                     embed.add_field(name=f"[{self.picked_league}]", value="> 팀 정보가 없습니다.", inline=False)
                     await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
 
-        async def team_2_callback(interaction: discord.Interaction):
-            for i in range(16):
-                if (self.picked_league == "LCK") and (leagues[i]['shortName'] == "LCK"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LEC") and (leagues[i]['shortName'] == "LEC"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LPL") and (leagues[i]['shortName'] == "LPL"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LCS") and (leagues[i]['shortName'] == "LCS"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "CBLOL") and (leagues[i]['shortName'] == "CBLOL"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LJL") and (leagues[i]['shortName'] == "LJL"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LCL") and (leagues[i]['shortName'] == "LCL"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LLA") and (leagues[i]['shortName'] == "LLA"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "VCS") and (leagues[i]['shortName'] == "VCS"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LCO") and (leagues[i]['shortName'] == "LCO"): tournamentId = leagues[i]['tournamentId']
-                else: pass
-
-            self.teams_id_index = interaction.data['custom_id']
-            try:
-                self.box_player = get_team_info(tournamentId, self.teams_id[int(self.teams_id_index)])
-            except:
-                embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
-                embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
-                embed.set_image(url=self.banner)
-                embed.add_field(name=f"[{self.picked_league}]", value="> 팀 정보가 없습니다.", inline=False)
-                return await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
-
-            try:
-                print(f"[league_standing.py] {self.box_player['code']}: {self.box_player['message']}")
-                embed = discord.Embed(title="> ⚠️ 오류", description=f"Code: `{self.box_player['code']}`\nMessage: {self.box_player['message']}", color=colorMap['red'])
-                return await interaction.response.edit_message(content="", embed=embed, view=None)
-
-            except:
-                if self.box_player:
-                    for i in range(len(self.box_player)):
-                        self.msg_player = f"{self.msg_player}> [{self.box_player[i]['team_acronym']}]({esports_op_gg_team}{self.box_player[i]['team_id']}) [{self.box_player[i]['nickName']}]({esports_op_gg_player}{self.box_player[i]['id']}) ({self.box_player[i]['position']})\n{self.box_player[i]['stat_kda']} 평점 `({self.box_player[i]['stat_kills']} / {self.box_player[i]['stat_deaths']} / {self.box_player[i]['stat_assists']})`\n승률: __{self.box_player[i]['stat_winRate']}__% (__{self.box_player[i]['stat_wins']:,}__승 __{self.box_player[i]['stat_loses']:,}__패)\n"
-
-                    embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
-                    embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
-                    embed.set_image(url=self.banner)
-                    embed.set_thumbnail(url=self.box_player[0]['team_imageUrl'])
-                    embed.add_field(name=f"{self.box_player[0]['team_acronym']} ({self.box_player[0]['team_name']}) [{self.picked_league}]", value=self.msg_player, inline=False)
-                    await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
-
-                else:
-                    embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
-                    embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
-                    embed.set_image(url=self.banner)
-                    embed.add_field(name=f"[{self.picked_league}]", value="> 팀 정보가 없습니다.", inline=False)
-                    await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
-
-        async def team_3_callback(interaction: discord.Interaction):
-            for i in range(16):
-                if (self.picked_league == "LCK") and (leagues[i]['shortName'] == "LCK"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LEC") and (leagues[i]['shortName'] == "LEC"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LPL") and (leagues[i]['shortName'] == "LPL"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LCS") and (leagues[i]['shortName'] == "LCS"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "CBLOL") and (leagues[i]['shortName'] == "CBLOL"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LJL") and (leagues[i]['shortName'] == "LJL"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LCL") and (leagues[i]['shortName'] == "LCL"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LLA") and (leagues[i]['shortName'] == "LLA"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "VCS") and (leagues[i]['shortName'] == "VCS"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LCO") and (leagues[i]['shortName'] == "LCO"): tournamentId = leagues[i]['tournamentId']
-                else: pass
-
-            self.teams_id_index = interaction.data['custom_id']
-            try:
-                self.box_player = get_team_info(tournamentId, self.teams_id[int(self.teams_id_index)])
-            except:
-                embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
-                embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
-                embed.set_image(url=self.banner)
-                embed.add_field(name=f"[{self.picked_league}]", value="> 팀 정보가 없습니다.", inline=False)
-                return await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
-
-            try:
-                print(f"[league_standing.py] {self.box_player['code']}: {self.box_player['message']}")
-                embed = discord.Embed(title="> ⚠️ 오류", description=f"Code: `{self.box_player['code']}`\nMessage: {self.box_player['message']}", color=colorMap['red'])
-                return await interaction.response.edit_message(content="", embed=embed, view=None)
-
-            except:
-                if self.box_player:
-                    for i in range(len(self.box_player)):
-                        self.msg_player = f"{self.msg_player}> [{self.box_player[i]['team_acronym']}]({esports_op_gg_team}{self.box_player[i]['team_id']}) [{self.box_player[i]['nickName']}]({esports_op_gg_player}{self.box_player[i]['id']}) ({self.box_player[i]['position']})\n{self.box_player[i]['stat_kda']} 평점 `({self.box_player[i]['stat_kills']} / {self.box_player[i]['stat_deaths']} / {self.box_player[i]['stat_assists']})`\n승률: __{self.box_player[i]['stat_winRate']}__% (__{self.box_player[i]['stat_wins']:,}__승 __{self.box_player[i]['stat_loses']:,}__패)\n"
-
-                    embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
-                    embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
-                    embed.set_image(url=self.banner)
-                    embed.set_thumbnail(url=self.box_player[0]['team_imageUrl'])
-                    embed.add_field(name=f"{self.box_player[0]['team_acronym']} ({self.box_player[0]['team_name']}) [{self.picked_league}]", value=self.msg_player, inline=False)
-                    await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
-
-                else:
-                    embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
-                    embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
-                    embed.set_image(url=self.banner)
-                    embed.add_field(name=f"[{self.picked_league}]", value="> 팀 정보가 없습니다.", inline=False)
-                    await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
-
-        async def team_4_callback(interaction: discord.Interaction):
-            for i in range(16):
-                if (self.picked_league == "LCK") and (leagues[i]['shortName'] == "LCK"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LEC") and (leagues[i]['shortName'] == "LEC"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LPL") and (leagues[i]['shortName'] == "LPL"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LCS") and (leagues[i]['shortName'] == "LCS"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "CBLOL") and (leagues[i]['shortName'] == "CBLOL"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LJL") and (leagues[i]['shortName'] == "LJL"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LCL") and (leagues[i]['shortName'] == "LCL"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LLA") and (leagues[i]['shortName'] == "LLA"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "VCS") and (leagues[i]['shortName'] == "VCS"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LCO") and (leagues[i]['shortName'] == "LCO"): tournamentId = leagues[i]['tournamentId']
-                else: pass
-
-            self.teams_id_index = interaction.data['custom_id']
-            try:
-                self.box_player = get_team_info(tournamentId, self.teams_id[int(self.teams_id_index)])
-            except:
-                embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
-                embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
-                embed.set_image(url=self.banner)
-                embed.add_field(name=f"[{self.picked_league}]", value="> 팀 정보가 없습니다.", inline=False)
-                return await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
-
-            try:
-                print(f"[league_standing.py] {self.box_player['code']}: {self.box_player['message']}")
-                embed = discord.Embed(title="> ⚠️ 오류", description=f"Code: `{self.box_player['code']}`\nMessage: {self.box_player['message']}", color=colorMap['red'])
-                return await interaction.response.edit_message(content="", embed=embed, view=None)
-
-            except:
-                if self.box_player:
-                    for i in range(len(self.box_player)):
-                        self.msg_player = f"{self.msg_player}> [{self.box_player[i]['team_acronym']}]({esports_op_gg_team}{self.box_player[i]['team_id']}) [{self.box_player[i]['nickName']}]({esports_op_gg_player}{self.box_player[i]['id']}) ({self.box_player[i]['position']})\n{self.box_player[i]['stat_kda']} 평점 `({self.box_player[i]['stat_kills']} / {self.box_player[i]['stat_deaths']} / {self.box_player[i]['stat_assists']})`\n승률: __{self.box_player[i]['stat_winRate']}__% (__{self.box_player[i]['stat_wins']:,}__승 __{self.box_player[i]['stat_loses']:,}__패)\n"
-
-                    embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
-                    embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
-                    embed.set_image(url=self.banner)
-                    embed.set_thumbnail(url=self.box_player[0]['team_imageUrl'])
-                    embed.add_field(name=f"{self.box_player[0]['team_acronym']} ({self.box_player[0]['team_name']}) [{self.picked_league}]", value=self.msg_player, inline=False)
-                    await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
-
-                else:
-                    embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
-                    embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
-                    embed.set_image(url=self.banner)
-                    embed.add_field(name=f"[{self.picked_league}]", value="> 팀 정보가 없습니다.", inline=False)
-                    await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
-
-        async def team_5_callback(interaction: discord.Interaction):
-            for i in range(16):
-                if (self.picked_league == "LCK") and (leagues[i]['shortName'] == "LCK"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LEC") and (leagues[i]['shortName'] == "LEC"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LPL") and (leagues[i]['shortName'] == "LPL"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LCS") and (leagues[i]['shortName'] == "LCS"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "CBLOL") and (leagues[i]['shortName'] == "CBLOL"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LJL") and (leagues[i]['shortName'] == "LJL"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LCL") and (leagues[i]['shortName'] == "LCL"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LLA") and (leagues[i]['shortName'] == "LLA"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "VCS") and (leagues[i]['shortName'] == "VCS"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LCO") and (leagues[i]['shortName'] == "LCO"): tournamentId = leagues[i]['tournamentId']
-                else: pass
-
-            self.teams_id_index = interaction.data['custom_id']
-            try:
-                self.box_player = get_team_info(tournamentId, self.teams_id[int(self.teams_id_index)])
-            except:
-                embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
-                embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
-                embed.set_image(url=self.banner)
-                embed.add_field(name=f"[{self.picked_league}]", value="> 팀 정보가 없습니다.", inline=False)
-                return await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
-
-            try:
-                print(f"[league_standing.py] {self.box_player['code']}: {self.box_player['message']}")
-                embed = discord.Embed(title="> ⚠️ 오류", description=f"Code: `{self.box_player['code']}`\nMessage: {self.box_player['message']}", color=colorMap['red'])
-                return await interaction.response.edit_message(content="", embed=embed, view=None)
-
-            except:
-                if self.box_player:
-                    for i in range(len(self.box_player)):
-                        self.msg_player = f"{self.msg_player}> [{self.box_player[i]['team_acronym']}]({esports_op_gg_team}{self.box_player[i]['team_id']}) [{self.box_player[i]['nickName']}]({esports_op_gg_player}{self.box_player[i]['id']}) ({self.box_player[i]['position']})\n{self.box_player[i]['stat_kda']} 평점 `({self.box_player[i]['stat_kills']} / {self.box_player[i]['stat_deaths']} / {self.box_player[i]['stat_assists']})`\n승률: __{self.box_player[i]['stat_winRate']}__% (__{self.box_player[i]['stat_wins']:,}__승 __{self.box_player[i]['stat_loses']:,}__패)\n"
-
-                    embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
-                    embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
-                    embed.set_image(url=self.banner)
-                    embed.set_thumbnail(url=self.box_player[0]['team_imageUrl'])
-                    embed.add_field(name=f"{self.box_player[0]['team_acronym']} ({self.box_player[0]['team_name']}) [{self.picked_league}]", value=self.msg_player, inline=False)
-                    await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
-
-                else:
-                    embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
-                    embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
-                    embed.set_image(url=self.banner)
-                    embed.add_field(name=f"[{self.picked_league}]", value="> 팀 정보가 없습니다.", inline=False)
-                    await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
-
-        async def team_6_callback(interaction: discord.Interaction):
-            for i in range(16):
-                if (self.picked_league == "LCK") and (leagues[i]['shortName'] == "LCK"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LEC") and (leagues[i]['shortName'] == "LEC"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LPL") and (leagues[i]['shortName'] == "LPL"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LCS") and (leagues[i]['shortName'] == "LCS"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "CBLOL") and (leagues[i]['shortName'] == "CBLOL"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LJL") and (leagues[i]['shortName'] == "LJL"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LCL") and (leagues[i]['shortName'] == "LCL"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LLA") and (leagues[i]['shortName'] == "LLA"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "VCS") and (leagues[i]['shortName'] == "VCS"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LCO") and (leagues[i]['shortName'] == "LCO"): tournamentId = leagues[i]['tournamentId']
-                else: pass
-
-            self.teams_id_index = interaction.data['custom_id']
-            try:
-                self.box_player = get_team_info(tournamentId, self.teams_id[int(self.teams_id_index)])
-            except:
-                embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
-                embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
-                embed.set_image(url=self.banner)
-                embed.add_field(name=f"[{self.picked_league}]", value="> 팀 정보가 없습니다.", inline=False)
-                return await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
-
-            try:
-                print(f"[league_standing.py] {self.box_player['code']}: {self.box_player['message']}")
-                embed = discord.Embed(title="> ⚠️ 오류", description=f"Code: `{self.box_player['code']}`\nMessage: {self.box_player['message']}", color=colorMap['red'])
-                return await interaction.response.edit_message(content="", embed=embed, view=None)
-
-            except:
-                if self.box_player:
-                    for i in range(len(self.box_player)):
-                        self.msg_player = f"{self.msg_player}> [{self.box_player[i]['team_acronym']}]({esports_op_gg_team}{self.box_player[i]['team_id']}) [{self.box_player[i]['nickName']}]({esports_op_gg_player}{self.box_player[i]['id']}) ({self.box_player[i]['position']})\n{self.box_player[i]['stat_kda']} 평점 `({self.box_player[i]['stat_kills']} / {self.box_player[i]['stat_deaths']} / {self.box_player[i]['stat_assists']})`\n승률: __{self.box_player[i]['stat_winRate']}__% (__{self.box_player[i]['stat_wins']:,}__승 __{self.box_player[i]['stat_loses']:,}__패)\n"
-
-                    embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
-                    embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
-                    embed.set_image(url=self.banner)
-                    embed.set_thumbnail(url=self.box_player[0]['team_imageUrl'])
-                    embed.add_field(name=f"{self.box_player[0]['team_acronym']} ({self.box_player[0]['team_name']}) [{self.picked_league}]", value=self.msg_player, inline=False)
-                    await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
-
-                else:
-                    embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
-                    embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
-                    embed.set_image(url=self.banner)
-                    embed.add_field(name=f"[{self.picked_league}]", value="> 팀 정보가 없습니다.", inline=False)
-                    await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
-
-        async def team_7_callback(interaction: discord.Interaction):
-            for i in range(16):
-                if (self.picked_league == "LCK") and (leagues[i]['shortName'] == "LCK"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LEC") and (leagues[i]['shortName'] == "LEC"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LPL") and (leagues[i]['shortName'] == "LPL"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LCS") and (leagues[i]['shortName'] == "LCS"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "CBLOL") and (leagues[i]['shortName'] == "CBLOL"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LJL") and (leagues[i]['shortName'] == "LJL"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LCL") and (leagues[i]['shortName'] == "LCL"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LLA") and (leagues[i]['shortName'] == "LLA"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "VCS") and (leagues[i]['shortName'] == "VCS"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LCO") and (leagues[i]['shortName'] == "LCO"): tournamentId = leagues[i]['tournamentId']
-                else: pass
-
-            self.teams_id_index = interaction.data['custom_id']
-            try:
-                self.box_player = get_team_info(tournamentId, self.teams_id[int(self.teams_id_index)])
-            except:
-                embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
-                embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
-                embed.set_image(url=self.banner)
-                embed.add_field(name=f"[{self.picked_league}]", value="> 팀 정보가 없습니다.", inline=False)
-                return await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
-
-            try:
-                print(f"[league_standing.py] {self.box_player['code']}: {self.box_player['message']}")
-                embed = discord.Embed(title="> ⚠️ 오류", description=f"Code: `{self.box_player['code']}`\nMessage: {self.box_player['message']}", color=colorMap['red'])
-                return await interaction.response.edit_message(content="", embed=embed, view=None)
-
-            except:
-                if self.box_player:
-                    for i in range(len(self.box_player)):
-                        self.msg_player = f"{self.msg_player}> [{self.box_player[i]['team_acronym']}]({esports_op_gg_team}{self.box_player[i]['team_id']}) [{self.box_player[i]['nickName']}]({esports_op_gg_player}{self.box_player[i]['id']}) ({self.box_player[i]['position']})\n{self.box_player[i]['stat_kda']} 평점 `({self.box_player[i]['stat_kills']} / {self.box_player[i]['stat_deaths']} / {self.box_player[i]['stat_assists']})`\n승률: __{self.box_player[i]['stat_winRate']}__% (__{self.box_player[i]['stat_wins']:,}__승 __{self.box_player[i]['stat_loses']:,}__패)\n"
-
-                    embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
-                    embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
-                    embed.set_image(url=self.banner)
-                    embed.set_thumbnail(url=self.box_player[0]['team_imageUrl'])
-                    embed.add_field(name=f"{self.box_player[0]['team_acronym']} ({self.box_player[0]['team_name']}) [{self.picked_league}]", value=self.msg_player, inline=False)
-                    await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
-
-                else:
-                    embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
-                    embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
-                    embed.set_image(url=self.banner)
-                    embed.add_field(name=f"[{self.picked_league}]", value="> 팀 정보가 없습니다.", inline=False)
-                    await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
-
-        async def team_8_callback(interaction: discord.Interaction):
-            for i in range(16):
-                if (self.picked_league == "LCK") and (leagues[i]['shortName'] == "LCK"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LEC") and (leagues[i]['shortName'] == "LEC"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LPL") and (leagues[i]['shortName'] == "LPL"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LCS") and (leagues[i]['shortName'] == "LCS"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "CBLOL") and (leagues[i]['shortName'] == "CBLOL"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LJL") and (leagues[i]['shortName'] == "LJL"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LCL") and (leagues[i]['shortName'] == "LCL"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LLA") and (leagues[i]['shortName'] == "LLA"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "VCS") and (leagues[i]['shortName'] == "VCS"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LCO") and (leagues[i]['shortName'] == "LCO"): tournamentId = leagues[i]['tournamentId']
-                else: pass
-
-            self.teams_id_index = interaction.data['custom_id']
-            try:
-                self.box_player = get_team_info(tournamentId, self.teams_id[int(self.teams_id_index)])
-            except:
-                embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
-                embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
-                embed.set_image(url=self.banner)
-                embed.add_field(name=f"[{self.picked_league}]", value="> 팀 정보가 없습니다.", inline=False)
-                return await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
-
-            try:
-                print(f"[league_standing.py] {self.box_player['code']}: {self.box_player['message']}")
-                embed = discord.Embed(title="> ⚠️ 오류", description=f"Code: `{self.box_player['code']}`\nMessage: {self.box_player['message']}", color=colorMap['red'])
-                return await interaction.response.edit_message(content="", embed=embed, view=None)
-
-            except:
-                if self.box_player:
-                    for i in range(len(self.box_player)):
-                        self.msg_player = f"{self.msg_player}> [{self.box_player[i]['team_acronym']}]({esports_op_gg_team}{self.box_player[i]['team_id']}) [{self.box_player[i]['nickName']}]({esports_op_gg_player}{self.box_player[i]['id']}) ({self.box_player[i]['position']})\n{self.box_player[i]['stat_kda']} 평점 `({self.box_player[i]['stat_kills']} / {self.box_player[i]['stat_deaths']} / {self.box_player[i]['stat_assists']})`\n승률: __{self.box_player[i]['stat_winRate']}__% (__{self.box_player[i]['stat_wins']:,}__승 __{self.box_player[i]['stat_loses']:,}__패)\n"
-
-                    embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
-                    embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
-                    embed.set_image(url=self.banner)
-                    embed.set_thumbnail(url=self.box_player[0]['team_imageUrl'])
-                    embed.add_field(name=f"{self.box_player[0]['team_acronym']} ({self.box_player[0]['team_name']}) [{self.picked_league}]", value=self.msg_player, inline=False)
-                    await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
-
-                else:
-                    embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
-                    embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
-                    embed.set_image(url=self.banner)
-                    embed.add_field(name=f"[{self.picked_league}]", value="> 팀 정보가 없습니다.", inline=False)
-                    await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
-
-        async def team_9_callback(interaction: discord.Interaction):
-            for i in range(16):
-                if (self.picked_league == "LCK") and (leagues[i]['shortName'] == "LCK"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LEC") and (leagues[i]['shortName'] == "LEC"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LPL") and (leagues[i]['shortName'] == "LPL"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LCS") and (leagues[i]['shortName'] == "LCS"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "CBLOL") and (leagues[i]['shortName'] == "CBLOL"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LJL") and (leagues[i]['shortName'] == "LJL"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LCL") and (leagues[i]['shortName'] == "LCL"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LLA") and (leagues[i]['shortName'] == "LLA"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "VCS") and (leagues[i]['shortName'] == "VCS"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LCO") and (leagues[i]['shortName'] == "LCO"): tournamentId = leagues[i]['tournamentId']
-                else: pass
-
-            self.teams_id_index = interaction.data['custom_id']
-            try:
-                self.box_player = get_team_info(tournamentId, self.teams_id[int(self.teams_id_index)])
-            except:
-                embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
-                embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
-                embed.set_image(url=self.banner)
-                embed.add_field(name=f"[{self.picked_league}]", value="> 팀 정보가 없습니다.", inline=False)
-                return await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
-
-            try:
-                print(f"[league_standing.py] {self.box_player['code']}: {self.box_player['message']}")
-                embed = discord.Embed(title="> ⚠️ 오류", description=f"Code: `{self.box_player['code']}`\nMessage: {self.box_player['message']}", color=colorMap['red'])
-                return await interaction.response.edit_message(content="", embed=embed, view=None)
-
-            except:
-                if self.box_player:
-                    for i in range(len(self.box_player)):
-                        self.msg_player = f"{self.msg_player}> [{self.box_player[i]['team_acronym']}]({esports_op_gg_team}{self.box_player[i]['team_id']}) [{self.box_player[i]['nickName']}]({esports_op_gg_player}{self.box_player[i]['id']}) ({self.box_player[i]['position']})\n{self.box_player[i]['stat_kda']} 평점 `({self.box_player[i]['stat_kills']} / {self.box_player[i]['stat_deaths']} / {self.box_player[i]['stat_assists']})`\n승률: __{self.box_player[i]['stat_winRate']}__% (__{self.box_player[i]['stat_wins']:,}__승 __{self.box_player[i]['stat_loses']:,}__패)\n"
-
-                    embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
-                    embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
-                    embed.set_image(url=self.banner)
-                    embed.set_thumbnail(url=self.box_player[0]['team_imageUrl'])
-                    embed.add_field(name=f"{self.box_player[0]['team_acronym']} ({self.box_player[0]['team_name']}) [{self.picked_league}]", value=self.msg_player, inline=False)
-                    await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
-
-                else:
-                    embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
-                    embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
-                    embed.set_image(url=self.banner)
-                    embed.add_field(name=f"[{self.picked_league}]", value="> 팀 정보가 없습니다.", inline=False)
-                    await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
-
-        async def team_10_callback(interaction: discord.Interaction):
-            for i in range(16):
-                if (self.picked_league == "LCK") and (leagues[i]['shortName'] == "LCK"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LEC") and (leagues[i]['shortName'] == "LEC"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LPL") and (leagues[i]['shortName'] == "LPL"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LCS") and (leagues[i]['shortName'] == "LCS"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "CBLOL") and (leagues[i]['shortName'] == "CBLOL"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LJL") and (leagues[i]['shortName'] == "LJL"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LCL") and (leagues[i]['shortName'] == "LCL"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LLA") and (leagues[i]['shortName'] == "LLA"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "VCS") and (leagues[i]['shortName'] == "VCS"): tournamentId = leagues[i]['tournamentId']
-                elif (self.picked_league == "LCO") and (leagues[i]['shortName'] == "LCO"): tournamentId = leagues[i]['tournamentId']
-                else: pass
-
-            self.teams_id_index = interaction.data['custom_id']
-            try:
-                self.box_player = get_team_info(tournamentId, self.teams_id[int(self.teams_id_index)])
-            except:
-                embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
-                embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
-                embed.set_image(url=self.banner)
-                embed.add_field(name=f"[{self.picked_league}]", value="> 팀 정보가 없습니다.", inline=False)
-                return await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
-
-            try:
-                print(f"[league_standing.py] {self.box_player['code']}: {self.box_player['message']}")
-                embed = discord.Embed(title="> ⚠️ 오류", description=f"Code: `{self.box_player['code']}`\nMessage: {self.box_player['message']}", color=colorMap['red'])
-                return await interaction.response.edit_message(content="", embed=embed, view=None)
-
-            except:
-                if self.box_player:
-                    for i in range(len(self.box_player)):
-                        self.msg_player = f"{self.msg_player}> [{self.box_player[i]['team_acronym']}]({esports_op_gg_team}{self.box_player[i]['team_id']}) [{self.box_player[i]['nickName']}]({esports_op_gg_player}{self.box_player[i]['id']}) ({self.box_player[i]['position']})\n{self.box_player[i]['stat_kda']} 평점 `({self.box_player[i]['stat_kills']} / {self.box_player[i]['stat_deaths']} / {self.box_player[i]['stat_assists']})`\n승률: __{self.box_player[i]['stat_winRate']}__% (__{self.box_player[i]['stat_wins']:,}__승 __{self.box_player[i]['stat_loses']:,}__패)\n"
-
-                    embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
-                    embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
-                    embed.set_image(url=self.banner)
-                    embed.set_thumbnail(url=self.box_player[0]['team_imageUrl'])
-                    embed.add_field(name=f"{self.box_player[0]['team_acronym']} ({self.box_player[0]['team_name']}) [{self.picked_league}]", value=self.msg_player, inline=False)
-                    await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
-
-                else:
-                    embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
-                    embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
-                    embed.set_image(url=self.banner)
-                    embed.add_field(name=f"[{self.picked_league}]", value="> 팀 정보가 없습니다.", inline=False)
-                    await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
-
-        if (self.button_select == True) and (self.button_select_index == "0"):
-            team_1.callback = callback_all
+        if self.button_select == True:
+            if self.button_select_index == "0": team_1.callback = callback_all
+            else: team_1.callback = team_callback
+            if self.button_select_index == "1": team_2.callback = callback_all
+            else: team_2.callback = team_callback
+            if self.button_select_index == "2": team_3.callback = callback_all
+            else: team_3.callback = team_callback
+            if self.button_select_index == "3": team_4.callback = callback_all
+            else: team_4.callback = team_callback
+            if self.button_select_index == "4": team_5.callback = callback_all
+            else: team_5.callback = team_callback
+            if self.button_select_index == "5": team_6.callback = callback_all
+            else: team_6.callback = team_callback
+            if self.button_select_index == "6": team_7.callback = callback_all
+            else: team_7.callback = team_callback
+            if self.button_select_index == "7": team_8.callback = callback_all
+            else: team_8.callback = team_callback
+            if self.button_select_index == "8": team_9.callback = callback_all
+            else: team_9.callback = team_callback
+            if self.button_select_index == "9": team_10.callback = callback_all
+            else: team_10.callback = team_callback
         else:
-            team_1.callback = team_1_callback
-        if (self.button_select == True) and (self.button_select_index == "1"):
-            team_2.callback = callback_all
-        else:
-            team_2.callback = team_2_callback
-        if (self.button_select == True) and (self.button_select_index == "2"):
-            team_3.callback = callback_all
-        else:
-            team_3.callback = team_3_callback
-        if (self.button_select == True) and (self.button_select_index == "3"):
-            team_4.callback = callback_all
-        else:
-            team_4.callback = team_4_callback
-        if (self.button_select == True) and (self.button_select_index == "4"):
-            team_5.callback = callback_all
-        else:
-            team_5.callback = team_5_callback
-        if (self.button_select == True) and (self.button_select_index == "5"):
-            team_6.callback = callback_all
-        else:
-            team_6.callback = team_6_callback
-        if (self.button_select == True) and (self.button_select_index == "6"):
-            team_7.callback = callback_all
-        else:
-            team_7.callback = team_7_callback
-        if (self.button_select == True) and (self.button_select_index == "7"):
-            team_8.callback = callback_all
-        else:
-            team_8.callback = team_8_callback
-        if (self.button_select == True) and (self.button_select_index == "8"):
-            team_9.callback = callback_all
-        else:
-            team_9.callback = team_9_callback
-        if (self.button_select == True) and (self.button_select_index == "9"):
-            team_10.callback = callback_all
-        else:
-            team_10.callback = team_10_callback
+            team_1.callback = team_callback
+            team_2.callback = team_callback
+            team_3.callback = team_callback
+            team_4.callback = team_callback
+            team_5.callback = team_callback
+            team_6.callback = team_callback
+            team_7.callback = team_callback
+            team_8.callback = team_callback
+            team_9.callback = team_callback
+            team_10.callback = team_callback
 
         self.add_item(team_1)
         self.add_item(team_2)
@@ -832,7 +390,6 @@ class StandingView(discord.ui.View):
         self.add_item(team_8)
         self.add_item(team_9)
         self.add_item(team_10)
-
 
     async def on_timeout(self):
         try:
@@ -877,7 +434,6 @@ class LeagueStandingCMD(commands.Cog):
         links = ""
         box_team = []
         teams_id = []
-        # box_recentMatches = {}
         banner_image_url = random.choice(config['banner_image_url'])
 
         embed = discord.Embed(title="", description="⌛ 정보를 불러오는 중...", color=colorMap['red'])
