@@ -108,7 +108,6 @@ class GuideCMD(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.banner = random.choice(config['banner_image_url'])
         self.page = 1
 
     @slash_command(
@@ -116,8 +115,9 @@ class GuideCMD(commands.Cog):
         description="OP.GG Esports 봇의 가이드를 확인해보세요.",
     )
     async def _helpCMD(self, ctx):
-        embed = embed_setup(self.bot, self.banner, self.page)
-        await ctx.respond(embed=embed, view=HelpBUTTON(self.bot, self.banner, self.page))
+        banner_image_url = random.choice(config['banner_image_url'])
+        embed = embed_setup(self.bot, banner_image_url, self.page)
+        await ctx.respond(embed=embed, view=HelpBUTTON(self.bot, banner_image_url, self.page))
 
 
 
