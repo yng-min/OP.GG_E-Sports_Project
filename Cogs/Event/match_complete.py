@@ -39,7 +39,6 @@ except Exception as error:
     print(traceback.format_exc())
 
 colorMap = config['colorMap']
-banner_image_url = config['banner_image_url']
 
 
 class LinkButton(discord.ui.View):

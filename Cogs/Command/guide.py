@@ -104,7 +104,7 @@ class HelpBUTTON(discord.ui.View):
         _prev.callback = _prev_callback
 
 
-class HelpCMD(commands.Cog):
+class GuideCMD(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
@@ -116,14 +116,11 @@ class HelpCMD(commands.Cog):
         description="OP.GG Esports 봇의 가이드를 확인해보세요.",
     )
     async def _helpCMD(self, ctx):
-
-        banner_image_url = random.choice(config['banner_image_url'])
-
         embed = embed_setup(self.bot, self.banner, self.page)
-        await ctx.respond(embed=embed, view=HelpBUTTON(self.bot, banner_image_url, self.page))
+        await ctx.respond(embed=embed, view=HelpBUTTON(self.bot, self.banner, self.page))
 
 
 
 def setup(bot):
-    bot.add_cog(HelpCMD(bot))
-    print("help.py 로드 됨")
+    bot.add_cog(GuideCMD(bot))
+    print("guide.py 로드 됨")
