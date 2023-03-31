@@ -28,7 +28,6 @@ except: print("league.json이 로드되지 않음")
 try:
     with open(r"./emoji.json", "rt", encoding="UTF8") as emojiJson:
         emoji = json.load(emojiJson)
-    print("emoji.json 로드 됨")
 except: print("emoji.json 파일이 로드되지 않음")
 
 esports_op_gg_standing = "https://esports.op.gg/standing"
