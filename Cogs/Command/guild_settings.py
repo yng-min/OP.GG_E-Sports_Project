@@ -496,4 +496,4 @@ class GuildSettingCMD(commands.Cog):
 
 def setup(bot):
     bot.add_cog(GuildSettingCMD(bot))
-    print("guild_setting.py 로드 됨")
+    print("guild_settings.py 로드 됨")

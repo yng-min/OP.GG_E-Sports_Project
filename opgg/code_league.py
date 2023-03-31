@@ -197,6 +197,7 @@ query {
         mvps{kills}
         mvps{deaths}
         mvps{assists}
+        mvps{tournamentId}
     }
 }
 """ % (tournamentId, limit, page)

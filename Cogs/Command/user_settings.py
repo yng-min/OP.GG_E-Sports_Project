@@ -138,4 +138,4 @@ class UserSettingCMD(commands.Cog):
 
 def setup(bot):
     bot.add_cog(UserSettingCMD(bot))
-    print("user_setting.py 로드 됨")
+    print("user_settings.py 로드 됨")

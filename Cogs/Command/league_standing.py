@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 # 패키지 라이브러리 설정
-import opgg
 import discord
 from discord.ext import commands
 from discord.commands import SlashCommandGroup, option
@@ -10,6 +9,9 @@ import json
 import datetime
 import pytz
 import traceback
+
+from Extensions.Process.league import get_league_standing, get_team_info
+# from Extensions.Process.match import get_recentMatches
 
 # config.json 파일 불러오기
 try:
@@ -60,270 +62,6 @@ def get_league(ctx: discord.AutocompleteContext):
         return ["LCO"]
     else:
         return ["LCK", "LPL", "LEC", "LCS", "CBLOL", "VCS", "LCL", "TCL", "PCS", "LLA", "LJL", "LCO"]
-
-
-def get_league_standings(tournamentId):
-
-    box_team = []
-    team_id = ""
-    team_name = ""
-    team_acronym = ""
-    team_nationality = ""
-    team_foundedAt = ""
-    team_imageUrl = ""
-    team_youtube = ""
-    team_twitter = ""
-    team_instagram = ""
-    team_facebook = ""
-    team_website = ""
-    team_position = ""
-    team_previously = ""
-    team_setWin = ""
-    team_setLose = ""
-    team_recentMatches = ""
-
-    teams_info = opgg.league_standing(tournamentId=tournamentId[0])
-
-    if teams_info['error'] == False:
-        for i in range(len(teams_info['data'])):
-            team_id = teams_info['data'][i]['team']['id']
-            team_name = teams_info['data'][i]['team']['name']
-            team_acronym = teams_info['data'][i]['team']['acronym']
-            team_nationality = teams_info['data'][i]['team']['nationality']
-            team_foundedAt = teams_info['data'][i]['team']['foundedAt']
-            team_imageUrl = teams_info['data'][i]['team']['imageUrl']
-            team_youtube = teams_info['data'][i]['team']['youtube']
-            team_twitter = teams_info['data'][i]['team']['twitter']
-            team_instagram = teams_info['data'][i]['team']['instagram']
-            team_facebook = teams_info['data'][i]['team']['facebook']
-            team_website = teams_info['data'][i]['team']['website']
-            team_position = teams_info['data'][i]['position']
-            team_previously = teams_info['data'][i]['previously']
-            team_point = teams_info['data'][i]['point']
-            team_win = teams_info['data'][i]['win']
-            team_lose = teams_info['data'][i]['lose']
-            team_setWin = teams_info['data'][i]['setWin']
-            team_setLose = teams_info['data'][i]['setLose']
-            team_recentMatches = teams_info['data'][i]['recentMatches']
-
-            box_team.append({
-                "id": team_id,
-                "name": team_name,
-                "acronym": team_acronym,
-                "nationality": team_nationality,
-                "foundedAt": team_foundedAt,
-                "imageUrl": team_imageUrl,
-                "youtube": team_youtube,
-                "twitter": team_twitter,
-                "instagram": team_instagram,
-                "facebook": team_facebook,
-                "website": team_website,
-                "position": team_position,
-                "previously": team_previously,
-                "point": team_point,
-                "win": team_win,
-                "lose": team_lose,
-                "setWin": team_setWin,
-                "setLose": team_setLose,
-                "recentMatches": team_recentMatches
-            })
-
-        box_recentMatches = get_recentMatches(team_recentMatches)
-
-    else:
-        return teams_info
-
-    return box_team
-
-
-def get_teamInfo(tournamentId, teams_id):
-
-    box_player = []
-    player_templete = {}
-    player_check_top = False
-    player_check_jun = False
-    player_check_mid = False
-    player_check_adc = False
-    player_check_sup = False
-    player_id = ""
-    player_nickName = ""
-    player_firstName = ""
-    player_lastName = ""
-    player_position = ""
-    player_nationality = ""
-    player_imageUrl = ""
-    player_birthday = ""
-    player_stream = ""
-    player_youtube = ""
-    player_twitter = ""
-    player_instagram = ""
-    player_facebook = ""
-    player_discord = ""
-    player_team_id = ""
-    player_team_name = ""
-    player_team_acronym = ""
-    player_team_imageUrl = ""
-    player_stat_games = ""
-    player_stat_winRate = ""
-    player_stat_wins = ""
-    player_stat_loses = ""
-    player_stat_kills = ""
-    player_stat_deaths = ""
-    player_stat_assists = ""
-    player_stat_kda = ""
-    player_stat_dpm = ""
-    player_stat_dtpm = ""
-    player_stat_gpm = ""
-    player_stat_cspm = ""
-    player_stat_dpgr = ""
-    player_stat_firstBlood = ""
-    player_stat_firstTower = ""
-    player_stat_wardsPlaced = ""
-    player_stat_wardsKilled = ""
-
-    if tournamentId == None: return None
-    players_info = opgg.player_info_by_team(tournamentId[0], teams_id)
-
-    if players_info['error'] == False:
-        for i in range(len(players_info['data'])):
-            for j in range(len(players_info['data'])):
-                player_id = players_info['data'][j]['player']['id']
-                player_nickName = players_info['data'][j]['player']['nickName']
-                player_firstName = players_info['data'][j]['player']['firstName']
-                player_lastName = players_info['data'][j]['player']['lastName']
-                player_position = players_info['data'][j]['player']['position'].replace("top", "탑").replace("jun", "정글").replace("mid", "미드").replace("adc", "원딜").replace("sup", "서포터")
-                player_nationality = players_info['data'][j]['player']['nationality']
-                player_imageUrl = players_info['data'][j]['player']['imageUrl']
-                player_birthday = players_info['data'][j]['player']['birthday']
-                player_stream = players_info['data'][j]['player']['stream']
-                player_youtube = players_info['data'][j]['player']['youtube']
-                player_twitter = players_info['data'][j]['player']['twitter']
-                player_instagram = players_info['data'][j]['player']['instagram']
-                player_facebook = players_info['data'][j]['player']['facebook']
-                player_discord = players_info['data'][j]['player']['discord']
-                player_team_id = players_info['data'][j]['playerStat']['team']['id']
-                player_team_name = players_info['data'][j]['playerStat']['team']['name']
-                player_team_acronym = players_info['data'][j]['playerStat']['team']['acronym']
-                player_team_imageUrl = players_info['data'][j]['playerStat']['team']['imageUrl']
-                player_stat_games = players_info['data'][j]['playerStat']['games']
-                player_stat_winRate = (players_info['data'][j]['playerStat']['winRate'] * 100).__round__(2)
-                player_stat_wins = players_info['data'][j]['playerStat']['wins']
-                player_stat_loses = players_info['data'][j]['playerStat']['loses']
-                player_stat_kills = players_info['data'][j]['playerStat']['kills'].__round__(2)
-                player_stat_deaths = players_info['data'][j]['playerStat']['deaths'].__round__(2)
-                player_stat_assists = players_info['data'][j]['playerStat']['assists'].__round__(2)
-                player_stat_kda = players_info['data'][j]['playerStat']['kda'].__round__(2)
-                player_stat_dpm = players_info['data'][j]['playerStat']['dpm'].__round__(2)
-                player_stat_dtpm = players_info['data'][j]['playerStat']['dtpm'].__round__(2)
-                player_stat_gpm = players_info['data'][j]['playerStat']['gpm'].__round__(2)
-                player_stat_cspm = players_info['data'][j]['playerStat']['cspm'].__round__(2)
-                player_stat_dpgr = players_info['data'][j]['playerStat']['dpgr'].__round__(2)
-                player_stat_firstBlood = (players_info['data'][j]['playerStat']['firstBlood'] * 100).__round__(2)
-                player_stat_firstTower = (players_info['data'][j]['playerStat']['firstTower'] * 100).__round__(2)
-                player_stat_wardsPlaced = players_info['data'][j]['playerStat']['wardsPlaced'].__round__(2)
-                player_stat_wardsKilled = players_info['data'][j]['playerStat']['wardsKilled'].__round__(2)
-
-                player_templete = {
-                    "id": player_id,
-                    "nickName": player_nickName,
-                    "firstName": player_firstName,
-                    "lastName": player_lastName,
-                    "position": player_position,
-                    "nationality": player_nationality,
-                    "imageUrl": player_imageUrl,
-                    "birthday": player_birthday,
-                    "stream": player_stream,
-                    "youtube": player_youtube,
-                    "twitter": player_twitter,
-                    "instagram": player_instagram,
-                    "facebook": player_facebook,
-                    "discord": player_discord,
-                    "team_id": player_team_id,
-                    "team_name": player_team_name,
-                    "team_acronym": player_team_acronym,
-                    "team_imageUrl": player_team_imageUrl,
-                    "stat_games": player_stat_games,
-                    "stat_winRate": player_stat_winRate,
-                    "stat_wins": player_stat_wins,
-                    "stat_loses": player_stat_loses,
-                    "stat_kills": player_stat_kills,
-                    "stat_deaths": player_stat_deaths,
-                    "stat_assists": player_stat_assists,
-                    "stat_kda": player_stat_kda,
-                    "stat_dpm": player_stat_dpm,
-                    "stat_dtpm": player_stat_dtpm,
-                    "stat_gpm": player_stat_gpm,
-                    "stat_cspm": player_stat_cspm,
-                    "stat_dpgr": player_stat_dpgr,
-                    "stat_firstBlood": player_stat_firstBlood,
-                    "stat_firstTower": player_stat_firstTower,
-                    "stat_wardsPlaced": player_stat_wardsPlaced,
-                    "stat_wardsKilled": player_stat_wardsKilled
-                }
-
-                if (player_check_top == False) and (player_position == "탑"):
-                    box_player.append(player_templete)
-                    player_check_top = True
-                if (player_check_top == True) and (player_check_jun == False) and (player_position == "정글"):
-                    box_player.append(player_templete)
-                    player_check_jun = True
-                if (player_check_top == True) and (player_check_jun == True) and (player_check_mid == False) and (player_position == "미드"):
-                    box_player.append(player_templete)
-                    player_check_mid = True
-                if (player_check_top == True) and (player_check_jun == True) and (player_check_mid == True) and (player_check_adc == False) and (player_position == "원딜"):
-                    box_player.append(player_templete)
-                    player_check_adc = True
-                if (player_check_top == True) and (player_check_jun == True) and (player_check_mid == True) and (player_check_adc == True) and (player_check_sup == False) and (player_position == "서포터"):
-                    box_player.append(player_templete)
-                    player_check_sup = True
-
-    else:
-        return players_info
-
-    return box_player
-
-
-def get_recentMatches(recentMatches):
-
-    box_recentMatches = {}
-
-    for i in range(len(recentMatches)):
-        match_info = opgg.match_info_by_id(recentMatches[i]['id'])
-
-        match_id = match_info['data'][0]['id']
-        match_name = match_info['data'][0]['name']
-        match_originalScheduledAt = match_info['data'][0]['originalScheduledAt']
-        match_scheduledAt = match_info['data'][0]['scheduledAt']
-        match_beginAt = match_info['data'][0]['beginAt']
-        match_endAt = match_info['data'][0]['endAt']
-        match_status = match_info['data'][0]['status']
-        match_numberOfGames = match_info['data'][0]['numberOfGames']
-        match_liveSupported = match_info['data'][0]['liveSupported']
-        match_liveOpensAt = match_info['data'][0]['liveOpensAt']
-        match_streams = match_info['data'][0]['streams']
-        match_homeTeam = match_info['data'][0]['homeTeam']
-        match_awayTeam = match_info['data'][0]['awayTeam']
-        match_ranks = match_info['data'][0]['ranks']
-
-        box_recentMatches[match_id] = {
-            "id": match_id,
-            "name": match_name,
-            "originalScheduledAt": match_originalScheduledAt,
-            "scheduledAt": match_scheduledAt,
-            "beginAt": match_beginAt,
-            "endAt": match_endAt,
-            "status": match_status,
-            "numberOfGames": match_numberOfGames,
-            "liveSupported": match_liveSupported,
-            "liveOpensAt": match_liveOpensAt,
-            "streams": match_streams,
-            "homeTeam": match_homeTeam,
-            "awayTeam": match_awayTeam,
-            "ranks": match_ranks
-        }
-        # print("2", i)
-
-    return box_recentMatches
 
 
 class StandingView(discord.ui.View):
@@ -417,7 +155,7 @@ class StandingView(discord.ui.View):
                 embed.set_image(url=self.banner)
                 embed.add_field(name=f"'{self.picked_league}' 리그 정보", value="> 순위 정보가 없습니다.", inline=False)
                 return await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
-            self.box_team = get_league_standings(tournamentId)
+            self.box_team = get_league_standing(tournamentId)
             tournamentId = [] # 초기화
 
             try:
@@ -522,7 +260,7 @@ class StandingView(discord.ui.View):
                     embed.add_field(name=f"'{self.picked_league}' 리그 정보", value="> 순위 정보가 없습니다.", inline=False)
                     return await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
                                         
-                self.box_team = get_league_standings(tournamentId)
+                self.box_team = get_league_standing(tournamentId)
                 tournamentId = [] # 초기화
 
                 try:
@@ -579,7 +317,7 @@ class StandingView(discord.ui.View):
 
             self.teams_id_index = interaction.data['custom_id']
             try:
-                self.box_player = get_teamInfo(tournamentId, self.teams_id[int(self.teams_id_index)])
+                self.box_player = get_team_info(tournamentId, self.teams_id[int(self.teams_id_index)])
             except:
                 embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
                 embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
@@ -627,7 +365,7 @@ class StandingView(discord.ui.View):
 
             self.teams_id_index = interaction.data['custom_id']
             try:
-                self.box_player = get_teamInfo(tournamentId, self.teams_id[int(self.teams_id_index)])
+                self.box_player = get_team_info(tournamentId, self.teams_id[int(self.teams_id_index)])
             except:
                 embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
                 embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
@@ -675,7 +413,7 @@ class StandingView(discord.ui.View):
 
             self.teams_id_index = interaction.data['custom_id']
             try:
-                self.box_player = get_teamInfo(tournamentId, self.teams_id[int(self.teams_id_index)])
+                self.box_player = get_team_info(tournamentId, self.teams_id[int(self.teams_id_index)])
             except:
                 embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
                 embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
@@ -723,7 +461,7 @@ class StandingView(discord.ui.View):
 
             self.teams_id_index = interaction.data['custom_id']
             try:
-                self.box_player = get_teamInfo(tournamentId, self.teams_id[int(self.teams_id_index)])
+                self.box_player = get_team_info(tournamentId, self.teams_id[int(self.teams_id_index)])
             except:
                 embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
                 embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
@@ -771,7 +509,7 @@ class StandingView(discord.ui.View):
 
             self.teams_id_index = interaction.data['custom_id']
             try:
-                self.box_player = get_teamInfo(tournamentId, self.teams_id[int(self.teams_id_index)])
+                self.box_player = get_team_info(tournamentId, self.teams_id[int(self.teams_id_index)])
             except:
                 embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
                 embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
@@ -819,7 +557,7 @@ class StandingView(discord.ui.View):
 
             self.teams_id_index = interaction.data['custom_id']
             try:
-                self.box_player = get_teamInfo(tournamentId, self.teams_id[int(self.teams_id_index)])
+                self.box_player = get_team_info(tournamentId, self.teams_id[int(self.teams_id_index)])
             except:
                 embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
                 embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
@@ -867,7 +605,7 @@ class StandingView(discord.ui.View):
 
             self.teams_id_index = interaction.data['custom_id']
             try:
-                self.box_player = get_teamInfo(tournamentId, self.teams_id[int(self.teams_id_index)])
+                self.box_player = get_team_info(tournamentId, self.teams_id[int(self.teams_id_index)])
             except:
                 embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
                 embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
@@ -915,7 +653,7 @@ class StandingView(discord.ui.View):
 
             self.teams_id_index = interaction.data['custom_id']
             try:
-                self.box_player = get_teamInfo(tournamentId, self.teams_id[int(self.teams_id_index)])
+                self.box_player = get_team_info(tournamentId, self.teams_id[int(self.teams_id_index)])
             except:
                 embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
                 embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
@@ -963,7 +701,7 @@ class StandingView(discord.ui.View):
 
             self.teams_id_index = interaction.data['custom_id']
             try:
-                self.box_player = get_teamInfo(tournamentId, self.teams_id[int(self.teams_id_index)])
+                self.box_player = get_team_info(tournamentId, self.teams_id[int(self.teams_id_index)])
             except:
                 embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
                 embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
@@ -1011,7 +749,7 @@ class StandingView(discord.ui.View):
 
             self.teams_id_index = interaction.data['custom_id']
             try:
-                self.box_player = get_teamInfo(tournamentId, self.teams_id[int(self.teams_id_index)])
+                self.box_player = get_team_info(tournamentId, self.teams_id[int(self.teams_id_index)])
             except:
                 embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
                 embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
@@ -1139,7 +877,7 @@ class LeagueStandingCMD(commands.Cog):
         links = ""
         box_team = []
         teams_id = []
-        box_recentMatches = {}
+        # box_recentMatches = {}
         banner_image_url = random.choice(config['banner_image_url'])
 
         embed = discord.Embed(title="", description="⌛ 정보를 불러오는 중...", color=colorMap['red'])
@@ -1169,7 +907,7 @@ class LeagueStandingCMD(commands.Cog):
                     embed.set_image(url=banner_image_url)
                     embed.add_field(name=f"'{picked_league}' 리그 정보", value="> 순위 정보가 없습니다.", inline=False)
                     return await msg.edit_original_response(content="", embed=embed, view=DisabledButton())
-                box_team = get_league_standings(tournamentId)
+                box_team = get_league_standing(tournamentId)
                 tournamentId = [] # 초기화
 
                 try:
@@ -1179,26 +917,26 @@ class LeagueStandingCMD(commands.Cog):
 
                 except:
                     if box_team:
-                        for i in range(len(box_team)):
-                            teams_id.append(box_team[i]['id'])
+                        for j in range(len(box_team)):
+                            teams_id.append(box_team[j]['id'])
 
                         embed = discord.Embed(title="> 🏅 시즌 리그 순위", description="리그 오브 레전드 e스포츠의 시즌 팀 순위 정보입니다.", color=colorMap['red'])
                         embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
                         embed.set_image(url=banner_image_url)
                         if box_team == []: embed.add_field(name=f"'{picked_league}' 리그 정보", value="> 순위 정보가 없습니다.", inline=False)
                         else: embed.add_field(name=f"'{picked_league}' 리그 정보", value="", inline=False)
-                        for i in range(len(box_team)):
-                            if i >= len(box_team): break
-                            if box_team[i]['website']: links = f"{links}[<:Website:1090657978711027742>]({box_team[i]['website']}) "
-                            if box_team[i]['youtube']: links = f"{links}[<:YouTube:1090656510213902427>]({box_team[i]['youtube']}) "
-                            if box_team[i]['instagram']: links = f"{links}[<:Instagram:1090656104163328080>]({box_team[i]['instagram']}) "
-                            if box_team[i]['facebook']: links = f"{links}[<:Facebook:1090656102565302363>]({box_team[i]['facebook']}) "
-                            if box_team[i]['twitter']: links = f"{links}[<:Twitter:1090656106814111754>]({box_team[i]['twitter']}) "
+                        for j in range(len(box_team)):
+                            if j >= len(box_team): break
+                            if box_team[j]['website']: links = f"{links}[<:Website:1090657978711027742>]({box_team[j]['website']}) "
+                            if box_team[j]['youtube']: links = f"{links}[<:YouTube:1090656510213902427>]({box_team[j]['youtube']}) "
+                            if box_team[j]['instagram']: links = f"{links}[<:Instagram:1090656104163328080>]({box_team[j]['instagram']}) "
+                            if box_team[j]['facebook']: links = f"{links}[<:Facebook:1090656102565302363>]({box_team[j]['facebook']}) "
+                            if box_team[j]['twitter']: links = f"{links}[<:Twitter:1090656106814111754>]({box_team[j]['twitter']}) "
                             if links != "":
                                 links = links[:-1]
-                                embed.add_field(name=f"> {i + 1}위 - {box_team[i]['acronym']} ({box_team[i]['name']})", value=f"[__{box_team[i]['point']:,}__포인트] __{box_team[i]['win']:,}__승 __{box_team[i]['lose']:,}__패 (세트 스코어 __{box_team[i]['setWin']:,}__승 __{box_team[i]['setLose']:,}__패)\n[<:OPGGEsports:1090660883027464232>]({esports_op_gg_team}{box_team[i]['id']}) {links}", inline=False)
+                                embed.add_field(name=f"> {j + 1}위 - {box_team[j]['acronym']} ({box_team[j]['name']})", value=f"[__{box_team[j]['point']:,}__포인트] __{box_team[j]['win']:,}__승 __{box_team[j]['lose']:,}__패 (세트 스코어 __{box_team[j]['setWin']:,}__승 __{box_team[j]['setLose']:,}__패)\n[<:OPGGEsports:1090660883027464232>]({esports_op_gg_team}{box_team[j]['id']}) {links}", inline=False)
                             else:
-                                embed.add_field(name=f"> {i + 1}위 - {box_team[i]['acronym']} ({box_team[i]['name']})", value=f"[__{box_team[i]['point']:,}__포인트] __{box_team[i]['win']:,}__승 __{box_team[i]['lose']:,}__패 (세트 스코어 __{box_team[i]['setWin']:,}__승 __{box_team[i]['setLose']:,}__패)\n[<:OPGGEsports:1090660883027464232>]({esports_op_gg_team}{box_team[i]['id']})", inline=False)
+                                embed.add_field(name=f"> {j + 1}위 - {box_team[j]['acronym']} ({box_team[j]['name']})", value=f"[__{box_team[j]['point']:,}__포인트] __{box_team[j]['win']:,}__승 __{box_team[j]['lose']:,}__패 (세트 스코어 __{box_team[j]['setWin']:,}__승 __{box_team[j]['setLose']:,}__패)\n[<:OPGGEsports:1090660883027464232>]({esports_op_gg_team}{box_team[j]['id']})", inline=False)
                             links = ""
                         await msg.edit_original_response(content="", embed=embed, view=StandingView(self.bot, ctx, msg, banner_image_url, picked_league, False, "99", teams_id))
 
