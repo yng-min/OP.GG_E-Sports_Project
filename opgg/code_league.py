@@ -29,6 +29,7 @@ query {
         team{twitter}
         team{instagram}
         team{facebook}
+        team{discord}
         team{website}
         recentMatches{id}
         recentMatches{tournamentId}

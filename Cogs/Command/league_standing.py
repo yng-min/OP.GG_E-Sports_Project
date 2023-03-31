@@ -24,11 +24,25 @@ try:
         leagues = json.load(leagueJson)['leagues']
 except: print("league.json이 로드되지 않음")
 
+# emoji.json 파일 불러오기
+try:
+    with open(r"./emoji.json", "rt", encoding="UTF8") as emojiJson:
+        emoji = json.load(emojiJson)
+    print("emoji.json 로드 됨")
+except: print("emoji.json 파일이 로드되지 않음")
+
 esports_op_gg_standing = "https://esports.op.gg/standing"
 esports_op_gg_player = "https://esports.op.gg/players/"
 esports_op_gg_team = "https://esports.op.gg/teams/"
 time_difference = config['time_difference']
 colorMap = config['colorMap']
+emoji_youtube = emoji['YouTube']
+emoji_instagram = emoji['Instagram']
+emoji_facebook = emoji['Facebook']
+emoji_discord = emoji['Discord']
+emoji_twitter = emoji['Twitter']
+emoji_esports = emoji['Esports']
+emoji_website = emoji['Website']
 
 
 def get_league(ctx: discord.AutocompleteContext):
@@ -164,27 +178,42 @@ class StandingView(discord.ui.View):
             except:
                 if self.box_team:
                     self.teams_id = []
-                    for i in range(len(self.box_team)):
-                        self.teams_id.append(self.box_team[i]['id'])
-
                     embed = discord.Embed(title="> 🏅 시즌 리그 순위", description="리그 오브 레전드 e스포츠의 시즌 팀 순위 정보입니다.", color=colorMap['red'])
                     embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
                     embed.set_image(url=self.banner)
                     if self.box_team == []: embed.add_field(name=f"'{self.picked_league}' 리그 정보", value="> 순위 정보가 없습니다.", inline=False)
                     else: embed.add_field(name=f"'{self.picked_league}' 리그 정보", value="", inline=False)
-                    for i in range(len(self.box_team)):
-                        if i >= len(self.box_team): break
-                        if self.box_team[i]['website']: self.links = f"{self.links}[<:Website:1090657978711027742>]({self.box_team[i]['website']}) "
-                        if self.box_team[i]['youtube']: self.links = f"{self.links}[<:YouTube:1090656510213902427>]({self.box_team[i]['youtube']}) "
-                        if self.box_team[i]['instagram']: self.links = f"{self.links}[<:Instagram:1090656104163328080>]({self.box_team[i]['instagram']}) "
-                        if self.box_team[i]['facebook']: self.links = f"{self.links}[<:Facebook:1090656102565302363>]({self.box_team[i]['facebook']}) "
-                        if self.box_team[i]['twitter']: self.links = f"{self.links}[<:Twitter:1090656106814111754>]({self.box_team[i]['twitter']}) "
-                        if self.links != "":
-                            self.links = self.links[:-1]
-                            embed.add_field(name=f"> {i + 1}위 - {self.box_team[i]['acronym']} ({self.box_team[i]['name']})", value=f"[__{self.box_team[i]['point']:,}__포인트] __{self.box_team[i]['win']:,}__승 __{self.box_team[i]['lose']:,}__패 (세트 스코어 __{self.box_team[i]['setWin']:,}__승 __{self.box_team[i]['setLose']:,}__패)\n[<:OPGGEsports:1090660883027464232>]({esports_op_gg_team}{self.box_team[i]['id']}) {self.links}", inline=False)
-                        else:
-                            embed.add_field(name=f"> {i + 1}위 - {self.box_team[i]['acronym']} ({self.box_team[i]['name']})", value=f"[__{self.box_team[i]['point']:,}__포인트] __{self.box_team[i]['win']:,}__승 __{self.box_team[i]['lose']:,}__패 (세트 스코어 __{self.box_team[i]['setWin']:,}__승 __{self.box_team[i]['setLose']:,}__패)\n[<:OPGGEsports:1090660883027464232>]({esports_op_gg_team}{self.box_team[i]['id']})", inline=False)
-                        self.links = ""
+                    if len(self.box_team) > 10:
+                        for i in range(10):
+                            self.teams_id.append(self.box_team[i]['id'])
+                            if self.box_team[i]['website']: self.links = f"{self.links}[{emoji_website}]({self.box_team[i]['website']}) "
+                            if self.box_team[i]['youtube']: self.links = f"{self.links}[{emoji_youtube}]({self.box_team[i]['youtube']}) "
+                            if self.box_team[i]['instagram']: self.links = f"{self.links}[{emoji_instagram}]({self.box_team[i]['instagram']}) "
+                            if self.box_team[i]['facebook']: self.links = f"{self.links}[{emoji_facebook}]({self.box_team[i]['facebook']}) "
+                            if self.box_team[i]['twitter']: self.links = f"{self.links}[{emoji_twitter}]({self.box_team[i]['twitter']}) "
+                            if self.box_team[i]['discord']: self.links = f"{self.links}[{emoji_discord}]({self.box_team[i]['discord']}) "
+                            if self.links != "":
+                                self.links = self.links[:-1]
+                                embed.add_field(name=f"> {i + 1}위 - {self.box_team[i]['acronym']} ({self.box_team[i]['name']})", value=f"[__{self.box_team[i]['point']:,}__포인트] __{self.box_team[i]['win']:,}__승 __{self.box_team[i]['lose']:,}__패 (세트 스코어 __{self.box_team[i]['setWin']:,}__승 __{self.box_team[i]['setLose']:,}__패)\n[{emoji_esports}]({esports_op_gg_team}{self.box_team[i]['id']}) {self.links}", inline=False)
+                            else:
+                                embed.add_field(name=f"> {i + 1}위 - {self.box_team[i]['acronym']} ({self.box_team[i]['name']})", value=f"[__{self.box_team[i]['point']:,}__포인트] __{self.box_team[i]['win']:,}__승 __{self.box_team[i]['lose']:,}__패 (세트 스코어 __{self.box_team[i]['setWin']:,}__승 __{self.box_team[i]['setLose']:,}__패)\n[{emoji_esports}]({esports_op_gg_team}{self.box_team[i]['id']})", inline=False)
+                            self.links = ""
+                    else:
+                        for i in range(len(self.box_team)):
+                            if i >= len(self.box_team): break
+                            self.teams_id.append(self.box_team[i]['id'])
+                            if self.box_team[i]['website']: self.links = f"{self.links}[{emoji_website}]({self.box_team[i]['website']}) "
+                            if self.box_team[i]['youtube']: self.links = f"{self.links}[{emoji_youtube}]({self.box_team[i]['youtube']}) "
+                            if self.box_team[i]['instagram']: self.links = f"{self.links}[{emoji_instagram}]({self.box_team[i]['instagram']}) "
+                            if self.box_team[i]['facebook']: self.links = f"{self.links}[{emoji_facebook}]({self.box_team[i]['facebook']}) "
+                            if self.box_team[i]['twitter']: self.links = f"{self.links}[{emoji_twitter}]({self.box_team[i]['twitter']}) "
+                            if self.box_team[i]['discord']: self.links = f"{self.links}[{emoji_discord}]({self.box_team[i]['discord']}) "
+                            if self.links != "":
+                                self.links = self.links[:-1]
+                                embed.add_field(name=f"> {i + 1}위 - {self.box_team[i]['acronym']} ({self.box_team[i]['name']})", value=f"[__{self.box_team[i]['point']:,}__포인트] __{self.box_team[i]['win']:,}__승 __{self.box_team[i]['lose']:,}__패 (세트 스코어 __{self.box_team[i]['setWin']:,}__승 __{self.box_team[i]['setLose']:,}__패)\n[{emoji_esports}]({esports_op_gg_team}{self.box_team[i]['id']}) {self.links}", inline=False)
+                            else:
+                                embed.add_field(name=f"> {i + 1}위 - {self.box_team[i]['acronym']} ({self.box_team[i]['name']})", value=f"[__{self.box_team[i]['point']:,}__포인트] __{self.box_team[i]['win']:,}__승 __{self.box_team[i]['lose']:,}__패 (세트 스코어 __{self.box_team[i]['setWin']:,}__승 __{self.box_team[i]['setLose']:,}__패)\n[{emoji_esports}]({esports_op_gg_team}{self.box_team[i]['id']})", inline=False)
+                            self.links = ""
                     await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, False, "99", self.teams_id))
 
                 else:
@@ -269,32 +298,46 @@ class StandingView(discord.ui.View):
                 except:
                     if self.box_team:
                         self.teams_id = []
-                        for i in range(len(self.box_team)):
-                            self.teams_id.append(self.box_team[i]['id'])
-
                         embed = discord.Embed(title="> 🏅 시즌 리그 순위", description="리그 오브 레전드 e스포츠의 시즌 팀 순위 정보입니다.", color=colorMap['red'])
                         embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
                         embed.set_image(url=self.banner)
                         if self.box_team == []: embed.add_field(name=f"'{self.picked_league}' 리그 정보", value="> 순위 정보가 없습니다.", inline=False)
                         else: embed.add_field(name=f"'{self.picked_league}' 리그 정보", value="", inline=False)
-                        for i in range(len(self.box_team)):
-                            if i >= len(self.box_team): break
-                            if self.box_team[i]['website']: self.links = f"{self.links}[<:Website:1090657978711027742>]({self.box_team[i]['website']}) "
-                            if self.box_team[i]['youtube']: self.links = f"{self.links}[<:YouTube:1090656510213902427>]({self.box_team[i]['youtube']}) "
-                            if self.box_team[i]['instagram']: self.links = f"{self.links}[<:Instagram:1090656104163328080>]({self.box_team[i]['instagram']}) "
-                            if self.box_team[i]['facebook']: self.links = f"{self.links}[<:Facebook:1090656102565302363>]({self.box_team[i]['facebook']}) "
-                            if self.box_team[i]['twitter']: self.links = f"{self.links}[<:Twitter:1090656106814111754>]({self.box_team[i]['twitter']}) "
-                            if self.links != "":
-                                self.links = self.links[:-1]
-                                embed.add_field(name=f"> {i + 1}위 - {self.box_team[i]['acronym']} ({self.box_team[i]['name']})", value=f"[__{self.box_team[i]['point']:,}__포인트] __{self.box_team[i]['win']:,}__승 __{self.box_team[i]['lose']:,}__패 (세트 스코어 __{self.box_team[i]['setWin']:,}__승 __{self.box_team[i]['setLose']:,}__패)\n[<:OPGGEsports:1090660883027464232>]({esports_op_gg_team}{self.box_team[i]['id']}) {self.links}", inline=False)
-                            else:
-                                embed.add_field(name=f"> {i + 1}위 - {self.box_team[i]['acronym']} ({self.box_team[i]['name']})", value=f"[__{self.box_team[i]['point']:,}__포인트] __{self.box_team[i]['win']:,}__승 __{self.box_team[i]['lose']:,}__패 (세트 스코어 __{self.box_team[i]['setWin']:,}__승 __{self.box_team[i]['setLose']:,}__패)\n[<:OPGGEsports:1090660883027464232>]({esports_op_gg_team}{self.box_team[i]['id']})", inline=False)
-                            self.links = ""
+                        if len(self.box_team) > 10:
+                            for i in range(10):
+                                self.teams_id.append(self.box_team[i]['id'])
+                                if self.box_team[i]['website']: self.links = f"{self.links}[{emoji_website}]({self.box_team[i]['website']}) "
+                                if self.box_team[i]['youtube']: self.links = f"{self.links}[{emoji_youtube}]({self.box_team[i]['youtube']}) "
+                                if self.box_team[i]['instagram']: self.links = f"{self.links}[{emoji_instagram}]({self.box_team[i]['instagram']}) "
+                                if self.box_team[i]['facebook']: self.links = f"{self.links}[{emoji_facebook}]({self.box_team[i]['facebook']}) "
+                                if self.box_team[i]['twitter']: self.links = f"{self.links}[{emoji_twitter}]({self.box_team[i]['twitter']}) "
+                                if self.box_team[i]['discord']: self.links = f"{self.links}[{emoji_discord}]({self.box_team[i]['discord']}) "
+                                if self.links != "":
+                                    self.links = self.links[:-1]
+                                    embed.add_field(name=f"> {i + 1}위 - {self.box_team[i]['acronym']} ({self.box_team[i]['name']})", value=f"[__{self.box_team[i]['point']:,}__포인트] __{self.box_team[i]['win']:,}__승 __{self.box_team[i]['lose']:,}__패 (세트 스코어 __{self.box_team[i]['setWin']:,}__승 __{self.box_team[i]['setLose']:,}__패)\n[{emoji_esports}]({esports_op_gg_team}{self.box_team[i]['id']}) {self.links}", inline=False)
+                                else:
+                                    embed.add_field(name=f"> {i + 1}위 - {self.box_team[i]['acronym']} ({self.box_team[i]['name']})", value=f"[__{self.box_team[i]['point']:,}__포인트] __{self.box_team[i]['win']:,}__승 __{self.box_team[i]['lose']:,}__패 (세트 스코어 __{self.box_team[i]['setWin']:,}__승 __{self.box_team[i]['setLose']:,}__패)\n[{emoji_esports}]({esports_op_gg_team}{self.box_team[i]['id']})", inline=False)
+                                self.links = ""
+                        else:
+                            for i in range(len(self.box_team)):
+                                if i >= len(self.box_team): break
+                                self.teams_id.append(self.box_team[i]['id'])
+                                if self.box_team[i]['website']: self.links = f"{self.links}[{emoji_website}]({self.box_team[i]['website']}) "
+                                if self.box_team[i]['youtube']: self.links = f"{self.links}[{emoji_youtube}]({self.box_team[i]['youtube']}) "
+                                if self.box_team[i]['instagram']: self.links = f"{self.links}[{emoji_instagram}]({self.box_team[i]['instagram']}) "
+                                if self.box_team[i]['facebook']: self.links = f"{self.links}[{emoji_facebook}]({self.box_team[i]['facebook']}) "
+                                if self.box_team[i]['twitter']: self.links = f"{self.links}[{emoji_twitter}]({self.box_team[i]['twitter']}) "
+                                if self.box_team[i]['discord']: self.links = f"{self.links}[{emoji_discord}]({self.box_team[i]['discord']}) "
+                                if self.links != "":
+                                    self.links = self.links[:-1]
+                                    embed.add_field(name=f"> {i + 1}위 - {self.box_team[i]['acronym']} ({self.box_team[i]['name']})", value=f"[__{self.box_team[i]['point']:,}__포인트] __{self.box_team[i]['win']:,}__승 __{self.box_team[i]['lose']:,}__패 (세트 스코어 __{self.box_team[i]['setWin']:,}__승 __{self.box_team[i]['setLose']:,}__패)\n[{emoji_esports}]({esports_op_gg_team}{self.box_team[i]['id']}) {self.links}", inline=False)
+                                else:
+                                    embed.add_field(name=f"> {i + 1}위 - {self.box_team[i]['acronym']} ({self.box_team[i]['name']})", value=f"[__{self.box_team[i]['point']:,}__포인트] __{self.box_team[i]['win']:,}__승 __{self.box_team[i]['lose']:,}__패 (세트 스코어 __{self.box_team[i]['setWin']:,}__승 __{self.box_team[i]['setLose']:,}__패)\n[{emoji_esports}]({esports_op_gg_team}{self.box_team[i]['id']})", inline=False)
+                                self.links = ""
                         await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, False, "99", self.teams_id))
 
                     else:
                         embed = discord.Embed(title="> 🏅 시즌 리그 순위", description="리그 오브 레전드 e스포츠의 시즌 팀 순위 정보입니다.", color=colorMap['red'])
-                        embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
                         embed.set_image(url=self.banner)
                         embed.add_field(name=f"'{self.picked_league}' 리그 정보", value="> 순위 정보가 없습니다.", inline=False)
                         return await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
@@ -473,27 +516,42 @@ class LeagueStandingCMD(commands.Cog):
 
                 except:
                     if box_team:
-                        for j in range(len(box_team)):
-                            teams_id.append(box_team[j]['id'])
-
                         embed = discord.Embed(title="> 🏅 시즌 리그 순위", description="리그 오브 레전드 e스포츠의 시즌 팀 순위 정보입니다.", color=colorMap['red'])
                         embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
                         embed.set_image(url=banner_image_url)
                         if box_team == []: embed.add_field(name=f"'{picked_league}' 리그 정보", value="> 순위 정보가 없습니다.", inline=False)
                         else: embed.add_field(name=f"'{picked_league}' 리그 정보", value="", inline=False)
-                        for j in range(len(box_team)):
-                            if j >= len(box_team): break
-                            if box_team[j]['website']: links = f"{links}[<:Website:1090657978711027742>]({box_team[j]['website']}) "
-                            if box_team[j]['youtube']: links = f"{links}[<:YouTube:1090656510213902427>]({box_team[j]['youtube']}) "
-                            if box_team[j]['instagram']: links = f"{links}[<:Instagram:1090656104163328080>]({box_team[j]['instagram']}) "
-                            if box_team[j]['facebook']: links = f"{links}[<:Facebook:1090656102565302363>]({box_team[j]['facebook']}) "
-                            if box_team[j]['twitter']: links = f"{links}[<:Twitter:1090656106814111754>]({box_team[j]['twitter']}) "
-                            if links != "":
-                                links = links[:-1]
-                                embed.add_field(name=f"> {j + 1}위 - {box_team[j]['acronym']} ({box_team[j]['name']})", value=f"[__{box_team[j]['point']:,}__포인트] __{box_team[j]['win']:,}__승 __{box_team[j]['lose']:,}__패 (세트 스코어 __{box_team[j]['setWin']:,}__승 __{box_team[j]['setLose']:,}__패)\n[<:OPGGEsports:1090660883027464232>]({esports_op_gg_team}{box_team[j]['id']}) {links}", inline=False)
-                            else:
-                                embed.add_field(name=f"> {j + 1}위 - {box_team[j]['acronym']} ({box_team[j]['name']})", value=f"[__{box_team[j]['point']:,}__포인트] __{box_team[j]['win']:,}__승 __{box_team[j]['lose']:,}__패 (세트 스코어 __{box_team[j]['setWin']:,}__승 __{box_team[j]['setLose']:,}__패)\n[<:OPGGEsports:1090660883027464232>]({esports_op_gg_team}{box_team[j]['id']})", inline=False)
-                            links = ""
+                        if len(box_team) > 10:
+                            for j in range(10):
+                                teams_id.append(box_team[j]['id'])
+                                if box_team[j]['website']: links = f"{links}[{emoji_website}]({box_team[j]['website']}) "
+                                if box_team[j]['youtube']: links = f"{links}[{emoji_youtube}]({box_team[j]['youtube']}) "
+                                if box_team[j]['instagram']: links = f"{links}[{emoji_instagram}]({box_team[j]['instagram']}) "
+                                if box_team[j]['facebook']: links = f"{links}[{emoji_facebook}]({box_team[j]['facebook']}) "
+                                if box_team[j]['twitter']: links = f"{links}[{emoji_twitter}]({box_team[j]['twitter']}) "
+                                if box_team[j]['discord']: links = f"{links}[{emoji_discord}]({box_team[j]['discord']}) "
+                                if links != "":
+                                    links = links[:-1]
+                                    embed.add_field(name=f"> {j + 1}위 - {box_team[j]['acronym']} ({box_team[j]['name']})", value=f"[__{box_team[j]['point']:,}__포인트] __{box_team[j]['win']:,}__승 __{box_team[j]['lose']:,}__패 (세트 스코어 __{box_team[j]['setWin']:,}__승 __{box_team[j]['setLose']:,}__패)\n[{emoji_esports}]({esports_op_gg_team}{box_team[j]['id']}) {links}", inline=False)
+                                else:
+                                    embed.add_field(name=f"> {j + 1}위 - {box_team[j]['acronym']} ({box_team[j]['name']})", value=f"[__{box_team[j]['point']:,}__포인트] __{box_team[j]['win']:,}__승 __{box_team[j]['lose']:,}__패 (세트 스코어 __{box_team[j]['setWin']:,}__승 __{box_team[j]['setLose']:,}__패)\n[{emoji_esports}]({esports_op_gg_team}{box_team[j]['id']})", inline=False)
+                                links = ""
+                        else:
+                            for j in range(len(box_team)):
+                                if j >= len(box_team): break
+                                teams_id.append(box_team[j]['id'])
+                                if box_team[j]['website']: links = f"{links}[{emoji_website}]({box_team[j]['website']}) "
+                                if box_team[j]['youtube']: links = f"{links}[{emoji_youtube}]({box_team[j]['youtube']}) "
+                                if box_team[j]['instagram']: links = f"{links}[{emoji_instagram}]({box_team[j]['instagram']}) "
+                                if box_team[j]['facebook']: links = f"{links}[{emoji_facebook}]({box_team[j]['facebook']}) "
+                                if box_team[j]['twitter']: links = f"{links}[{emoji_twitter}]({box_team[j]['twitter']}) "
+                                if box_team[j]['discord']: links = f"{links}[{emoji_discord}]({box_team[j]['discord']}) "
+                                if links != "":
+                                    links = links[:-1]
+                                    embed.add_field(name=f"> {j + 1}위 - {box_team[j]['acronym']} ({box_team[j]['name']})", value=f"[__{box_team[j]['point']:,}__포인트] __{box_team[j]['win']:,}__승 __{box_team[j]['lose']:,}__패 (세트 스코어 __{box_team[j]['setWin']:,}__승 __{box_team[j]['setLose']:,}__패)\n[{emoji_esports}]({esports_op_gg_team}{box_team[j]['id']}) {links}", inline=False)
+                                else:
+                                    embed.add_field(name=f"> {j + 1}위 - {box_team[j]['acronym']} ({box_team[j]['name']})", value=f"[__{box_team[j]['point']:,}__포인트] __{box_team[j]['win']:,}__승 __{box_team[j]['lose']:,}__패 (세트 스코어 __{box_team[j]['setWin']:,}__승 __{box_team[j]['setLose']:,}__패)\n[{emoji_esports}]({esports_op_gg_team}{box_team[j]['id']})", inline=False)
+                                links = ""
                         await msg.edit_original_response(content="", embed=embed, view=StandingView(self.bot, ctx, msg, banner_image_url, picked_league, False, "99", teams_id))
 
         except Exception as error:

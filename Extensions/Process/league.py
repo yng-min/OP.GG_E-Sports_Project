@@ -14,6 +14,7 @@ def get_league_standing(tournamentId):
     team_twitter = ""
     team_instagram = ""
     team_facebook = ""
+    team_discord = ""
     team_website = ""
     team_position = ""
     team_previously = ""
@@ -35,6 +36,7 @@ def get_league_standing(tournamentId):
             team_twitter = teams_info['data'][i]['team']['twitter']
             team_instagram = teams_info['data'][i]['team']['instagram']
             team_facebook = teams_info['data'][i]['team']['facebook']
+            team_discord = teams_info['data'][i]['team']['discord']
             team_website = teams_info['data'][i]['team']['website']
             team_position = teams_info['data'][i]['position']
             team_previously = teams_info['data'][i]['previously']
@@ -56,6 +58,7 @@ def get_league_standing(tournamentId):
                 "twitter": team_twitter,
                 "instagram": team_instagram,
                 "facebook": team_facebook,
+                "discord": team_discord,
                 "website": team_website,
                 "position": team_position,
                 "previously": team_previously,
