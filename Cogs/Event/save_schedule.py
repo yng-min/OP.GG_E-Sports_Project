@@ -47,7 +47,10 @@ class save_scheduleTASK(commands.Cog):
             except: schedule_lastSavedDataAt = None
             scheduleDB.close()
 
+            yesterdayTime = (datetime.datetime.now(pytz.timezone("Asia/Seoul")) + datetime.timedelta(days=-1)).strftime("%Y-%m-%d")
             nowTime = datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%Y-%m-%d")
+            tomorrowTime = (datetime.datetime.now(pytz.timezone("Asia/Seoul")) + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
+            dayAfterTomorrowTime = (datetime.datetime.now(pytz.timezone("Asia/Seoul")) + datetime.timedelta(days=2)).strftime("%Y-%m-%d")
 
             if (nowTime != schedule_lastSavedDataAt):
                 webhook_headers = {
@@ -68,7 +71,6 @@ class save_scheduleTASK(commands.Cog):
                 schedules = opgg.save_schedule()
 
                 if schedules['error'] == False:
-
                     temp_originalScheduledAt = []
                     box_originalScheduledAt = []
                     temp_scheduledAt = []
@@ -78,14 +80,14 @@ class save_scheduleTASK(commands.Cog):
                         date_temp_originalScheduledAt = datetime.datetime.strptime(temp_originalScheduledAt[i], "%Y-%m-%d %H:%M:%S")
                         date_delta_originalScheduledAt = datetime.timedelta(hours=time_difference)
                         time_originalScheduledAt = date_temp_originalScheduledAt + date_delta_originalScheduledAt
-                        if time_originalScheduledAt.strftime("%Y-%m-%d") == nowTime:
+                        if (time_originalScheduledAt.strftime("%Y-%m-%d") == nowTime) or (time_originalScheduledAt.strftime("%Y-%m-%d") == yesterdayTime):
                             box_originalScheduledAt.append(time_originalScheduledAt.strftime("%Y-%m-%d %H:%M:%S"))
 
                         temp_scheduledAt.append(schedules['data'][i]['scheduledAt'].replace("T", " ").split(".000Z")[0])
                         date_temp_scheduledAt = datetime.datetime.strptime(temp_scheduledAt[i], "%Y-%m-%d %H:%M:%S")
                         date_delta_scheduledAt = datetime.timedelta(hours=time_difference)
                         time_scheduledAt = date_temp_scheduledAt + date_delta_scheduledAt
-                        if time_scheduledAt.strftime("%Y-%m-%d") == nowTime:
+                        if (time_scheduledAt.strftime("%Y-%m-%d") == nowTime) or (time_scheduledAt.strftime("%Y-%m-%d") == yesterdayTime):
                             box_scheduledAt.append(time_scheduledAt.strftime("%Y-%m-%d %H:%M:%S"))
 
                     scheduleDB = sqlite3.connect(r"./Data/schedule.sqlite", isolation_level=None)
@@ -109,12 +111,20 @@ class save_scheduleTASK(commands.Cog):
 
                     # 경기 데이터 저장
                     content_msg = ""
+                    match_scheduledAt = ""
+                    match_originalScheduledAt = ""
                     for i in range(len(box_scheduledAt)):
                         try: match_name = schedules['data'][i]['name'].split(': ')[1]
                         except: match_name = schedules['data'][i]['name']
                         for j in range(16):
                             if schedules['data'][i]['tournament']['serie']['league']['shortName'] == leagues[j]['shortName']:
-                                scheduleCURSOR.execute(f"INSERT INTO {leagues[j]['shortName']}(ID, TournamentID, Name, OriginalScheduledAt, ScheduledAt, Status) VALUES(?, ?, ?, ?, ?, ?)", (schedules['data'][i]['id'], schedules['data'][i]['tournamentId'], match_name, box_originalScheduledAt[i], box_scheduledAt[i], schedules['data'][i]['status']))
+                                try:
+                                    match_scheduledAt = box_scheduledAt[i]
+                                    match_originalScheduledAt = box_originalScheduledAt[i]
+                                except:
+                                    match_scheduledAt = None
+                                    match_originalScheduledAt = None
+                                scheduleCURSOR.execute(f"INSERT INTO {leagues[j]['shortName']}(ID, TournamentID, Name, OriginalScheduledAt, ScheduledAt, Status) VALUES(?, ?, ?, ?, ?, ?)", (schedules['data'][i]['id'], schedules['data'][i]['tournamentId'], match_name, match_originalScheduledAt, match_scheduledAt, schedules['data'][i]['status']))
                                 bettingCURSOR.execute(f"INSERT INTO {leagues[j]['shortName']}(ID, TournamentID, Name, TotalBet, TotalPoint, HomeBet, HomePoint, AwayBet, AwayPoint) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", (schedules['data'][i]['id'], schedules['data'][i]['tournamentId'], match_name, 0, 0, 0, 0, 0, 0))
                         print(f"- Saved match: [{schedules['data'][i]['tournament']['serie']['league']['shortName']}] {match_name} ({schedules['data'][i]['id']})")
 

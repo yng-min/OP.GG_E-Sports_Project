@@ -388,21 +388,10 @@ class ScheduleCMD(commands.Cog):
         msg = await ctx.respond(embed=embed)
 
         try:
-            YesterdayTime = (datetime.datetime.now(pytz.timezone("Asia/Seoul")) + datetime.timedelta(days=-1)).strftime("%Y-%m-%d")
-            time = datetime.datetime.strptime(YesterdayTime, "%Y-%m-%d")
-            YesterdayTime = time.strftime("%Y-%m-%d")
-
+            yesterdayTime = (datetime.datetime.now(pytz.timezone("Asia/Seoul")) + datetime.timedelta(days=-1)).strftime("%Y-%m-%d")
             nowTime = datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%Y-%m-%d")
-            time = datetime.datetime.strptime(nowTime, "%Y-%m-%d")
-            nowTime = time.strftime("%Y-%m-%d")
-
             tomorrowTime = (datetime.datetime.now(pytz.timezone("Asia/Seoul")) + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
-            time = datetime.datetime.strptime(tomorrowTime, "%Y-%m-%d")
-            tomorrowTime = time.strftime("%Y-%m-%d")
-
             dayAfterTomorrowTime = (datetime.datetime.now(pytz.timezone("Asia/Seoul")) + datetime.timedelta(days=2)).strftime("%Y-%m-%d")
-            time = datetime.datetime.strptime(dayAfterTomorrowTime, "%Y-%m-%d")
-            dayAfterTomorrowTime = time.strftime("%Y-%m-%d")
 
             box_1_match_schedule_1 = []
             box_1_match_schedule_2 = []
@@ -415,7 +404,7 @@ class ScheduleCMD(commands.Cog):
             box_3_match_info = []
 
             for i in range(4):
-                if i == 0: dateTime = YesterdayTime
+                if i == 0: dateTime = yesterdayTime
                 elif i == 1: dateTime = nowTime
                 elif i == 2: dateTime = tomorrowTime
                 elif i == 3: dateTime = dayAfterTomorrowTime
