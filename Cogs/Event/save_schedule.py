@@ -34,7 +34,8 @@ class save_scheduleTASK(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        self._routine_1_TASK.start()
+        if not self._routine_1_TASK.is_running():
+            self._routine_1_TASK.start()
 
     @tasks.loop(seconds=60)
     async def _routine_1_TASK(self):

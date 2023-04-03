@@ -20,7 +20,8 @@ class StatusEVENT(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        self._status_TASK.start()
+        if not self._status_TASK.is_running():
+            self._status_TASK.start()
 
     @tasks.loop(seconds=10)
     async def _status_TASK(self):

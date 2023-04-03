@@ -45,7 +45,8 @@ class NotificationTASK(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        self._notificationTASK.start()
+        if not self._notificationTASK.is_running():
+            self._notificationTASK.start()
 
     @tasks.loop(seconds=60)
     async def _notificationTASK(self):
