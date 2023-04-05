@@ -149,6 +149,10 @@ query {
         instagram
         facebook
         discord
+        currentTeam{id}
+        currentTeam{name}
+        currentTeam{acronym}
+        currentTeam{imageUrl}
     }
 }
 """ % (playerIds)

@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+
+# 패키지 라이브러리 설정
 import opgg
 
 
@@ -74,6 +77,59 @@ def get_league_standing(tournamentId):
         return teams_info
 
     return box_team
+
+
+def get_player_mvp_rank(tournamentId):
+
+    box_players = []
+
+    if tournamentId == None: return None
+    players_info = opgg.player_mvp_rank(tournamentId=tournamentId[0])
+
+    if players_info['error'] == False:
+        for i in range(len(players_info['data']['mvps'])):
+            mvp_player_id = players_info['data']['mvps'][i]['player']['id']
+            mvp_player_nickName = players_info['data']['mvps'][i]['player']['nickName']
+            mvp_player_nationality = players_info['data']['mvps'][i]['player']['nationality']
+            mvp_player_image = players_info['data']['mvps'][i]['player']['imageUrl']
+            mvp_player_position = (players_info['data']['mvps'][i]['position']).replace("top", "탑").replace("jun", "정글").replace("mid", "미드").replace("adc", "원딜").replace("sup", "서포터")
+            mvp_player_currently = players_info['data']['mvps'][i]['currently']
+            mvp_player_previously = players_info['data']['mvps'][i]['previously']
+            mvp_player_mvpPoint = players_info['data']['mvps'][i]['mvpPoint']
+            mvp_player_games = players_info['data']['mvps'][i]['games']
+            mvp_player_kda = (players_info['data']['mvps'][i]['kda']).__round__(2)
+            mvp_player_kills = (players_info['data']['mvps'][i]['kills']).__round__(2)
+            mvp_player_deaths = (players_info['data']['mvps'][i]['deaths']).__round__(2)
+            mvp_player_assists = (players_info['data']['mvps'][i]['assists']).__round__(2)
+            mvp_team_id = players_info['data']['mvps'][i]['team']['id']
+            mvp_team_name = players_info['data']['mvps'][i]['team']['name']
+            mvp_team_acronym = players_info['data']['mvps'][i]['team']['acronym']
+            mvp_tournament_id = players_info['data']['mvps'][i]['tournamentId']
+
+            box_players.append({
+                "id": mvp_player_id,
+                "nickName": mvp_player_nickName,
+                "nationality": mvp_player_nationality,
+                "imageUrl": mvp_player_image,
+                "position": mvp_player_position,
+                "currently": mvp_player_currently,
+                "previously": mvp_player_previously,
+                "mvpPoint": mvp_player_mvpPoint,
+                "games": mvp_player_games,
+                "kda": mvp_player_kda,
+                "kills": mvp_player_kills,
+                "deaths": mvp_player_deaths,
+                "assists": mvp_player_assists,
+                "team_id": mvp_team_id,
+                "team_name": mvp_team_name,
+                "team_acronym": mvp_team_acronym,
+                "tournamentId": mvp_tournament_id
+            })
+
+    else:
+        return players_info
+
+    return box_players
 
 
 def get_team_info(tournamentId, teams_id):
@@ -224,54 +280,76 @@ def get_team_info(tournamentId, teams_id):
     return box_player
 
 
-def get_player_mvp_rank(tournamentId):
+def get_player_info(playerId):
+    print(playerId)
 
-    box_players = []
+    box_player = []
+    player_id = ""
+    player_nickName = ""
+    player_firstName = ""
+    player_lastName = ""
+    player_position = ""
+    player_natinality = ""
+    player_imageUrl = ""
+    player_birthday = ""
+    player_stream = ""
+    player_youtube = ""
+    player_twitter = ""
+    player_instagram = ""
+    player_facebook = ""
+    player_discord = ""
+    player_team_id = ""
+    player_team_name = ""
+    player_team_acronym = ""
+    player_team_imageUrl = ""
 
-    if tournamentId == None: return None
-    players_info = opgg.player_mvp_rank(tournamentId=tournamentId[0])
+    if playerId == None: return None
+    player_info = opgg.player_info(playerId)
+    print(player_info)
 
-    if players_info['error'] == False:
-        for i in range(len(players_info['data']['mvps'])):
-            mvp_player_id = players_info['data']['mvps'][i]['player']['id']
-            mvp_player_nickName = players_info['data']['mvps'][i]['player']['nickName']
-            mvp_player_nationality = players_info['data']['mvps'][i]['player']['nationality']
-            mvp_player_image = players_info['data']['mvps'][i]['player']['imageUrl']
-            mvp_player_position = (players_info['data']['mvps'][i]['position']).replace("top", "탑").replace("jun", "정글").replace("mid", "미드").replace("adc", "원딜").replace("sup", "서포터")
-            mvp_player_currently = players_info['data']['mvps'][i]['currently']
-            mvp_player_previously = players_info['data']['mvps'][i]['previously']
-            mvp_player_mvpPoint = players_info['data']['mvps'][i]['mvpPoint']
-            mvp_player_games = players_info['data']['mvps'][i]['games']
-            mvp_player_kda = (players_info['data']['mvps'][i]['kda']).__round__(2)
-            mvp_player_kills = (players_info['data']['mvps'][i]['kills']).__round__(2)
-            mvp_player_deaths = (players_info['data']['mvps'][i]['deaths']).__round__(2)
-            mvp_player_assists = (players_info['data']['mvps'][i]['assists']).__round__(2)
-            mvp_team_id = players_info['data']['mvps'][i]['team']['id']
-            mvp_team_name = players_info['data']['mvps'][i]['team']['name']
-            mvp_team_acronym = players_info['data']['mvps'][i]['team']['acronym']
-            mvp_tournament_id = players_info['data']['mvps'][i]['tournamentId']
+    if player_info['error'] == False:
+        for j in range(len(player_info['data'])):
+            player_id = player_info['data'][j]['id']
+            player_nickName = player_info['data'][j]['nickName']
+            player_firstName = player_info['data'][j]['firstName']
+            player_lastName = player_info['data'][j]['lastName']
+            player_position = player_info['data'][j]['position']
+            player_natinality = player_info['data'][j]['nationality']
+            player_imageUrl = player_info['data'][j]['imageUrl']
+            player_birthday = player_info['data'][j]['birthday']
+            player_stream = player_info['data'][j]['stream']
+            player_youtube = player_info['data'][j]['youtube']
+            player_twitter = player_info['data'][j]['twitter']
+            player_instagram = player_info['data'][j]['instagram']
+            player_facebook = player_info['data'][j]['facebook']
+            player_discord = player_info['data'][j]['discord']
+            player_team_id = player_info['data'][j]['currentTeam']['id']
+            player_team_name = player_info['data'][j]['currentTeam']['name']
+            player_team_acronym = player_info['data'][j]['currentTeam']['acronym']
+            player_team_imageUrl = player_info['data'][j]['currentTeam']['imageUrl']
 
-            box_players.append({
-                "id": mvp_player_id,
-                "nickName": mvp_player_nickName,
-                "nationality": mvp_player_nationality,
-                "imageUrl": mvp_player_image,
-                "position": mvp_player_position,
-                "currently": mvp_player_currently,
-                "previously": mvp_player_previously,
-                "mvpPoint": mvp_player_mvpPoint,
-                "games": mvp_player_games,
-                "kda": mvp_player_kda,
-                "kills": mvp_player_kills,
-                "deaths": mvp_player_deaths,
-                "assists": mvp_player_assists,
-                "team_id": mvp_team_id,
-                "team_name": mvp_team_name,
-                "team_acronym": mvp_team_acronym,
-                "tournamentId": mvp_tournament_id
+            box_player.append({
+                "id": player_id,
+                "nickName": player_nickName,
+                "firstName": player_firstName,
+                "lastName": player_lastName,
+                "position": player_position,
+                "nationality": player_natinality,
+                "imageUrl": player_imageUrl,
+                "birthday": player_birthday,
+                "stream": player_stream,
+                "youtube": player_youtube,
+                "twitter": player_twitter,
+                "instagram": player_instagram,
+                "facebook": player_facebook,
+                "discord": player_discord,
+                "team_id": player_team_id,
+                "team_name": player_team_name,
+                "team_acronym": player_team_acronym,
+                "team_imageUrl": player_team_imageUrl
             })
 
     else:
-        return players_info
-
-    return box_players
+        return box_player
+        
+    return box_player
