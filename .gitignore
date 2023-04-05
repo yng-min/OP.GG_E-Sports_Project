@@ -140,4 +140,4 @@ config.json
 *.sqlite
 
 # Archive 폴더 무시
-/Archive
+# /Archive
