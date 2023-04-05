@@ -128,11 +128,16 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# DS_Store
+# ↓↓↓ 개별적으로 추가한 내용 ↓↓↓
+
+# DS_Store 파일 무시
 .DS_Store
 
-# config json
+# config.json 파일 무시
 config.json
 
-# sqlite3
+# sqlite3 데이터 파일들 무시
 *.sqlite
+
+# Archive 폴더 무시
+/Archive
