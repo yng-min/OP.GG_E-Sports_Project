@@ -35,13 +35,13 @@ esports_op_gg_player = "https://esports.op.gg/players/"
 esports_op_gg_team = "https://esports.op.gg/teams/"
 time_difference = config['time_difference']
 colorMap = config['colorMap']
-emoji_youtube = emoji['YouTube']
-emoji_instagram = emoji['Instagram']
-emoji_facebook = emoji['Facebook']
 emoji_discord = emoji['Discord']
-emoji_twitter = emoji['Twitter']
 emoji_esports = emoji['Esports']
+emoji_facebook = emoji['Facebook']
+emoji_instagram = emoji['Instagram']
+emoji_twitter = emoji['Twitter']
 emoji_website = emoji['Website']
+emoji_youtube = emoji['YouTube']
 
 
 def get_league(ctx: discord.AutocompleteContext):
