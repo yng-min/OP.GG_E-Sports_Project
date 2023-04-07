@@ -26,7 +26,7 @@ except: print("league.json이 로드되지 않음")
 
 # bot.sqlite 파일 불러오기
 try:
-    botDB = sqlite3.connect(rf"./Data/bot.sqlite", isolation_level=None)
+    botDB = sqlite3.connect(rf"./Database/bot.sqlite", isolation_level=None)
     botCURSOR = botDB.cursor()
     db_version_guild = botCURSOR.execute("SELECT DBVersionGuild FROM main").fetchall()[0]
     botDB.close()
@@ -102,7 +102,7 @@ class LeagueSelect(discord.ui.Select):
             embed = discord.Embed(title="> ⛔ 설정 불가", description="이 명령어는 서버의 __관리자 권한__을 가진 이용자만 사용할 수 있어요.", color=colorMap['red'])
             return await interaction.response.edit_message(content="", embed=embed, view=None)
 
-        if not os.path.isfile(rf"./Data/Guild/guild_{self.ctx.guild.id}.sqlite"):
+        if not os.path.isfile(rf"./Database/Guild/guild_{self.ctx.guild.id}.sqlite"):
             embed = discord.Embed(title="> ⛔ 설정 불가", description=f"이 서버는 설정이 완료되지 않았어요. `{prefix}설정 셋업` 명령어를 통해 초기 설정을 먼저 진행해주세요.", color=colorMap['red'])
             return await interaction.response.edit_message(content="", embed=embed, view=None)
 
@@ -148,7 +148,7 @@ class LeagueSelect(discord.ui.Select):
             if "Worlds" == self.st_league[i]: self.league_16 = 1
 
         try:
-            guildDB = sqlite3.connect(rf"./Data/Guild/guild_{self.ctx.guild.id}.sqlite", isolation_level=None)
+            guildDB = sqlite3.connect(rf"./Database/Guild/guild_{self.ctx.guild.id}.sqlite", isolation_level=None)
             guildCURSOR = guildDB.cursor()
             guildCURSOR.execute("""
                 CREATE TABLE IF NOT EXISTS league(
@@ -286,7 +286,7 @@ class GuildSettingCMD(commands.Cog):
             embed = discord.Embed(title="> ⛔ 설정 불가", description="이 명령어는 서버의 __관리자 권한__을 가진 이용자만 사용할 수 있어요.", color=colorMap['red'])
             return await ctx.respond(embed=embed, ephemeral=True)
 
-        if os.path.isfile(rf"./Data/Guild/guild_{ctx.guild.id}.sqlite"):
+        if os.path.isfile(rf"./Database/Guild/guild_{ctx.guild.id}.sqlite"):
             embed = discord.Embed(title="> ⛔ 설정 불가", description=f"이 서버는 이미 설정이 완료된 상태예요. 만약 설정을 변경하고 싶으시다면 `{prefix}설정-변경` 명령어를 이용해주세요.", color=colorMap['red'])
             return await ctx.respond(embed=embed, ephemeral=True)
 
@@ -300,7 +300,7 @@ class GuildSettingCMD(commands.Cog):
 
             embed = discord.Embed(title="", description="> ⚙️ 정보 저장 중...", color=colorMap['red'])
             await msg.edit_original_response(content="", embed=embed)
-            guildDB = sqlite3.connect(rf"./Data/Guild/guild_{ctx.guild.id}.sqlite", isolation_level=None)
+            guildDB = sqlite3.connect(rf"./Database/Guild/guild_{ctx.guild.id}.sqlite", isolation_level=None)
             guildCURSOR = guildDB.cursor()
 
             guildCURSOR.execute("""
@@ -371,7 +371,7 @@ class GuildSettingCMD(commands.Cog):
     )
     async def _setting_choice_leagueCMD(self, ctx):
 
-        if not os.path.isfile(rf"./Data/Guild/guild_{ctx.guild.id}.sqlite"):
+        if not os.path.isfile(rf"./Database/Guild/guild_{ctx.guild.id}.sqlite"):
             embed = discord.Embed(title="> ⛔ 설정 불가", description=f"이 서버는 설정이 완료되지 않았어요. `{prefix}설정 셋업` 명령어를 통해 초기 설정을 먼저 진행해주세요.", color=colorMap['red'])
             return await ctx.respond(embed=embed, ephemeral=True)
 
@@ -410,7 +410,7 @@ class GuildSettingCMD(commands.Cog):
             embed = discord.Embed(title="> ⛔ 설정 불가", description="이 명령어는 서버의 __관리자 권한__을 가진 이용자만 사용할 수 있어요.", color=colorMap['red'])
             return await ctx.respond(embed=embed, ephemeral=True)
 
-        if not os.path.isfile(rf"./Data/Guild/guild_{ctx.guild.id}.sqlite"):
+        if not os.path.isfile(rf"./Database/Guild/guild_{ctx.guild.id}.sqlite"):
             embed = discord.Embed(title="> ⛔ 설정 불가", description=f"이 서버는 설정이 완료되지 않았어요. `{prefix}설정 셋업` 명령어를 통해 초기 설정을 먼저 진행해주세요.", color=colorMap['red'])
             return await ctx.respond(embed=embed, ephemeral=True)
 
@@ -434,7 +434,7 @@ class GuildSettingCMD(commands.Cog):
             elif reset_answer == "초기화": reset_mode = 1
             else: reset_mode = 0
 
-            guildDB = sqlite3.connect(rf"./Data/Guild/guild_{ctx.guild.id}.sqlite", isolation_level=None)
+            guildDB = sqlite3.connect(rf"./Database/Guild/guild_{ctx.guild.id}.sqlite", isolation_level=None)
             guildCURSOR = guildDB.cursor()
             guildCURSOR.execute("""
                 CREATE TABLE IF NOT EXISTS main(
@@ -454,7 +454,7 @@ class GuildSettingCMD(commands.Cog):
             if reset_mode == 1:
                 guildCURSOR.close()
                 guildDB.close()
-                os.remove(rf"./Data/Guild/guild_{ctx.guild.id}.sqlite")
+                os.remove(rf"./Database/Guild/guild_{ctx.guild.id}.sqlite")
                 print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
                 print(f"{ctx.author}({ctx.author.id}) | 서버 설정 초기화")
                 embed = discord.Embed(title="> ✅ 설정 초기화 완료", description="서버 설정을 모두 초기화했어요.", color=colorMap['red'])

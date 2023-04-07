@@ -52,7 +52,7 @@ class NotificationTASK(commands.Cog):
     async def _notificationTASK(self):
 
         try:
-            scheduleDB = sqlite3.connect(r"./Data/schedule.sqlite", isolation_level=None)
+            scheduleDB = sqlite3.connect(r"./Database/schedule.sqlite", isolation_level=None)
             scheduleCURSOR = scheduleDB.cursor()
 
             box_schedule = []
@@ -144,10 +144,10 @@ class NotificationTASK(commands.Cog):
                             try: # 셋업된 채널 불러오기
                                 scheduleURL = f"https://esports.op.gg/ko/matches/{matchID}"
 
-                                for data_guild in os.listdir(r"./Data/Guild"):
+                                for data_guild in os.listdir(r"./Database/Guild"):
 
                                     if data_guild.endswith(".sqlite"):
-                                        guildDB = sqlite3.connect(rf"./Data/Guild/{data_guild}", isolation_level=None)
+                                        guildDB = sqlite3.connect(rf"./Database/Guild/{data_guild}", isolation_level=None)
                                         guildCURSOR = guildDB.cursor()
                                         notice_answer = guildCURSOR.execute("SELECT NoticeAnswer FROM main").fetchone()[0]
                                         channel_id = guildCURSOR.execute("SELECT NoticeChannelID FROM main").fetchone()[0]
@@ -232,10 +232,10 @@ class NotificationTASK(commands.Cog):
                         try: # 셋업된 채널 불러오기
                             scheduleURL = f"https://esports.op.gg/ko/matches/{matchID}"
 
-                            for data_guild in os.listdir(r"./Data/Guild"):
+                            for data_guild in os.listdir(r"./Database/Guild"):
 
                                 if data_guild.endswith(".sqlite"):
-                                    guildDB = sqlite3.connect(rf"./Data/Guild/{data_guild}", isolation_level=None)
+                                    guildDB = sqlite3.connect(rf"./Database/Guild/{data_guild}", isolation_level=None)
                                     guildCURSOR = guildDB.cursor()
                                     notice_answer = guildCURSOR.execute("SELECT NoticeEarlyAnswer FROM main").fetchone()[0]
                                     channel_id = guildCURSOR.execute("SELECT NoticeChannelID FROM main").fetchone()[0]

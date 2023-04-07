@@ -29,7 +29,7 @@ except: print("league.json이 로드되지 않음")
 
 # bot.sqlite 파일 불러오기
 try:
-    botDB = sqlite3.connect(rf"./Data/bot.sqlite", isolation_level=None)
+    botDB = sqlite3.connect(rf"./Database/bot.sqlite", isolation_level=None)
     botCURSOR = botDB.cursor()
     channel_event = botCURSOR.execute("SELECT ChannelEvent FROM main").fetchone()[0]
     botCURSOR.close()
@@ -77,7 +77,7 @@ class MatchCompleteTASK(commands.Cog):
                     if leagues[i]['shortName'] == match_data['data']['match_league']:
                         box_league.append(f"{leagues[i]['shortName']}/{leagues[i]['region']}")
 
-                scheduleDB = sqlite3.connect(r"./Data/schedule.sqlite", isolation_level=None)
+                scheduleDB = sqlite3.connect(r"./Database/schedule.sqlite", isolation_level=None)
                 scheduleCURSOR = scheduleDB.cursor()
                 for i in range(16):
                     try: scheduleCURSOR.execute(f"UPDATE {leagues[i]['shortName']} SET Status = ? WHERE ID = ?", (match_data['data']['match_type'], match_data['data']['match_id']))
@@ -89,10 +89,10 @@ class MatchCompleteTASK(commands.Cog):
 
                 bet_box = []
 
-                for data_guild in os.listdir(r"./Data/Guild"):
+                for data_guild in os.listdir(r"./Database/Guild"):
 
                     if data_guild.endswith(".sqlite"):
-                        guildDB = sqlite3.connect(rf"./Data/Guild/{data_guild}", isolation_level=None)
+                        guildDB = sqlite3.connect(rf"./Database/Guild/{data_guild}", isolation_level=None)
                         guildCURSOR = guildDB.cursor()
                         notice_answer = guildCURSOR.execute("SELECT NoticeCompleteAnswer FROM main").fetchone()[0]
                         channel_id = guildCURSOR.execute("SELECT NoticeChannelID FROM main").fetchone()[0]
@@ -140,7 +140,7 @@ class MatchCompleteTASK(commands.Cog):
                                 if match_data['data']['mvp'] == "": match_data['data']['mvp'] = "-"
 
                                 if match_data['data']['match_set'] == 1:
-                                    bettingDB = sqlite3.connect(rf"./Data/betting.sqlite", isolation_level=None)
+                                    bettingDB = sqlite3.connect(rf"./Database/betting.sqlite", isolation_level=None)
                                     bettingCURSOR = bettingDB.cursor()
 
                                     box_matches = []

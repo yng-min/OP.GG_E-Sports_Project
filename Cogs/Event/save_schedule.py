@@ -42,7 +42,7 @@ class save_scheduleTASK(commands.Cog):
 
         # 경기 일정 저장
         try:
-            scheduleDB = sqlite3.connect(r"./Data/schedule.sqlite", isolation_level=None)
+            scheduleDB = sqlite3.connect(r"./Database/schedule.sqlite", isolation_level=None)
             scheduleCURSOR = scheduleDB.cursor()
             try: schedule_lastSavedDataAt = scheduleCURSOR.execute("SELECT LastSavedDataAt FROM general").fetchone()[0]
             except: schedule_lastSavedDataAt = None
@@ -91,9 +91,9 @@ class save_scheduleTASK(commands.Cog):
                         if (time_scheduledAt.strftime("%Y-%m-%d") == nowTime) or (time_scheduledAt.strftime("%Y-%m-%d") == yesterdayTime):
                             box_scheduledAt.append(time_scheduledAt.strftime("%Y-%m-%d %H:%M:%S"))
 
-                    scheduleDB = sqlite3.connect(r"./Data/schedule.sqlite", isolation_level=None)
+                    scheduleDB = sqlite3.connect(r"./Database/schedule.sqlite", isolation_level=None)
                     scheduleCURSOR = scheduleDB.cursor()
-                    bettingDB = sqlite3.connect(r"./Data/betting.sqlite", isolation_level=None)
+                    bettingDB = sqlite3.connect(r"./Database/betting.sqlite", isolation_level=None)
                     bettingCURSOR = bettingDB.cursor()
 
                     # DB 초기화

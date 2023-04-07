@@ -33,10 +33,10 @@ class DatabaseSETUP(commands.Cog):
     async def on_ready(self):
 
         # bot.sqlite DB 파일 생성
-        if not os.path.isfile(r"./Data/bot.sqlite"):
+        if not os.path.isfile(r"./Database/bot.sqlite"):
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
             print("bot.sqlite DB 파일 생성 완료")
-        botDB = sqlite3.connect(r"./Data/bot.sqlite", isolation_level=None)
+        botDB = sqlite3.connect(r"./Database/bot.sqlite", isolation_level=None)
         botCURSOR = botDB.cursor()
         botCURSOR.execute("""
             CREATE TABLE IF NOT EXISTS main(
@@ -53,10 +53,10 @@ class DatabaseSETUP(commands.Cog):
 
 
         # schedule.sqlite DB 파일 생성
-        if not os.path.isfile(r"./Data/schedule.sqlite"):
+        if not os.path.isfile(r"./Database/schedule.sqlite"):
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
             print("schedule.sqlite DB 파일 생성 완료")
-        scheduleDB = sqlite3.connect(r"./Data/schedule.sqlite", isolation_level=None)
+        scheduleDB = sqlite3.connect(r"./Database/schedule.sqlite", isolation_level=None)
         scheduleCURSOR = scheduleDB.cursor()
         scheduleCURSOR.execute(f"""
             CREATE TABLE IF NOT EXISTS general(
@@ -79,10 +79,10 @@ class DatabaseSETUP(commands.Cog):
 
 
         # betting.sqlite DB 파일 생성
-        if not os.path.isfile(r"./Data/betting.sqlite"):
+        if not os.path.isfile(r"./Database/betting.sqlite"):
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
             print("betting.sqlite DB 파일 생성 완료")
-        bettingDB = sqlite3.connect(r"./Data/betting.sqlite", isolation_level=None)
+        bettingDB = sqlite3.connect(r"./Database/betting.sqlite", isolation_level=None)
         bettingCURSOR = bettingDB.cursor()
 
         for i in range(16):
@@ -103,8 +103,8 @@ class DatabaseSETUP(commands.Cog):
 
 
         # # beta.sqlite DB 파일 생성
-        # if os.path.isfile(rf"./Data/Beta/beta.sqlite"):
-        #     betaDB = sqlite3.connect(r"./Data/Beta/beta.sqlite", isolation_level=None)
+        # if os.path.isfile(rf"./Database/Beta/beta.sqlite"):
+        #     betaDB = sqlite3.connect(r"./Database/Beta/beta.sqlite", isolation_level=None)
         #     betaCURSOR = betaDB.cursor()
         #     betaCURSOR.execute("""
         #         CREATE TABLE IF NOT EXISTS main(
@@ -117,7 +117,7 @@ class DatabaseSETUP(commands.Cog):
         #     print("beta.sqlite DB 파일 생성 완료")
 
 
-        # # settingsDB = sqlite3.connect(r'./Data/settings.sqlite')
+        # # settingsDB = sqlite3.connect(r'./Database/settings.sqlite')
         # # settingsCURSOR = settingsDB.cursor()
         # # settingsCURSOR.execute("""
         # #     CREATE TABLE IF NOT EXISTS main(

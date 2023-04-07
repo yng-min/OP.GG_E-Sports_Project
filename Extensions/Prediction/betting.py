@@ -51,8 +51,8 @@ class BettingButton(discord.ui.View):
         async def callback_1(interaction: discord.Interaction):
             user = interaction.user
 
-            if os.path.isfile(rf"./Data/User/user_{user.id}.sqlite"):
-                userDB = sqlite3.connect(rf"./Data/User/user_{user.id}.sqlite", isolation_level=None)
+            if os.path.isfile(rf"./Database/User/user_{user.id}.sqlite"):
+                userDB = sqlite3.connect(rf"./Database/User/user_{user.id}.sqlite", isolation_level=None)
                 userCURSOR = userDB.cursor()
                 userDATA = userCURSOR.execute(f"SELECT * FROM data WHERE UserID = '{user.id}'").fetchone()
 
@@ -66,8 +66,8 @@ class BettingButton(discord.ui.View):
         async def callback_2(interaction: discord.Interaction):
             user = interaction.user
 
-            if os.path.isfile(rf"./Data/User/user_{user.id}.sqlite"):
-                userDB = sqlite3.connect(rf"./Data/User/user_{user.id}.sqlite", isolation_level=None)
+            if os.path.isfile(rf"./Database/User/user_{user.id}.sqlite"):
+                userDB = sqlite3.connect(rf"./Database/User/user_{user.id}.sqlite", isolation_level=None)
                 userCURSOR = userDB.cursor()
                 userDATA = userCURSOR.execute(f"SELECT * FROM data WHERE UserID = '{user.id}'").fetchone()
 
@@ -87,10 +87,10 @@ class BettingButton(discord.ui.View):
     async def on_timeout(self):
 
         try:
-            for data_guild in os.listdir(r"./Data/Guild"):
+            for data_guild in os.listdir(r"./Database/Guild"):
 
                 if data_guild.endswith(".sqlite"):
-                    guildDB = sqlite3.connect(rf"./Data/Guild/{data_guild}", isolation_level=None)
+                    guildDB = sqlite3.connect(rf"./Database/Guild/{data_guild}", isolation_level=None)
                     guildCURSOR = guildDB.cursor()
 
                     role_id = guildCURSOR.execute("SELECT NoticeRoleID FROM main").fetchone()[0]
@@ -132,14 +132,14 @@ class BettingModal_1(discord.ui.Modal):
             return await interaction.response.send_message(embed=embed, ephemeral=True)
 
         try:
-            if os.path.isfile(rf"./Data/User/user_{user.id}.sqlite"):
-                userDB = sqlite3.connect(rf"./Data/User/user_{user.id}.sqlite", isolation_level=None)
+            if os.path.isfile(rf"./Database/User/user_{user.id}.sqlite"):
+                userDB = sqlite3.connect(rf"./Database/User/user_{user.id}.sqlite", isolation_level=None)
                 userCURSOR = userDB.cursor()
 
-                scheduleDB = sqlite3.connect(rf"./Data/schedule.sqlite", isolation_level=None)
+                scheduleDB = sqlite3.connect(rf"./Database/schedule.sqlite", isolation_level=None)
                 scheduleCURSOR = scheduleDB.cursor()
 
-                bettingDB = sqlite3.connect(rf"./Data/betting.sqlite", isolation_level=None)
+                bettingDB = sqlite3.connect(rf"./Database/betting.sqlite", isolation_level=None)
                 bettingCURSOR = bettingDB.cursor()
 
                 try:
@@ -220,11 +220,11 @@ class BettingModal_2(discord.ui.Modal):
             return await interaction.response.send_message(embed=embed, ephemeral=True)
 
         try:
-            if os.path.isfile(rf"./Data/User/user_{user.id}.sqlite"):
-                userDB = sqlite3.connect(rf"./Data/User/user_{user.id}.sqlite", isolation_level=None)
+            if os.path.isfile(rf"./Database/User/user_{user.id}.sqlite"):
+                userDB = sqlite3.connect(rf"./Database/User/user_{user.id}.sqlite", isolation_level=None)
                 userCURSOR = userDB.cursor()
 
-                bettingDB = sqlite3.connect(rf"./Data/betting.sqlite", isolation_level=None)
+                bettingDB = sqlite3.connect(rf"./Database/betting.sqlite", isolation_level=None)
                 bettingCURSOR = bettingDB.cursor()
 
                 try:

@@ -17,13 +17,13 @@ class DepositPoint:
     def deposit_point(match_data, bet_box):
 
         if match_data['data']['match_set'] == 1:
-            for data_user in os.listdir(r"./Data/User"):    
+            for data_user in os.listdir(r"./Database/User"):    
                 match_name = f"{match_data['data']['team_1']} vs {match_data['data']['team_2']}"
 
                 if data_user.endswith(".sqlite"):
                     userID = int(data_user.replace("user_", "").split(".")[0])
 
-                    userDB = sqlite3.connect(rf"./Data/User/{data_user}", isolation_level=None)
+                    userDB = sqlite3.connect(rf"./Database/User/{data_user}", isolation_level=None)
                     userCURSOR = userDB.cursor()
 
                     try:
@@ -44,7 +44,7 @@ class DepositPoint:
 
                     userDB.close()
 
-            bettingDB = sqlite3.connect(rf"./Data/betting.sqlite", isolation_level=None)
+            bettingDB = sqlite3.connect(rf"./Database/betting.sqlite", isolation_level=None)
             bettingCURSOR = bettingDB.cursor()
 
             for i in range(16):

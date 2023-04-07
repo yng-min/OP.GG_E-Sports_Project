@@ -31,12 +31,12 @@ class ProfileCMD(commands.Cog):
     )
     async def _profileCMD(self, ctx):
 
-        if not os.path.isfile(rf"./Data/User/user_{ctx.author.id}.sqlite"):
+        if not os.path.isfile(rf"./Database/User/user_{ctx.author.id}.sqlite"):
             embed = discord.Embed(title="> ⛔ 프로필 조회 불가", description="서비스에 가입하셔야 이용할 수 있는 기능입니다.", color=colorMap['red'])
             return await ctx.respond(embed=embed, ephemeral=True)
 
         try:
-            userDB = sqlite3.connect(rf"./Data/User/user_{ctx.author.id}.sqlite", isolation_level=None)
+            userDB = sqlite3.connect(rf"./Database/User/user_{ctx.author.id}.sqlite", isolation_level=None)
             userCURSOR = userDB.cursor()
             resultMain = userCURSOR.execute(f"SELECT * FROM main WHERE UserID = {ctx.author.id}").fetchone()
             resultData = userCURSOR.execute(f"SELECT * FROM data WHERE UserID = {ctx.author.id}").fetchone()

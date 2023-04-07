@@ -25,7 +25,7 @@ except: print("league.json이 로드되지 않음")
 
 # bot.sqlite 파일 불러오기
 try:
-    botDB = sqlite3.connect(rf"./Data/bot.sqlite", isolation_level=None)
+    botDB = sqlite3.connect(rf"./Database/bot.sqlite", isolation_level=None)
     botCURSOR = botDB.cursor()
     channel_event = botCURSOR.execute("SELECT ChannelEvent FROM main").fetchone()[0]
     botDB.close()
@@ -57,7 +57,7 @@ class UpdateScheduleTASK(commands.Cog):
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
             print("경기 일정 변경")
 
-            scheduleDB = sqlite3.connect(r"./Data/schedule.sqlite", isolation_level=None)
+            scheduleDB = sqlite3.connect(r"./Database/schedule.sqlite", isolation_level=None)
             scheduleCURSOR = scheduleDB.cursor()
 
             temp_scheduledAt = match_data['data']['match_scheduledAt'].replace("T", " ").split(".000Z")[0]

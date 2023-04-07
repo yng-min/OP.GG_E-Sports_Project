@@ -18,7 +18,7 @@ except: print("config.json이 로드되지 않음")
 
 # bot.sqlite 파일 불러오기
 try:
-    botDB = sqlite3.connect(rf"./Data/bot.sqlite", isolation_level=None)
+    botDB = sqlite3.connect(rf"./Database/bot.sqlite", isolation_level=None)
     botCURSOR = botDB.cursor()
     channel_feedback = botCURSOR.execute("SELECT ChannelFeedback FROM main").fetchone()[0]
     botDB.close()

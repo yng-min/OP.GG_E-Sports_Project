@@ -461,7 +461,7 @@ class LeagueStandingCMD(commands.Cog):
         name="순위",
         description="리그 오브 레전드 e스포츠의 시즌 팀 순위 정보를 확인해보세요.",
     )
-    @option("리그", description="리그를 선택해주세요.", required=True, autocomplete=get_league)
+    @option(name="리그", description="리그를 선택해주세요.", required=True, autocomplete=get_league)
     async def _mvpCMD(self, ctx: discord.AutocompleteContext, 리그: str):
 
         picked_league = 리그

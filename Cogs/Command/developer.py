@@ -129,7 +129,7 @@ class DeveloperCMD(commands.Cog):
 
         # 경기 일정 저장
         try:
-            scheduleDB = sqlite3.connect(r"./Data/schedule.sqlite", isolation_level=None)
+            scheduleDB = sqlite3.connect(r"./Database/schedule.sqlite", isolation_level=None)
             scheduleCURSOR = scheduleDB.cursor()
             try: schedule_lastSavedDataAt = scheduleCURSOR.execute("SELECT LastSavedDataAt FROM general").fetchone()[0]
             except: schedule_lastSavedDataAt = None
@@ -177,7 +177,7 @@ class DeveloperCMD(commands.Cog):
                         if time.strftime("%Y-%m-%d") == nowTime:
                             box_scheduledAt.append(time.strftime("%Y-%m-%d %H:%M:%S"))
 
-                    scheduleDB = sqlite3.connect(r"./Data/schedule.sqlite", isolation_level=None)
+                    scheduleDB = sqlite3.connect(r"./Database/schedule.sqlite", isolation_level=None)
                     scheduleCURSOR = scheduleDB.cursor()
 
                     # DB 초기화

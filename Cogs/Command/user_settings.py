@@ -20,7 +20,7 @@ except:
 
 # bot.sqlite 파일 불러오기
 try:
-    botDB = sqlite3.connect(rf"./Data/bot.sqlite", isolation_level=None)
+    botDB = sqlite3.connect(rf"./Database/bot.sqlite", isolation_level=None)
     botCURSOR = botDB.cursor()
     db_version_user = botCURSOR.execute("SELECT DBVersionUser FROM main").fetchone()[0]
     botDB.close()
@@ -44,7 +44,7 @@ class UserSettingCMD(commands.Cog):
     )
     async def _registerCMD(self, ctx):
 
-        if os.path.isfile(rf"./Data/User/user_{ctx.author.id}.sqlite"):
+        if os.path.isfile(rf"./Database/User/user_{ctx.author.id}.sqlite"):
             embed = discord.Embed(title="> ⛔ 가입 불가", description=f"<@{ctx.author.id}> 님은 이미 서비스에 가입되어 있어요.", color=colorMap['red'])
             return await ctx.respond(embed=embed, ephemeral=True)
 
@@ -52,7 +52,7 @@ class UserSettingCMD(commands.Cog):
         msg = await ctx.respond(embed=embed)
 
         try:
-            userDB = sqlite3.connect(rf"./Data/User/user_{ctx.author.id}.sqlite", isolation_level=None)
+            userDB = sqlite3.connect(rf"./Database/User/user_{ctx.author.id}.sqlite", isolation_level=None)
             userCURSOR = userDB.cursor()
 
             # 메인 테이블
@@ -111,13 +111,13 @@ class UserSettingCMD(commands.Cog):
     )
     async def _quitCMD(self, ctx):
 
-        if os.path.isfile(rf"./Data/User/user_{ctx.author.id}.sqlite"):
+        if os.path.isfile(rf"./Database/User/user_{ctx.author.id}.sqlite"):
 
             embed = discord.Embed(title="", description="⚙ 탈퇴 진행 중...", color=colorMap['red'])
             msg = await ctx.respond(embed=embed)
 
             try:
-                os.remove(rf"./Data/User/user_{ctx.author.id}.sqlite")
+                os.remove(rf"./Database/User/user_{ctx.author.id}.sqlite")
 
                 print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
                 print(f"{ctx.author}({ctx.author.id}) | 서비스 탈퇴")
