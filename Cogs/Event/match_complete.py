@@ -66,21 +66,27 @@ class MatchCompleteTASK(commands.Cog):
         match_data = opgg.match_completed(match_info=eval(ctx.content))
 
         if (match_data['error'] == False) and (match_data['data']['match_type'] == "complete"):
+
+            match_id = match_data['data']['match_id']
+            match_title = f"{match_data['data']['team_1']} vs {match_data['data']['team_2']}"
+            match_league = match_data['data']['match_league']
+
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
             print("경기 결과 알림 전송 중...")
+            print(f"- Sending match: [{match_league}] {match_title} ({match_id})")
 
             try: # 셋업된 채널 불러오기
-                scheduleURL = f"https://qwer.gg/ko/matches/{match_data['data']['match_id']}"
+                scheduleURL = f"https://qwer.gg/ko/matches/{match_id}"
 
                 box_league = []
                 for i in range(16):
-                    if leagues[i]['shortName'] == match_data['data']['match_league']:
+                    if leagues[i]['shortName'] == match_league:
                         box_league.append(f"{leagues[i]['shortName']}/{leagues[i]['region']}")
 
                 scheduleDB = sqlite3.connect(r"./Database/schedule.sqlite", isolation_level=None)
                 scheduleCURSOR = scheduleDB.cursor()
                 for i in range(16):
-                    try: scheduleCURSOR.execute(f"UPDATE {leagues[i]['shortName']} SET Status = ? WHERE ID = ?", (match_data['data']['match_type'], match_data['data']['match_id']))
+                    try: scheduleCURSOR.execute(f"UPDATE {leagues[i]['shortName']} SET Status = ? WHERE ID = ?", (match_data['data']['match_type'], match_id))
                     except: pass
 
                 # 현재 시간
@@ -118,18 +124,19 @@ class MatchCompleteTASK(commands.Cog):
                         guildDB.close()
 
                         if (channel_id) and (notice_answer == 1):
-                            channel_notice = self.bot.get_channel(channel_id)
 
                             if ((box_league[0].split("/")[0] == "LCO") and (leagueLCO == 1)) or ((box_league[0].split("/")[0] == "PCS") and (leaguePCS == 1)) or ((box_league[0].split("/")[0] == "LLA") and (leagueLLA == 1)) or ((box_league[0].split("/")[0] == "LCS") and (leagueLCS == 1)) or ((box_league[0].split("/")[0] == "LEC") and (leagueLEC == 1)) or ((box_league[0].split("/")[0] == "VCS") and (leagueVCS == 1)) or ((box_league[0].split("/")[0] == "LCL") and (leagueLCL == 1)) or ((box_league[0].split("/")[0] == "LJL") and (leagueLJL == 1)) or ((box_league[0].split("/")[0] == "TCL") and (leagueTCL == 1)) or ((box_league[0].split("/")[0] == "CBLOL") and (leagueCBLOL == 1)) or ((box_league[0].split("/")[0] == "OPL") and (leagueOPL == 1)) or ((box_league[0].split("/")[0] == "Worlds") and (leagueWorlds == 1)) or ((box_league[0].split("/")[0] == "LMS") and (leagueLMS == 1)) or ((box_league[0].split("/")[0] == "LPL") and (leagueLPL == 1)) or ((box_league[0].split("/")[0] == "LCK") and (leagueLCK == 1)) or ((box_league[0].split("/")[0] == "MSI") and (leagueMSI == 1)):
 
-                                match_name = f"{match_data['data']['team_1']} vs {match_data['data']['team_2']}"
+                                guild_notice = self.bot.get_guild(int(data_guild.split("_")[1].split(".")[0]))
+                                channel_notice = self.bot.get_channel(channel_id)
+                                role_notice = discord.utils.get(guild_notice.roles, id=role_id)
 
-                                msg_content = f"<@&{role_id}>"
+                                msg_content = f"{role_notice.mention}"
                                 msg_title = f"> 📢 {time_nowTime} 경기 결과"
                                 # msg_title = f"> 📢 {time_nowTime} 경기 결과 (테스트)"
-                                msg_description = f"```{match_name} ({box_league[0]})```"
-                                msg_team_1 = f"{match_name.split(' vs ')[0]} 팀 정보"
-                                msg_team_2 = f"{match_name.split(' vs ')[1]} 팀 정보"
+                                msg_description = f"```{match_title} ({box_league[0]})```"
+                                msg_team_1 = f"{match_title.split(' vs ')[0]} 팀 정보"
+                                msg_team_2 = f"{match_title.split(' vs ')[1]} 팀 정보"
                                 banner_image_url = random.choice(config['banner_image_url'])
 
                                 if match_data['data']['dpm'] == "": match_data['data']['dpm'] = "-"
@@ -156,7 +163,7 @@ class MatchCompleteTASK(commands.Cog):
 
                                     data_bet = []
                                     for i in range(len(box_match)):
-                                        if str(box_match[i][0]) == str(match_data['data']['match_id']):
+                                        if str(box_match[i][0]) == str(match_id):
                                             bet_box.append(box_match[i][4])
                                             bet_box.append(box_match[i][5])
                                             bet_box.append(box_match[i][7])
@@ -171,12 +178,10 @@ class MatchCompleteTASK(commands.Cog):
                                         team_point_1 = data_bet[1]
                                         team_point_2 = data_bet[3]
 
-                                        match_name = f"{match_data['data']['team_1']} vs {match_data['data']['team_2']}"
-
-                                        if (match_data['data']['match_winner_shortName'] == match_name.split(' vs ')[0]):
+                                        if (match_data['data']['match_winner_shortName'] == match_title.split(' vs ')[0]):
                                             try: reward = (bet_box[0] / bet_box[1]).__round__()
                                             except ZeroDivisionError: reward = 0
-                                        elif (match_data['data']['match_winner_shortName'] == match_name.split(' vs ')[1]):
+                                        elif (match_data['data']['match_winner_shortName'] == match_title.split(' vs ')[1]):
                                             try: reward = (bet_box[0] / bet_box[2]).__round__()
                                             except ZeroDivisionError: reward = 0
 
@@ -217,7 +222,7 @@ class MatchCompleteTASK(commands.Cog):
                                         await channel_notice.send(msg_content, embed=embed, view=LinkButton(scheduleURL))
 
                                         print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
-                                        print(f"[{box_league[0]}] {match_name} ({match_data['data']['match_id']}) | 경기 베팅 데이터를 불러올 수 없습니다.")
+                                        print(f"[{box_league[0]}] {match_title} ({match_id}) | 경기 베팅 데이터를 불러올 수 없습니다.")
 
                                 else:
                                     embed = discord.Embed(title=msg_title, description=msg_description, color=colorMap['red'])

@@ -26,7 +26,7 @@ def get_recentMatches(recentMatches):
     match_ranks = ""
 
     for i in range(len(recentMatches)):
-        match_info = opgg.match_info_by_id(recentMatches[i]['id'])
+        match_info = opgg.match_info_by_id(match_id=recentMatches[i]['id'])
 
         match_id = match_info['data'][0]['id']
         match_name = match_info['data'][0]['name']

@@ -50,8 +50,6 @@ class save_scheduleTASK(commands.Cog):
 
             yesterdayTime = (datetime.datetime.now(pytz.timezone("Asia/Seoul")) + datetime.timedelta(days=-1)).strftime("%Y-%m-%d")
             nowTime = datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%Y-%m-%d")
-            tomorrowTime = (datetime.datetime.now(pytz.timezone("Asia/Seoul")) + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
-            dayAfterTomorrowTime = (datetime.datetime.now(pytz.timezone("Asia/Seoul")) + datetime.timedelta(days=2)).strftime("%Y-%m-%d")
 
             if (nowTime != schedule_lastSavedDataAt):
                 webhook_headers = {
@@ -65,7 +63,7 @@ class save_scheduleTASK(commands.Cog):
                     "username": "OP.GG Esports Log",
                     "content": "``` ```\n>>> `({})`\n경기 일정 저장".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S"))
                 }
-                webhook_result = requests.post(webhook_url, json=webhook_data, headers=webhook_headers)
+                webhook_result = requests.post(url=webhook_url, json=webhook_data, headers=webhook_headers)
                 if 200 <= webhook_result.status_code < 300: pass
                 else: print(f'- [LOG] Not sent with {webhook_result.status_code}, response:\n{webhook_result.json()}')
 
@@ -106,7 +104,7 @@ class save_scheduleTASK(commands.Cog):
                         "username": "OP.GG Esports Log",
                         "content": "- Table Deleted."
                     }
-                    webhook_result = requests.post(webhook_url, json=webhook_data, headers=webhook_headers)
+                    webhook_result = requests.post(url=webhook_url, json=webhook_data, headers=webhook_headers)
                     if 200 <= webhook_result.status_code < 300: pass
                     else: print(f'- [LOG] Not sent with {webhook_result.status_code}, response:\n{webhook_result.json()}')
 
@@ -137,7 +135,7 @@ class save_scheduleTASK(commands.Cog):
                         "username": "OP.GG Esports Log",
                         "content": content_msg
                     }
-                    webhook_result = requests.post(webhook_url, json=webhook_data, headers=webhook_headers)
+                    webhook_result = requests.post(url=webhook_url, json=webhook_data, headers=webhook_headers)
                     if 200 <= webhook_result.status_code < 300: pass
                     else: print(f'- [LOG] Not sent with {webhook_result.status_code}, response:\n{webhook_result.json()}')
 

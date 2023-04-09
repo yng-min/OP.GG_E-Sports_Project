@@ -165,7 +165,7 @@ class StandingView(discord.ui.View):
                 embed = discord.Embed(title="> 🏅 시즌 리그 순위", description="리그 오브 레전드 e스포츠의 시즌 팀 순위 정보입니다.", color=colorMap['red'])
                 embed.set_image(url=self.banner)
                 embed.add_field(name=f"'{self.picked_league}' 리그 정보", value="> 순위 정보가 없습니다.", inline=False)
-                return await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
+                return await interaction.response.edit_message(content="", embed=embed, view=StandingView(bot=self.bot, ctx=self.ctx, msg=self.msg, banner=self.banner, picked_league=self.picked_league, button_select=True, button_select_index=self.teams_id_index, teams_id=self.teams_id))
             self.box_team = get_league_standing(tournamentId)
             tournamentId = [] # 초기화
 
@@ -209,13 +209,13 @@ class StandingView(discord.ui.View):
                             self.links = self.links[:-1]
                             embed.add_field(name=f"> {i + 1}위 - {self.box_team[i]['acronym']} ({self.box_team[i]['name']})", value=f"[__{self.box_team[i]['point']:,}__포인트] __{self.box_team[i]['win']:,}__승 __{self.box_team[i]['lose']:,}__패 (세트 스코어 __{self.box_team[i]['setWin']:,}__승 __{self.box_team[i]['setLose']:,}__패)\n{self.links}", inline=False)
                             self.links = ""
-                    await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, False, "99", self.teams_id))
+                    await interaction.response.edit_message(content="", embed=embed, view=StandingView(bot=self.bot, ctx=self.ctx, msg=self.msg, banner=self.banner, picked_league=self.picked_league, button_select=False, button_select_index="99", teams_id=self.teams_id))
 
                 else:
                     embed = discord.Embed(title="> 🏅 시즌 리그 순위", description="리그 오브 레전드 e스포츠의 시즌 팀 순위 정보입니다.", color=colorMap['red'])
                     embed.set_image(url=self.banner)
                     embed.add_field(name=f"'{self.picked_league}' 리그 정보", value="> 순위 정보가 없습니다.", inline=False)
-                    return await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
+                    return await interaction.response.edit_message(content="", embed=embed, view=StandingView(bot=self.bot, ctx=self.ctx, msg=self.msg, banner=self.banner, picked_league=self.picked_league, button_select=True, button_select_index=self.teams_id_index, teams_id=self.teams_id))
 
     def add_button(self):
         if (self.button_select == True) and (self.button_select_index == "0"):
@@ -280,7 +280,7 @@ class StandingView(discord.ui.View):
                     embed = discord.Embed(title="> 🏅 시즌 리그 순위", description="리그 오브 레전드 e스포츠의 시즌 팀 순위 정보입니다.", color=colorMap['red'])
                     embed.set_image(url=self.banner)
                     embed.add_field(name=f"'{self.picked_league}' 리그 정보", value="> 순위 정보가 없습니다.", inline=False)
-                    return await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
+                    return await interaction.response.edit_message(content="", embed=embed, view=StandingView(bot=self.bot, ctx=self.ctx, msg=self.msg, banner=self.banner, picked_league=self.picked_league, button_select=True, button_select_index=self.teams_id_index, teams_id=self.teams_id))
                                         
                 self.box_team = get_league_standing(tournamentId)
                 tournamentId = [] # 초기화
@@ -325,13 +325,13 @@ class StandingView(discord.ui.View):
                                 self.links = self.links[:-1]
                                 embed.add_field(name=f"> {i + 1}위 - {self.box_team[i]['acronym']} ({self.box_team[i]['name']})", value=f"[__{self.box_team[i]['point']:,}__포인트] __{self.box_team[i]['win']:,}__승 __{self.box_team[i]['lose']:,}__패 (세트 스코어 __{self.box_team[i]['setWin']:,}__승 __{self.box_team[i]['setLose']:,}__패)\n{self.links}", inline=False)
                                 self.links = ""
-                        await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, False, "99", self.teams_id))
+                        await interaction.response.edit_message(content="", embed=embed, view=StandingView(bot=self.bot, ctx=self.ctx, msg=self.msg, banner=self.banner, picked_league=self.picked_league, button_select=False, button_select_index="99", teams_id=self.teams_id))
 
                     else:
                         embed = discord.Embed(title="> 🏅 시즌 리그 순위", description="리그 오브 레전드 e스포츠의 시즌 팀 순위 정보입니다.", color=colorMap['red'])
                         embed.set_image(url=self.banner)
                         embed.add_field(name=f"'{self.picked_league}' 리그 정보", value="> 순위 정보가 없습니다.", inline=False)
-                        return await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
+                        return await interaction.response.edit_message(content="", embed=embed, view=StandingView(bot=self.bot, ctx=self.ctx, msg=self.msg, banner=self.banner, picked_league=self.picked_league, button_select=True, button_select_index=self.teams_id_index, teams_id=self.teams_id))
 
         async def team_callback(interaction: discord.Interaction):
             for i in range(16):
@@ -355,7 +355,7 @@ class StandingView(discord.ui.View):
                 embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
                 embed.set_image(url=self.banner)
                 embed.add_field(name=f"[{self.picked_league}]", value="> 팀 정보가 없습니다.", inline=False)
-                return await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
+                return await interaction.response.edit_message(content="", embed=embed, view=StandingView(bot=self.bot, ctx=self.ctx, msg=self.msg, banner=self.banner, picked_league=self.picked_league, button_select=True, button_select_index=self.teams_id_index, teams_id=self.teams_id))
 
             try:
                 print(f"[league_standing.py] {self.box_player['code']}: {self.box_player['message']}")
@@ -372,14 +372,14 @@ class StandingView(discord.ui.View):
                     embed.set_image(url=self.banner)
                     embed.set_thumbnail(url=self.box_player[0]['team_imageUrl'])
                     embed.add_field(name=f"{self.box_player[0]['team_acronym']} ({self.box_player[0]['team_name']}) [{self.picked_league}]", value=self.msg_player, inline=False)
-                    await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
+                    await interaction.response.edit_message(content="", embed=embed, view=StandingView(bot=self.bot, ctx=self.ctx, msg=self.msg, banner=self.banner, picked_league=self.picked_league, button_select=True, button_select_index=self.teams_id_index, teams_id=self.teams_id))
 
                 else:
                     embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
                     embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
                     embed.set_image(url=self.banner)
                     embed.add_field(name=f"[{self.picked_league}]", value="> 팀 정보가 없습니다.", inline=False)
-                    await interaction.response.edit_message(content="", embed=embed, view=StandingView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, True, self.teams_id_index, self.teams_id))
+                    await interaction.response.edit_message(content="", embed=embed, view=StandingView(bot=self.bot, ctx=self.ctx, msg=self.msg, banner=self.banner, picked_league=self.picked_league, button_select=True, button_select_index=self.teams_id_index, teams_id=self.teams_id))
 
         if self.button_select == True:
             if self.button_select_index == "0": team_1.callback = callback_all
@@ -538,7 +538,7 @@ class LeagueStandingCMD(commands.Cog):
                                 if box_team[j]['discord']: links = f"{links}[{emoji_discord}]({box_team[j]['discord']}) "
                                 embed.add_field(name=f"> {j + 1}위 - {box_team[j]['acronym']} ({box_team[j]['name']})", value=f"[__{box_team[j]['point']:,}__포인트] __{box_team[j]['win']:,}__승 __{box_team[j]['lose']:,}__패 (세트 스코어 __{box_team[j]['setWin']:,}__승 __{box_team[j]['setLose']:,}__패)\n{links}", inline=False)
                                 links = ""
-                        await msg.edit_original_response(content="", embed=embed, view=StandingView(self.bot, ctx, msg, banner_image_url, picked_league, False, "99", teams_id))
+                        await msg.edit_original_response(content="", embed=embed, view=StandingView(bot=self.bot, ctx=ctx, msg=msg, banner=banner_image_url, picked_league=picked_league, button_select=False, button_select_index="99", teams_id=teams_id))
 
         except Exception as error:
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))

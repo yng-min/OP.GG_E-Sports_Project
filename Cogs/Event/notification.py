@@ -91,18 +91,17 @@ class NotificationTASK(commands.Cog):
                     if int(time_earlyDetail_1_hour) < 10: time_earlyDetail_1_hour = f"0{time_earlyDetail_1_hour}" # 시간이 열자리일 때, 0을 붙여줌
                     time_earlyDetail = f"{time_earlyDetail_1_hour}:{int(time_earlyDetail_1_minute) - 30}:00"
 
-                    matchID = box_info[j].split(" ")[0]
                     tournamentID = box_info[j].split(" ")[1]
-                    matchTitle = box_teams[j]
+                    match_id = box_info[j].split(" ")[0]
+                    match_title = box_teams[j]
+                    match_league = box_league[j].split("/")[0]
 
                     banner_image_url = random.choice(config['banner_image_url'])
 
                     # 경기 시작 알림
                     if date_detail == time_nowDetail:
-                        print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
-                        print("경기 일정 알림 전송 중...")
 
-                        match_data = opgg.match_started(match_id=matchID, tournament_id=tournamentID, status="not_started")
+                        match_data = opgg.match_started(match_id=match_id, tournament_id=tournamentID, status="not_started")
 
                         if match_data['error'] == False:
 
@@ -138,11 +137,15 @@ class NotificationTASK(commands.Cog):
 
                             except IndexError:
                                 collecting_data = True
-                                team_1_acronym = f"{matchTitle.split(' vs ')[0]}"
-                                team_2_acronym = f"{matchTitle.split(' vs ')[1]}"
+                                team_1_acronym = f"{match_title.split(' vs ')[0]}"
+                                team_2_acronym = f"{match_title.split(' vs ')[1]}"
+
+                            print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
+                            print("경기 일정 알림 전송 중...")
+                            print(f"- Sending match: [{match_league}] {match_title} ({match_id})")
 
                             try: # 셋업된 채널 불러오기
-                                scheduleURL = f"https://esports.op.gg/ko/matches/{matchID}"
+                                scheduleURL = f"https://esports.op.gg/ko/matches/{match_id}"
 
                                 for data_guild in os.listdir(r"./Database/Guild"):
 
@@ -176,12 +179,14 @@ class NotificationTASK(commands.Cog):
 
                                             if ((box_league[j].split("/")[0] == "LCO") and (leagueLCO == 1)) or ((box_league[j].split("/")[0] == "PCS") and (leaguePCS == 1)) or ((box_league[j].split("/")[0] == "LLA") and (leagueLLA == 1)) or ((box_league[j].split("/")[0] == "LCS") and (leagueLCS == 1)) or ((box_league[j].split("/")[0] == "LEC") and (leagueLEC == 1)) or ((box_league[j].split("/")[0] == "VCS") and (leagueVCS == 1)) or ((box_league[j].split("/")[0] == "LCL") and (leagueLCL == 1)) or ((box_league[j].split("/")[0] == "LJL") and (leagueLJL == 1)) or ((box_league[j].split("/")[0] == "TCL") and (leagueTCL == 1)) or ((box_league[j].split("/")[0] == "CBLOL") and (leagueCBLOL == 1)) or ((box_league[j].split("/")[0] == "OPL") and (leagueOPL == 1)) or ((box_league[j].split("/")[0] == "Worlds") and (leagueWorlds == 1)) or ((box_league[j].split("/")[0] == "LMS") and (leagueLMS == 1)) or ((box_league[j].split("/")[0] == "LPL") and (leagueLPL == 1)) or ((box_league[j].split("/")[0] == "LCK") and (leagueLCK == 1)) or ((box_league[j].split("/")[0] == "MSI") and (leagueMSI == 1)):
 
+                                                guild_notice = self.bot.get_guild(int(data_guild.split("_")[1].split(".")[0]))
                                                 channel_notice = self.bot.get_channel(channel_id)
+                                                role_notice = discord.utils.get(guild_notice.roles, id=role_id)
 
-                                                msg_content = f"<@&{role_id}>"
+                                                msg_content = f"{role_notice.mention}"
                                                 msg_title = f"> 📢 {time_nowTime} 경기 시작 알림"
                                                 # msg_title = f"> 📢 {time_nowTime} 경기 시작 알림 (테스트)"
-                                                msg_description = f"```{team_1_acronym} vs {team_2_acronym} ({box_league[j]})```"
+                                                msg_description = f"```{match_title} ({box_league[j]})```"
 
                                                 embed = discord.Embed(title=msg_title, description=msg_description, color=colorMap['red'])
                                                 embed.set_footer(text="TIP: 아래 버튼을 눌러 승부 예측 미니게임을 즐길 수 있어요.", icon_url=self.bot.user.display_avatar.url)
@@ -212,7 +217,7 @@ class NotificationTASK(commands.Cog):
                                                     embed.add_field(name="골드 획득량", value=team_2_goldEarned, inline=True)
 
                                                 msg = await channel_notice.send(msg_content, embed=embed)
-                                                await msg.edit(msg_content, embed=embed, view=BettingButton(bot=self.bot, msg=msg, url=scheduleURL, matchID=matchID, team_1=team_1_acronym, team_2=team_2_acronym))
+                                                await msg.edit(msg_content, embed=embed, view=BettingButton(bot=self.bot, msg=msg, url=scheduleURL, match_id=match_id, team_1=team_1_acronym, team_2=team_2_acronym))
 
                             except Exception as error:
                                 print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
@@ -228,9 +233,10 @@ class NotificationTASK(commands.Cog):
                     elif time_earlyDetail == time_nowDetail:
                         print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
                         print("경기 일정(30분 전) 알림 전송 중...")
+                        print(f"- Sending match: [{match_league}] {match_title} ({match_id})")
 
                         try: # 셋업된 채널 불러오기
-                            scheduleURL = f"https://esports.op.gg/ko/matches/{matchID}"
+                            scheduleURL = f"https://esports.op.gg/ko/matches/{match_id}"
 
                             for data_guild in os.listdir(r"./Database/Guild"):
 

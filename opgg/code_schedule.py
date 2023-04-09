@@ -29,7 +29,7 @@ query {
             "Content-Type": "application/json",
         }
 
-        result = requests.post(url, json={"query": query}, headers=headers)
+        result = requests.post(url=url, json={"query": query}, headers=headers)
 
         if 200 <= result.status_code < 300:
             matches = result.json()['data']['upcomingMatchesByDate']
@@ -70,7 +70,7 @@ query {
             "Content-Type": "application/json",
         }
 
-        result = requests.post(url, json={"query": query}, headers=headers)
+        result = requests.post(url=url, json={"query": query}, headers=headers)
 
         if 200 <= result.status_code < 300:
             matches = result.json()['data']['pagedAllMatches']

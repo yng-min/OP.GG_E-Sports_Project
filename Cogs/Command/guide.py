@@ -120,7 +120,7 @@ class GuideCMD(commands.Cog):
     async def _helpCMD(self, ctx):
         banner_image_url = random.choice(config['banner_image_url'])
         embed = embed_setup(self.bot, banner_image_url, self.page)
-        await ctx.respond(embed=embed, view=HelpBUTTON(self.bot, banner_image_url, self.page))
+        await ctx.respond(embed=embed, view=HelpBUTTON(bot=self.bot, banner=banner_image_url, page=self.page))
 
 
 

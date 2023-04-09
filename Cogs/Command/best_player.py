@@ -177,7 +177,7 @@ class MvpView(discord.ui.View):
         embed.set_image(url=self.banner)
         embed.add_field(name=f"'{self.picked_lane}' 포지션 ({self.picked_league})", value=self.msg_mvp_1, inline=True)
         embed.add_field(name="\u200b", value=self.msg_mvp_2, inline=True)
-        await interaction.response.edit_message(content="", embed=embed, view=MvpView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, self.picked_lane, self.button_select, self.box_LCK, self.box_LPL, self.box_LEC, self.box_LCS, self.box_CBLOL, self.box_VCS, self.box_LCL, self.box_TCL, self.box_PCS, self.box_LLA, self.box_LJL, self.box_LCO))
+        await interaction.response.edit_message(content="", embed=embed, view=MvpView(bot=self.bot, ctx=self.ctx, msg=self.msg, banner=self.banner, picked_league=self.picked_league, picked_lane=self.picked_lane, button_select=self.button_select, box_LCK=self.box_LCK, box_LPL=self.box_LPL, box_LEC=self.box_LEC, box_LCS=self.box_LCS, box_CBLOL=self.box_CBLOL, box_VCS=self.box_VCS, box_LCL=self.box_LCL, box_TCL=self.box_TCL, box_PCS=self.box_PCS, box_LLA=self.box_LLA, box_LJL=self.box_LJL, box_LCO=self.box_LCO))
 
     def add_button(self):
         if (self.button_select == True) and (self.picked_lane == "탑"): button_top = discord.ui.Button(label="탑", style=discord.ButtonStyle.blurple, custom_id="탑", row=1)
@@ -225,7 +225,7 @@ class MvpView(discord.ui.View):
             self.button_select = False
             embed.add_field(name=f"'{self.picked_lane}' 포지션 ({self.picked_league})", value=self.msg_mvp_1, inline=True)
             embed.add_field(name="\u200b", value=self.msg_mvp_2, inline=True)
-            await interaction.response.edit_message(content="", embed=embed, view=MvpView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, self.picked_lane, self.button_select, self.box_LCK, self.box_LPL, self.box_LEC, self.box_LCS, self.box_CBLOL, self.box_VCS, self.box_LCL, self.box_TCL, self.box_PCS, self.box_LLA, self.box_LJL, self.box_LCO))
+            await interaction.response.edit_message(content="", embed=embed, view=MvpView(bot=self.bot, ctx=self.ctx, msg=self.msg, banner=self.banner, picked_league=self.picked_league, picked_lane=self.picked_lane, button_select=self.button_select, box_LCK=self.box_LCK, box_LPL=self.box_LPL, box_LEC=self.box_LEC, box_LCS=self.box_LCS, box_CBLOL=self.box_CBLOL, box_VCS=self.box_VCS, box_LCL=self.box_LCL, box_TCL=self.box_TCL, box_PCS=self.box_PCS, box_LLA=self.box_LLA, box_LJL=self.box_LJL, box_LCO=self.box_LCO))
 
         async def callback_lane(interaction: discord.Interaction):
             self.picked_lane = interaction.custom_id
@@ -261,7 +261,7 @@ class MvpView(discord.ui.View):
             self.button_select = True
             embed.add_field(name=f"'{self.picked_lane}' 포지션 ({self.picked_league})", value=self.msg_mvp_1, inline=True)
             embed.add_field(name="\u200b", value=self.msg_mvp_2, inline=True)
-            await interaction.response.edit_message(content="", embed=embed, view=MvpView(self.bot, self.ctx, self.msg, self.banner, self.picked_league, self.picked_lane, self.button_select, self.box_LCK, self.box_LPL, self.box_LEC, self.box_LCS, self.box_CBLOL, self.box_VCS, self.box_LCL, self.box_TCL, self.box_PCS, self.box_LLA, self.box_LJL, self.box_LCO))
+            await interaction.response.edit_message(content="", embed=embed, view=MvpView(bot=self.bot, ctx=self.ctx, msg=self.msg, banner=self.banner, picked_league=self.picked_league, picked_lane=self.picked_lane, button_select=self.button_select, box_LCK=self.box_LCK, box_LPL=self.box_LPL, box_LEC=self.box_LEC, box_LCS=self.box_LCS, box_CBLOL=self.box_CBLOL, box_VCS=self.box_VCS, box_LCL=self.box_LCL, box_TCL=self.box_TCL, box_PCS=self.box_PCS, box_LLA=self.box_LLA, box_LJL=self.box_LJL, box_LCO=self.box_LCO))
 
         if self.button_select == True:
             if self.picked_lane == "탑": button_top.callback = callback_all
@@ -439,7 +439,7 @@ class MvpCMD(commands.Cog):
                 embed.set_image(url=banner_image_url)
                 embed.add_field(name=f"'{picked_lane}' 포지션 ({picked_league})", value=msg_mvp_1, inline=True)
                 embed.add_field(name="\u200b", value=msg_mvp_2, inline=True)
-                await msg.edit_original_response(content="", embed=embed, view=MvpView(self.bot, ctx, msg, banner_image_url, picked_league, picked_lane, button_select, box_LCK, box_LPL, box_LEC, box_LCS, box_CBLOL, box_VCS, box_LCL, box_TCL, box_PCS, box_LLA, box_LJL, box_LCO))
+                await msg.edit_original_response(content="", embed=embed, view=MvpView(bot=self.bot, ctx=ctx, msg=msg, banner=banner_image_url, picked_league=picked_league, picked_lane=picked_lane, button_select=button_select, box_LCK=box_LCK, box_LPL=box_LPL, box_LEC=box_LEC, box_LCS=box_LCS, box_CBLOL=box_CBLOL, box_VCS=box_VCS, box_LCL=box_LCL, box_TCL=box_TCL, box_PCS=box_PCS, box_LLA=box_LLA, box_LJL=box_LJL, box_LCO=box_LCO))
 
         except Exception as error:
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))

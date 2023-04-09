@@ -33,20 +33,20 @@ class LinkButton(discord.ui.View):
 
 class BettingButton(discord.ui.View):
 
-    def __init__(self, bot, msg, url, matchID, team_1, team_2):
+    def __init__(self, bot, msg, url, match_id, team_1, team_2):
         super().__init__(timeout=900)
         self.bot = bot
         self.msg = msg
         self.url = url
-        self.matchID = matchID
+        self.match_id = match_id
         self.team_1 = team_1
         self.team_2 = team_2
         self.add_item(discord.ui.Button(label="OP.GG Esports에서 보기", url=url, row=1))
         self.add_button()
 
     def add_button(self):
-        home_team = discord.ui.Button(label=f"'{self.team_1}' 팀 예측하기", style=discord.ButtonStyle.blurple, custom_id=f"{self.matchID}/{self.team_1}", row=0)
-        away_team = discord.ui.Button(label=f"'{self.team_2}' 팀 예측하기", style=discord.ButtonStyle.blurple, custom_id=f"{self.matchID}/{self.team_2}", row=0)
+        home_team = discord.ui.Button(label=f"'{self.team_1}' 팀 예측하기", style=discord.ButtonStyle.blurple, custom_id=f"{self.match_id}/{self.team_1}", row=0)
+        away_team = discord.ui.Button(label=f"'{self.team_2}' 팀 예측하기", style=discord.ButtonStyle.blurple, custom_id=f"{self.match_id}/{self.team_2}", row=0)
 
         async def callback_1(interaction: discord.Interaction):
             user = interaction.user
@@ -56,7 +56,7 @@ class BettingButton(discord.ui.View):
                 userCURSOR = userDB.cursor()
                 userDATA = userCURSOR.execute(f"SELECT * FROM data WHERE UserID = '{user.id}'").fetchone()
 
-                modal = BettingModal_1(self.bot, self.msg, self.url, self.matchID, self.team_1, self.team_2, userDATA[2], title=f"리그 승부 예측 ({self.team_1} vs {self.team_2})")
+                modal = BettingModal_1(bot=self.bot, msg=self.msg, url=self.url, match_id=self.match_id, team_1=self.team_1, team_2=self.team_2, data=userDATA[2], title=f"리그 승부 예측 ({self.team_1} vs {self.team_2})")
                 await interaction.response.send_modal(modal)
 
             else:
@@ -71,7 +71,7 @@ class BettingButton(discord.ui.View):
                 userCURSOR = userDB.cursor()
                 userDATA = userCURSOR.execute(f"SELECT * FROM data WHERE UserID = '{user.id}'").fetchone()
 
-                modal = BettingModal_2(self.bot, self.msg, self.url, self.matchID, self.team_1, self.team_2, userDATA[2], title=f"리그 승부 예측 ({self.team_1} vs {self.team_2})")
+                modal = BettingModal_2(bot=self.bot, msg=self.msg, url=self.url, match_id=self.match_id, team_1=self.team_1, team_2=self.team_2, data=userDATA[2], title=f"리그 승부 예측 ({self.team_1} vs {self.team_2})")
                 await interaction.response.send_modal(modal)
 
             else:
@@ -105,16 +105,16 @@ class BettingButton(discord.ui.View):
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
             print(traceback.format_exc())
 
-        await self.msg.edit(content=msg_content, view=DisabledButton(self.bot, self.msg, self.url, self.matchID, self.team_1, self.team_2))
+        await self.msg.edit(content=msg_content, view=DisabledButton(bot=self.bot, msg=self.msg, url=self.url, match_id=self.match_id, team_1=self.team_1, team_2=self.team_2))
 
 
 class BettingModal_1(discord.ui.Modal):
 
-    def __init__(self, bot, msg, url, matchID, team_1, team_2, data, *args, **kwargs) -> None:
+    def __init__(self, bot, msg, url, match_id, team_1, team_2, data, *args, **kwargs) -> None:
         self.bot = bot
         self.msg = msg
         self.url = url
-        self.matchID = matchID
+        self.match_id = match_id
         self.team_1 = team_1
         self.team_2 = team_2
         self.data = data
@@ -136,14 +136,11 @@ class BettingModal_1(discord.ui.Modal):
                 userDB = sqlite3.connect(rf"./Database/User/user_{user.id}.sqlite", isolation_level=None)
                 userCURSOR = userDB.cursor()
 
-                scheduleDB = sqlite3.connect(rf"./Database/schedule.sqlite", isolation_level=None)
-                scheduleCURSOR = scheduleDB.cursor()
-
                 bettingDB = sqlite3.connect(rf"./Database/betting.sqlite", isolation_level=None)
                 bettingCURSOR = bettingDB.cursor()
 
                 try:
-                    result = userCURSOR.execute(f"SELECT * FROM \"{self.matchID}\" WHERE UserID = {user.id}").fetchone()
+                    result = userCURSOR.execute(f"SELECT * FROM \"{self.match_id}\" WHERE UserID = {user.id}").fetchone()
                     if result[1]:
                         embed = discord.Embed(title="> ⛔ 리그 승부 예측 불가", description=f"이미 `{result[1]}` 팀에 승부를 예측하였어요.", color=colorMap['red'])
                         return await interaction.response.send_message(embed=embed, ephemeral=True)
@@ -166,13 +163,13 @@ class BettingModal_1(discord.ui.Modal):
 
                         for i in range(16):
                             for j in range(len(box_match)):
-                                if str(self.matchID) == str(box_match[j][0]):
-                                    bettingCURSOR.execute(f"UPDATE {leagues[i]['shortName']} SET TotalBet = ?, TotalPoint = ?, HomeBet = ?, HomePoint = ? WHERE ID = ?", ((box_match[j][3] + 1), (box_match[j][4] + bet_point), (box_match[j][5] + 1), (box_match[j][6] + bet_point), self.matchID))
+                                if str(self.match_id) == str(box_match[j][0]):
+                                    bettingCURSOR.execute(f"UPDATE {leagues[i]['shortName']} SET TotalBet = ?, TotalPoint = ?, HomeBet = ?, HomePoint = ? WHERE ID = ?", ((box_match[j][3] + 1), (box_match[j][4] + bet_point), (box_match[j][5] + 1), (box_match[j][6] + bet_point), self.match_id))
 
                         userCURSOR.execute("UPDATE data SET Point = ?, TotalAnswer = ? WHERE UserID = ?", ((resultData[2] - bet_point), (resultData[3] + 1), user.id))
 
-                        userCURSOR.execute(f"CREATE TABLE IF NOT EXISTS \"{self.matchID}\"(UserID INTERGER, Answer TEXT, BettingPoint INTERGER)") # 베팅 테이블 생성
-                        userCURSOR.execute(f"INSERT INTO \"{self.matchID}\"(UserID, Answer, BettingPoint) VALUES(?, ?, ?)", (user.id, self.team_1, bet_point)) # 베팅 테이블 데이터 입력
+                        userCURSOR.execute(f"CREATE TABLE IF NOT EXISTS \"{self.match_id}\"(UserID INTERGER, Answer TEXT, BettingPoint INTERGER)") # 베팅 테이블 생성
+                        userCURSOR.execute(f"INSERT INTO \"{self.match_id}\"(UserID, Answer, BettingPoint) VALUES(?, ?, ?)", (user.id, self.team_1, bet_point)) # 베팅 테이블 데이터 입력
 
                     elif not resultData or (resultData[1] <= bet_point):
                         embed = discord.Embed(title="> ⛔ 리그 승부 예측 불가", description=f"아쉽지만 베팅할 포인트가 모자라요. 😭", color=colorMap['red'])
@@ -183,7 +180,7 @@ class BettingModal_1(discord.ui.Modal):
                     await interaction.response.send_message(embed=embed, ephemeral=True)
 
                 userDB.close()
-                scheduleDB.close()
+                bettingDB.close()
 
             else:
                 embed = discord.Embed(title="> ⛔ 리그 승부 예측 불가", description="서비스에 가입하셔야 이용할 수 있는 기능입니다.", color=colorMap['red'])
@@ -198,11 +195,11 @@ class BettingModal_1(discord.ui.Modal):
 
 class BettingModal_2(discord.ui.Modal):
 
-    def __init__(self, bot, msg, url, matchID, team_1, team_2, data, *args, **kwargs) -> None:
+    def __init__(self, bot, msg, url, match_id, team_1, team_2, data, *args, **kwargs) -> None:
         self.bot = bot
         self.msg = msg
         self.url = url
-        self.matchID = matchID
+        self.match_id = match_id
         self.team_1 = team_1
         self.team_2 = team_2
         self.data = data
@@ -228,7 +225,7 @@ class BettingModal_2(discord.ui.Modal):
                 bettingCURSOR = bettingDB.cursor()
 
                 try:
-                    result = userCURSOR.execute(f"SELECT * FROM \"{self.matchID}\" WHERE UserID = {user.id}").fetchone()
+                    result = userCURSOR.execute(f"SELECT * FROM \"{self.match_id}\" WHERE UserID = {user.id}").fetchone()
                     if result[1]:
                         embed = discord.Embed(title="> ⛔ 리그 승부 예측 불가", description=f"이미 `{result[1]}` 팀에 승부를 예측하였어요.", color=colorMap['red'])
                         return await interaction.response.send_message(embed=embed, ephemeral=True)
@@ -251,13 +248,13 @@ class BettingModal_2(discord.ui.Modal):
 
                         for i in range(16):
                             for j in range(len(box_match)):
-                                if str(self.matchID) == str(box_match[j][0]):
-                                    bettingCURSOR.execute(f"UPDATE {leagues[i]['shortName']} SET TotalBet = ?, TotalPoint = ?, AwayBet = ?, AwayPoint = ? WHERE ID = ?", ((box_match[j][3] + 1), (box_match[j][4] + bet_point), (box_match[j][7] + 1), (box_match[j][8] + bet_point), self.matchID))
+                                if str(self.match_id) == str(box_match[j][0]):
+                                    bettingCURSOR.execute(f"UPDATE {leagues[i]['shortName']} SET TotalBet = ?, TotalPoint = ?, AwayBet = ?, AwayPoint = ? WHERE ID = ?", ((box_match[j][3] + 1), (box_match[j][4] + bet_point), (box_match[j][7] + 1), (box_match[j][8] + bet_point), self.match_id))
 
                         userCURSOR.execute("UPDATE data SET Point = ?, TotalAnswer = ? WHERE UserID = ?", ((resultData[2] - bet_point), (resultData[3] + 1), user.id))
 
-                        userCURSOR.execute(f"CREATE TABLE IF NOT EXISTS \"{self.matchID}\"(UserID INTERGER, Answer TEXT, BettingPoint INTERGER)") # 베팅 테이블 생성
-                        userCURSOR.execute(f"INSERT INTO \"{self.matchID}\"(UserID, Answer, BettingPoint) VALUES(?, ?, ?)", (user.id, self.team_2, bet_point)) # 베팅 테이블 데이터 입력
+                        userCURSOR.execute(f"CREATE TABLE IF NOT EXISTS \"{self.match_id}\"(UserID INTERGER, Answer TEXT, BettingPoint INTERGER)") # 베팅 테이블 생성
+                        userCURSOR.execute(f"INSERT INTO \"{self.match_id}\"(UserID, Answer, BettingPoint) VALUES(?, ?, ?)", (user.id, self.team_2, bet_point)) # 베팅 테이블 데이터 입력
 
                     elif not resultData or (resultData[1] <= bet_point):
                         embed = discord.Embed(title="> ⛔ 리그 승부 예측 불가", description=f"아쉽지만 베팅할 포인트가 모자라요. 😭", color=colorMap['red'])
@@ -283,13 +280,13 @@ class BettingModal_2(discord.ui.Modal):
 
 class DisabledButton(discord.ui.View):
 
-    def __init__(self, bot, msg, url, matchID, team_1, team_2):
+    def __init__(self, bot, msg, url, match_id, team_1, team_2):
         super().__init__(timeout=None)
         self.bot = bot
         self.msg = msg
-        self.matchID = matchID
+        self.match_id = match_id
         self.team_1 = team_1
         self.team_2 = team_2
-        self.add_item(discord.ui.Button(label=f"'{self.team_1}' 팀 예측하기", style=discord.ButtonStyle.blurple, custom_id=f"{self.matchID}/{self.team_1}", disabled=True, row=0))
+        self.add_item(discord.ui.Button(label=f"'{self.team_1}' 팀 예측하기", style=discord.ButtonStyle.blurple, custom_id=f"{self.match_id}/{self.team_1}", disabled=True, row=0))
         self.add_item(discord.ui.Button(label="OP.GG Esports에서 보기", url=url, row=1))
-        self.add_item(discord.ui.Button(label=f"'{self.team_2}' 팀 예측하기", style=discord.ButtonStyle.blurple, custom_id=f"{self.matchID}/{self.team_2}", disabled=True, row=0))
+        self.add_item(discord.ui.Button(label=f"'{self.team_2}' 팀 예측하기", style=discord.ButtonStyle.blurple, custom_id=f"{self.match_id}/{self.team_2}", disabled=True, row=0))

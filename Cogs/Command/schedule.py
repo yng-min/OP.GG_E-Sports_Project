@@ -590,7 +590,7 @@ class ScheduleCMD(commands.Cog):
             embed.set_footer(text="TIP: 아래 버튼을 눌러 다른 일자의 일정도 살펴볼 수 있어요.", icon_url=self.bot.user.display_avatar.url)
             embed.set_image(url=banner_image_url)
             embed.add_field(name=f"{box_1_match_schedule_2[0]} 일정", value=f"└ (총 **3**페이지 중 **1**번째 페이지)\n```{msg_schedule_info_1_2}```", inline=False)
-            await msg.edit_original_response(content="", embed=embed, view=ScheduleButton(self.bot, ctx, msg, banner_image_url, box_1_match_schedule_2, msg_schedule_info_1, msg_schedule_info_1_2, box_2_match_schedule_2, msg_schedule_info_2, msg_schedule_info_2_2, box_3_match_schedule_2, msg_schedule_info_3, msg_schedule_info_3_2))
+            await msg.edit_original_response(content="", embed=embed, view=ScheduleButton(bot=self.bot, ctx=ctx, msg=msg, banner=banner_image_url, box_1_match_schedule_2=box_1_match_schedule_2, msg_schedule_info_1=msg_schedule_info_1, msg_schedule_info_1_2=msg_schedule_info_1_2, box_2_match_schedule_2=box_2_match_schedule_2, msg_schedule_info_2=msg_schedule_info_2, msg_schedule_info_2_2=msg_schedule_info_2_2, box_3_match_schedule_2=box_3_match_schedule_2, msg_schedule_info_3=msg_schedule_info_3, msg_schedule_info_3_2=msg_schedule_info_3_2))
 
         except Exception as error:
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))

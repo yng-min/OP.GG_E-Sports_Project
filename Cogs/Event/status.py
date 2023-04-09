@@ -36,7 +36,7 @@ class StatusEVENT(commands.Cog):
                 self.status_content = None
                 self.firstData = False
 
-                season_data = opgg.season_info("99") # LCK 시즌 통계 데이터
+                season_data = opgg.season_info(tournamentId="99") # LCK 시즌 통계 데이터
 
                 if season_data['error'] == False:
                     self.status_content = season_data

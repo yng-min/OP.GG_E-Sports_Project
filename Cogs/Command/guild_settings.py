@@ -377,7 +377,7 @@ class GuildSettingCMD(commands.Cog):
 
         embed = discord.Embed(title="> 📝 리그 알림 설정", description="서버에서 알림을 받을 리그 종류를 선택해 주세요.", color=colorMap['red'])
         msg = await ctx.respond(embed=embed)
-        await msg.edit_original_response(content="", embed=embed, view=LeagueView(self.bot, ctx, msg))
+        await msg.edit_original_response(content="", embed=embed, view=LeagueView(bot=self.bot, ctx=ctx, msg=msg))
 
     @_guild_settings.command(
         name="변경",

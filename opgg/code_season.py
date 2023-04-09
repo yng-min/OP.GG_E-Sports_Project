@@ -33,7 +33,7 @@ query {
             "Content-Type": "application/json",
         }
 
-        result = requests.post(url, json={"query": query}, headers=headers)
+        result = requests.post(url=url, json={"query": query}, headers=headers)
 
         if 200 <= result.status_code < 300:
             seasons = result.json()['data']['summary']
@@ -70,7 +70,7 @@ query {
             "Content-Type": "application/json",
         }
 
-        result = requests.post(url, json={"query": query}, headers=headers)
+        result = requests.post(url=url, json={"query": query}, headers=headers)
 
         if 200 <= result.status_code < 300:
             bans = result.json()['data']['pagedBanpicksBySerieId']
@@ -108,7 +108,7 @@ query {
             "Content-Type": "application/json",
         }
 
-        result = requests.post(url, json={"query": query}, headers=headers)
+        result = requests.post(url=url, json={"query": query}, headers=headers)
 
         if 200 <= result.status_code < 300:
             bans = result.json()['data']['pagedBanpicksBySerieId']
