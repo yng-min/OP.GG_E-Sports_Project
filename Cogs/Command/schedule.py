@@ -147,8 +147,7 @@ class ScheduleButton(discord.ui.View):
         self.league_schedule_2 = list(filter(len, self.league_schedule_2))
         self.league_schedule_3 = list(filter(len, self.league_schedule_3))
 
-        if self.league_schedule_1 == []:
-            pass
+        if self.league_schedule_1 == []: pass
         else:
             for i in range(len(self.box_select)):
                 if self.box_select[i] == "all":
@@ -161,8 +160,7 @@ class ScheduleButton(discord.ui.View):
                         if self.league_find == self.box_select[i]:
                             self.schedules_1.append(self.league_schedule_1[j])
 
-        if self.league_schedule_2 == []:
-            pass
+        if self.league_schedule_2 == []: pass
         else:
             for i in range(len(self.box_select)):
                 if self.box_select[i] == "all":
@@ -175,8 +173,7 @@ class ScheduleButton(discord.ui.View):
                         if self.league_find == self.box_select[i]:
                             self.schedules_2.append(self.league_schedule_2[j])
 
-        if self.league_schedule_3 == []:
-            pass
+        if self.league_schedule_3 == []: pass
         else:
             for i in range(len(self.box_select)):
                 if self.box_select[i] == "all":
@@ -195,10 +192,8 @@ class ScheduleButton(discord.ui.View):
                 if self.box_select[j] == "all":
                     self.check_all = True
                     self.msg_schedule_1 = self.schedule_1_3
-                else:
-                    break
-            if self.check_all == True:
-                break
+                else: break
+            if self.check_all == True: break
             else:
                 self.msg_schedule_1 += f"\n{self.schedules_1[i]}"
 
@@ -208,10 +203,8 @@ class ScheduleButton(discord.ui.View):
                 if self.box_select[j] == "all":
                     self.check_all = True
                     self.msg_schedule_2 = self.schedule_2_3
-                else:
-                    break
-            if self.check_all == True:
-                break
+                else: break
+            if self.check_all == True: break
             else:
                 self.msg_schedule_2 += f"\n{self.schedules_2[i]}"
 
@@ -221,10 +214,8 @@ class ScheduleButton(discord.ui.View):
                 if self.box_select[j] == "all":
                     self.check_all = True
                     self.msg_schedule_3 = self.schedule_3_3
-                else:
-                    break
-            if self.check_all == True:
-                break
+                else: break
+            if self.check_all == True: break
             else:
                 self.msg_schedule_3 += f"\n{self.schedules_3[i]}"
 
@@ -417,37 +408,52 @@ class ScheduleCMD(commands.Cog):
                 if matches['error'] == False:
                     temp_scheduledAt = []
                     box_scheduledAt = []
-                    for i in range(len(matches['data'])):
-                        temp_scheduledAt.append(matches['data'][i]['scheduledAt'].replace("T", " ").split(".000Z")[0])
-                        date_temp = datetime.datetime.strptime(temp_scheduledAt[i], "%Y-%m-%d %H:%M:%S")
-                        date_delta = datetime.timedelta(hours=time_difference)
-                        time = date_temp + date_delta
-                        box_scheduledAt.append(time.strftime("%Y-%m-%d %H:%M:%S"))
 
-                    for i in range(len(matches['data'])):
-                        for j in range(16):
-                            if matches['data'][i]['tournament']['serie']['league']['shortName'] == leagues[j]['shortName']:
-                                try: match_acronym = matches['data'][i]['name'].split(': ')[1]
-                                except: match_acronym = matches['data'][i]['name']
-                                match_schedule_1 = box_scheduledAt[i].split(" ")[0]
-                                match_schedule_2 = box_scheduledAt[i].split(" ")[1][0:5]
-                                match_schedule_3 = datetime.datetime.strptime(match_schedule_1, "%Y-%m-%d").strftime("X%Y년 X%m월 X%d일").replace("X0", "").replace("X", "")
-                                match_league = leagues[j]['shortName']
-                                match_region = leagues[j]['region']
-                                match_info = f"[{match_schedule_2}] {match_acronym} ({match_league}/{match_region})"
+                    if matches['data'] == None:
+                        if (dateTime == yesterdayTime) or (dateTime == nowTime):
+                            box_1_match_schedule_1 = []
+                            box_1_match_schedule_2.append(dateTime)
 
-                                if match_schedule_1 == nowTime:
-                                    box_1_match_schedule_1.append(match_schedule_1)
-                                    box_1_match_schedule_2.append(match_schedule_3)
-                                    box_1_match_info.append(match_info)
-                                if match_schedule_1 == tomorrowTime:
-                                    box_2_match_schedule_1.append(match_schedule_1)
-                                    box_2_match_schedule_2.append(match_schedule_3)
-                                    box_2_match_info.append(match_info)
-                                if match_schedule_1 == dayAfterTomorrowTime:
-                                    box_3_match_schedule_1.append(match_schedule_1)
-                                    box_3_match_schedule_2.append(match_schedule_3)
-                                    box_3_match_info.append(match_info)
+                        if dateTime == tomorrowTime:
+                            box_2_match_schedule_1 = []
+                            box_2_match_schedule_2.append(dateTime)
+
+                        if dateTime == dayAfterTomorrowTime:
+                            box_3_match_schedule_1 = []
+                            box_3_match_schedule_2.append(dateTime)
+
+                    else:
+                        for i in range(len(matches['data'])):
+                            temp_scheduledAt.append(matches['data'][i]['scheduledAt'].replace("T", " ").split(".000Z")[0])
+                            date_temp = datetime.datetime.strptime(temp_scheduledAt[i], "%Y-%m-%d %H:%M:%S")
+                            date_delta = datetime.timedelta(hours=time_difference)
+                            time = date_temp + date_delta
+                            box_scheduledAt.append(time.strftime("%Y-%m-%d %H:%M:%S"))
+
+                        for i in range(len(matches['data'])):
+                            for j in range(16):
+                                if matches['data'][i]['tournament']['serie']['league']['shortName'] == leagues[j]['shortName']:
+                                    try: match_acronym = matches['data'][i]['name'].split(': ')[1]
+                                    except: match_acronym = matches['data'][i]['name']
+                                    match_schedule_1 = box_scheduledAt[i].split(" ")[0]
+                                    match_schedule_2 = box_scheduledAt[i].split(" ")[1][0:5]
+                                    match_schedule_3 = datetime.datetime.strptime(match_schedule_1, "%Y-%m-%d").strftime("X%Y년 X%m월 X%d일").replace("X0", "").replace("X", "")
+                                    match_league = leagues[j]['shortName']
+                                    match_region = leagues[j]['region']
+                                    match_info = f"[{match_schedule_2}] {match_acronym} ({match_league}/{match_region})"
+
+                                    if match_schedule_1 == nowTime:
+                                        box_1_match_schedule_1.append(match_schedule_1)
+                                        box_1_match_schedule_2.append(match_schedule_3)
+                                        box_1_match_info.append(match_info)
+                                    if match_schedule_1 == tomorrowTime:
+                                        box_2_match_schedule_1.append(match_schedule_1)
+                                        box_2_match_schedule_2.append(match_schedule_3)
+                                        box_2_match_info.append(match_info)
+                                    if match_schedule_1 == dayAfterTomorrowTime:
+                                        box_3_match_schedule_1.append(match_schedule_1)
+                                        box_3_match_schedule_2.append(match_schedule_3)
+                                        box_3_match_info.append(match_info)
 
                 else:
                     print(f"[schedule.py] {matches['code']}: {matches['message']}")
@@ -466,21 +472,26 @@ class ScheduleCMD(commands.Cog):
                 box_3_match_schedule_1 = [""]
                 box_3_match_schedule_2 = [datetime.datetime.strptime(dayAfterTomorrowTime, "%Y-%m-%d").strftime("X%Y년 X%m월 X%d일").replace("X0", "").replace("X", "")]
 
+            if box_1_match_info == []:
+                msg_schedule_info_1 = ""
+                msg_schedule_info_1_1 = ""
+                msg_schedule_info_1_2 = "해당 일자의 경기 일정이 없습니다."
+
+            if box_2_match_info == []:
+                msg_schedule_info_2 = ""
+                msg_schedule_info_1_1 = ""
+                msg_schedule_info_2_2 = "해당 일자의 경기 일정이 없습니다."
+
+            if box_3_match_info == []:
+                msg_schedule_info_3 = ""
+                msg_schedule_info_1_1 = ""
+                msg_schedule_info_3_2 = "해당 일자의 경기 일정이 없습니다."
+
             if (box_1_match_schedule_1[0] == nowTime) and (box_1_match_info):
                 msg_schedule_info_1 = ""
                 for i in range(len(box_1_match_info)):
                     if len(box_1_match_info) != 0:
                         msg_schedule_info_1 += "".join(f"\n{box_1_match_info[i]}")
-
-                msg_schedule_info_2 = ""
-                for i in range(len(box_2_match_info)):
-                    if len(box_2_match_info) != 0:
-                        msg_schedule_info_2 += "".join(f"\n{box_2_match_info[i]}")
-
-                msg_schedule_info_3 = ""
-                for i in range(len(box_3_match_info)):
-                    if len(box_3_match_info) != 0:
-                        msg_schedule_info_3 += "".join(f"\n{box_3_match_info[i]}")
 
                 msg_schedule_info_1_1 = ""
                 msg_schedule_info_1_2 = ""
@@ -492,42 +503,12 @@ class ScheduleCMD(commands.Cog):
                 else:
                     msg_schedule_info_1_2 += msg_schedule_info_1
 
-                msg_schedule_info_2_1 = ""
-                msg_schedule_info_2_2 = ""
-                if len(msg_schedule_info_2.split("\n")) > 25:
-                    msg_schedule_info_2_1 = ""
-                    for k in range(len(msg_schedule_info_2.split("\n"))):
-                        if k > 25: break
-                        msg_schedule_info_2_1 += "".join("\n" + msg_schedule_info_2.split("\n")[k])
-                    msg_schedule_info_2_2 += "".join(f"{msg_schedule_info_2_1}\n...")
-                else:
-                    msg_schedule_info_2_2 += msg_schedule_info_2
-
-                msg_schedule_info_3_1 = ""
-                msg_schedule_info_3_2 = ""
-                if len(msg_schedule_info_3.split("\n")) > 25:
-                    for k in range(len(msg_schedule_info_3.split("\n"))):
-                        if k > 25: break
-                        msg_schedule_info_3_1 += "".join("\n" + msg_schedule_info_3.split("\n")[k])
-                    msg_schedule_info_3_2 += "".join(f"{msg_schedule_info_3_1}\n...")
-                else:
-                    msg_schedule_info_3_2 += msg_schedule_info_3
-
-            elif (box_2_match_schedule_1[0] == tomorrowTime) and (box_2_match_info):
-                msg_schedule_info_1 = ""
-                msg_schedule_info_1_1 = ""
-                msg_schedule_info_1_2 = "해당 일자의 경기 일정이 없습니다."
-
+            if (box_2_match_schedule_1[0] == tomorrowTime) and (box_2_match_info):
                 msg_schedule_info_2 = ""
                 for i in range(len(box_2_match_info)):
                     if len(box_2_match_info) != 0:
                         msg_schedule_info_2 += "".join(f"\n{box_2_match_info[i]}")
 
-                msg_schedule_info_3 = ""
-                for i in range(len(box_3_match_info)):
-                    if len(box_3_match_info) != 0:
-                        msg_schedule_info_3 += "".join(f"\n{box_3_match_info[i]}")
-
                 msg_schedule_info_2_1 = ""
                 msg_schedule_info_2_2 = ""
                 if len(msg_schedule_info_2.split("\n")) > 25:
@@ -539,25 +520,7 @@ class ScheduleCMD(commands.Cog):
                 else:
                     msg_schedule_info_2_2 += msg_schedule_info_2
 
-                msg_schedule_info_3_1 = ""
-                msg_schedule_info_3_2 = ""
-                if len(msg_schedule_info_3.split("\n")) > 25:
-                    for k in range(len(msg_schedule_info_3.split("\n"))):
-                        if k > 25: break
-                        msg_schedule_info_3_1 += "".join("\n" + msg_schedule_info_3.split("\n")[k])
-                    msg_schedule_info_3_2 += "".join(f"{msg_schedule_info_3_1}\n...")
-                else:
-                    msg_schedule_info_3_2 += msg_schedule_info_3
-
-            elif (box_3_match_schedule_1[0] == dayAfterTomorrowTime) and (box_3_match_info):
-                msg_schedule_info_1 = ""
-                msg_schedule_info_1_1 = ""
-                msg_schedule_info_1_2 = "해당 일자의 경기 일정이 없습니다."
-
-                msg_schedule_info_2 = ""
-                msg_schedule_info_1_1 = ""
-                msg_schedule_info_2_2 = "해당 일자의 경기 일정이 없습니다."
-
+            if (box_3_match_schedule_1[0] == dayAfterTomorrowTime) and (box_3_match_info):
                 msg_schedule_info_3 = ""
                 for i in range(len(box_3_match_info)):
                     if len(box_3_match_info) != 0:
@@ -572,19 +535,6 @@ class ScheduleCMD(commands.Cog):
                     msg_schedule_info_3_2 += "".join(f"{msg_schedule_info_3_1}\n...")
                 else:
                     msg_schedule_info_3_2 += msg_schedule_info_3
-
-            else:
-                msg_schedule_info_1 = ""
-                msg_schedule_info_1_1 = ""
-                msg_schedule_info_1_2 = "해당 일자의 경기 일정이 없습니다."
-
-                msg_schedule_info_2 = ""
-                msg_schedule_info_1_1 = ""
-                msg_schedule_info_2_2 = "해당 일자의 경기 일정이 없습니다."
-
-                msg_schedule_info_3 = ""
-                msg_schedule_info_1_1 = ""
-                msg_schedule_info_3_2 = "해당 일자의 경기 일정이 없습니다."
 
             embed = discord.Embed(title="> 🗓️ 경기 일정", description="리그 오브 레전드 e스포츠의 경기 일정 정보입니다.", color=colorMap['red'])
             embed.set_footer(text="TIP: 아래 버튼을 눌러 다른 일자의 일정도 살펴볼 수 있어요.", icon_url=self.bot.user.display_avatar.url)
