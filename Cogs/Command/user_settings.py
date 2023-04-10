@@ -112,7 +112,6 @@ class UserSettingCMD(commands.Cog):
     async def _quitCMD(self, ctx):
 
         if os.path.isfile(rf"./Database/User/user_{ctx.author.id}.sqlite"):
-
             embed = discord.Embed(title="", description="⚙ 탈퇴 진행 중...", color=colorMap['red'])
             msg = await ctx.respond(embed=embed)
 

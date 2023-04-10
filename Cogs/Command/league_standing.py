@@ -217,6 +217,7 @@ class StandingView(discord.ui.View):
                     embed.add_field(name=f"'{self.picked_league}' 리그 정보", value="> 순위 정보가 없습니다.", inline=False)
                     return await interaction.response.edit_message(content="", embed=embed, view=StandingView(bot=self.bot, ctx=self.ctx, msg=self.msg, banner=self.banner, picked_league=self.picked_league, button_select=True, button_select_index=self.teams_id_index, teams_id=self.teams_id))
 
+
     def add_button(self):
         if (self.button_select == True) and (self.button_select_index == "0"):
             team_1 = discord.ui.Button(emoji="1️⃣", style=discord.ButtonStyle.blurple, custom_id="0", row=1)
@@ -258,6 +259,7 @@ class StandingView(discord.ui.View):
             team_10 = discord.ui.Button(emoji="🔟", style=discord.ButtonStyle.blurple, custom_id="9", row=2)
         else:
             team_10 = discord.ui.Button(emoji="🔟", style=discord.ButtonStyle.gray, custom_id="9", row=2)
+
 
         async def callback_all(interaction: discord.Interaction):
             tournamentId = []
@@ -332,6 +334,7 @@ class StandingView(discord.ui.View):
                         embed.set_image(url=self.banner)
                         embed.add_field(name=f"'{self.picked_league}' 리그 정보", value="> 순위 정보가 없습니다.", inline=False)
                         return await interaction.response.edit_message(content="", embed=embed, view=StandingView(bot=self.bot, ctx=self.ctx, msg=self.msg, banner=self.banner, picked_league=self.picked_league, button_select=True, button_select_index=self.teams_id_index, teams_id=self.teams_id))
+
 
         async def team_callback(interaction: discord.Interaction):
             for i in range(16):
@@ -424,6 +427,7 @@ class StandingView(discord.ui.View):
         self.add_item(team_8)
         self.add_item(team_9)
         self.add_item(team_10)
+
 
     async def on_timeout(self):
         try:

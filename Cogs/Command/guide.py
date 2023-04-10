@@ -77,6 +77,7 @@ class HelpBUTTON(discord.ui.View):
         self.add_item(_page)
         self.add_item(_next)
 
+
         async def _prev_callback(interaction: discord.Interaction):
             self.page -= 1
             if self.page < self.min_page:
@@ -89,6 +90,7 @@ class HelpBUTTON(discord.ui.View):
             self.remove_item(_next)
             self.add_button()
             await interaction.response.edit_message(content="", embed=embed, view=self)
+
 
         async def _next_callback(interaction: discord.Interaction):
             self.page += 1
@@ -118,6 +120,7 @@ class GuideCMD(commands.Cog):
         description="OP.GG Esports 봇의 가이드를 확인해보세요.",
     )
     async def _helpCMD(self, ctx):
+
         banner_image_url = random.choice(config['banner_image_url'])
         embed = embed_setup(self.bot, banner_image_url, self.page)
         await ctx.respond(embed=embed, view=HelpBUTTON(bot=self.bot, banner=banner_image_url, page=self.page))

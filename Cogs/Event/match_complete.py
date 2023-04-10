@@ -66,7 +66,6 @@ class MatchCompleteTASK(commands.Cog):
         match_data = opgg.match_completed(match_info=eval(ctx.content))
 
         if (match_data['error'] == False) and (match_data['data']['match_type'] == "complete"):
-
             match_id = match_data['data']['match_id']
             match_title = f"{match_data['data']['team_1']} vs {match_data['data']['team_2']}"
             match_league = match_data['data']['match_league']
@@ -96,7 +95,6 @@ class MatchCompleteTASK(commands.Cog):
                 bet_box = []
 
                 for data_guild in os.listdir(r"./Database/Guild"):
-
                     if data_guild.endswith(".sqlite"):
                         guildDB = sqlite3.connect(rf"./Database/Guild/{data_guild}", isolation_level=None)
                         guildCURSOR = guildDB.cursor()
@@ -124,9 +122,7 @@ class MatchCompleteTASK(commands.Cog):
                         guildDB.close()
 
                         if (channel_id) and (notice_answer == 1):
-
                             if ((box_league[0].split("/")[0] == "LCO") and (leagueLCO == 1)) or ((box_league[0].split("/")[0] == "PCS") and (leaguePCS == 1)) or ((box_league[0].split("/")[0] == "LLA") and (leagueLLA == 1)) or ((box_league[0].split("/")[0] == "LCS") and (leagueLCS == 1)) or ((box_league[0].split("/")[0] == "LEC") and (leagueLEC == 1)) or ((box_league[0].split("/")[0] == "VCS") and (leagueVCS == 1)) or ((box_league[0].split("/")[0] == "LCL") and (leagueLCL == 1)) or ((box_league[0].split("/")[0] == "LJL") and (leagueLJL == 1)) or ((box_league[0].split("/")[0] == "TCL") and (leagueTCL == 1)) or ((box_league[0].split("/")[0] == "CBLOL") and (leagueCBLOL == 1)) or ((box_league[0].split("/")[0] == "OPL") and (leagueOPL == 1)) or ((box_league[0].split("/")[0] == "Worlds") and (leagueWorlds == 1)) or ((box_league[0].split("/")[0] == "LMS") and (leagueLMS == 1)) or ((box_league[0].split("/")[0] == "LPL") and (leagueLPL == 1)) or ((box_league[0].split("/")[0] == "LCK") and (leagueLCK == 1)) or ((box_league[0].split("/")[0] == "MSI") and (leagueMSI == 1)):
-
                                 guild_notice = self.bot.get_guild(int(data_guild.split("_")[1].split(".")[0]))
                                 channel_notice = self.bot.get_channel(channel_id)
                                 role_notice = discord.utils.get(guild_notice.roles, id=role_id)

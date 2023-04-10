@@ -100,11 +100,9 @@ class NotificationTASK(commands.Cog):
 
                     # 경기 시작 알림
                     if date_detail == time_nowDetail:
-
                         match_data = opgg.match_started(match_id=match_id, tournament_id=tournamentID, status="not_started")
 
                         if match_data['error'] == False:
-
                             try:
                                 collecting_data = False
                                 team_1_id = match_data['data']['teamStats'][0]['team']['id']
@@ -148,7 +146,6 @@ class NotificationTASK(commands.Cog):
                                 scheduleURL = f"https://esports.op.gg/ko/matches/{match_id}"
 
                                 for data_guild in os.listdir(r"./Database/Guild"):
-
                                     if data_guild.endswith(".sqlite"):
                                         guildDB = sqlite3.connect(rf"./Database/Guild/{data_guild}", isolation_level=None)
                                         guildCURSOR = guildDB.cursor()
@@ -176,7 +173,6 @@ class NotificationTASK(commands.Cog):
                                         guildDB.close()
 
                                         if (channel_id) and (notice_answer == 1):
-
                                             if ((box_league[j].split("/")[0] == "LCO") and (leagueLCO == 1)) or ((box_league[j].split("/")[0] == "PCS") and (leaguePCS == 1)) or ((box_league[j].split("/")[0] == "LLA") and (leagueLLA == 1)) or ((box_league[j].split("/")[0] == "LCS") and (leagueLCS == 1)) or ((box_league[j].split("/")[0] == "LEC") and (leagueLEC == 1)) or ((box_league[j].split("/")[0] == "VCS") and (leagueVCS == 1)) or ((box_league[j].split("/")[0] == "LCL") and (leagueLCL == 1)) or ((box_league[j].split("/")[0] == "LJL") and (leagueLJL == 1)) or ((box_league[j].split("/")[0] == "TCL") and (leagueTCL == 1)) or ((box_league[j].split("/")[0] == "CBLOL") and (leagueCBLOL == 1)) or ((box_league[j].split("/")[0] == "OPL") and (leagueOPL == 1)) or ((box_league[j].split("/")[0] == "Worlds") and (leagueWorlds == 1)) or ((box_league[j].split("/")[0] == "LMS") and (leagueLMS == 1)) or ((box_league[j].split("/")[0] == "LPL") and (leagueLPL == 1)) or ((box_league[j].split("/")[0] == "LCK") and (leagueLCK == 1)) or ((box_league[j].split("/")[0] == "MSI") and (leagueMSI == 1)):
 
                                                 guild_notice = self.bot.get_guild(int(data_guild.split("_")[1].split(".")[0]))
@@ -187,6 +183,9 @@ class NotificationTASK(commands.Cog):
                                                 msg_title = f"> 📢 {time_nowTime} 경기 시작 알림"
                                                 # msg_title = f"> 📢 {time_nowTime} 경기 시작 알림 (테스트)"
                                                 msg_description = f"```{match_title} ({box_league[j]})```"
+
+                                                early_embed = discord.Embed(title=msg_title, description="메시지 전송 중...", color=colorMap['red'])
+                                                msg = await channel_notice.send(embed=early_embed)
 
                                                 embed = discord.Embed(title=msg_title, description=msg_description, color=colorMap['red'])
                                                 embed.set_footer(text="TIP: 아래 버튼을 눌러 승부 예측 미니게임을 즐길 수 있어요.", icon_url=self.bot.user.display_avatar.url)
@@ -216,7 +215,6 @@ class NotificationTASK(commands.Cog):
                                                     embed.add_field(name="첫 바론 처치율", value=team_2_firstBaron + "%", inline=True)
                                                     embed.add_field(name="골드 획득량", value=team_2_goldEarned, inline=True)
 
-                                                msg = await channel_notice.send(msg_content, embed=embed)
                                                 await msg.edit(msg_content, embed=embed, view=BettingButton(bot=self.bot, msg=msg, url=scheduleURL, match_id=match_id, team_1=team_1_acronym, team_2=team_2_acronym))
 
                             except Exception as error:
@@ -239,7 +237,6 @@ class NotificationTASK(commands.Cog):
                             scheduleURL = f"https://esports.op.gg/ko/matches/{match_id}"
 
                             for data_guild in os.listdir(r"./Database/Guild"):
-
                                 if data_guild.endswith(".sqlite"):
                                     guildDB = sqlite3.connect(rf"./Database/Guild/{data_guild}", isolation_level=None)
                                     guildCURSOR = guildDB.cursor()
@@ -267,7 +264,6 @@ class NotificationTASK(commands.Cog):
                                     guildDB.close()
 
                                     if (channel_id) and (notice_answer == 1):
-
                                         if ((box_league[j].split("/")[0] == "LCO") and (leagueLCO == 1)) or ((box_league[j].split("/")[0] == "PCS") and (leaguePCS == 1)) or ((box_league[j].split("/")[0] == "LLA") and (leagueLLA == 1)) or ((box_league[j].split("/")[0] == "LCS") and (leagueLCS == 1)) or ((box_league[j].split("/")[0] == "LEC") and (leagueLEC == 1)) or ((box_league[j].split("/")[0] == "VCS") and (leagueVCS == 1)) or ((box_league[j].split("/")[0] == "LCL") and (leagueLCL == 1)) or ((box_league[j].split("/")[0] == "LJL") and (leagueLJL == 1)) or ((box_league[j].split("/")[0] == "TCL") and (leagueTCL == 1)) or ((box_league[j].split("/")[0] == "CBLOL") and (leagueCBLOL == 1)) or ((box_league[j].split("/")[0] == "OPL") and (leagueOPL == 1)) or ((box_league[j].split("/")[0] == "Worlds") and (leagueWorlds == 1)) or ((box_league[j].split("/")[0] == "LMS") and (leagueLMS == 1)) or ((box_league[j].split("/")[0] == "LPL") and (leagueLPL == 1)) or ((box_league[j].split("/")[0] == "LCK") and (leagueLCK == 1)) or ((box_league[j].split("/")[0] == "MSI") and (leagueMSI == 1)):
 
                                             channel_notice = self.bot.get_channel(channel_id)
@@ -280,7 +276,7 @@ class NotificationTASK(commands.Cog):
                                             embed = discord.Embed(title=msg_title, description=msg_description, color=colorMap['red'])
                                             # embed.set_footer(text="Powered by OP.GG", icon_url=self.bot.user.display_avatar.url)
                                             embed.set_image(url=banner_image_url)
-                                            await channel_notice.send(msg_content, embed=embed, view=LinkButton(scheduleURL), delete_after=1800)
+                                            await channel_notice.send(msg_content, embed=embed, view=LinkButton(scheduleURL), delete_after=1800) # 30분 후 삭제
 
                         except Exception as error:
                             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))

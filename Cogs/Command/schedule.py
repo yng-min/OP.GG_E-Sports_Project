@@ -272,6 +272,7 @@ class ScheduleButton(discord.ui.View):
 
         self.callback_select = True
 
+
     @discord.ui.button(emoji="1️⃣", style=discord.ButtonStyle.gray, row=1)
     async def _one(self, button: discord.ui.Button, interaction: discord.Interaction):
         self.button = "1"
@@ -297,6 +298,7 @@ class ScheduleButton(discord.ui.View):
             embed.add_field(name=f"{self.schedule_1_1[0]} 일정", value=f"└ (총 **3**페이지 중 **1**번째 페이지)\n```{self.msg_schedule_1_3}```", inline=False)
         await interaction.response.edit_message(content="", embed=embed)
         self.box_select.clear()
+
 
     @discord.ui.button(emoji="2️⃣", style=discord.ButtonStyle.gray, row=1)
     async def _two(self, button: discord.ui.Button, interaction: discord.Interaction):
@@ -325,6 +327,7 @@ class ScheduleButton(discord.ui.View):
         await interaction.response.edit_message(content="", embed=embed)
         self.box_select.clear()
 
+
     @discord.ui.button(emoji="3️⃣", style=discord.ButtonStyle.gray, row=1)
     async def _three(self, button: discord.ui.Button, interaction: discord.Interaction):
         self.button = "3"
@@ -350,6 +353,7 @@ class ScheduleButton(discord.ui.View):
             embed.add_field(name=f"{self.schedule_3_1[0]} 일정", value=f"└ (총 **3**페이지 중 **3**번째 페이지)\n```{self.msg_schedule_3_3}```", inline=False)
         await interaction.response.edit_message(content="", embed=embed)
         self.box_select.clear()
+
 
     async def on_timeout(self):
         try:
@@ -411,7 +415,6 @@ class ScheduleCMD(commands.Cog):
                 matches = opgg.load_schedule(date=dateTime)
 
                 if matches['error'] == False:
-
                     temp_scheduledAt = []
                     box_scheduledAt = []
                     for i in range(len(matches['data'])):
@@ -464,7 +467,6 @@ class ScheduleCMD(commands.Cog):
                 box_3_match_schedule_2 = [datetime.datetime.strptime(dayAfterTomorrowTime, "%Y-%m-%d").strftime("X%Y년 X%m월 X%d일").replace("X0", "").replace("X", "")]
 
             if (box_1_match_schedule_1[0] == nowTime) and (box_1_match_info):
-
                 msg_schedule_info_1 = ""
                 for i in range(len(box_1_match_info)):
                     if len(box_1_match_info) != 0:
@@ -512,7 +514,6 @@ class ScheduleCMD(commands.Cog):
                     msg_schedule_info_3_2 += msg_schedule_info_3
 
             elif (box_2_match_schedule_1[0] == tomorrowTime) and (box_2_match_info):
-
                 msg_schedule_info_1 = ""
                 msg_schedule_info_1_1 = ""
                 msg_schedule_info_1_2 = "해당 일자의 경기 일정이 없습니다."
@@ -549,7 +550,6 @@ class ScheduleCMD(commands.Cog):
                     msg_schedule_info_3_2 += msg_schedule_info_3
 
             elif (box_3_match_schedule_1[0] == dayAfterTomorrowTime) and (box_3_match_info):
-
                 msg_schedule_info_1 = ""
                 msg_schedule_info_1_1 = ""
                 msg_schedule_info_1_2 = "해당 일자의 경기 일정이 없습니다."

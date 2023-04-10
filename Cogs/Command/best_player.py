@@ -179,6 +179,7 @@ class MvpView(discord.ui.View):
         embed.add_field(name="\u200b", value=self.msg_mvp_2, inline=True)
         await interaction.response.edit_message(content="", embed=embed, view=MvpView(bot=self.bot, ctx=self.ctx, msg=self.msg, banner=self.banner, picked_league=self.picked_league, picked_lane=self.picked_lane, button_select=self.button_select, box_LCK=self.box_LCK, box_LPL=self.box_LPL, box_LEC=self.box_LEC, box_LCS=self.box_LCS, box_CBLOL=self.box_CBLOL, box_VCS=self.box_VCS, box_LCL=self.box_LCL, box_TCL=self.box_TCL, box_PCS=self.box_PCS, box_LLA=self.box_LLA, box_LJL=self.box_LJL, box_LCO=self.box_LCO))
 
+
     def add_button(self):
         if (self.button_select == True) and (self.picked_lane == "탑"): button_top = discord.ui.Button(label="탑", style=discord.ButtonStyle.blurple, custom_id="탑", row=1)
         else: button_top = discord.ui.Button(label="탑", style=discord.ButtonStyle.gray, custom_id="탑", row=1)
@@ -194,6 +195,7 @@ class MvpView(discord.ui.View):
         embed = discord.Embed(title="> 🏆 시즌 베스트 플레이어", description="리그 오브 레전드 e스포츠의 시즌 베스트 플레이어 정보입니다.", color=colorMap['red'])
         embed.set_footer(text="TIP: 아래 버튼을 눌러 다른 포지션의 랭킹도 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
         embed.set_image(url=self.banner)
+
 
         async def callback_all(interaction: discord.Interaction):
             self.picked_lane = "모든 라인"
@@ -226,6 +228,7 @@ class MvpView(discord.ui.View):
             embed.add_field(name=f"'{self.picked_lane}' 포지션 ({self.picked_league})", value=self.msg_mvp_1, inline=True)
             embed.add_field(name="\u200b", value=self.msg_mvp_2, inline=True)
             await interaction.response.edit_message(content="", embed=embed, view=MvpView(bot=self.bot, ctx=self.ctx, msg=self.msg, banner=self.banner, picked_league=self.picked_league, picked_lane=self.picked_lane, button_select=self.button_select, box_LCK=self.box_LCK, box_LPL=self.box_LPL, box_LEC=self.box_LEC, box_LCS=self.box_LCS, box_CBLOL=self.box_CBLOL, box_VCS=self.box_VCS, box_LCL=self.box_LCL, box_TCL=self.box_TCL, box_PCS=self.box_PCS, box_LLA=self.box_LLA, box_LJL=self.box_LJL, box_LCO=self.box_LCO))
+
 
         async def callback_lane(interaction: discord.Interaction):
             self.picked_lane = interaction.custom_id
@@ -286,6 +289,7 @@ class MvpView(discord.ui.View):
         self.add_item(button_mid)
         self.add_item(button_adc)
         self.add_item(button_sup)
+
 
     async def on_timeout(self):
         try:

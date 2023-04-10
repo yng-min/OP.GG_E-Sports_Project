@@ -23,6 +23,7 @@ class StatusEVENT(commands.Cog):
         if not self._status_TASK.is_running():
             self._status_TASK.start()
 
+
     @tasks.loop(seconds=10)
     async def _status_TASK(self):
 
@@ -53,6 +54,7 @@ class StatusEVENT(commands.Cog):
         # minLength = f"리그에서 가장 짧은 경기는 {self.status_content['data']['baseStats']['minLength']}만에 끝났대요!"
         guide = "'/가이드' 명령어를 이용해 보세요."
         description = "리그 통계를 토대로 여러 정보들을 알려드려요."
+
         try:
             kills = f"선수들은 서로 {self.status_content['data']['baseStats']['kills']:,}번 죽였대요. 😥"
             deaths = f"선수들은 총 {self.status_content['data']['baseStats']['deaths']:,}번 죽었어요. 우리 정글 왜 안 옴??"
@@ -63,6 +65,7 @@ class StatusEVENT(commands.Cog):
             heraldKills = f"협곡의 전령은 {self.status_content['data']['baseStats']['heraldKills']:,}번 바위게 친구를 만나러 가다가 그만 사고를 당했대요. R.I.P"
             pentaKills = f"펜타킬은 {self.status_content['data']['baseStats']['pentaKills']:,}번 나왔어요. Legends Never Die 🎶"
             towerKills = f"모두 {self.status_content['data']['baseStats']['towerKills']:,}개의 포탑을 파괴했어요. 역시 타워 밀기 게임이네요"
+
         except Exception as error:
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
             print("status_TASK function error.")

@@ -243,6 +243,7 @@ class LeagueSelect(discord.ui.Select):
         try: guildDB.close()
         except: pass
 
+
     async def on_timeout(self):
         await self.msg.edit_original_response(content="", view=DisabledSelect())
 
@@ -261,7 +262,6 @@ class LeagueView(discord.ui.View):
         self.bot = bot
         self.ctx = ctx
         self.msg = msg
-
         self.add_item(LeagueSelect(self.bot, self.ctx, self.msg))
 
 

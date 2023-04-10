@@ -48,6 +48,7 @@ class BettingButton(discord.ui.View):
         home_team = discord.ui.Button(label=f"'{self.team_1}' 팀 예측하기", style=discord.ButtonStyle.blurple, custom_id=f"{self.match_id}/{self.team_1}", row=0)
         away_team = discord.ui.Button(label=f"'{self.team_2}' 팀 예측하기", style=discord.ButtonStyle.blurple, custom_id=f"{self.match_id}/{self.team_2}", row=0)
 
+
         async def callback_1(interaction: discord.Interaction):
             user = interaction.user
 
@@ -62,6 +63,7 @@ class BettingButton(discord.ui.View):
             else:
                 embed = discord.Embed(title="> ⛔ 리그 승부 예측 불가", description="서비스에 가입하셔야 이용할 수 있는 기능입니다.", color=colorMap['red'])
                 return await interaction.response.send_message(embed=embed, ephemeral=True)
+
 
         async def callback_2(interaction: discord.Interaction):
             user = interaction.user
@@ -84,11 +86,11 @@ class BettingButton(discord.ui.View):
         self.add_item(home_team)
         self.add_item(away_team)
 
+
     async def on_timeout(self):
 
         try:
             for data_guild in os.listdir(r"./Database/Guild"):
-
                 if data_guild.endswith(".sqlite"):
                     guildDB = sqlite3.connect(rf"./Database/Guild/{data_guild}", isolation_level=None)
                     guildCURSOR = guildDB.cursor()
@@ -151,7 +153,6 @@ class BettingModal_1(discord.ui.Modal):
                     resultData = userCURSOR.execute(f"SELECT * FROM data WHERE UserID = {user.id}").fetchone()
 
                     if resultData and (resultData[1] >= bet_point):
-
                         box_schedule = []
                         box_match = []
                         for i in range(16):
@@ -236,7 +237,6 @@ class BettingModal_2(discord.ui.Modal):
                     resultData = userCURSOR.execute(f"SELECT * FROM data WHERE UserID = {user.id}").fetchone()
 
                     if resultData and (resultData[1] >= bet_point):
-
                         box_schedule = []
                         box_match = []
                         for i in range(16):
