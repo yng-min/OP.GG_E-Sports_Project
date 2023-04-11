@@ -12,8 +12,10 @@ def search_player(keyword: str):
         query = """
 query {
     search(keyword: "%s") {
-        matches{key}
-        matches{value}
+        matches{
+            key
+            value
+        }
     }
 }
 """ % keyword # item의 id와 nickName을 가져와야 함

@@ -10,7 +10,7 @@ import datetime
 import pytz
 import traceback
 
-from Extensions.Process.league import get_league_standing, get_team_info
+from Extensions.Process.league import get_league_standing, get_team_info_by_id
 
 # config.json 파일 불러오기
 try:
@@ -352,7 +352,7 @@ class StandingView(discord.ui.View):
 
             self.teams_id_index = interaction.data['custom_id']
             try:
-                self.box_player = get_team_info(tournamentId, self.teams_id[int(self.teams_id_index)])
+                self.box_player = get_team_info_by_id(tournamentId, self.teams_id[int(self.teams_id_index)])
             except:
                 embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
                 embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)

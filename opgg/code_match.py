@@ -107,47 +107,59 @@ query {
         numberOfGames
         liveSupported
         liveOpensAt
-        streams{isMain}
-        streams{isOfficial}
-        streams{rawUrl}
-        homeTeam{id}
-        homeTeam{name}
-        homeTeam{acronym}
-        homeTeam{nationality}
-        homeTeam{foundedAt}
-        homeTeam{imageUrl}
-        homeTeam{youtube}
-        homeTeam{twitter}
-        homeTeam{instagram}
-        homeTeam{facebook}
-        homeTeam{discord}
-        homeTeam{website}
-        awayTeam{id}
-        awayTeam{name}
-        awayTeam{acronym}
-        awayTeam{nationality}
-        awayTeam{foundedAt}
-        awayTeam{imageUrl}
-        awayTeam{youtube}
-        awayTeam{twitter}
-        awayTeam{instagram}
-        awayTeam{facebook}
-        awayTeam{discord}
-        awayTeam{website}
-        ranks{homeTeamRank{position}}
-        ranks{homeTeamRank{previously}}
-        ranks{homeTeamRank{point}}
-        ranks{homeTeamRank{setWin}}
-        ranks{homeTeamRank{setLose}}
-        ranks{awayTeamRank{win}}
-        ranks{awayTeamRank{lose}}
-        ranks{awayTeamRank{position}}
-        ranks{awayTeamRank{previously}}
-        ranks{awayTeamRank{point}}
-        ranks{awayTeamRank{setWin}}
-        ranks{awayTeamRank{setLose}}
-        ranks{homeTeamRank{win}}
-        ranks{homeTeamRank{lose}}
+        streams{
+            isMain
+            isOfficial
+            rawUrl
+        }
+        homeTeam{
+            id
+            name
+            acronym
+            nationality
+            foundedAt
+            imageUrl
+            youtube
+            twitter
+            instagram
+            facebook
+            discord
+            website
+        }
+        awayTeam{
+            id
+            name
+            acronym
+            nationality
+            foundedAt
+            imageUrl
+            youtube
+            twitter
+            instagram
+            facebook
+            discord
+            website
+        }
+        ranks{
+            homeTeamRank{
+                position
+                previously
+                point
+                setWin
+                setLose
+                win
+                lose
+            }
+            awayTeamRank{
+                position
+                previously
+                point
+                setWin
+                setLose
+                win
+                lose
+            }
+        }
     }
 }
 """ % (match_id)
@@ -182,21 +194,31 @@ query {
     pagedAllMatches(status: "finished", leagueId: %s, year: null, page: %d) {
         id
         tournamentId
-        tournament{serie{league{shortName}}}
+        tournament{
+            serie{
+                league{
+                    shortName
+                }
+            }
+        }
         name
         numberOfGames
         awayScore
-        awayTeam{id}
-        awayTeam{name}
-        awayTeam{acronym}
-        awayTeam{nationality}
-        awayTeam{imageUrl}
+        awayTeam{
+            id
+            name
+            acronym
+            nationality
+            imageUrl
+        }
         homeScore
-        homeTeam{id}
-        homeTeam{name}
-        homeTeam{acronym}
-        homeTeam{nationality}
-        homeTeam{imageUrl}
+        homeTeam{
+            id
+            name
+            acronym
+            nationality
+            imageUrl
+        }
         status
     }
 }
@@ -233,17 +255,21 @@ def match_started(match_id: str, tournament_id: str, status: str):
         query = """
 query {
     matchPreviewByTournament(id: "%s", tournamentId: "%s") {
-        teamStats{team{id}}
-        teamStats{team{acronym}}
-        teamStats{kills}
-        teamStats{deaths}
-        teamStats{assists}
-        teamStats{winRate}
-        teamStats{firstTower}
-        teamStats{firstBaron}
-        teamStats{firstBlood}
-        teamStats{firstDragon}
-        teamStats{goldEarned}
+        teamStats{
+            team{
+                id
+                acronym
+            }
+            kills
+            deaths
+            assists
+            winRate
+            firstTower
+            firstBaron
+            firstBlood
+            firstDragon
+            goldEarned
+        }
     }
 }
 """ % (match_id, tournament_id)

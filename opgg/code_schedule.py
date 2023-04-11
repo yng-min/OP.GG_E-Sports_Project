@@ -17,7 +17,13 @@ query {
     upcomingMatchesByDate(date: "%s") {
         id
         tournamentId
-        tournament{serie{league{shortName}}}
+        tournament{
+            serie{
+                league{
+                    shortName
+                }
+            }
+        }
         name
         originalScheduledAt
         scheduledAt
@@ -58,7 +64,13 @@ query {
     pagedAllMatches(status: "not_started", leagueId: %s, year: %s, month: %s, page: %d) {
         id
         tournamentId
-        tournament{serie{league{shortName}}}
+        tournament{
+            serie{
+                league{
+                    shortName
+                }
+            }
+        }
         name
         originalScheduledAt
         scheduledAt

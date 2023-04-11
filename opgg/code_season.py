@@ -13,19 +13,21 @@ def season_info(tournamentId: str):
 query {
     summary(tournamentId: "%s") {
         total
-        baseStats{assists}
-        baseStats{averageLength}
-        baseStats{baronKills}
-        baseStats{deaths}
-        baseStats{dragonKills}
-        baseStats{elderDragonKills}
-        baseStats{heraldKills}
-        baseStats{kills}
-        baseStats{length}
-        baseStats{maxLength}
-        baseStats{minLength}
-        baseStats{pentaKills}
-        baseStats{towerKills}
+        baseStats{
+            assists
+            averageLength
+            baronKills
+            deaths
+            dragonKills
+            elderDragonKills
+            heraldKills
+            kills
+            length
+            maxLength
+            minLength
+            pentaKills
+            towerKills
+        }
     }
 }
 """ % (tournamentId)
@@ -58,11 +60,13 @@ def ban_rank_info(serieId: str, limit: int = 10, page: int = 0):
         query = """
 query {
     pagedBanpicksBySerieId(serieId: "%s", limit: %d, page: %d) {
-        bans{championId}
-        bans{count}
-        bans{currently}
-        bans{previously}
-        bans{rate}
+        bans{
+            championId
+            count
+            currently
+            previously
+            rate
+        }
     }
 }
 """ % (serieId, limit, page)
@@ -95,12 +99,13 @@ def pick_rank_info(serieId: str, limit: int = 10, page: int = 0):
         query = """
 query {
     pagedBanpicksBySerieId(serieId: "%s", limit: %d, page: %d) {
-        picks{championId}
-        picks{position}
-        picks{count}
-        picks{currently}
-        picks{previously}
-        picks{rate}
+        picks{
+            championId
+            count
+            currently
+            previously
+            rate
+        }
     }
 }
 """ % (serieId, limit, page)

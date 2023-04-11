@@ -127,7 +127,8 @@ class MatchCompleteTASK(commands.Cog):
                                 channel_notice = self.bot.get_channel(channel_id)
                                 role_notice = discord.utils.get(guild_notice.roles, id=role_id)
 
-                                msg_content = f"{role_notice.mention}"
+                                msg_content = ""
+                                # msg_content = f"{role_notice.mention}"
                                 msg_title = f"> 📢 {time_nowTime} 경기 결과"
                                 # msg_title = f"> 📢 {time_nowTime} 경기 결과 (테스트)"
                                 msg_description = f"```{match_title} ({box_league[0]})```"
