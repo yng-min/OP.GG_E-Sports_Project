@@ -158,17 +158,17 @@ class PlayerInfoCMD(commands.Cog):
                                         links = links[:-1]
 
                                         embed = discord.Embed(title=f"> 🔍 선수 정보", description="", color=colorMap['red'])
-                                        embed.set_footer(text="TIP: 아래 버튼을 눌러 자세한 정보를 살펴볼 수 있어요.", icon_url=self.bot.user.display_avatar.url)
+                                        embed.set_footer(text="TIP: SNS 아이콘을 클릭하면 해당 선수의 SNS로 바로 이동할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
                                         # embed.set_image(url=banner_image_url)
                                         embed.set_thumbnail(url=box_player[i]['imageUrl'])
                                         embed.add_field(name="인적 정보", value=f"닉네임: [{box_player[i]['team_acronym']}]({esports_op_gg_team}{box_player[i]['team_id']}) [{box_player[i]['nickName']}]({esports_op_gg_player}{box_player[i]['id']})\n본명: {box_player[i]['firstName']} {box_player[i]['lastName']}\n생일: {player_birth_day}", inline=True)
                                         embed.add_field(name="SNS 플랫폼", value=links, inline=True)
                                         embed.add_field(name="승률", value=f"__{box_players[j]['stat_winRate']}__% (__{box_players[j]['stat_wins']:,}__승 __{box_players[j]['stat_loses']:,}__패)", inline=False)
                                         embed.add_field(name="KDA 정보", value=f"{box_players[j]['stat_kda']} 평점 `({box_players[j]['stat_kills']} / {box_players[j]['stat_deaths']} / {box_players[j]['stat_assists']})`", inline=False)
-                                        embed.add_field(name="가한 피해량(분당)", value=f"{box_players[j]['stat_dpm']:,}데미지", inline=True)
-                                        embed.add_field(name="입은 피해량(분당)", value=f"{box_players[j]['stat_dtpm']:,}데미지", inline=True)
-                                        embed.add_field(name="골드 획득(분당)", value=f"{box_players[j]['stat_gpm']:,}골드", inline=True)
-                                        embed.add_field(name="CS(분당)", value=f"{box_players[j]['stat_cspm']:,}개", inline=True)
+                                        embed.add_field(name="가한 피해량", value=f"분당 {box_players[j]['stat_dpm']:,}데미지", inline=True)
+                                        embed.add_field(name="입은 피해량", value=f"분당 {box_players[j]['stat_dtpm']:,}데미지", inline=True)
+                                        embed.add_field(name="골드 획득", value=f"분당 {box_players[j]['stat_gpm']:,}골드", inline=True)
+                                        embed.add_field(name="CS", value=f"분당 {box_players[j]['stat_cspm']:,}개", inline=True)
                                         embed.add_field(name="첫 킬률", value=f"{box_players[j]['stat_firstBlood']}%", inline=True)
                                         embed.add_field(name="첫 타워 파괴율", value=f"{box_players[j]['stat_firstTower']}%", inline=True)
 
