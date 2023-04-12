@@ -91,9 +91,8 @@ class PlayerInfoCMD(commands.Cog):
     @option("이름", description="검색할 e스포츠 선수를 입력해주세요.", required=True, autocomplete=search_player)
     async def _playerCMD(self, ctx: discord.AutocompleteContext, 이름: str):
 
-        picked_player = 이름.split(" ")[1]
-        tournament_id = ""
-        team_id = ""
+        try: picked_player = 이름.split(" ")[1]
+        except: picked_player = 이름
         links = ""
         box_player = []
         box_players = []
@@ -108,7 +107,15 @@ class PlayerInfoCMD(commands.Cog):
         msg = await ctx.respond(embed=embed)
 
         try:
-            box_player = get_player_info_by_nickname(playerNickname=picked_player)
+            try:
+                box_player = get_player_info_by_nickname(playerNickname=picked_player)
+
+            except:
+                embed = discord.Embed(title="> 🔍 선수 정보", description="", color=colorMap['red'])
+                embed.set_footer(text="TIP: 선수는 영문 닉네임으로만 검색할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
+                embed.set_image(url=banner_image_url)
+                embed.add_field(name=f"검색어: '{picked_player}'", value="> 선수 정보를 불러올 수 없습니다.\n> 검색어가 정확한지 다시 확인해주세요.", inline=False)
+                return await msg.edit_original_response(content="", embed=embed)
 
             try:
                 print(f"[player_info.py] {box_player['code']}: {box_player['message']}")
