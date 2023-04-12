@@ -28,7 +28,7 @@ So I decided to share it as a public repository.
 
 [오피지지 e스포츠](https://esports.op.gg/) 디스코드 봇 리포지토리입니다.
 
-## 공지사항
+## 필독사항
 
 가장 먼저, 이 리포지토리와 소스 코드는 **오픈 소스가 아닙니다.**
 이 프로젝트의 저작권과 소유권은 [OP.GG](https://op.gg/)와 @yng-min에게 있습니다.
