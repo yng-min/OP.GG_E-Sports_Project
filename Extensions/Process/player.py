@@ -30,25 +30,25 @@ def get_player_info_by_id(playerId):
     player_info = opgg.player_info_by_id(playerId)
 
     if player_info['error'] == False:
-        for j in range(len(player_info['data'])):
-            player_id = player_info['data'][j]['id']
-            player_nickName = player_info['data'][j]['nickName']
-            player_firstName = player_info['data'][j]['firstName']
-            player_lastName = player_info['data'][j]['lastName']
-            player_position = player_info['data'][j]['position']
-            player_natinality = player_info['data'][j]['nationality']
-            player_imageUrl = player_info['data'][j]['imageUrl']
-            player_birthday = player_info['data'][j]['birthday']
-            player_stream = player_info['data'][j]['stream']
-            player_youtube = player_info['data'][j]['youtube']
-            player_twitter = player_info['data'][j]['twitter']
-            player_instagram = player_info['data'][j]['instagram']
-            player_facebook = player_info['data'][j]['facebook']
-            player_discord = player_info['data'][j]['discord']
-            player_team_id = player_info['data'][j]['currentTeam']['id']
-            player_team_name = player_info['data'][j]['currentTeam']['name']
-            player_team_acronym = player_info['data'][j]['currentTeam']['acronym']
-            player_team_imageUrl = player_info['data'][j]['currentTeam']['imageUrl']
+        for i in range(len(player_info['data'])):
+            player_id = player_info['data'][i]['id']
+            player_nickName = player_info['data'][i]['nickName']
+            player_firstName = player_info['data'][i]['firstName']
+            player_lastName = player_info['data'][i]['lastName']
+            player_position = player_info['data'][i]['position']
+            player_natinality = player_info['data'][i]['nationality']
+            player_imageUrl = player_info['data'][i]['imageUrl']
+            player_birthday = player_info['data'][i]['birthday']
+            player_stream = player_info['data'][i]['stream']
+            player_youtube = player_info['data'][i]['youtube']
+            player_twitter = player_info['data'][i]['twitter']
+            player_instagram = player_info['data'][i]['instagram']
+            player_facebook = player_info['data'][i]['facebook']
+            player_discord = player_info['data'][i]['discord']
+            player_team_id = player_info['data'][i]['currentTeam']['id']
+            player_team_name = player_info['data'][i]['currentTeam']['name']
+            player_team_acronym = player_info['data'][i]['currentTeam']['acronym']
+            player_team_imageUrl = player_info['data'][i]['currentTeam']['imageUrl']
 
             box_player.append({
                 "id": player_id,
@@ -77,24 +77,71 @@ def get_player_info_by_id(playerId):
     return box_player
 
 
-def get_player_info_by_id(playerNickname):
+def get_player_info_by_nickname(playerNickname):
 
     box_player = []
     player_id = ""
     player_nickName = ""
+    player_firstName = ""
+    player_lastName = ""
+    player_position = ""
+    player_natinality = ""
+    player_imageUrl = ""
+    player_birthday = ""
+    player_stream = ""
+    player_youtube = ""
+    player_twitter = ""
+    player_instagram = ""
+    player_facebook = ""
+    player_discord = ""
+    player_team_id = ""
+    player_team_name = ""
+    player_team_acronym = ""
+    player_team_imageUrl = ""
 
     if playerNickname == None: return None
     player_info = opgg.player_info_by_nickname(playerNickname)
 
     if player_info['error'] == False:
-        for j in range(len(player_info['data'])):
-            player_id = player_info['data'][j]['id']
-            player_nickName = player_info['data'][j]['nickName']
+        player_id = player_info['data']['id']
+        player_nickName = player_info['data']['nickName']
+        player_firstName = player_info['data']['firstName']
+        player_lastName = player_info['data']['lastName']
+        player_position = player_info['data']['position']
+        player_natinality = player_info['data']['nationality']
+        player_imageUrl = player_info['data']['imageUrl']
+        player_birthday = player_info['data']['birthday']
+        player_stream = player_info['data']['stream']
+        player_youtube = player_info['data']['youtube']
+        player_twitter = player_info['data']['twitter']
+        player_instagram = player_info['data']['instagram']
+        player_facebook = player_info['data']['facebook']
+        player_discord = player_info['data']['discord']
+        player_team_id = player_info['data']['currentTeam']['id']
+        player_team_name = player_info['data']['currentTeam']['name']
+        player_team_acronym = player_info['data']['currentTeam']['acronym']
+        player_team_imageUrl = player_info['data']['currentTeam']['imageUrl']
 
-            box_player.append({
-                "id": player_id,
-                "nickName": player_nickName
-            })
+        box_player.append({
+            "id": player_id,
+            "nickName": player_nickName,
+            "firstName": player_firstName,
+            "lastName": player_lastName,
+            "position": player_position,
+            "nationality": player_natinality,
+            "imageUrl": player_imageUrl,
+            "birthday": player_birthday,
+            "stream": player_stream,
+            "youtube": player_youtube,
+            "twitter": player_twitter,
+            "instagram": player_instagram,
+            "facebook": player_facebook,
+            "discord": player_discord,
+            "team_id": player_team_id,
+            "team_name": player_team_name,
+            "team_acronym": player_team_acronym,
+            "team_imageUrl": player_team_imageUrl
+        })
 
     else:
         return box_player
@@ -102,7 +149,7 @@ def get_player_info_by_id(playerNickname):
     return box_player
 
 
-def get_team_info_by_id(tournamentId, teams_id):
+def get_team_info_by_id(tournamentId, teamId):
 
     box_player = []
     player_templete = {}
@@ -148,7 +195,7 @@ def get_team_info_by_id(tournamentId, teams_id):
     player_stat_wardsKilled = ""
 
     if tournamentId == None: return None
-    players_info = opgg.players_info_by_team(tournamentId[0], teams_id)
+    players_info = opgg.players_info_by_team(tournamentId[0], teamId)
 
     if players_info['error'] == False:
         for i in range(len(players_info['data'])):

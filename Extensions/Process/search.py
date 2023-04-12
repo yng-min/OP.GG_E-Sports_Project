@@ -9,25 +9,52 @@ def get_search_player(keyword: str):
     box_search_data = []
     player_id = ""
     player_nickName = ""
-    search_key = ""
+    player_displayed_nickname = ""
 
     if keyword == None: return None
     player_info = opgg.search_player(keyword=keyword)
 
     if player_info['error'] == False:
-        for j in range(len(player_info['data'])):
-            player_id = player_info['data'][j]['id']
-            player_nickName = player_info['data'][j]['nickName']
-            search_key = player_info['data'][j]['key']
+        player_id = player_info['data']['id']
+        player_nickName = player_info['data']['nickName']
+        player_displayed_nickname = f"{player_info['data']['currentTeam']['acronym']} {player_nickName}"
 
-            if search_key == "nickName":
-
-                box_search_data.append({
-                    "id": player_id,
-                    "nickName": player_nickName
-                })
+        box_search_data.append({
+            "id": player_id,
+            "nickName": player_nickName,
+            "displayedNickname": player_displayed_nickname
+        })
 
     else:
         return box_search_data
 
     return box_search_data
+
+
+# def get_search_player(keyword: str):
+
+#     box_search_data = []
+#     player_id = ""
+#     player_nickName = ""
+#     search_key = ""
+
+#     if keyword == None: return None
+#     player_info = opgg.search_player(keyword=keyword)
+
+#     if player_info['error'] == False:
+#         for j in range(len(player_info['data'])):
+#             player_id = player_info['data'][j]['id']
+#             player_nickName = player_info['data'][j]['nickName']
+#             search_key = player_info['data'][j]['key']
+
+#             if search_key == "nickName":
+
+#                 box_search_data.append({
+#                     "id": player_id,
+#                     "nickName": player_nickName
+#                 })
+
+#     else:
+#         return box_search_data
+
+#     return box_search_data

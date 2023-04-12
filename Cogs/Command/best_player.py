@@ -172,7 +172,7 @@ class MvpView(discord.ui.View):
             self.msg_mvp_1 = "> 플레이어 정보가 없습니다."
 
         self.button_select = False
-        embed = discord.Embed(title="> 🏆 시즌 베스트 플레이어", description="리그 오브 레전드 e스포츠의 시즌 베스트 플레이어 정보입니다.", color=colorMap['red'])
+        embed = discord.Embed(title="> 🏆 시즌 베스트 플레이어", description="", color=colorMap['red'])
         embed.set_footer(text="TIP: 아래 버튼을 눌러 다른 포지션의 랭킹도 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
         embed.set_image(url=self.banner)
         embed.add_field(name=f"'{self.picked_lane}' 포지션 ({self.picked_league})", value=self.msg_mvp_1, inline=True)
@@ -192,7 +192,7 @@ class MvpView(discord.ui.View):
         if (self.button_select == True) and (self.picked_lane == "서포터"): button_sup = discord.ui.Button(label="서포터", style=discord.ButtonStyle.blurple, custom_id="서포터", row=1)
         else: button_sup = discord.ui.Button(label="서포터", style=discord.ButtonStyle.gray, custom_id="서포터", row=1)
 
-        embed = discord.Embed(title="> 🏆 시즌 베스트 플레이어", description="리그 오브 레전드 e스포츠의 시즌 베스트 플레이어 정보입니다.", color=colorMap['red'])
+        embed = discord.Embed(title="> 🏆 시즌 베스트 플레이어", description="", color=colorMap['red'])
         embed.set_footer(text="TIP: 아래 버튼을 눌러 다른 포지션의 랭킹도 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
         embed.set_image(url=self.banner)
 
@@ -364,7 +364,7 @@ class MvpCMD(commands.Cog):
 
                 if tournamentId == []: continue
                 elif tournamentId == None: continue
-                players = get_player_mvp_rank(tournamentId)
+                players = get_player_mvp_rank(tournamentId=tournamentId)
                 tournamentId = [] # 초기화
 
                 if leagues[i]['shortName'] == "LCK": box_LCK.append(players)
@@ -438,7 +438,7 @@ class MvpCMD(commands.Cog):
                 if msg_mvp_1 == "":
                     msg_mvp_1 = "> 플레이어 정보가 없습니다."
 
-                embed = discord.Embed(title="> 🏆 시즌 베스트 플레이어", description="리그 오브 레전드 e스포츠의 시즌 베스트 플레이어 정보입니다.", color=colorMap['red'])
+                embed = discord.Embed(title="> 🏆 시즌 베스트 플레이어", description="", color=colorMap['red'])
                 embed.set_footer(text="TIP: 아래 버튼을 눌러 다른 포지션의 랭킹도 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
                 embed.set_image(url=banner_image_url)
                 embed.add_field(name=f"'{picked_lane}' 포지션 ({picked_league})", value=msg_mvp_1, inline=True)

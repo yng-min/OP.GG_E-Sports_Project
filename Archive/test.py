@@ -11,7 +11,27 @@ def player_info_by_nickname(playerNickname: str):
 query {
     playerByNickname(nickName: "%s") {
         id
+        nickName
+        firstName
+        lastName
+        position
+        nationality
+        imageUrl
+        birthday
+        stream
+        youtube
+        twitter
+        instagram
+        facebook
+        discord
+        currentTeam{
+            id
+            name
+            acronym
+            imageUrl
+        }
     }
+}
 """ % (playerNickname)
         headers = {
             "Content-Type": "application/json",
@@ -29,4 +49,4 @@ query {
     except Exception as error:
         print(error)
 
-player_info_by_nickname("Faker")
+player_info_by_nickname("Fake")

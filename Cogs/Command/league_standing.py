@@ -10,7 +10,8 @@ import datetime
 import pytz
 import traceback
 
-from Extensions.Process.league import get_league_standing, get_team_info_by_id
+from Extensions.Process.league import get_league_standing
+from Extensions.Process.player import get_team_info_by_id
 
 # config.json 파일 불러오기
 try:
@@ -162,11 +163,11 @@ class StandingView(discord.ui.View):
 
             if tournamentId == []: continue
             elif tournamentId == None:
-                embed = discord.Embed(title="> 🏅 시즌 리그 순위", description="리그 오브 레전드 e스포츠의 시즌 팀 순위 정보입니다.", color=colorMap['red'])
+                embed = discord.Embed(title="> 🏅 시즌 리그 순위", description="", color=colorMap['red'])
                 embed.set_image(url=self.banner)
                 embed.add_field(name=f"'{self.picked_league}' 리그 정보", value="> 순위 정보가 없습니다.", inline=False)
                 return await interaction.response.edit_message(content="", embed=embed, view=StandingView(bot=self.bot, ctx=self.ctx, msg=self.msg, banner=self.banner, picked_league=self.picked_league, button_select=True, button_select_index=self.teams_id_index, teams_id=self.teams_id))
-            self.box_team = get_league_standing(tournamentId)
+            self.box_team = get_league_standing(tournamentId=tournamentId)
             tournamentId = [] # 초기화
 
             try:
@@ -177,7 +178,7 @@ class StandingView(discord.ui.View):
             except:
                 if self.box_team:
                     self.teams_id = []
-                    embed = discord.Embed(title="> 🏅 시즌 리그 순위", description="리그 오브 레전드 e스포츠의 시즌 팀 순위 정보입니다.", color=colorMap['red'])
+                    embed = discord.Embed(title="> 🏅 시즌 리그 순위", description="", color=colorMap['red'])
                     embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
                     embed.set_image(url=self.banner)
                     if self.box_team == []: embed.add_field(name=f"'{self.picked_league}' 리그 정보", value="> 순위 정보가 없습니다.", inline=False)
@@ -212,7 +213,7 @@ class StandingView(discord.ui.View):
                     await interaction.response.edit_message(content="", embed=embed, view=StandingView(bot=self.bot, ctx=self.ctx, msg=self.msg, banner=self.banner, picked_league=self.picked_league, button_select=False, button_select_index="99", teams_id=self.teams_id))
 
                 else:
-                    embed = discord.Embed(title="> 🏅 시즌 리그 순위", description="리그 오브 레전드 e스포츠의 시즌 팀 순위 정보입니다.", color=colorMap['red'])
+                    embed = discord.Embed(title="> 🏅 시즌 리그 순위", description="", color=colorMap['red'])
                     embed.set_image(url=self.banner)
                     embed.add_field(name=f"'{self.picked_league}' 리그 정보", value="> 순위 정보가 없습니다.", inline=False)
                     return await interaction.response.edit_message(content="", embed=embed, view=StandingView(bot=self.bot, ctx=self.ctx, msg=self.msg, banner=self.banner, picked_league=self.picked_league, button_select=True, button_select_index=self.teams_id_index, teams_id=self.teams_id))
@@ -279,7 +280,7 @@ class StandingView(discord.ui.View):
 
                 if tournamentId == []: continue
                 elif tournamentId == None:
-                    embed = discord.Embed(title="> 🏅 시즌 리그 순위", description="리그 오브 레전드 e스포츠의 시즌 팀 순위 정보입니다.", color=colorMap['red'])
+                    embed = discord.Embed(title="> 🏅 시즌 리그 순위", description="", color=colorMap['red'])
                     embed.set_image(url=self.banner)
                     embed.add_field(name=f"'{self.picked_league}' 리그 정보", value="> 순위 정보가 없습니다.", inline=False)
                     return await interaction.response.edit_message(content="", embed=embed, view=StandingView(bot=self.bot, ctx=self.ctx, msg=self.msg, banner=self.banner, picked_league=self.picked_league, button_select=True, button_select_index=self.teams_id_index, teams_id=self.teams_id))
@@ -295,7 +296,7 @@ class StandingView(discord.ui.View):
                 except:
                     if self.box_team:
                         self.teams_id = []
-                        embed = discord.Embed(title="> 🏅 시즌 리그 순위", description="리그 오브 레전드 e스포츠의 시즌 팀 순위 정보입니다.", color=colorMap['red'])
+                        embed = discord.Embed(title="> 🏅 시즌 리그 순위", description="", color=colorMap['red'])
                         embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
                         embed.set_image(url=self.banner)
                         if self.box_team == []: embed.add_field(name=f"'{self.picked_league}' 리그 정보", value="> 순위 정보가 없습니다.", inline=False)
@@ -330,7 +331,7 @@ class StandingView(discord.ui.View):
                         await interaction.response.edit_message(content="", embed=embed, view=StandingView(bot=self.bot, ctx=self.ctx, msg=self.msg, banner=self.banner, picked_league=self.picked_league, button_select=False, button_select_index="99", teams_id=self.teams_id))
 
                     else:
-                        embed = discord.Embed(title="> 🏅 시즌 리그 순위", description="리그 오브 레전드 e스포츠의 시즌 팀 순위 정보입니다.", color=colorMap['red'])
+                        embed = discord.Embed(title="> 🏅 시즌 리그 순위", description="", color=colorMap['red'])
                         embed.set_image(url=self.banner)
                         embed.add_field(name=f"'{self.picked_league}' 리그 정보", value="> 순위 정보가 없습니다.", inline=False)
                         return await interaction.response.edit_message(content="", embed=embed, view=StandingView(bot=self.bot, ctx=self.ctx, msg=self.msg, banner=self.banner, picked_league=self.picked_league, button_select=True, button_select_index=self.teams_id_index, teams_id=self.teams_id))
@@ -352,9 +353,9 @@ class StandingView(discord.ui.View):
 
             self.teams_id_index = interaction.data['custom_id']
             try:
-                self.box_player = get_team_info_by_id(tournamentId, self.teams_id[int(self.teams_id_index)])
+                self.box_player = get_team_info_by_id(tournamentId=tournamentId, teamId=self.teams_id[int(self.teams_id_index)])
             except:
-                embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
+                embed = discord.Embed(title="> 📊 팀 정보", description="", color=colorMap['red'])
                 embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
                 embed.set_image(url=self.banner)
                 embed.add_field(name=f"[{self.picked_league}]", value="> 팀 정보가 없습니다.", inline=False)
@@ -370,7 +371,7 @@ class StandingView(discord.ui.View):
                     for i in range(len(self.box_player)):
                         self.msg_player = f"{self.msg_player}> [{self.box_player[i]['team_acronym']}]({esports_op_gg_team}{self.box_player[i]['team_id']}) [{self.box_player[i]['nickName']}]({esports_op_gg_player}{self.box_player[i]['id']}) ({self.box_player[i]['position']})\n{self.box_player[i]['stat_kda']} 평점 `({self.box_player[i]['stat_kills']} / {self.box_player[i]['stat_deaths']} / {self.box_player[i]['stat_assists']})`\n승률: __{self.box_player[i]['stat_winRate']}__% (__{self.box_player[i]['stat_wins']:,}__승 __{self.box_player[i]['stat_loses']:,}__패)\n"
 
-                    embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
+                    embed = discord.Embed(title="> 📊 팀 정보", description="", color=colorMap['red'])
                     embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
                     embed.set_image(url=self.banner)
                     embed.set_thumbnail(url=self.box_player[0]['team_imageUrl'])
@@ -378,7 +379,7 @@ class StandingView(discord.ui.View):
                     await interaction.response.edit_message(content="", embed=embed, view=StandingView(bot=self.bot, ctx=self.ctx, msg=self.msg, banner=self.banner, picked_league=self.picked_league, button_select=True, button_select_index=self.teams_id_index, teams_id=self.teams_id))
 
                 else:
-                    embed = discord.Embed(title="> 📊 팀 정보", description="리그 오브 레전드 e스포츠의 팀 정보입니다.", color=colorMap['red'])
+                    embed = discord.Embed(title="> 📊 팀 정보", description="", color=colorMap['red'])
                     embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
                     embed.set_image(url=self.banner)
                     embed.add_field(name=f"[{self.picked_league}]", value="> 팀 정보가 없습니다.", inline=False)
@@ -497,7 +498,7 @@ class LeagueStandingCMD(commands.Cog):
 
                 if tournamentId == []: continue
                 elif tournamentId == None:
-                    embed = discord.Embed(title="> 🏅 시즌 리그 순위", description="리그 오브 레전드 e스포츠의 시즌 팀 순위 정보입니다.", color=colorMap['red'])
+                    embed = discord.Embed(title="> 🏅 시즌 리그 순위", description="", color=colorMap['red'])
                     embed.set_image(url=banner_image_url)
                     embed.add_field(name=f"'{picked_league}' 리그 정보", value="> 순위 정보가 없습니다.", inline=False)
                     return await msg.edit_original_response(content="", embed=embed, view=DisabledButton())
@@ -511,7 +512,7 @@ class LeagueStandingCMD(commands.Cog):
 
                 except:
                     if box_team:
-                        embed = discord.Embed(title="> 🏅 시즌 리그 순위", description="리그 오브 레전드 e스포츠의 시즌 팀 순위 정보입니다.", color=colorMap['red'])
+                        embed = discord.Embed(title="> 🏅 시즌 리그 순위", description="", color=colorMap['red'])
                         embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
                         embed.set_image(url=banner_image_url)
                         if box_team == []: embed.add_field(name=f"'{picked_league}' 리그 정보", value="> 순위 정보가 없습니다.", inline=False)

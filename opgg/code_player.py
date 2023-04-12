@@ -74,16 +74,21 @@ query {
         position
         nationality
         imageUrl
+        birthday
+        stream
         youtube
         twitter
         instagram
         facebook
         discord
-        currentTeam {
+        currentTeam{
+            id
+            name
             acronym
             imageUrl
         }
     }
+}
 """ % (playerNickname)
         headers = {
             "Content-Type": "application/json",
