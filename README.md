@@ -24,7 +24,7 @@ So I decided to share it as a public repository.
 
 
 
-# Hello, Wolrd! (한국어)
+# Hello, World! (한국어)
 
 [오피지지 e스포츠](https://esports.op.gg/) 디스코드 봇 리포지토리입니다.
 
