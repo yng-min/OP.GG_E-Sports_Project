@@ -4,35 +4,16 @@ import requests
 url = "https://esports.op.gg/matches/graphql"
 
 
-def player_info_by_nickname(playerNickname: str):
-    print(playerNickname)
+def team_info_by_name(teamName: str):
+    print(teamName)
     try:
         query = """
 query {
-    playerByNickname(nickName: "%s") {
+    TeamByName(team: "%s") {
         id
-        nickName
-        firstName
-        lastName
-        position
-        nationality
-        imageUrl
-        birthday
-        stream
-        youtube
-        twitter
-        instagram
-        facebook
-        discord
-        currentTeam{
-            id
-            name
-            acronym
-            imageUrl
-        }
     }
 }
-""" % (playerNickname)
+""" % (teamName)
         headers = {
             "Content-Type": "application/json",
         }
@@ -40,8 +21,8 @@ query {
         result = requests.post(url=url, json={"query": query}, headers=headers)
 
         if 200 <= result.status_code < 300:
-            player = result.json()['data']['playerByNickname']
-            print(player)
+            team = result.json()['data']['TeamByName']
+            print(team)
 
         else:
             print(f"Status Code: {result.status_code}\nResponse: {result}")
@@ -49,4 +30,4 @@ query {
     except Exception as error:
         print(error)
 
-player_info_by_nickname("Fake")
+team_info_by_name("T1")

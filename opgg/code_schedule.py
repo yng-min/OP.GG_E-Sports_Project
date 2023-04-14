@@ -74,6 +74,7 @@ query {
         name
         originalScheduledAt
         scheduledAt
+        numberOfGames
         status
     }
 }

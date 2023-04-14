@@ -127,10 +127,10 @@ class PlayerInfoCMD(commands.Cog):
                     for i in range(len(box_player)):
                         player_id = box_player[i]['id']
                         player_displayed_nickname = box_player[i]['nickName']
-                        player_nationalty = box_player[i]['nationality']
+                        player_nationalty = box_player[i]['team_nationality']
 
                         for k in range(16):
-                            if box_player[i]['nationality'] == leagues[k]['region']:
+                            if player_nationalty == leagues[k]['region']:
                                 player_league_id = leagues[k]['tournamentId']
                                 break
 
@@ -161,7 +161,7 @@ class PlayerInfoCMD(commands.Cog):
                                         embed.set_footer(text="TIP: SNS 아이콘을 클릭하면 해당 선수의 SNS로 바로 이동할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
                                         # embed.set_image(url=banner_image_url)
                                         embed.set_thumbnail(url=box_player[i]['imageUrl'])
-                                        embed.add_field(name="인적 정보", value=f"닉네임: [{box_player[i]['team_acronym']}]({esports_op_gg_team}{box_player[i]['team_id']}) [{box_player[i]['nickName']}]({esports_op_gg_player}{box_player[i]['id']})\n본명: {box_player[i]['firstName']} {box_player[i]['lastName']}\n생일: {player_birth_day}", inline=True)
+                                        embed.add_field(name="인적 정보", value=f"닉네임: [{box_player[i]['team_acronym']}]({esports_op_gg_team}{box_player[i]['team_id']}) [{box_player[i]['nickName']}]({esports_op_gg_player}{box_player[i]['id']})\n본명: {box_player[i]['firstName']} {box_player[i]['lastName']}\n포지션: {box_players[j]['position']}", inline=True)
                                         embed.add_field(name="SNS 플랫폼", value=links, inline=True)
                                         embed.add_field(name="승률", value=f"__{box_players[j]['stat_winRate']}__% (__{box_players[j]['stat_wins']:,}__승 __{box_players[j]['stat_loses']:,}__패)", inline=False)
                                         embed.add_field(name="KDA 정보", value=f"{box_players[j]['stat_kda']} 평점 `({box_players[j]['stat_kills']} / {box_players[j]['stat_deaths']} / {box_players[j]['stat_assists']})`", inline=False)

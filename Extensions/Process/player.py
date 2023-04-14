@@ -24,6 +24,7 @@ def get_player_info_by_id(playerId):
     player_team_id = ""
     player_team_name = ""
     player_team_acronym = ""
+    player_team_nationality = ""
     player_team_imageUrl = ""
 
     if playerId == None: return None
@@ -48,6 +49,7 @@ def get_player_info_by_id(playerId):
             player_team_id = player_info['data'][i]['currentTeam']['id']
             player_team_name = player_info['data'][i]['currentTeam']['name']
             player_team_acronym = player_info['data'][i]['currentTeam']['acronym']
+            player_team_nationality = player_info['data'][i]['currentTeam']['nationality']
             player_team_imageUrl = player_info['data'][i]['currentTeam']['imageUrl']
 
             box_player.append({
@@ -68,6 +70,7 @@ def get_player_info_by_id(playerId):
                 "team_id": player_team_id,
                 "team_name": player_team_name,
                 "team_acronym": player_team_acronym,
+                "team_nationality": player_team_nationality,
                 "team_imageUrl": player_team_imageUrl
             })
 
@@ -97,6 +100,7 @@ def get_player_info_by_nickname(playerNickname):
     player_team_id = ""
     player_team_name = ""
     player_team_acronym = ""
+    player_team_nationality = ""
     player_team_imageUrl = ""
 
     if playerNickname == None: return None
@@ -120,6 +124,7 @@ def get_player_info_by_nickname(playerNickname):
         player_team_id = player_info['data']['currentTeam']['id']
         player_team_name = player_info['data']['currentTeam']['name']
         player_team_acronym = player_info['data']['currentTeam']['acronym']
+        player_team_nationality = player_info['data']['currentTeam']['nationality']
         player_team_imageUrl = player_info['data']['currentTeam']['imageUrl']
 
         box_player.append({
@@ -140,6 +145,7 @@ def get_player_info_by_nickname(playerNickname):
             "team_id": player_team_id,
             "team_name": player_team_name,
             "team_acronym": player_team_acronym,
+            "team_nationality": player_team_nationality,
             "team_imageUrl": player_team_imageUrl
         })
 
@@ -175,6 +181,7 @@ def get_team_info_by_id(tournamentId, teamId):
     player_team_id = ""
     player_team_name = ""
     player_team_acronym = ""
+    player_team_nationality = ""
     player_team_imageUrl = ""
     player_stat_games = ""
     player_stat_winRate = ""
@@ -217,6 +224,7 @@ def get_team_info_by_id(tournamentId, teamId):
                 player_team_id = players_info['data'][j]['playerStat']['team']['id']
                 player_team_name = players_info['data'][j]['playerStat']['team']['name']
                 player_team_acronym = players_info['data'][j]['playerStat']['team']['acronym']
+                player_team_nationality = players_info['data'][j]['playerStat']['team']['acronym']
                 player_team_imageUrl = players_info['data'][j]['playerStat']['team']['imageUrl']
                 player_stat_games = players_info['data'][j]['playerStat']['games']
                 player_stat_winRate = (players_info['data'][j]['playerStat']['winRate'] * 100).__round__(2)
@@ -254,6 +262,7 @@ def get_team_info_by_id(tournamentId, teamId):
                     "team_id": player_team_id,
                     "team_name": player_team_name,
                     "team_acronym": player_team_acronym,
+                    "team_nationality": player_team_nationality,
                     "team_imageUrl": player_team_imageUrl,
                     "stat_games": player_stat_games,
                     "stat_winRate": player_stat_winRate,

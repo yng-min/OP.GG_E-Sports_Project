@@ -33,6 +33,7 @@ query {
             id
             name
             acronym
+            nationality
             imageUrl
         }
     }
@@ -85,6 +86,7 @@ query {
             id
             name
             acronym
+            nationality
             imageUrl
         }
     }
@@ -140,6 +142,7 @@ query {
                 id
                 name
                 acronym
+                nationality
                 imageUrl
             }
             games

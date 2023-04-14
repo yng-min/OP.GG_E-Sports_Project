@@ -16,7 +16,14 @@ class DepositPoint:
 
     def deposit_point(match_data, bet_box):
 
-        if match_data['data']['match_set'] == 1:
+        scheduleDB = sqlite3.connect(r"./Database/schedule.sqlite", isolation_level=None)
+        scheduleCURSOR = scheduleDB.cursor()
+        for i in range(16):
+            try: numberOfGames = scheduleCURSOR.execute(f"SELECT NumberOfGames FROM {leagues[i]['shortName']} WHERE ID = {match_data['data']['match_id']}").fetchone()[0]
+            except: numberOfGames = None
+        scheduleDB.close()
+
+        if match_data['data']['match_set'] == numberOfGames:
             for data_user in os.listdir(r"./Database/User"):    
                 match_name = f"{match_data['data']['team_1']} vs {match_data['data']['team_2']}"
 

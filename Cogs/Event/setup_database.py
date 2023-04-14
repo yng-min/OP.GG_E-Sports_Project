@@ -72,6 +72,7 @@ class DatabaseSETUP(commands.Cog):
                 Name TEXT,
                 OriginalScheduledAt TEXT,
                 ScheduledAt TEXT,
+                NumberOfGames INTEGER,
                 Status TEXT
                 )
             """)

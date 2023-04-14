@@ -410,17 +410,17 @@ class ScheduleCMD(commands.Cog):
                     box_scheduledAt = []
 
                     if matches['data'] == None:
-                        if (dateTime == yesterdayTime) or (dateTime == nowTime):
+                        if dateTime == nowTime:
                             box_1_match_schedule_1 = []
                             box_1_match_schedule_2.append(dateTime)
-
-                        if dateTime == tomorrowTime:
+                        elif dateTime == tomorrowTime:
                             box_2_match_schedule_1 = []
                             box_2_match_schedule_2.append(dateTime)
-
-                        if dateTime == dayAfterTomorrowTime:
+                        elif dateTime == dayAfterTomorrowTime:
                             box_3_match_schedule_1 = []
                             box_3_match_schedule_2.append(dateTime)
+                        else:
+                            pass
 
                     else:
                         for i in range(len(matches['data'])):
@@ -446,14 +446,16 @@ class ScheduleCMD(commands.Cog):
                                         box_1_match_schedule_1.append(match_schedule_1)
                                         box_1_match_schedule_2.append(match_schedule_3)
                                         box_1_match_info.append(match_info)
-                                    if match_schedule_1 == tomorrowTime:
+                                    elif match_schedule_1 == tomorrowTime:
                                         box_2_match_schedule_1.append(match_schedule_1)
                                         box_2_match_schedule_2.append(match_schedule_3)
                                         box_2_match_info.append(match_info)
-                                    if match_schedule_1 == dayAfterTomorrowTime:
+                                    elif match_schedule_1 == dayAfterTomorrowTime:
                                         box_3_match_schedule_1.append(match_schedule_1)
                                         box_3_match_schedule_2.append(match_schedule_3)
                                         box_3_match_info.append(match_info)
+                                    else:
+                                        pass
 
                 else:
                     print(f"[schedule.py] {matches['code']}: {matches['message']}")
