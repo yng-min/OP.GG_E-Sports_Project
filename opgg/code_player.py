@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 import requests
-url = "https://esports.op.gg/matches/graphql" # OP.GG Esports API URL
+url = "https://esports.op.gg/matches/graphql" # OP.GG E-Sports API URL
 
 
 def player_info_by_id(playerId: list):
     """
-    OP.GG Esports의 선수 ID를 통한 선수 정보 데이터 처리를 위해 호출되는 함수
+    OP.GG E-Sports의 선수 ID를 통한 선수 정보 데이터 처리를 위해 호출되는 함수
     """
     try:
         playerIds = ""
@@ -62,7 +62,7 @@ query {
 
 def player_info_by_nickname(playerNickname: str):
     """
-    OP.GG Esports의 선수 닉네임을 통한 선수 정보 데이터 처리를 위해 호출되는 함수
+    OP.GG E-Sports의 선수 닉네임을 통한 선수 정보 데이터 처리를 위해 호출되는 함수
     """
     try:
         query = """
@@ -115,7 +115,7 @@ query {
 
 def players_info_by_team(tournamentId: str, teamId: str):
     """
-    OP.GG Esports의 팀에서 선수 정보 데이터 처리를 위해 호출되는 함수
+    OP.GG E-Sports의 팀에서 선수 정보 데이터 처리를 위해 호출되는 함수
     """
     try:
         query = """

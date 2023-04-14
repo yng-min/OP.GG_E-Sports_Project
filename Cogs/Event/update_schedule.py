@@ -79,7 +79,7 @@ class UpdateScheduleTASK(commands.Cog):
                 "Content-Type": "application/json"
             }
             webhook_data = {
-                "username": "OP.GG Esports Log",
+                "username": "OP.GG E-Sports Log",
                 "content": content_msg
             }
             webhook_result = requests.post(url=webhook_url, json=webhook_data, headers=webhook_headers)

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 import requests
-url = "https://esports.op.gg/matches/graphql" # OP.GG Esports API URL
+url = "https://esports.op.gg/matches/graphql" # OP.GG E-Sports API URL
 
 
 def match_info_by_id(match_id: str):
     """
-    OP.GG Esports에서 MatchID를 통한 경기 정보 데이터 처리를 위해 호출되는 함수
+    OP.GG E-Sports에서 MatchID를 통한 경기 정보 데이터 처리를 위해 호출되는 함수
     """
     try:
         query = """
@@ -101,7 +101,7 @@ query {
 
 def match_started(match_id: str, tournament_id: str, status: str):
     """
-    OP.GG Esports API에서 경기가 시작되었을 때 데이터 처리를 위해 호출되는 함수
+    OP.GG E-Sports API에서 경기가 시작되었을 때 데이터 처리를 위해 호출되는 함수
     """
     try:
         if status != "not_started":
@@ -151,7 +151,7 @@ query {
 
 def match_finished(league_id: str = "null", page: int = 0):
     """
-    OP.GG Esports의 경기 종료 데이터 처리를 위해 호출되는 함수
+    OP.GG E-Sports의 경기 종료 데이터 처리를 위해 호출되는 함수
     """
     try:
         query = """
@@ -211,7 +211,7 @@ query {
 
 def match_completed(match_info: dict):
     """
-    OP.GG Esports API에서 경기 결과 데이터 처리를 위해 호출되는 함수
+    OP.GG E-Sports API에서 경기 결과 데이터 처리를 위해 호출되는 함수
 
     - Input:
     {

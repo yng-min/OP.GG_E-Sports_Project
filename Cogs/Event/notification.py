@@ -35,7 +35,7 @@ class LinkButton(discord.ui.View):
 
     def __init__(self, url: str):
         super().__init__()
-        self.add_item(discord.ui.Button(label="OP.GG Esports에서 보기", url=url))
+        self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=url))
 
 
 class NotificationTASK(commands.Cog):
@@ -179,8 +179,7 @@ class NotificationTASK(commands.Cog):
                                                 channel_notice = self.bot.get_channel(channel_id)
                                                 role_notice = discord.utils.get(guild_notice.roles, id=role_id)
 
-                                                msg_content = ""
-                                                # msg_content = f"{role_notice.mention}"
+                                                msg_content = f"{role_notice.mention}"
                                                 msg_title = f"> 📢 {time_nowTime} 경기 시작 알림"
                                                 # msg_title = f"> 📢 {time_nowTime} 경기 시작 알림 (테스트)"
                                                 msg_description = f"```{match_title} ({box_league[j]})```"
@@ -216,7 +215,8 @@ class NotificationTASK(commands.Cog):
                                                     embed.add_field(name="첫 바론 처치율", value=team_2_firstBaron + "%", inline=True)
                                                     embed.add_field(name="골드 획득량", value=team_2_goldEarned, inline=True)
 
-                                                await msg.edit(msg_content, embed=embed, view=BettingButton(bot=self.bot, msg=msg, url=scheduleURL, match_id=match_id, team_1=team_1_acronym, team_2=team_2_acronym))
+                                                # await msg.edit(msg_content, embed=embed, view=BettingButton(bot=self.bot, msg=msg, url=scheduleURL, match_id=match_id, team_1=team_1_acronym, team_2=team_2_acronym))
+                                                await msg.edit("", embed=embed, view=BettingButton(bot=self.bot, msg=msg, url=scheduleURL, match_id=match_id, team_1=team_1_acronym, team_2=team_2_acronym))
 
                             except Exception as error:
                                 print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))

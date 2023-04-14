@@ -73,7 +73,7 @@ class DisabledButton(discord.ui.View):
 
     def __init__(self, player_id: str, player_displayed_nickname: str, player_nationalty: str):
         super().__init__(timeout=None)
-        self.add_item(discord.ui.Button(label="OP.GG Esports에서 보기", url=f"{esports_op_gg_player}{player_id}", row=0))
+        self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=f"{esports_op_gg_player}{player_id}", row=0))
         self.add_item(discord.ui.Button(label="OP.GG에서 보기", url=f"{op_gg_player}{player_nationalty.lower()}/{player_displayed_nickname}", disabled=True, row=0))
 
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Discord API ( OP.GG Esports ex. QWER.GG [Python] )
+# Discord API ( OP.GG E-Sports ex. QWER.GG [Python] )
 #
 # 테스트가 끝난 뒤에는 꼭 토큰 값을 변경할 것.
 

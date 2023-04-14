@@ -67,7 +67,7 @@ class FeedbackCMD(commands.Cog):
     )
     async def _feedbackCMD(self, ctx):
 
-        modal = FeedbackModal(self.bot, title="OP.GG Esports 디스코드 봇 피드백")
+        modal = FeedbackModal(self.bot, title="OP.GG E-Sports 디스코드 봇 피드백")
         await ctx.send_modal(modal)
 
 

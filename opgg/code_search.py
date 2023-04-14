@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 import requests
-url = "https://esports.op.gg/matches/graphql" # OP.GG Esports API URL
+url = "https://esports.op.gg/matches/graphql" # OP.GG E-Sports API URL
 
 
 def search_player(keyword: str):
     """
-    OP.GG Esports의 선수 검색 데이터 처리를 위해 호출되는 함수
+    OP.GG E-Sports의 선수 검색 데이터 처리를 위해 호출되는 함수
     """
     try:
         query = """
@@ -43,7 +43,7 @@ query {
 
 # def search_player(keyword: str):
 #     """
-#     OP.GG Esports의 선수 검색 데이터 처리를 위해 호출되는 함수
+#     OP.GG E-Sports의 선수 검색 데이터 처리를 위해 호출되는 함수
 #     """
 #     try:
 #         query = """

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 import requests
-url = "https://esports.op.gg/matches/graphql" # OP.GG Esports API URL
+url = "https://esports.op.gg/matches/graphql" # OP.GG E-Sports API URL
 
 
 def season_info(tournamentId: str):
     """
-    OP.GG Esports의 시즌 통계 데이터 처리를 위해 호출되는 함수
+    OP.GG E-Sports의 시즌 통계 데이터 처리를 위해 호출되는 함수
     """
     try:
         query = """
@@ -54,7 +54,7 @@ query {
 
 def ban_rank_info(serieId: str, limit: int = 10, page: int = 0):
     """
-    OP.GG Esports의 밴 순위 데이터 처리를 위해 호출되는 함수
+    OP.GG E-Sports의 밴 순위 데이터 처리를 위해 호출되는 함수
     """
     try:
         query = """
@@ -93,7 +93,7 @@ query {
 
 def pick_rank_info(serieId: str, limit: int = 10, page: int = 0):
     """
-    OP.GG Esports의 픽 순위 데이터 처리를 위해 호출되는 함수
+    OP.GG E-Sports의 픽 순위 데이터 처리를 위해 호출되는 함수
     """
     try:
         query = """

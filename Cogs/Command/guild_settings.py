@@ -294,9 +294,9 @@ class GuildSettingCMD(commands.Cog):
         msg = await ctx.respond(embed=embed)
 
         try:
-            embed = discord.Embed(title="", description="> ⚙️ `리그 알림` 역할 추가 중...", color=colorMap['red'])
-            await msg.edit_original_response(content="", embed=embed)
-            role_notice = await ctx.guild.create_role(name=role_name_notice)
+            # embed = discord.Embed(title="", description="> ⚙️ `리그 알림` 역할 추가 중...", color=colorMap['red'])
+            # await msg.edit_original_response(content="", embed=embed)
+            # role_notice = await ctx.guild.create_role(name=role_name_notice)
 
             embed = discord.Embed(title="", description="> ⚙️ 정보 저장 중...", color=colorMap['red'])
             await msg.edit_original_response(content="", embed=embed)
@@ -316,7 +316,8 @@ class GuildSettingCMD(commands.Cog):
             guildCURSOR.execute("""
                 INSERT INTO main(GuildID, NoticeAnswer, NoticeEarlyAnswer, NoticeCompleteAnswer, NoticeChannelID, NoticeRoleID)
                 VALUES(?, ?, ?, ?, ?, ?)""",
-                (ctx.guild.id, 1, 1, 1, channel_notice.id, role_notice.id)
+                # (ctx.guild.id, 1, 1, 1, channel_notice.id, role_notice.id)
+                (ctx.guild.id, 1, 1, 1, channel_notice.id, None)
             ) # 메인 테이블 데이터 입력
 
             guildCURSOR.execute("""

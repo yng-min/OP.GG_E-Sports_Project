@@ -3,12 +3,12 @@
 import requests
 import datetime
 import pytz
-url = "https://esports.op.gg/matches/graphql" # OP.GG Esports API URL
+url = "https://esports.op.gg/matches/graphql" # OP.GG E-Sports API URL
 
 
 def load_schedule(date: str = "null"):
     """
-    OP.GG Esports의 경기 일정 데이터 처리를 위해 호출되는 함수
+    OP.GG E-Sports의 경기 일정 데이터 처리를 위해 호출되는 함수
     """
     try:
         if date == "null": date = datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%Y-%m-%d")
@@ -54,7 +54,7 @@ query {
 
 def save_schedule(league_id: str = "null", page: int = 0):
     """
-    OP.GG Esports의 경기 일정 데이터 저장을 위해 호출되는 함수
+    OP.GG E-Sports의 경기 일정 데이터 저장을 위해 호출되는 함수
     """
     try:
         now_year = datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%Y")
@@ -102,7 +102,7 @@ query {
 
 def update_schedule(match_info: str): # null(js) -> None(py) 문법 변환을 위해 dict 대신 str로 받음
     """
-    OP.GG Esports API에서 경기 일정이 업데이트 되었을 때 데이터 처리를 위해 호출되는 함수
+    OP.GG E-Sports API에서 경기 일정이 업데이트 되었을 때 데이터 처리를 위해 호출되는 함수
 
     - Input:
     {
@@ -132,7 +132,7 @@ def update_schedule(match_info: str): # null(js) -> None(py) 문법 변환을 �
     }
     """
     try:
-        # null(js) -> None(py) 문법 변환 작업 *데이터 자체는 OP.GG Esports API에서 직접 다이렉트로 보내주기 때문에 eval문 보안 이슈 X*
+        # null(js) -> None(py) 문법 변환 작업 *데이터 자체는 OP.GG E-Sports API에서 직접 다이렉트로 보내주기 때문에 eval문 보안 이슈 X*
         match = str(match_info).replace("null", "None")
         match = eval(match)
 

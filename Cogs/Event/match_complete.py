@@ -45,7 +45,7 @@ class LinkButton(discord.ui.View):
 
     def __init__(self, url: str):
         super().__init__()
-        self.add_item(discord.ui.Button(label="OP.GG Esports에서 보기", url=url))
+        self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=url))
 
 
 class MatchCompleteTASK(commands.Cog):
@@ -203,7 +203,8 @@ class MatchCompleteTASK(commands.Cog):
                                         embed.add_field(name=msg_team_2, value=f"{msg_user_2}\n{msg_point_2}", inline=True)
                                         embed.add_field(
                                             name="포인트 정산", value=f"__**{match_data['data']['match_winner_name']}**__ 팀에 베팅한 유저에게 각각 {msg_reward}가 지급됩니다.", inline=False)
-                                        await channel_notice.send(msg_content, embed=embed, view=LinkButton(scheduleURL))
+                                        # await channel_notice.send(msg_content, embed=embed, view=LinkButton(scheduleURL))
+                                        await channel_notice.send(embed=embed, view=LinkButton(scheduleURL))
 
                                     except:
                                         embed = discord.Embed(title=msg_title, description=msg_description, color=colorMap['red'])
@@ -216,7 +217,8 @@ class MatchCompleteTASK(commands.Cog):
                                         embed.add_field(name="획득한 골드 1위", value=match_data['data']['gold'], inline=True)
                                         embed.add_field(name="CS 1위", value=match_data['data']['cs'], inline=True)
                                         embed.add_field(name="선취점", value=match_data['data']['firstBlood'], inline=True)
-                                        await channel_notice.send(msg_content, embed=embed, view=LinkButton(scheduleURL))
+                                        # await channel_notice.send(msg_content, embed=embed, view=LinkButton(scheduleURL))
+                                        await channel_notice.send(embed=embed, view=LinkButton(scheduleURL))
 
                                         print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
                                         print(f"[{box_league[0]}] {match_title} ({match_id}) | 경기 베팅 데이터를 불러올 수 없습니다.")
@@ -232,7 +234,8 @@ class MatchCompleteTASK(commands.Cog):
                                     embed.add_field(name="획득한 골드 1위", value=match_data['data']['gold'], inline=True)
                                     embed.add_field(name="CS 1위", value=match_data['data']['cs'], inline=True)
                                     embed.add_field(name="선취점", value=match_data['data']['firstBlood'], inline=True)
-                                    await channel_notice.send(msg_content, embed=embed, view=LinkButton(scheduleURL))
+                                    # await channel_notice.send(msg_content, embed=embed, view=LinkButton(scheduleURL))
+                                    await channel_notice.send(embed=embed, view=LinkButton(scheduleURL))
 
                 DepositPoint.deposit_point(match_data=match_data, bet_box=bet_box)
 

@@ -60,7 +60,7 @@ class save_scheduleTASK(commands.Cog):
                 print("경기 일정 저장")
 
                 webhook_data = {
-                    "username": "OP.GG Esports Log",
+                    "username": "OP.GG E-Sports Log",
                     "content": "``` ```\n>>> `({})`\n경기 일정 저장".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S"))
                 }
                 webhook_result = requests.post(url=webhook_url, json=webhook_data, headers=webhook_headers)
@@ -101,7 +101,7 @@ class save_scheduleTASK(commands.Cog):
                     print("- Table Deleted.")
 
                     webhook_data = {
-                        "username": "OP.GG Esports Log",
+                        "username": "OP.GG E-Sports Log",
                         "content": "- Table Deleted."
                     }
                     webhook_result = requests.post(url=webhook_url, json=webhook_data, headers=webhook_headers)
@@ -132,7 +132,7 @@ class save_scheduleTASK(commands.Cog):
                     if content_msg == "": content_msg = "- No matches."
 
                     webhook_data = {
-                        "username": "OP.GG Esports Log",
+                        "username": "OP.GG E-Sports Log",
                         "content": content_msg
                     }
                     webhook_result = requests.post(url=webhook_url, json=webhook_data, headers=webhook_headers)
