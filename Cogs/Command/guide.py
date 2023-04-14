@@ -51,7 +51,7 @@ def embed_setup(bot, banner, page):
 
     elif page == 5:
         embed = discord.Embed(title="> 📌 OP.GG E-Sports 봇 서비스 가이드", description="```승부 예측 미니게임 페이지```", color=colorMap['red'])
-        embed.add_field(name="▫️ 승부 예측 게임이 뭔가요?", value=" 리그 경기의 승패를 예측하여 자신의 포인트를 베팅하여 리그를 더욱 즐길 수 있어요.\n\n자신이 좋아하는 팀을 응원한다는 것을 엄청난 베팅을 통해 표현하거나, 냉정하게 분석하여 유리한 베팅 등을 진행해보세요!", inline=False)
+        embed.add_field(name="▫️ 승부 예측 게임이 뭔가요?", value=" 리그 경기의 승패를 예측하여 자신의 포인트를 베팅하여 리그를 더욱 즐길 수 있어요.\n\n자신이 좋아하는 팀을 응원하고 있다는 걸 엄청난 베팅을 통해 표현하거나, 냉정하게 분석하여 유리한 베팅 등을 진행해보세요!", inline=False)
         embed.add_field(name="▫️ 어떻게 즐길 수 있나요?", value=" 승부 예측은 각 경기가 시작되면 베팅 필드가 열리고, 15분 뒤 베팅이 마감돼요.\n\n그리고 해당 경기 종료 후 경기 결과와 함께 승부 예측 결과도 전송됩니다.", inline=False)
 
     embed.set_footer(text="TIP: 아래 버튼을 눌러 페이지를 넘길 수 있어요.", icon_url=bot.user.display_avatar.url)
