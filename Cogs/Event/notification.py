@@ -269,7 +269,7 @@ class NotificationTASK(commands.Cog):
 
                                             channel_notice = self.bot.get_channel(channel_id)
 
-                                            msg_content = f"<@&{role_id}>"
+                                            msg_content = f"{role_notice.mention}"
                                             msg_title = f"> 📢 {time_nowTime} 경기 알림"
                                             # msg_title = f"> 📢 {time_nowTime} 경기 알림 (테스트)"
                                             msg_description = f"30분 뒤 아래 경기가 시작됩니다.\n```{box_teams[j]} ({box_league[j]})```"
@@ -277,7 +277,8 @@ class NotificationTASK(commands.Cog):
                                             embed = discord.Embed(title=msg_title, description=msg_description, color=colorMap['red'])
                                             # embed.set_footer(text="Powered by OP.GG", icon_url=self.bot.user.display_avatar.url)
                                             embed.set_image(url=banner_image_url)
-                                            await channel_notice.send(msg_content, embed=embed, view=LinkButton(scheduleURL), delete_after=1800) # 30분 후 삭제
+                                            # await channel_notice.send(msg_content, embed=embed, view=LinkButton(scheduleURL), delete_after=1800) # 30분 후 삭제
+                                            await channel_notice.send(embed=embed, view=LinkButton(scheduleURL), delete_after=1800) # 30분 후 삭제
 
                         except Exception as error:
                             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
