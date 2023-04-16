@@ -85,8 +85,13 @@ class MatchCompleteTASK(commands.Cog):
                 scheduleDB = sqlite3.connect(r"./Database/schedule.sqlite", isolation_level=None)
                 scheduleCURSOR = scheduleDB.cursor()
                 for i in range(16):
-                    try: scheduleCURSOR.execute(f"UPDATE {leagues[i]['shortName']} SET Status = ? WHERE ID = ?", (match_data['data']['match_type'], match_id))
-                    except: pass
+                    try:
+                        numberOfGames = scheduleCURSOR.execute(f"SELECT NumberOfGames FROM {leagues[i]['shortName']} WHERE ID = {match_data['data']['match_id']}").fetchone()[0]
+                        scheduleCURSOR.execute(f"UPDATE {leagues[i]['shortName']} SET Status = ? WHERE ID = ?", (match_data['data']['match_type'], match_id))
+                    except:
+                        numberOfGames = None
+                        pass
+                scheduleDB.close()
 
                 # 현재 시간
                 time_nowDay = datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%Y-%m-%d")
@@ -100,7 +105,7 @@ class MatchCompleteTASK(commands.Cog):
                         guildCURSOR = guildDB.cursor()
                         notice_answer = guildCURSOR.execute("SELECT NoticeCompleteAnswer FROM main").fetchone()[0]
                         channel_id = guildCURSOR.execute("SELECT NoticeChannelID FROM main").fetchone()[0]
-                        role_id = guildCURSOR.execute("SELECT NoticeRoleID FROM main").fetchone()[0]
+                        # role_id = guildCURSOR.execute("SELECT NoticeRoleID FROM main").fetchone()[0]
 
                         leagueLCO = guildCURSOR.execute("SELECT LCO FROM league").fetchone()[0]
                         leaguePCS = guildCURSOR.execute("SELECT PCS FROM league").fetchone()[0]
@@ -123,9 +128,9 @@ class MatchCompleteTASK(commands.Cog):
 
                         if (channel_id) and (notice_answer == 1):
                             if ((box_league[0].split("/")[0] == "LCO") and (leagueLCO == 1)) or ((box_league[0].split("/")[0] == "PCS") and (leaguePCS == 1)) or ((box_league[0].split("/")[0] == "LLA") and (leagueLLA == 1)) or ((box_league[0].split("/")[0] == "LCS") and (leagueLCS == 1)) or ((box_league[0].split("/")[0] == "LEC") and (leagueLEC == 1)) or ((box_league[0].split("/")[0] == "VCS") and (leagueVCS == 1)) or ((box_league[0].split("/")[0] == "LCL") and (leagueLCL == 1)) or ((box_league[0].split("/")[0] == "LJL") and (leagueLJL == 1)) or ((box_league[0].split("/")[0] == "TCL") and (leagueTCL == 1)) or ((box_league[0].split("/")[0] == "CBLOL") and (leagueCBLOL == 1)) or ((box_league[0].split("/")[0] == "OPL") and (leagueOPL == 1)) or ((box_league[0].split("/")[0] == "Worlds") and (leagueWorlds == 1)) or ((box_league[0].split("/")[0] == "LMS") and (leagueLMS == 1)) or ((box_league[0].split("/")[0] == "LPL") and (leagueLPL == 1)) or ((box_league[0].split("/")[0] == "LCK") and (leagueLCK == 1)) or ((box_league[0].split("/")[0] == "MSI") and (leagueMSI == 1)):
-                                guild_notice = self.bot.get_guild(int(data_guild.split("_")[1].split(".")[0]))
+                                # guild_notice = self.bot.get_guild(int(data_guild.split("_")[1].split(".")[0]))
                                 channel_notice = self.bot.get_channel(channel_id)
-                                role_notice = discord.utils.get(guild_notice.roles, id=role_id)
+                                # role_notice = discord.utils.get(guild_notice.roles, id=role_id)
 
                                 msg_content = ""
                                 # msg_content = f"{role_notice.mention}"
@@ -143,7 +148,7 @@ class MatchCompleteTASK(commands.Cog):
                                 if match_data['data']['firstBlood'] == "": match_data['data']['firstBlood'] = "-"
                                 if match_data['data']['mvp'] == "": match_data['data']['mvp'] = "-"
 
-                                if match_data['data']['match_set'] == 1:
+                                if match_data['data']['match_set'] == numberOfGames:
                                     bettingDB = sqlite3.connect(rf"./Database/betting.sqlite", isolation_level=None)
                                     bettingCURSOR = bettingDB.cursor()
 

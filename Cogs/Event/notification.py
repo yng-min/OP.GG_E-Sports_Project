@@ -151,7 +151,7 @@ class NotificationTASK(commands.Cog):
                                         guildCURSOR = guildDB.cursor()
                                         notice_answer = guildCURSOR.execute("SELECT NoticeAnswer FROM main").fetchone()[0]
                                         channel_id = guildCURSOR.execute("SELECT NoticeChannelID FROM main").fetchone()[0]
-                                        role_id = guildCURSOR.execute("SELECT NoticeRoleID FROM main").fetchone()[0]
+                                        # role_id = guildCURSOR.execute("SELECT NoticeRoleID FROM main").fetchone()[0]
 
                                         leagueLCO = guildCURSOR.execute("SELECT LCO FROM league").fetchone()[0]
                                         leaguePCS = guildCURSOR.execute("SELECT PCS FROM league").fetchone()[0]
@@ -175,11 +175,11 @@ class NotificationTASK(commands.Cog):
                                         if (channel_id) and (notice_answer == 1):
                                             if ((box_league[j].split("/")[0] == "LCO") and (leagueLCO == 1)) or ((box_league[j].split("/")[0] == "PCS") and (leaguePCS == 1)) or ((box_league[j].split("/")[0] == "LLA") and (leagueLLA == 1)) or ((box_league[j].split("/")[0] == "LCS") and (leagueLCS == 1)) or ((box_league[j].split("/")[0] == "LEC") and (leagueLEC == 1)) or ((box_league[j].split("/")[0] == "VCS") and (leagueVCS == 1)) or ((box_league[j].split("/")[0] == "LCL") and (leagueLCL == 1)) or ((box_league[j].split("/")[0] == "LJL") and (leagueLJL == 1)) or ((box_league[j].split("/")[0] == "TCL") and (leagueTCL == 1)) or ((box_league[j].split("/")[0] == "CBLOL") and (leagueCBLOL == 1)) or ((box_league[j].split("/")[0] == "OPL") and (leagueOPL == 1)) or ((box_league[j].split("/")[0] == "Worlds") and (leagueWorlds == 1)) or ((box_league[j].split("/")[0] == "LMS") and (leagueLMS == 1)) or ((box_league[j].split("/")[0] == "LPL") and (leagueLPL == 1)) or ((box_league[j].split("/")[0] == "LCK") and (leagueLCK == 1)) or ((box_league[j].split("/")[0] == "MSI") and (leagueMSI == 1)):
 
-                                                guild_notice = self.bot.get_guild(int(data_guild.split("_")[1].split(".")[0]))
+                                                # guild_notice = self.bot.get_guild(int(data_guild.split("_")[1].split(".")[0]))
                                                 channel_notice = self.bot.get_channel(channel_id)
-                                                role_notice = discord.utils.get(guild_notice.roles, id=role_id)
+                                                # role_notice = discord.utils.get(guild_notice.roles, id=role_id)
 
-                                                msg_content = f"{role_notice.mention}"
+                                                # msg_content = f"{role_notice.mention}"
                                                 msg_title = f"> 📢 {time_nowTime} 경기 시작 알림"
                                                 # msg_title = f"> 📢 {time_nowTime} 경기 시작 알림 (테스트)"
                                                 msg_description = f"```{match_title} ({box_league[j]})```"
@@ -243,7 +243,7 @@ class NotificationTASK(commands.Cog):
                                     guildCURSOR = guildDB.cursor()
                                     notice_answer = guildCURSOR.execute("SELECT NoticeEarlyAnswer FROM main").fetchone()[0]
                                     channel_id = guildCURSOR.execute("SELECT NoticeChannelID FROM main").fetchone()[0]
-                                    role_id = guildCURSOR.execute("SELECT NoticeRoleID FROM main").fetchone()[0]
+                                    # role_id = guildCURSOR.execute("SELECT NoticeRoleID FROM main").fetchone()[0]
 
                                     leagueLCO = guildCURSOR.execute("SELECT LCO FROM league").fetchone()[0]
                                     leaguePCS = guildCURSOR.execute("SELECT PCS FROM league").fetchone()[0]
@@ -269,7 +269,7 @@ class NotificationTASK(commands.Cog):
 
                                             channel_notice = self.bot.get_channel(channel_id)
 
-                                            msg_content = f"{role_notice.mention}"
+                                            # msg_content = f"{role_notice.mention}"
                                             msg_title = f"> 📢 {time_nowTime} 경기 알림"
                                             # msg_title = f"> 📢 {time_nowTime} 경기 알림 (테스트)"
                                             msg_description = f"30분 뒤 아래 경기가 시작됩니다.\n```{box_teams[j]} ({box_league[j]})```"
