@@ -37,27 +37,27 @@ class ScheduleButton(discord.ui.View):
         self.msg = msg
         self.banner = banner
 
-        if box_1_match_schedule_2 == "해당 일자의 경기 일정이 없습니다.":
-            self.schedule_1_1 = []
-            self.schedule_1_2 = []
+        if msg_schedule_info_1 == "해당 일자의 경기 일정이 없습니다.":
+            self.schedule_1_1 = box_1_match_schedule_2
+            self.schedule_1_2 = "해당 일자의 경기 일정이 없습니다."
             self.schedule_1_3 = ["해당 일자의 경기 일정이 없습니다."]
         else:
             self.schedule_1_1 = box_1_match_schedule_2
             self.schedule_1_2 = msg_schedule_info_1
             self.schedule_1_3 = msg_schedule_info_1_2
 
-        if box_2_match_schedule_2 == "해당 일자의 경기 일정이 없습니다.":
-            self.schedule_2_1 = []
-            self.schedule_2_2 = []
+        if msg_schedule_info_2 == "해당 일자의 경기 일정이 없습니다.":
+            self.schedule_2_1 = box_2_match_schedule_2
+            self.schedule_2_2 = "해당 일자의 경기 일정이 없습니다."
             self.schedule_2_3 = ["해당 일자의 경기 일정이 없습니다."]
         else:
             self.schedule_2_1 = box_2_match_schedule_2
             self.schedule_2_2 = msg_schedule_info_2
             self.schedule_2_3 = msg_schedule_info_2_2
 
-        if box_3_match_schedule_2 == "해당 일자의 경기 일정이 없습니다.":
-            self.schedule_3_1 = []
-            self.schedule_3_2 = []
+        if msg_schedule_info_3 == "해당 일자의 경기 일정이 없습니다.":
+            self.schedule_3_1 = box_3_match_schedule_2
+            self.schedule_3_2 = "해당 일자의 경기 일정이 없습니다."
             self.schedule_3_3 = ["해당 일자의 경기 일정이 없습니다."]
         else:
             self.schedule_3_1 = box_3_match_schedule_2
@@ -139,13 +139,23 @@ class ScheduleButton(discord.ui.View):
             elif select.values[i] == "16": self.box_select.append("Worlds")
             else: pass
 
-        self.league_schedule_1 = self.schedule_1_2.split("\n")
-        self.league_schedule_2 = self.schedule_2_2.split("\n")
-        self.league_schedule_3 = self.schedule_3_2.split("\n")
+        try:
+            self.league_schedule_1 = self.schedule_1_2.split("\n")
+            self.league_schedule_1 = list(filter(len, self.league_schedule_1))
+        except:
+            pass
 
-        self.league_schedule_1 = list(filter(len, self.league_schedule_1))
-        self.league_schedule_2 = list(filter(len, self.league_schedule_2))
-        self.league_schedule_3 = list(filter(len, self.league_schedule_3))
+        try:
+            self.league_schedule_2 = self.schedule_2_2.split("\n")
+            self.league_schedule_2 = list(filter(len, self.league_schedule_2))
+        except:
+            pass
+
+        try:
+            self.league_schedule_3 = self.schedule_3_2.split("\n")
+            self.league_schedule_3 = list(filter(len, self.league_schedule_3))
+        except:
+            pass
 
         if self.league_schedule_1 == []: pass
         else:
@@ -156,9 +166,12 @@ class ScheduleButton(discord.ui.View):
                     break
                 else:
                     for j in range(len(self.league_schedule_1)):
-                        self.league_find = self.league_schedule_1[j].split("(")[1].split("/")[0]
-                        if self.league_find == self.box_select[i]:
-                            self.schedules_1.append(self.league_schedule_1[j])
+                        try:
+                            self.league_find = self.league_schedule_1[j].split("(")[1].split("/")[0]
+                            if self.league_find == self.box_select[i]:
+                                self.schedules_1.append(self.league_schedule_1[j])
+                        except:
+                            pass
 
         if self.league_schedule_2 == []: pass
         else:
@@ -169,9 +182,12 @@ class ScheduleButton(discord.ui.View):
                     break
                 else:
                     for j in range(len(self.league_schedule_2)):
-                        self.league_find = self.league_schedule_2[j].split("(")[1].split("/")[0]
-                        if self.league_find == self.box_select[i]:
-                            self.schedules_2.append(self.league_schedule_2[j])
+                        try:
+                            self.league_find = self.league_schedule_2[j].split("(")[1].split("/")[0]
+                            if self.league_find == self.box_select[i]:
+                                self.schedules_2.append(self.league_schedule_2[j])
+                        except:
+                            pass
 
         if self.league_schedule_3 == []: pass
         else:
@@ -182,9 +198,12 @@ class ScheduleButton(discord.ui.View):
                     break
                 else:
                     for j in range(len(self.league_schedule_3)):
-                        self.league_find = self.league_schedule_3[j].split("(")[1].split("/")[0]
-                        if self.league_find == self.box_select[i]:
-                            self.schedules_3.append(self.league_schedule_3[j])
+                        try:
+                            self.league_find = self.league_schedule_3[j].split("(")[1].split("/")[0]
+                            if self.league_find == self.box_select[i]:
+                                self.schedules_3.append(self.league_schedule_3[j])
+                        except:
+                            pass
 
         if self.schedules_1 == []: self.msg_schedule_1 = "해당 일자의 경기 일정이 없습니다."
         for i in range(len(self.schedules_1)):
@@ -221,7 +240,7 @@ class ScheduleButton(discord.ui.View):
 
         self.msg_schedule_1_1 = ""
         self.msg_schedule_1_2 = ""
-        if len(self.msg_schedule_1.split("\n")) > 25:
+        if (len(self.msg_schedule_1) != 0) and (len(self.msg_schedule_1.split("\n")) > 25):
             for k in range(len(self.msg_schedule_1.split("\n"))):
                 if k > 25: break
                 self.msg_schedule_1_1 += "".join("\n" + self.msg_schedule_1.split("\n")[k])
@@ -231,7 +250,7 @@ class ScheduleButton(discord.ui.View):
 
         self.msg_schedule_2_1 = ""
         self.msg_schedule_2_2 = ""
-        if len(self.msg_schedule_2.split("\n")) > 25:
+        if (len(self.msg_schedule_2) != 0) and (len(self.msg_schedule_2.split("\n")) > 25):
             self.msg_schedule_2_1 = ""
             for k in range(len(self.msg_schedule_2.split("\n"))):
                 if k > 25: break
@@ -242,7 +261,7 @@ class ScheduleButton(discord.ui.View):
 
         self.msg_schedule_3_1 = ""
         self.msg_schedule_3_2 = ""
-        if len(self.msg_schedule_3.split("\n")) > 25:
+        if (len(self.msg_schedule_3) != 0) and (len(self.msg_schedule_3.split("\n")) > 25):
             for k in range(len(self.msg_schedule_3.split("\n"))):
                 if k > 25: break
                 self.msg_schedule_3_1 += "".join("\n" + self.msg_schedule_3.split("\n")[k])
@@ -270,7 +289,7 @@ class ScheduleButton(discord.ui.View):
 
         self.msg_schedule_1_1 = ""
         self.msg_schedule_1_3 = ""
-        if len(self.schedule_1_2.split("\n")) > 25:
+        if (len(self.schedule_1_2) != 0) and (len(self.schedule_1_2.split("\n")) > 25):
             for k in range(len(self.schedule_1_2.split("\n"))):
                 if k > 25: break
                 self.msg_schedule_1_1 += "".join("\n" + self.schedule_1_2.split("\n")[k])
@@ -297,7 +316,7 @@ class ScheduleButton(discord.ui.View):
 
         self.msg_schedule_2_1 = ""
         self.msg_schedule_2_3 = ""
-        if len(self.schedule_2_2.split("\n")) > 25:
+        if (len(self.schedule_2_2) != 0) and (len(self.schedule_2_2.split("\n")) > 25):
             self.msg_schedule_2_1 = ""
             for k in range(len(self.schedule_2_2.split("\n"))):
                 if k > 25: break
@@ -325,7 +344,7 @@ class ScheduleButton(discord.ui.View):
 
         self.msg_schedule_3_1 = ""
         self.msg_schedule_3_3 = ""
-        if len(self.schedule_3_2.split("\n")) > 25:
+        if (len(self.schedule_3_2) != 0) and (len(self.schedule_3_2.split("\n")) > 25):
             for k in range(len(self.schedule_3_2.split("\n"))):
                 if k > 25: break
                 self.msg_schedule_3_1 += "".join("\n" + self.schedule_3_2.split("\n")[k])
@@ -397,6 +416,16 @@ class ScheduleCMD(commands.Cog):
             box_3_match_schedule_1 = []
             box_3_match_schedule_2 = []
             box_3_match_info = []
+
+            msg_schedule_info_1 = ""
+            msg_schedule_info_1_1 = ""
+            msg_schedule_info_1_2 = ""
+            msg_schedule_info_2 = ""
+            msg_schedule_info_2_1 = ""
+            msg_schedule_info_2_2 = ""
+            msg_schedule_info_3 = ""
+            msg_schedule_info_3_1 = ""
+            msg_schedule_info_3_2 = ""
 
             for i in range(4):
                 if i == 0: dateTime = yesterdayTime
@@ -474,30 +503,12 @@ class ScheduleCMD(commands.Cog):
                 box_3_match_schedule_1 = [""]
                 box_3_match_schedule_2 = [datetime.datetime.strptime(dayAfterTomorrowTime, "%Y-%m-%d").strftime("X%Y년 X%m월 X%d일").replace("X0", "").replace("X", "")]
 
-            if box_1_match_info == []:
-                msg_schedule_info_1 = ""
-                msg_schedule_info_1_1 = ""
-                msg_schedule_info_1_2 = "해당 일자의 경기 일정이 없습니다."
-
-            if box_2_match_info == []:
-                msg_schedule_info_2 = ""
-                msg_schedule_info_1_1 = ""
-                msg_schedule_info_2_2 = "해당 일자의 경기 일정이 없습니다."
-
-            if box_3_match_info == []:
-                msg_schedule_info_3 = ""
-                msg_schedule_info_1_1 = ""
-                msg_schedule_info_3_2 = "해당 일자의 경기 일정이 없습니다."
-
             if (box_1_match_schedule_1[0] == nowTime) and (box_1_match_info):
-                msg_schedule_info_1 = ""
                 for i in range(len(box_1_match_info)):
                     if len(box_1_match_info) != 0:
                         msg_schedule_info_1 += "".join(f"\n{box_1_match_info[i]}")
 
-                msg_schedule_info_1_1 = ""
-                msg_schedule_info_1_2 = ""
-                if len(msg_schedule_info_1.split("\n")) > 25:
+                if (len(msg_schedule_info_1) != 0) and (len(msg_schedule_info_1.split("\n")) > 25):
                     for k in range(len(msg_schedule_info_1.split("\n"))):
                         if k > 25: break
                         msg_schedule_info_1_1 += "".join("\n" + msg_schedule_info_1.split("\n")[k])
@@ -506,15 +517,11 @@ class ScheduleCMD(commands.Cog):
                     msg_schedule_info_1_2 += msg_schedule_info_1
 
             if (box_2_match_schedule_1[0] == tomorrowTime) and (box_2_match_info):
-                msg_schedule_info_2 = ""
                 for i in range(len(box_2_match_info)):
                     if len(box_2_match_info) != 0:
                         msg_schedule_info_2 += "".join(f"\n{box_2_match_info[i]}")
 
-                msg_schedule_info_2_1 = ""
-                msg_schedule_info_2_2 = ""
-                if len(msg_schedule_info_2.split("\n")) > 25:
-                    msg_schedule_info_2_1 = ""
+                if (len(msg_schedule_info_2) != 0) and (len(msg_schedule_info_2.split("\n")) > 25):
                     for k in range(len(msg_schedule_info_2.split("\n"))):
                         if k > 25: break
                         msg_schedule_info_2_1 += "".join("\n" + msg_schedule_info_2.split("\n")[k])
@@ -523,20 +530,27 @@ class ScheduleCMD(commands.Cog):
                     msg_schedule_info_2_2 += msg_schedule_info_2
 
             if (box_3_match_schedule_1[0] == dayAfterTomorrowTime) and (box_3_match_info):
-                msg_schedule_info_3 = ""
                 for i in range(len(box_3_match_info)):
                     if len(box_3_match_info) != 0:
                         msg_schedule_info_3 += "".join(f"\n{box_3_match_info[i]}")
 
-                msg_schedule_info_3_1 = ""
-                msg_schedule_info_3_2 = ""
-                if len(msg_schedule_info_3.split("\n")) > 25:
+                if (len(msg_schedule_info_3) != 0) and (len(msg_schedule_info_3.split("\n")) > 25):
                     for k in range(len(msg_schedule_info_3.split("\n"))):
                         if k > 25: break
                         msg_schedule_info_3_1 += "".join("\n" + msg_schedule_info_3.split("\n")[k])
                     msg_schedule_info_3_2 += "".join(f"{msg_schedule_info_3_1}\n...")
                 else:
                     msg_schedule_info_3_2 += msg_schedule_info_3
+
+            if msg_schedule_info_1 == "": msg_schedule_info_1 = "해당 일자의 경기 일정이 없습니다."
+            if msg_schedule_info_1_1 == "": msg_schedule_info_1_1 = "해당 일자의 경기 일정이 없습니다."
+            if msg_schedule_info_1_2 == "": msg_schedule_info_1_2 = "해당 일자의 경기 일정이 없습니다."
+            if msg_schedule_info_2 == "": msg_schedule_info_2 = "해당 일자의 경기 일정이 없습니다."
+            if msg_schedule_info_2_1 == "": msg_schedule_info_2_1 = "해당 일자의 경기 일정이 없습니다."
+            if msg_schedule_info_2_2 == "": msg_schedule_info_2_2 = "해당 일자의 경기 일정이 없습니다."
+            if msg_schedule_info_3 == "": msg_schedule_info_3 = "해당 일자의 경기 일정이 없습니다."
+            if msg_schedule_info_3_1 == "": msg_schedule_info_3_1 = "해당 일자의 경기 일정이 없습니다."
+            if msg_schedule_info_3_2 == "": msg_schedule_info_3_2 = "해당 일자의 경기 일정이 없습니다."
 
             embed = discord.Embed(title="> 🗓️ 경기 일정", description="", color=colorMap['red'])
             embed.set_footer(text="TIP: 아래 버튼을 눌러 다른 일자의 일정도 살펴볼 수 있어요.", icon_url=self.bot.user.display_avatar.url)
