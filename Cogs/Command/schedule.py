@@ -240,34 +240,43 @@ class ScheduleButton(discord.ui.View):
 
         self.msg_schedule_1_1 = ""
         self.msg_schedule_1_2 = ""
-        if (len(self.msg_schedule_1) != 0) and (len(self.msg_schedule_1.split("\n")) > 25):
-            for k in range(len(self.msg_schedule_1.split("\n"))):
-                if k > 25: break
-                self.msg_schedule_1_1 += "".join("\n" + self.msg_schedule_1.split("\n")[k])
-            self.msg_schedule_1_2 += "".join(f"{self.msg_schedule_1_1}\n...")
-        else:
-            self.msg_schedule_1_2 += self.msg_schedule_1
+        try:
+            if (len(self.msg_schedule_1) != 0) and (len(self.msg_schedule_1.split("\n")) > 25):
+                for k in range(len(self.msg_schedule_1.split("\n"))):
+                    if k > 25: break
+                    self.msg_schedule_1_1 += "".join("\n" + self.msg_schedule_1.split("\n")[k])
+                self.msg_schedule_1_2 += "".join(f"{self.msg_schedule_1_1}\n...")
+            else:
+                self.msg_schedule_1_2 += self.msg_schedule_1
+        except:
+            self.msg_schedule_1_2 = self.msg_schedule_1[0]
 
         self.msg_schedule_2_1 = ""
         self.msg_schedule_2_2 = ""
-        if (len(self.msg_schedule_2) != 0) and (len(self.msg_schedule_2.split("\n")) > 25):
-            self.msg_schedule_2_1 = ""
-            for k in range(len(self.msg_schedule_2.split("\n"))):
-                if k > 25: break
-                self.msg_schedule_2_1 += "".join("\n" + self.msg_schedule_2.split("\n")[k])
-            self.msg_schedule_2_2 += "".join(f"{self.msg_schedule_2_1}\n...")
-        else:
-            self.msg_schedule_2_2 += self.msg_schedule_2
+        try:
+            if (len(self.msg_schedule_2) != 0) and (len(self.msg_schedule_2.split("\n")) > 25):
+                self.msg_schedule_2_1 = ""
+                for k in range(len(self.msg_schedule_2.split("\n"))):
+                    if k > 25: break
+                    self.msg_schedule_2_1 += "".join("\n" + self.msg_schedule_2.split("\n")[k])
+                self.msg_schedule_2_2 += "".join(f"{self.msg_schedule_2_1}\n...")
+            else:
+                self.msg_schedule_2_2 += self.msg_schedule_2
+        except:
+            self.msg_schedule_2_2 = self.msg_schedule_2[0]
 
         self.msg_schedule_3_1 = ""
         self.msg_schedule_3_2 = ""
-        if (len(self.msg_schedule_3) != 0) and (len(self.msg_schedule_3.split("\n")) > 25):
-            for k in range(len(self.msg_schedule_3.split("\n"))):
-                if k > 25: break
-                self.msg_schedule_3_1 += "".join("\n" + self.msg_schedule_3.split("\n")[k])
-            self.msg_schedule_3_2 += "".join(f"{self.msg_schedule_3_1}\n...")
-        else:
-            self.msg_schedule_3_2 += self.msg_schedule_3
+        try:
+            if (len(self.msg_schedule_3) != 0) and (len(self.msg_schedule_3.split("\n")) > 25):
+                for k in range(len(self.msg_schedule_3.split("\n"))):
+                    if k > 25: break
+                    self.msg_schedule_3_1 += "".join("\n" + self.msg_schedule_3.split("\n")[k])
+                self.msg_schedule_3_2 += "".join(f"{self.msg_schedule_3_1}\n...")
+            else:
+                self.msg_schedule_3_2 += self.msg_schedule_3
+        except:
+            self.msg_schedule_3_2 = self.msg_schedule_3[0]
 
         embed = discord.Embed(title="> 🗓️ 경기 일정", description="", color=colorMap['red'])
         embed.set_footer(text="TIP: 아래 버튼을 눌러 다른 일자의 일정도 살펴볼 수 있어요.", icon_url=self.bot.user.display_avatar.url)
