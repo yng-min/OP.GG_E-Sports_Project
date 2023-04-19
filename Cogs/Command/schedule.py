@@ -28,6 +28,57 @@ colorMap = config['colorMap']
 esports_op_gg_schedules = "https://esports.op.gg/schedules"
 
 
+def split_schedule(box_select, schedule_2, schedule_3):
+
+    try:
+        league_schedule = schedule_2.split("\n")
+        league_schedule = list(filter(len, league_schedule))
+    except:
+        pass
+
+    if league_schedule == []: pass
+    else:
+        for i in range(len(box_select)):
+            if box_select[i] == "all":
+                schedules_1 = []
+                schedules_1.append(schedule_3)
+                break
+            else:
+                for j in range(len(league_schedule)):
+                    try:
+                        league_find = league_schedule[j].split("(")[1].split("/")[0]
+                        if league_find == box_select[i]:
+                            schedules_1.append(league_schedule[j])
+                    except:
+                        pass
+
+    if schedules_1 == []: msg_schedule = "해당 일자의 경기 일정이 없습니다."
+    for i in range(len(schedules_1)):
+        for j in range(len(box_select)):
+            if box_select[j] == "all":
+                check_all = True
+                msg_schedule = schedule_3
+            else: break
+        if check_all == True: break
+        else:
+            msg_schedule += f"\n{schedules_1[i]}"
+
+    msg_schedule_1 = ""
+    msg_schedule_2 = ""
+    try:
+        if (len(msg_schedule) != 0) and (len(msg_schedule.split("\n")) > 25):
+            for k in range(len(msg_schedule.split("\n"))):
+                if k > 25: break
+                msg_schedule_1 += "".join("\n" + msg_schedule.split("\n")[k])
+            msg_schedule_2 += "".join(f"{msg_schedule_1}\n...")
+        else:
+            msg_schedule_2 += msg_schedule
+    except:
+        msg_schedule_2 = msg_schedule[0]
+
+    return msg_schedule_2
+
+
 class ScheduleButton(discord.ui.View):
 
     def __init__(self, bot, ctx, msg, banner, box_1_match_schedule_2, msg_schedule_info_1, msg_schedule_info_1_2, box_2_match_schedule_2, msg_schedule_info_2, msg_schedule_info_2_2, box_3_match_schedule_2, msg_schedule_info_3, msg_schedule_info_3_2):
