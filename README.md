@@ -4,7 +4,7 @@ Welcome to '[OP.GG E-Sports](https://esports.op.gg/) for Discord' Repository.
 
 ## Notice.
 
-First of all, This repository and source-code is **NOT** Open Source.
+First of all, This repository and project is **NOT** open source.
 The copyright and ownership of this source code is in [OP.GG](https://op.gg/) and @yng-min.
 
 So, it's not marked with a license.
@@ -26,16 +26,16 @@ So I decided to share it as a public repository.
 
 # Hello, World! (한국어)
 
-[오피지지 e스포츠](https://esports.op.gg/) 디스코드 봇 리포지토리입니다.
+안녕하세요, [오피지지 e스포츠](https://esports.op.gg/) 디스코드 봇 리포지토리입니다.
 
 ## 필독사항
 
-가장 먼저, 이 리포지토리와 소스 코드는 **오픈 소스가 아닙니다.**
+가장 먼저, 이 리포지토리와 프로젝트는 **오픈 소스가 아닙니다.**
 이 프로젝트의 저작권과 소유권은 [OP.GG](https://op.gg/)와 @yng-min에게 있습니다.
 
 따라서 별도로 표기된 라이선스가 존재하지 않습니다.
 
-그렇기 때문에 오피지지 직원 외에는 이 소스 코드를 개인적 또는 상업적 사용을 **절대** 금합니다.
+그렇기에 오피지지 직원 외에는 이 소스 코드를 개인적 또는 상업적 사용을 **절대** 금합니다.
 
 ## 이 프로젝트는 무엇인가요?
 
