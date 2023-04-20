@@ -4,16 +4,27 @@ import requests
 url = "https://esports.op.gg/matches/graphql"
 
 
-def team_info_by_name(teamName: str):
-    print(teamName)
+def recentMatchesByPlayerId(playerId: str):
+    print(playerId)
     try:
         query = """
 query {
-    TeamByName(team: "%s") {
-        id
+    player(playerId: "%s") {
+        currentTeam{
+            recentMatches{
+                beginAt
+                name
+                id
+                winnerTeam{
+                    id
+                    name
+                    acronym
+                }
+            }
+        }
     }
 }
-""" % (teamName)
+""" % (playerId)
         headers = {
             "Content-Type": "application/json",
         }
@@ -21,8 +32,8 @@ query {
         result = requests.post(url=url, json={"query": query}, headers=headers)
 
         if 200 <= result.status_code < 300:
-            team = result.json()['data']['TeamByName']
-            print(team)
+            recentMatches = result.json()['data']['player']['currentTeam']['recentMatches']
+            print(recentMatches)
 
         else:
             print(f"Status Code: {result.status_code}\nResponse: {result}")
@@ -30,4 +41,4 @@ query {
     except Exception as error:
         print(error)
 
-team_info_by_name("T1")
+recentMatchesByPlayerId("1836")

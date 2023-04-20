@@ -10,7 +10,7 @@ import datetime
 import pytz
 import traceback
 
-from Extensions.Process.player import get_player_info_by_nickname, get_team_info_by_id
+from Extensions.Process.player import get_player_info_by_nickname, get_team_info_by_id, get_player_recent_matches_by_id
 from Extensions.Process.search import get_search_player
 
 # config.json 파일 불러오기
@@ -33,12 +33,14 @@ except: print("emoji.json 파일이 로드되지 않음")
 
 esports_op_gg_player = "https://esports.op.gg/players/"
 esports_op_gg_team = "https://esports.op.gg/teams/"
+esports_op_gg_match = "https://esports.op.gg/matches/"
 op_gg_player = "https://www.op.gg/summoners/"
 time_difference = config['time_difference']
 colorMap = config['colorMap']
 emoji_discord = emoji['Discord']
 emoji_esports = emoji['Esports']
 emoji_facebook = emoji['Facebook']
+emoji_hyperlink = emoji['Hyperlink']
 emoji_instagram = emoji['Instagram']
 emoji_stream = emoji['LiveStream']
 emoji_twitter = emoji['Twitter']
@@ -82,10 +84,10 @@ class PlayerInfoCMD(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    _search = SlashCommandGroup(name="검색", description="검색 명령어", guild_only=False)
+    _search = SlashCommandGroup(name="선수", description="검색 명령어", guild_only=False)
 
     @_search.command(
-        name="선수",
+        name="검색",
         description="리그 오브 레전드 e스포츠의 선수 정보를 검색할 수 있어요.",
     )
     @option("이름", description="검색할 e스포츠 선수를 입력해주세요.", required=True, autocomplete=search_player)
@@ -129,12 +131,13 @@ class PlayerInfoCMD(commands.Cog):
                         player_displayed_nickname = box_player[i]['nickName']
                         player_nationalty = box_player[i]['team_nationality']
 
-                        for k in range(16):
-                            if player_nationalty == leagues[k]['region']:
-                                player_league_id = leagues[k]['tournamentId']
+                        for z in range(16):
+                            if player_nationalty == leagues[z]['region']:
+                                player_league_id = leagues[z]['tournamentId']
                                 break
 
                         box_players = get_team_info_by_id(tournamentId=player_league_id, teamId=box_player[i]['team_id'])
+                        box_recentMatches = get_player_recent_matches_by_id(playerId=player_id)
 
                         try:
                             print(f"[player_info.py] {box_player['code']}: {box_player['message']}")
@@ -163,6 +166,7 @@ class PlayerInfoCMD(commands.Cog):
                                         embed.set_thumbnail(url=box_player[i]['imageUrl'])
                                         embed.add_field(name="인적 정보", value=f"닉네임: [{box_player[i]['team_acronym']}]({esports_op_gg_team}{box_player[i]['team_id']}) [{box_player[i]['nickName']}]({esports_op_gg_player}{box_player[i]['id']})\n본명: {box_player[i]['firstName']} {box_player[i]['lastName']}\n포지션: {box_players[j]['position']}", inline=True)
                                         embed.add_field(name="SNS 플랫폼", value=links, inline=True)
+                                        embed.add_field(name="\u200b", value="", inline=False)
                                         embed.add_field(name="승률", value=f"__{box_players[j]['stat_winRate']}__% (__{box_players[j]['stat_wins']:,}__승 __{box_players[j]['stat_loses']:,}__패)", inline=False)
                                         embed.add_field(name="KDA 정보", value=f"{box_players[j]['stat_kda']} 평점 `({box_players[j]['stat_kills']} / {box_players[j]['stat_deaths']} / {box_players[j]['stat_assists']})`", inline=False)
                                         embed.add_field(name="가한 피해량", value=f"분당 {box_players[j]['stat_dpm']:,}데미지", inline=True)
@@ -171,6 +175,15 @@ class PlayerInfoCMD(commands.Cog):
                                         embed.add_field(name="CS", value=f"분당 {box_players[j]['stat_cspm']:,}개", inline=True)
                                         embed.add_field(name="첫 킬률", value=f"{box_players[j]['stat_firstBlood']}%", inline=True)
                                         embed.add_field(name="첫 타워 파괴율", value=f"{box_players[j]['stat_firstTower']}%", inline=True)
+
+                            if box_recentMatches:
+                                embed.add_field(name="\u200b", value="", inline=False)
+
+                                msg_recentMatches = ""
+                                for k in range(len(box_recentMatches)):
+                                    msg_recentMatches += f"[{emoji_hyperlink}]({esports_op_gg_match}{box_recentMatches[k]['id']}) **{box_recentMatches[k]['name']}** (__{box_recentMatches[k]['winner_name']}__ 승)\n"
+
+                                embed.add_field(name="최근 5경기", value=msg_recentMatches, inline=False)
 
                     await msg.edit_original_response(content="", embed=embed, view=DisabledButton(player_id=player_id, player_displayed_nickname=player_displayed_nickname, player_nationalty=player_nationalty))
 

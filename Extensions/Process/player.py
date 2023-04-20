@@ -202,7 +202,7 @@ def get_team_info_by_id(tournamentId, teamId):
     player_stat_wardsKilled = ""
 
     if tournamentId == None: return None
-    players_info = opgg.players_info_by_team(tournamentId[0], teamId)
+    players_info = opgg.players_info_by_team_id(tournamentId[0], teamId)
 
     if players_info['error'] == False:
         for i in range(len(players_info['data'])):
@@ -304,3 +304,42 @@ def get_team_info_by_id(tournamentId, teamId):
         return players_info
 
     return box_player
+
+
+def get_player_recent_matches_by_id(playerId):
+
+    box_recentMatches = []
+    recentMatches_id = ""
+    recentMatches_name = ""
+    recentMatches_beginAt = ""
+    recentMatches_winner_id = ""
+    recentMatches_winner_name = ""
+    recentMatches_winner_acronym = ""
+
+    if playerId == None: return None
+    match_info = opgg.recent_matches_by_id(playerId)
+
+    if match_info['error'] == False:
+        for i in range(len(match_info['data']['currentTeam']['recentMatches'])):
+            recentMatches_id = match_info['data']['currentTeam']['recentMatches'][i]['id']
+            recentMatches_name = match_info['data']['currentTeam']['recentMatches'][i]['name']
+            # try: recentMatches_name = match_info['data']['currentTeam']['recentMatches'][i]['name'].split(": ")[1]
+            # except: recentMatches_name = match_info['data']['currentTeam']['recentMatches'][i]['name']
+            recentMatches_beginAt = match_info['data']['currentTeam']['recentMatches'][i]['beginAt']
+            recentMatches_winner_id = match_info['data']['currentTeam']['recentMatches'][i]['winnerTeam']['id']
+            recentMatches_winner_name = match_info['data']['currentTeam']['recentMatches'][i]['winnerTeam']['name']
+            recentMatches_winner_acronym = match_info['data']['currentTeam']['recentMatches'][i]['winnerTeam']['acronym']
+
+            box_recentMatches.append({
+                "id": recentMatches_id,
+                "name": recentMatches_name,
+                "beginAt": recentMatches_beginAt,
+                "winner_id": recentMatches_winner_id,
+                "winner_name": recentMatches_winner_name,
+                "winner_acronym": recentMatches_winner_acronym
+            })
+
+    else:
+        return box_recentMatches
+        
+    return box_recentMatches
