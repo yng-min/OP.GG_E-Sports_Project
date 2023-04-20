@@ -30,10 +30,10 @@ def embed_setup(bot, banner, page):
 
     elif page == 2:
         embed = discord.Embed(title="> 📌 OP.GG E-Sports 봇 서비스 가이드", description="```리그 명령어 페이지```", color=colorMap['red'])
-        embed.add_field(name="/검색 선수", value="리그 오브 레전드 e스포츠의 선수 정보를 검색해요.", inline=False)
         embed.add_field(name="/경기 일정", value="리그 오브 레전드 e스포츠의 경기 일정을 확인할 수 있어요.", inline=False)
         embed.add_field(name="/리그 순위", value="리그 오브 레전드 e스포츠의 시즌 팀 순위를 보여줘요.", inline=False)
         embed.add_field(name="/베스트 플레이어", value="리그 오브 레전드 e스포츠의 시즌 MVP는 누구인지 찾아보세요!", inline=False)
+        embed.add_field(name="/선수 검색", value="리그 오브 레전드 e스포츠의 선수 정보를 검색해요.", inline=False)
 
     elif page == 3:
         embed = discord.Embed(title="> 📌 OP.GG E-Sports 봇 서비스 가이드", description="```기본 명령어 페이지```", color=colorMap['red'])
