@@ -89,25 +89,29 @@ class BettingButton(discord.ui.View):
 
     async def on_timeout(self):
 
-        try:
-            for data_guild in os.listdir(r"./Database/Guild"):
-                if data_guild.endswith(".sqlite"):
-                    guildDB = sqlite3.connect(rf"./Database/Guild/{data_guild}", isolation_level=None)
-                    guildCURSOR = guildDB.cursor()
+        # try:
+        #     for data_guild in os.listdir(r"./Database/Guild"):
+        #         if data_guild.endswith(".sqlite"):
+        #             guildDB = sqlite3.connect(rf"./Database/Guild/{data_guild}", isolation_level=None)
+        #             guildCURSOR = guildDB.cursor()
 
-                    role_id = guildCURSOR.execute("SELECT NoticeRoleID FROM main").fetchone()[0]
-                    msg_content = f"<@&{role_id}>"
+        #             role_id = guildCURSOR.execute("SELECT NoticeRoleID FROM main").fetchone()[0]
+        #             guild_notice = self.bot.get_guild(int(data_guild.split("_")[1].split(".")[0]))
+        #             role_notice = discord.utils.get(guild_notice.roles, id=role_id)
 
-                    guildDB.close()
+        #             msg_content = f"{role_notice.mention}"
 
-        except discord.NotFound:
-            pass
+        #             guildDB.close()
 
-        except Exception as error:
-            print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
-            print(traceback.format_exc())
+        # except discord.NotFound:
+        #     pass
 
-        await self.msg.edit(content=msg_content, view=DisabledButton(bot=self.bot, msg=self.msg, url=self.url, match_id=self.match_id, team_1=self.team_1, team_2=self.team_2))
+        # except Exception as error:
+        #     print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
+        #     print(traceback.format_exc())
+
+        # await self.msg.edit(content=msg_content, view=DisabledButton(bot=self.bot, msg=self.msg, url=self.url, match_id=self.match_id, team_1=self.team_1, team_2=self.team_2))
+        await self.msg.edit(content="", view=DisabledButton(bot=self.bot, msg=self.msg, url=self.url, match_id=self.match_id, team_1=self.team_1, team_2=self.team_2))
 
 
 class BettingModal_1(discord.ui.Modal):
@@ -288,5 +292,5 @@ class DisabledButton(discord.ui.View):
         self.team_1 = team_1
         self.team_2 = team_2
         self.add_item(discord.ui.Button(label=f"'{self.team_1}' 팀 예측하기", style=discord.ButtonStyle.blurple, custom_id=f"{self.match_id}/{self.team_1}", disabled=True, row=0))
-        self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=url, row=1))
         self.add_item(discord.ui.Button(label=f"'{self.team_2}' 팀 예측하기", style=discord.ButtonStyle.blurple, custom_id=f"{self.match_id}/{self.team_2}", disabled=True, row=0))
+        self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=url, row=1))
