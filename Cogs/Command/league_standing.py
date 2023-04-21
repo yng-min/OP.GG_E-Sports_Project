@@ -120,6 +120,8 @@ class StandingView(discord.ui.View):
         row=0
     )
     async def select_callback(self, select: discord.ui.Select, interaction):
+        if interaction.user.id != self.ctx.author.id: return await interaction.response.send_message("> 자신의 메시지에서만 이용할 수 있어요. 😢", ephemeral=True)
+
         tournamentId = []
 
         for i in range(16):
@@ -263,6 +265,8 @@ class StandingView(discord.ui.View):
 
 
         async def callback_all(interaction: discord.Interaction):
+            if interaction.user.id != self.ctx.author.id: return await interaction.response.send_message("> 자신의 메시지에서만 이용할 수 있어요. 😢", ephemeral=True)
+
             tournamentId = []
 
             for i in range(16):
@@ -338,6 +342,8 @@ class StandingView(discord.ui.View):
 
 
         async def team_callback(interaction: discord.Interaction):
+            if interaction.user.id != self.ctx.author.id: return await interaction.response.send_message("> 자신의 메시지에서만 이용할 수 있어요. 😢", ephemeral=True)
+
             for i in range(16):
                 if (self.picked_league == "LCK") and (leagues[i]['shortName'] == "LCK"): tournamentId = leagues[i]['tournamentId']
                 elif (self.picked_league == "LEC") and (leagues[i]['shortName'] == "LEC"): tournamentId = leagues[i]['tournamentId']

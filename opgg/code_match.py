@@ -99,6 +99,102 @@ query {
         return { "error": True, "code": "UNKNOWN", "message": f"알 수 없는 에러가 발생했습니다.\n{error}", "data": None }
 
 
+def game_info_by_id(match_id: str, match_set: str):
+    """
+    OP.GG E-Sports에서 MatchID와 MatchSet를 통한 경기 세부 정보 데이터 처리를 위해 호출되는 함수
+    """
+    try:
+        query = """
+query {
+    gameByMatch(matchId: %s, set: %s) {
+        id
+        status
+        finished
+        beginAt
+        endAt
+        length
+        detailedStats
+        teams{
+            team{
+                id
+                name
+                acronym
+                nationality
+                imageUrl
+            }
+            kills
+            deaths
+            assists
+            side
+            towerKills
+            dragonKills
+            elderDrakeKills
+            baronKills
+            inhibitorKills
+            heraldKills
+            goldEarned
+            bans
+        }
+        players{
+            player{
+                id
+                nickName
+                position
+                nationality
+                imageUrl
+            }
+            kills
+            deaths
+            assists
+            championId
+            spells
+            runes{
+                primary
+                sub
+            }
+            items
+            level
+            creepScore
+            goldEarned
+            visionWardsBought
+            totalDamageDealtToChampions
+            totalDamageTaken
+            doubleKills
+            tripleKills
+            quadraKills
+            pentaKills
+        }
+        winner{
+            id
+            name
+            acronym
+            nationality
+            imageUrl
+        }
+    }
+}
+""" % (match_id, match_set)
+        headers = {
+            "Content-Type": "application/json",
+        }
+
+        result = requests.post(url=url, json={"query": query}, headers=headers)
+
+        if 200 <= result.status_code < 300:
+            match_info = result.json()['data']['gameByMatch']
+
+            if match_info == []:
+                return { "error": False, "code": "SUCCESS", "message": "경기 데이터가 없습니다.", "data": None }
+
+            return { "error": False, "code": "SUCCESS", "message": "성공적으로 데이터를 불러왔습니다.", "data": match_info }
+
+        else:
+            return { "error": True, "code": "NOTSENT", "message": f"서버와의 통신 과정 중 오류가 발생했습니다.\nStatus Code: {result.status_code}\nResponse: {result}", "data": None }
+
+    except Exception as error:
+        return { "error": True, "code": "UNKNOWN", "message": f"알 수 없는 에러가 발생했습니다.\n{error}", "data": None }
+
+
 def match_started(match_id: str, tournament_id: str, status: str):
     """
     OP.GG E-Sports API에서 경기가 시작되었을 때 데이터 처리를 위해 호출되는 함수

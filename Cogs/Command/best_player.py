@@ -116,6 +116,7 @@ class MvpView(discord.ui.View):
         row=0
     )
     async def select_callback(self, select: discord.ui.Select, interaction):
+        if interaction.user.id != self.ctx.author.id: return await interaction.response.send_message("> 자신의 메시지에서만 이용할 수 있어요. 😢", ephemeral=True)
 
         if select.values[0] == "0":
             self.picked_league = "LCK"
@@ -198,6 +199,8 @@ class MvpView(discord.ui.View):
 
 
         async def callback_all(interaction: discord.Interaction):
+            if interaction.user.id != self.ctx.author.id: return await interaction.response.send_message("> 자신의 메시지에서만 이용할 수 있어요. 😢", ephemeral=True)
+
             self.picked_lane = "모든 라인"
 
             if self.picked_league == "LCK": self.box_player = self.box_LCK
@@ -231,6 +234,8 @@ class MvpView(discord.ui.View):
 
 
         async def callback_lane(interaction: discord.Interaction):
+            if interaction.user.id != self.ctx.author.id: return await interaction.response.send_message("> 자신의 메시지에서만 이용할 수 있어요. 😢", ephemeral=True)
+
             self.picked_lane = interaction.custom_id
 
             if self.picked_league == "LCK": self.box_player = self.box_LCK

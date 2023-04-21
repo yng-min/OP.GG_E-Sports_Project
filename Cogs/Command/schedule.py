@@ -106,6 +106,8 @@ class ScheduleButton(discord.ui.View):
         row=0
     )
     async def select_callback(self, select: discord.ui.Select, interaction):
+        if interaction.user.id != self.ctx.author.id: return await interaction.response.send_message("> 자신의 메시지에서만 이용할 수 있어요. 😢", ephemeral=True)
+
         self.box_select = []
         self.schedules_1 = []
         self.schedules_2 = []
@@ -294,6 +296,8 @@ class ScheduleButton(discord.ui.View):
 
     @discord.ui.button(emoji="1️⃣", style=discord.ButtonStyle.gray, row=1)
     async def _one(self, button: discord.ui.Button, interaction: discord.Interaction):
+        if interaction.user.id != self.ctx.author.id: return await interaction.response.send_message("> 자신의 메시지에서만 이용할 수 있어요. 😢", ephemeral=True)
+
         self.button = "1"
 
         self.msg_schedule_1_1 = ""
@@ -321,6 +325,8 @@ class ScheduleButton(discord.ui.View):
 
     @discord.ui.button(emoji="2️⃣", style=discord.ButtonStyle.gray, row=1)
     async def _two(self, button: discord.ui.Button, interaction: discord.Interaction):
+        if interaction.user.id != self.ctx.author.id: return await interaction.response.send_message("> 자신의 메시지에서만 이용할 수 있어요. 😢", ephemeral=True)
+
         self.button = "2"
 
         self.msg_schedule_2_1 = ""
@@ -349,6 +355,8 @@ class ScheduleButton(discord.ui.View):
 
     @discord.ui.button(emoji="3️⃣", style=discord.ButtonStyle.gray, row=1)
     async def _three(self, button: discord.ui.Button, interaction: discord.Interaction):
+        if interaction.user.id != self.ctx.author.id: return await interaction.response.send_message("> 자신의 메시지에서만 이용할 수 있어요. 😢", ephemeral=True)
+
         self.button = "3"
 
         self.msg_schedule_3_1 = ""

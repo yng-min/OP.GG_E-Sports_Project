@@ -10,6 +10,7 @@ import datetime
 import pytz
 import traceback
 
+from Extensions.Process.match import get_game_info_by_id
 from Extensions.Process.player import get_player_info_by_nickname, get_team_info_by_id, get_player_recent_matches_by_id
 from Extensions.Process.search import get_search_player
 
@@ -71,12 +72,88 @@ async def search_player(ctx: discord.AutocompleteContext):
         return [ ]
 
 
+def make_game_info_embed(picked_set, box_player, box_players, box_recent_matches, player_id, player_displayed_nickname, player_nationalty):
+
+    picked_match = box_recent_matches[int(picked_set)]
+    match_date = datetime.datetime.strptime(picked_match['beginAt'].split("T")[0], "%Y-%m-%d").strftime("X%Y년 X%m월 X%d일").replace("X0", "").replace("X", "")
+
+    game_info = get_game_info_by_id(match_id=picked_match['id'], match_set=picked_set)
+    print(game_info)
+
+    embed = discord.Embed(title=f"'{picked_match['name']} ({picked_set}세트)' 경기 정보", description=f"{match_date}", color=colorMap['red'])
+    embed.set_footer(text="개발 중인 미완성된 기능입니다.")
+
+    return embed
+
+
+class MatchInfoSelect(discord.ui.Select):
+
+    def __init__(self, bot, ctx, msg, picked_set, box_player, box_players, box_recent_matches, player_id, player_displayed_nickname, player_nationalty):
+        self.bot = bot
+        self.ctx = ctx
+        self.msg = msg
+        self.box_player = box_player
+        self.box_players = box_players
+        self.box_recent_matches = box_recent_matches
+        self.player_id = player_id
+        self.player_displayed_nickname = player_displayed_nickname
+        self.player_nationalty = player_nationalty
+
+        if picked_set != None: self.picked_set = picked_set
+        else: self.picked_set = "1"
+
+        options = []
+        for i in range(len(box_recent_matches)):
+            options.append(discord.SelectOption(label=f"{box_recent_matches[i]['name']}", value=f"{i}", description=""))
+
+        super().__init__(
+            placeholder="자세히 볼 경기 선택하기",
+            min_values=1,
+            max_values=1,
+            options=options,
+            row=0
+        )
+
+    async def callback(self, interaction: discord.Interaction):
+        if interaction.user.id != self.ctx.author.id: return await interaction.response.send_message("> 자신의 메시지에서만 이용할 수 있어요. 😢", ephemeral=True)
+
+        embed = make_game_info_embed(picked_set=self.picked_set, box_player=self.box_player, box_players=self.box_players, box_recent_matches=self.box_recent_matches, player_id=self.player_id, player_displayed_nickname=self.player_displayed_nickname, player_nationalty=self.player_nationalty)
+
+        await interaction.response.edit_message(content="", embed=embed)
+
+
+class PlayerInfoView(discord.ui.View):
+
+    def __init__(self, bot, ctx, msg, box_player, box_players, box_recent_matches, player_id, player_displayed_nickname, player_nationalty):
+        super().__init__(timeout=60)
+        self.bot = bot
+        self.ctx = ctx
+        self.msg = msg
+        self.box_player = box_player
+        self.box_players = box_players
+        self.box_recent_matches = box_recent_matches
+        self.player_id = player_id
+        self.player_displayed_nickname = player_displayed_nickname
+        self.player_nationalty = player_nationalty
+
+        self.add_item(MatchInfoSelect(bot=self.bot, ctx=self.ctx, msg=self.msg, picked_set=None, box_player=self.box_player, box_players=self.box_players, box_recent_matches=self.box_recent_matches, player_id=self.player_id, player_displayed_nickname=self.player_displayed_nickname, player_nationalty=self.player_nationalty))
+        self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=f"{esports_op_gg_player}{player_id}", row=1))
+        self.add_item(discord.ui.Button(label="OP.GG에서 보기", url=f"{op_gg_player}{player_nationalty.lower()}/{player_displayed_nickname}", disabled=True, row=1))
+
+    async def on_timeout(self):
+        try:
+            await self.msg.edit_original_response(content="", view=DisabledButton(player_id=self.player_id, player_displayed_nickname=self.player_displayed_nickname, player_nationalty=self.player_nationalty))
+        except discord.NotFound:
+            pass
+
+
 class DisabledButton(discord.ui.View):
 
-    def __init__(self, player_id: str, player_displayed_nickname: str, player_nationalty: str):
+    def __init__(self, player_id, player_displayed_nickname, player_nationalty):
         super().__init__(timeout=None)
-        self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=f"{esports_op_gg_player}{player_id}", row=0))
-        self.add_item(discord.ui.Button(label="OP.GG에서 보기", url=f"{op_gg_player}{player_nationalty.lower()}/{player_displayed_nickname}", disabled=True, row=0))
+        self.add_item(discord.ui.Select(placeholder="자세히 볼 경기 선택하기", options=[discord.SelectOption(label="asdf", value="1", description="asdf")], disabled=True, row=0))
+        self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=f"{esports_op_gg_player}{player_id}", row=1))
+        self.add_item(discord.ui.Button(label="OP.GG에서 보기", url=f"{op_gg_player}{player_nationalty.lower()}/{player_displayed_nickname}", disabled=True, row=1))
 
 
 class PlayerInfoCMD(commands.Cog):
@@ -185,7 +262,8 @@ class PlayerInfoCMD(commands.Cog):
 
                                 embed.add_field(name="최근 5경기", value=msg_recentMatches, inline=False)
 
-                    await msg.edit_original_response(content="", embed=embed, view=DisabledButton(player_id=player_id, player_displayed_nickname=player_displayed_nickname, player_nationalty=player_nationalty))
+                    # await msg.edit_original_response(content="", embed=embed, view=DisabledButton(player_id=player_id, player_displayed_nickname=player_displayed_nickname, player_nationalty=player_nationalty))
+                    await msg.edit_original_response(content="", embed=embed, view=PlayerInfoView(bot=self.bot, ctx=ctx, msg=msg, box_player=box_player, box_players=box_players, box_recent_matches=box_recentMatches, player_id=player_id, player_displayed_nickname=player_displayed_nickname, player_nationalty=player_nationalty))
 
         except Exception as error:
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))

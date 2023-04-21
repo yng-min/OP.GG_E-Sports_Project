@@ -4,27 +4,79 @@ import requests
 url = "https://esports.op.gg/matches/graphql"
 
 
-def recentMatchesByPlayerId(playerId: str):
-    print(playerId)
+def test_func(match_id: str, match_set: str):
+    print(match_id, match_set)
     try:
         query = """
 query {
-    player(playerId: "%s") {
-        currentTeam{
-            recentMatches{
-                beginAt
-                name
+    gameByMatch(matchId: %s, set: %s) {
+        id
+        status
+        finished
+        beginAt
+        endAt
+        length
+        detailedStats
+        teams{
+            team{
                 id
-                winnerTeam{
-                    id
-                    name
-                    acronym
-                }
+                name
+                acronym
+                nationality
+                imageUrl
             }
+            kills
+            deaths
+            assists
+            side
+            towerKills
+            dragonKills
+            elderDrakeKills
+            baronKills
+            inhibitorKills
+            heraldKills
+            goldEarned
+            bans
+        }
+        players{
+            player{
+                id
+                nickName
+                position
+                nationality
+                imageUrl
+            }
+            kills
+            deaths
+            assists
+            championId
+            spells
+            runes{
+                primary
+                sub
+            }
+            items
+            level
+            creepScore
+            goldEarned
+            visionWardsBought
+            totalDamageDealtToChampions
+            totalDamageTaken
+            doubleKills
+            tripleKills
+            quadraKills
+            pentaKills
+        }
+        winner{
+            id
+            name
+            acronym
+            nationality
+            imageUrl
         }
     }
 }
-""" % (playerId)
+""" % (match_id, match_set)
         headers = {
             "Content-Type": "application/json",
         }
@@ -32,7 +84,7 @@ query {
         result = requests.post(url=url, json={"query": query}, headers=headers)
 
         if 200 <= result.status_code < 300:
-            recentMatches = result.json()['data']['player']['currentTeam']['recentMatches']
+            recentMatches = result.json()['data']['gameByMatch']
             print(recentMatches)
 
         else:
@@ -41,4 +93,4 @@ query {
     except Exception as error:
         print(error)
 
-recentMatchesByPlayerId("1836")
+test_func("20517", "1")
