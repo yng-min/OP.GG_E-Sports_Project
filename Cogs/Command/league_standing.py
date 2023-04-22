@@ -36,12 +36,12 @@ esports_op_gg_player = "https://esports.op.gg/players/"
 esports_op_gg_team = "https://esports.op.gg/teams/"
 time_difference = config['time_difference']
 colorMap = config['colorMap']
-emoji_discord = emoji['Discord']
+emoji_website = emoji['Website']
 emoji_esports = emoji['Esports']
+emoji_discord = emoji['Discord']
 emoji_facebook = emoji['Facebook']
 emoji_instagram = emoji['Instagram']
 emoji_twitter = emoji['Twitter']
-emoji_website = emoji['Website']
 emoji_youtube = emoji['YouTube']
 
 
@@ -375,7 +375,7 @@ class StandingView(discord.ui.View):
             except:
                 if self.box_player:
                     for i in range(len(self.box_player)):
-                        self.msg_player = f"{self.msg_player}> [{self.box_player[i]['team_acronym']}]({esports_op_gg_team}{self.box_player[i]['team_id']}) [{self.box_player[i]['nickName']}]({esports_op_gg_player}{self.box_player[i]['id']}) ({self.box_player[i]['position']})\n{self.box_player[i]['stat_kda']} 평점 `({self.box_player[i]['stat_kills']} / {self.box_player[i]['stat_deaths']} / {self.box_player[i]['stat_assists']})`\n승률: __{self.box_player[i]['stat_winRate']}__% (__{self.box_player[i]['stat_wins']:,}__승 __{self.box_player[i]['stat_loses']:,}__패)\n"
+                        self.msg_player = f"{self.msg_player}> [{self.box_player[i]['team_acronym']}]({esports_op_gg_team}{self.box_player[i]['team_id']}) [{self.box_player[i]['nickName']}]({esports_op_gg_player}{self.box_player[i]['id']}) ({self.box_player[i]['position']})\n{self.box_player[i]['stat_kda']} 평점 `({self.box_player[i]['stat_kills']}/{self.box_player[i]['stat_deaths']}/{self.box_player[i]['stat_assists']})`\n승률: __{self.box_player[i]['stat_winRate']}__% (__{self.box_player[i]['stat_wins']:,}__승 __{self.box_player[i]['stat_loses']:,}__패)\n"
 
                     embed = discord.Embed(title="> 📊 팀 정보", description="", color=colorMap['red'])
                     embed.set_footer(text="TIP: 아래 버튼을 눌러 각 팀의 정보를 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)

@@ -284,19 +284,19 @@ def get_team_info_by_id(tournamentId, teamId):
                 }
 
                 # 플레이어 포지션 순서 정렬(탑, 정글, 미드, 원딜, 서포터 순)
-                if (player_check_top == False) and (player_position == "탑"):
+                if (player_position == "탑") and (player_check_top == False):
                     box_player.append(player_templete)
                     player_check_top = True
-                if (player_check_top == True) and (player_check_jun == False) and (player_position == "정글"):
+                if (player_position == "정글") and (player_check_jun == False) and (player_check_top == True):
                     box_player.append(player_templete)
                     player_check_jun = True
-                if (player_check_top == True) and (player_check_jun == True) and (player_check_mid == False) and (player_position == "미드"):
+                if (player_position == "미드") and (player_check_mid == False) and (player_check_jun == True):
                     box_player.append(player_templete)
                     player_check_mid = True
-                if (player_check_top == True) and (player_check_jun == True) and (player_check_mid == True) and (player_check_adc == False) and (player_position == "원딜"):
+                if (player_position == "원딜") and (player_check_adc == False) and (player_check_mid == True):
                     box_player.append(player_templete)
                     player_check_adc = True
-                if (player_check_top == True) and (player_check_jun == True) and (player_check_mid == True) and (player_check_adc == True) and (player_check_sup == False) and (player_position == "서포터"):
+                if (player_position == "서포터") and (player_check_sup == False) and (player_check_adc == True):
                     box_player.append(player_templete)
                     player_check_sup = True
 

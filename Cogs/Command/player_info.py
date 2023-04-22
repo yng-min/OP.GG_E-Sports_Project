@@ -38,14 +38,22 @@ esports_op_gg_match = "https://esports.op.gg/matches/"
 op_gg_player = "https://www.op.gg/summoners/"
 time_difference = config['time_difference']
 colorMap = config['colorMap']
-emoji_discord = emoji['Discord']
-emoji_esports = emoji['Esports']
-emoji_facebook = emoji['Facebook']
 emoji_hyperlink = emoji['Hyperlink']
-emoji_instagram = emoji['Instagram']
 emoji_stream = emoji['LiveStream']
+emoji_esports = emoji['Esports']
+emoji_discord = emoji['Discord']
+emoji_facebook = emoji['Facebook']
+emoji_instagram = emoji['Instagram']
 emoji_twitter = emoji['Twitter']
 emoji_youtube = emoji['YouTube']
+emoji_baron = emoji['Baron']
+emoji_dragon = emoji['Dragon']
+emoji_elder_drake = emoji['ElderDrake']
+emoji_herald = emoji['Herald']
+emoji_inhibitor = emoji['Inhibitor']
+emoji_tower = emoji['Tower']
+emoji_blueside = emoji['BlueSide']
+emoji_redside = emoji['RedSide']
 
 
 async def search_player(ctx: discord.AutocompleteContext):
@@ -72,39 +80,126 @@ async def search_player(ctx: discord.AutocompleteContext):
         return [ ]
 
 
-def make_game_info_embed(picked_set, box_player, box_players, box_recent_matches, player_id, player_displayed_nickname, player_nationalty):
+def make_game_info_embed(picked_match, picked_set, box_player, box_players, box_recent_matches, player_id, player_displayed_nickname, player_nationality):
 
-    picked_match = box_recent_matches[int(picked_set)]
+    picked_match = box_recent_matches[int(picked_match) - 1]
     match_date = datetime.datetime.strptime(picked_match['beginAt'].split("T")[0], "%Y-%m-%d").strftime("X%Y년 X%m월 X%d일").replace("X0", "").replace("X", "")
 
     game_info = get_game_info_by_id(match_id=picked_match['id'], match_set=picked_set)
-    print(game_info)
 
-    embed = discord.Embed(title=f"'{picked_match['name']} ({picked_set}세트)' 경기 정보", description=f"{match_date}", color=colorMap['red'])
-    embed.set_footer(text="개발 중인 미완성된 기능입니다.")
+    # msg_ban_1 = f"🚫) {game_info['teams'][0]['bans'][0]} {game_info['teams'][0]['bans'][1]} {game_info['teams'][0]['bans'][2]} {game_info['teams'][0]['bans'][3]} {game_info['teams'][0]['bans'][4]}"
+    msg_ban_1 = "🚫) ⬜ ⬜ ⬜ ⬜ ⬜" # 챔피언 이모티콘 적용될 때까지만 임시
+    # msg_ban_2 = f"🚫) {game_info['teams'][1]['bans'][0]} {game_info['teams'][1]['bans'][1]} {game_info['teams'][1]['bans'][2]} {game_info['teams'][1]['bans'][3]} {game_info['teams'][1]['bans'][4]}"
+    msg_ban_2 = "🚫) ⬜ ⬜ ⬜ ⬜ ⬜" # 챔피언 이모티콘 적용될 때까지만 임시
+
+    msg_object_1 = f"{emoji_tower} **{game_info['teams'][0]['towerKills']:,}** {emoji_inhibitor} **{game_info['teams'][0]['inhibitorKills']:,}** {emoji_herald} **{game_info['teams'][0]['heraldKills']:,}** {emoji_dragon} **{game_info['teams'][0]['dragonKills']:,}** {emoji_elder_drake} **{game_info['teams'][0]['elderDrakeKills']:,}** {emoji_baron} **{game_info['teams'][0]['baronKills']:,}**"
+    msg_object_2 = f"{emoji_tower} **{game_info['teams'][1]['towerKills']:,}** {emoji_inhibitor} **{game_info['teams'][1]['inhibitorKills']:,}** {emoji_herald} **{game_info['teams'][1]['heraldKills']:,}** {emoji_dragon} **{game_info['teams'][1]['dragonKills']:,}** {emoji_elder_drake} **{game_info['teams'][1]['elderDrakeKills']:,}** {emoji_baron} **{game_info['teams'][1]['baronKills']:,}**"
+
+    most_kda = []
+    for j in range(len(game_info['players'])):
+        if game_info['players'][j]['kda'] != "Perfect":
+            most_kda.append(game_info['players'][j]['kda'])
+
+    msg_player_1 = ""
+    msg_player_2 = ""
+    msg_kda_1 = ""
+    msg_kda_2 = ""
+    msg_damage_1 = ""
+    msg_damage_2 = ""
+    for k in range(len(game_info['players'])):
+        if k < 5:
+            if game_info['players'][k]['id'] == player_id:
+                # msg_player_1 += f"\n{game_info['players'][k]['championId']} **{game_info['players'][k]['nickName']}**"
+                msg_player_1 += f"\n⬜ **[{game_info['players'][k]['team_acronym']}]({esports_op_gg_team}{game_info['players'][k]['team_id']}) [{game_info['players'][k]['nickName']}]({esports_op_gg_player}{game_info['players'][k]['id']})**" # 챔피언 이모티콘 적용될 때까지만 임시
+            else:
+                # msg_player_1 += f"\n{game_info['players'][k]['championId']} {game_info['players'][k]['nickName']}"
+                msg_player_1 += f"\n⬜ [{game_info['players'][k]['team_acronym']}]({esports_op_gg_team}{game_info['players'][k]['team_id']}) [{game_info['players'][k]['nickName']}]({esports_op_gg_player}{game_info['players'][k]['id']})" # 챔피언 이모티콘 적용될 때까지만 임시
+
+            if game_info['players'][k]['kda'] == "Perfect":
+                msg_kda_1 += f"\n`{game_info['players'][k]['kills']}/{game_info['players'][k]['deaths']}/{game_info['players'][k]['assists']}` _{game_info['players'][k]['kda']}_ 평점"
+            elif game_info['players'][k]['kda'] == max(most_kda):
+                msg_kda_1 += f"\n`{game_info['players'][k]['kills']}/{game_info['players'][k]['deaths']}/{game_info['players'][k]['assists']}` __**{game_info['players'][k]['kda']}**__ 평점"
+            elif game_info['players'][k]['kda'] >= 3:
+                msg_kda_1 += f"\n`{game_info['players'][k]['kills']}/{game_info['players'][k]['deaths']}/{game_info['players'][k]['assists']}` **{game_info['players'][k]['kda']}** 평점"
+            else:
+                msg_kda_1 += f"\n`{game_info['players'][k]['kills']}/{game_info['players'][k]['deaths']}/{game_info['players'][k]['assists']}` {game_info['players'][k]['kda']} 평점"
+
+            msg_damage_1 += f"\n`{game_info['players'][k]['totalDamageDealtToChampions']:,}`"
+
+        else:
+            if game_info['players'][k]['id'] == player_id:
+                # msg_player_2 += f"\n{game_info['players'][k]['championId']} **{game_info['players'][k]['nickName']}**"
+                msg_player_2 += f"\n⬜ **[{game_info['players'][k]['team_acronym']}]({esports_op_gg_team}{game_info['players'][k]['team_id']}) [{game_info['players'][k]['nickName']}]({esports_op_gg_player}{game_info['players'][k]['id']})**" # 챔피언 이모티콘 적용될 때까지만 임시
+            else:
+                # msg_player_2 += f"\n{game_info['players'][k]['championId']} {game_info['players'][k]['nickName']}"
+                msg_player_2 += f"\n⬜ [{game_info['players'][k]['team_acronym']}]({esports_op_gg_team}{game_info['players'][k]['team_id']}) [{game_info['players'][k]['nickName']}]({esports_op_gg_player}{game_info['players'][k]['id']})" # 챔피언 이모티콘 적용될 때까지만 임시
+
+            if game_info['players'][k]['kda'] == "Perfect":
+                msg_kda_2 += f"\n`{game_info['players'][k]['kills']}/{game_info['players'][k]['deaths']}/{game_info['players'][k]['assists']}` _{game_info['players'][k]['kda']}_ 평점"
+            elif game_info['players'][k]['kda'] == max(most_kda):
+                msg_kda_2 += f"\n`{game_info['players'][k]['kills']}/{game_info['players'][k]['deaths']}/{game_info['players'][k]['assists']}` __**{game_info['players'][k]['kda']}**__ 평점"
+            elif game_info['players'][k]['kda'] >= 3:
+                msg_kda_2 += f"\n`{game_info['players'][k]['kills']}/{game_info['players'][k]['deaths']}/{game_info['players'][k]['assists']}` **{game_info['players'][k]['kda']}** 평점"
+            else:
+                msg_kda_2 += f"\n`{game_info['players'][k]['kills']}/{game_info['players'][k]['deaths']}/{game_info['players'][k]['assists']}` {game_info['players'][k]['kda']} 평점"
+
+            msg_damage_2 += f"\n`{game_info['players'][k]['totalDamageDealtToChampions']:,}`"
+
+    embed = discord.Embed(title="> 📊 경기 정보", description="", color=colorMap['red'])
+    embed.add_field(name=f"{picked_match['name']} ({picked_set}세트)", value=f"└ (**{match_date}**에 진행된 경기)", inline=False)
+
+    if game_info['winner_name'] == game_info['teams'][0]['name']:
+        embed.add_field(name=f"> {emoji_blueside} {game_info['teams'][0]['name']} (승리)", value=f"{msg_ban_1}ㅤ{msg_object_1}", inline=False)
+        embed.add_field(name="챔피언", value=msg_player_1, inline=True)
+        embed.add_field(name="KDA 정보", value=msg_kda_1, inline=True)
+        embed.add_field(name="가한 데미지", value=msg_damage_1, inline=True)
+        embed.add_field(name=f"> {emoji_redside} {game_info['teams'][1]['name']} (패배)", value=f"{msg_ban_2}ㅤ{msg_object_2}", inline=False)
+        embed.add_field(name="챔피언", value=msg_player_2, inline=True)
+        embed.add_field(name="KDA 정보", value=msg_kda_2, inline=True)
+        embed.add_field(name="가한 데미지", value=msg_damage_2, inline=True)
+    else:
+        embed.add_field(name=f"> {emoji_blueside} {game_info['teams'][0]['name']} (패배)", value=f"{msg_ban_1}ㅤ{msg_object_1}", inline=False)
+        embed.add_field(name="챔피언", value=msg_player_1, inline=True)
+        embed.add_field(name="KDA 정보", value=msg_kda_1, inline=True)
+        embed.add_field(name="가한 데미지", value=msg_damage_1, inline=True)
+        embed.add_field(name=f"> {emoji_redside} {game_info['teams'][1]['name']} (승리)", value=f"{msg_ban_2}ㅤ{msg_object_2}", inline=False)
+        embed.add_field(name="챔피언", value=msg_player_2, inline=True)
+        embed.add_field(name="KDA 정보", value=msg_kda_2, inline=True)
+        embed.add_field(name="가한 데미지", value=msg_damage_2, inline=True)
 
     return embed
 
 
 class MatchInfoSelect(discord.ui.Select):
 
-    def __init__(self, bot, ctx, msg, picked_set, box_player, box_players, box_recent_matches, player_id, player_displayed_nickname, player_nationalty):
+    def __init__(self, bot, ctx, msg, origin_embed, picked_match, picked_set, box_player, box_players, box_recent_matches, player_id, player_displayed_nickname, player_nationality):
         self.bot = bot
         self.ctx = ctx
         self.msg = msg
+        self.origin_embed = origin_embed
         self.box_player = box_player
         self.box_players = box_players
         self.box_recent_matches = box_recent_matches
         self.player_id = player_id
         self.player_displayed_nickname = player_displayed_nickname
-        self.player_nationalty = player_nationalty
+        self.player_nationality = player_nationality
 
-        if picked_set != None: self.picked_set = picked_set
-        else: self.picked_set = "1"
+        if picked_match != None:
+            self.picked_match = picked_match
+            self.picked_set = picked_set
+        else:
+            self.picked_match = "0"
+            self.picked_set = "1"
 
         options = []
         for i in range(len(box_recent_matches)):
-            options.append(discord.SelectOption(label=f"{box_recent_matches[i]['name']}", value=f"{i}", description=""))
+            if i == 0: emoji = "1️⃣"
+            elif i == 1: emoji = "2️⃣"
+            elif i == 2: emoji = "3️⃣"
+            elif i == 3: emoji = "4️⃣"
+            elif i == 4: emoji = "5️⃣"
+            options.append(discord.SelectOption(emoji=emoji, label=f"{box_recent_matches[i]['name']}", value=f"{i}", description=""))
+        options.append(discord.SelectOption(emoji="↩️", label="선수 프로필로 돌아가기", value="back", description=""))
 
         super().__init__(
             placeholder="자세히 볼 경기 선택하기",
@@ -117,43 +212,58 @@ class MatchInfoSelect(discord.ui.Select):
     async def callback(self, interaction: discord.Interaction):
         if interaction.user.id != self.ctx.author.id: return await interaction.response.send_message("> 자신의 메시지에서만 이용할 수 있어요. 😢", ephemeral=True)
 
-        embed = make_game_info_embed(picked_set=self.picked_set, box_player=self.box_player, box_players=self.box_players, box_recent_matches=self.box_recent_matches, player_id=self.player_id, player_displayed_nickname=self.player_displayed_nickname, player_nationalty=self.player_nationalty)
+        if self.values[0] != "back": self.picked_match = int(self.values[0]) + 1
+        else:
+            self.picked_match = None
+            return await interaction.response.edit_message(content="", embed=self.origin_embed, view=PlayerInfoView(bot=self.bot, ctx=self.ctx, msg=self.msg, origin_embed=self.origin_embed, picked_match=self.picked_match, picked_set=self.picked_set, box_player=self.box_player, box_players=self.box_players, box_recent_matches=self.box_recent_matches, player_id=self.player_id, player_displayed_nickname=self.player_displayed_nickname, player_nationality=self.player_nationality))
 
-        await interaction.response.edit_message(content="", embed=embed)
+        embed = make_game_info_embed(picked_match=self.picked_match, picked_set=self.picked_set, box_player=self.box_player, box_players=self.box_players, box_recent_matches=self.box_recent_matches, player_id=self.player_id, player_displayed_nickname=self.player_displayed_nickname, player_nationality=self.player_nationality)
+
+        await interaction.response.edit_message(content="", embed=embed, view=PlayerInfoView(bot=self.bot, ctx=self.ctx, msg=self.msg, origin_embed=self.origin_embed, picked_match=self.picked_match, picked_set=self.picked_set, box_player=self.box_player, box_players=self.box_players, box_recent_matches=self.box_recent_matches, player_id=self.player_id, player_displayed_nickname=self.player_displayed_nickname, player_nationality=self.player_nationality))
 
 
 class PlayerInfoView(discord.ui.View):
 
-    def __init__(self, bot, ctx, msg, box_player, box_players, box_recent_matches, player_id, player_displayed_nickname, player_nationalty):
+    def __init__(self, bot, ctx, msg, origin_embed, picked_match, picked_set, box_player, box_players, box_recent_matches, player_id, player_displayed_nickname, player_nationality):
         super().__init__(timeout=60)
         self.bot = bot
         self.ctx = ctx
         self.msg = msg
+        self.origin_embed = origin_embed
+        self.picked_match = picked_match
+        self.picked_set = picked_set
         self.box_player = box_player
         self.box_players = box_players
         self.box_recent_matches = box_recent_matches
         self.player_id = player_id
         self.player_displayed_nickname = player_displayed_nickname
-        self.player_nationalty = player_nationalty
+        self.player_nationality = player_nationality
 
-        self.add_item(MatchInfoSelect(bot=self.bot, ctx=self.ctx, msg=self.msg, picked_set=None, box_player=self.box_player, box_players=self.box_players, box_recent_matches=self.box_recent_matches, player_id=self.player_id, player_displayed_nickname=self.player_displayed_nickname, player_nationalty=self.player_nationalty))
-        self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=f"{esports_op_gg_player}{player_id}", row=1))
-        self.add_item(discord.ui.Button(label="OP.GG에서 보기", url=f"{op_gg_player}{player_nationalty.lower()}/{player_displayed_nickname}", disabled=True, row=1))
+        self.add_item(MatchInfoSelect(bot=self.bot, ctx=self.ctx, msg=self.msg, origin_embed=self.origin_embed, picked_match=self.picked_match, picked_set=self.picked_set, box_player=self.box_player, box_players=self.box_players, box_recent_matches=self.box_recent_matches, player_id=self.player_id, player_displayed_nickname=self.player_displayed_nickname, player_nationality=self.player_nationality))
+
+        if picked_match == None:
+            self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=f"{esports_op_gg_player}{player_id}", row=2))
+            self.add_item(discord.ui.Button(label="OP.GG에서 보기", url=f"{op_gg_player}{player_nationality.lower()}/{player_displayed_nickname}", disabled=True, row=2))
+        else:
+            self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=f"{esports_op_gg_match}{box_recent_matches[picked_match - 1]['id']}", row=2))
 
     async def on_timeout(self):
         try:
-            await self.msg.edit_original_response(content="", view=DisabledButton(player_id=self.player_id, player_displayed_nickname=self.player_displayed_nickname, player_nationalty=self.player_nationalty))
+            await self.msg.edit_original_response(content="", view=DisabledButton(picked_match=self.picked_match, picked_set=self.picked_set, box_recent_matches=self.box_recent_matches, player_id=self.player_id, player_displayed_nickname=self.player_displayed_nickname, player_nationality=self.player_nationality))
         except discord.NotFound:
             pass
 
 
 class DisabledButton(discord.ui.View):
 
-    def __init__(self, player_id, player_displayed_nickname, player_nationalty):
+    def __init__(self, picked_match, picked_set, box_recent_matches, player_id, player_displayed_nickname, player_nationality):
         super().__init__(timeout=None)
         self.add_item(discord.ui.Select(placeholder="자세히 볼 경기 선택하기", options=[discord.SelectOption(label="asdf", value="1", description="asdf")], disabled=True, row=0))
-        self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=f"{esports_op_gg_player}{player_id}", row=1))
-        self.add_item(discord.ui.Button(label="OP.GG에서 보기", url=f"{op_gg_player}{player_nationalty.lower()}/{player_displayed_nickname}", disabled=True, row=1))
+        if picked_match == None:
+            self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=f"{esports_op_gg_player}{player_id}", row=2))
+            self.add_item(discord.ui.Button(label="OP.GG에서 보기", url=f"{op_gg_player}{player_nationality.lower()}/{player_displayed_nickname}", disabled=True, row=2))
+        else:
+            self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=f"{esports_op_gg_match}{box_recent_matches[picked_match - 1]['id']}", row=2))
 
 
 class PlayerInfoCMD(commands.Cog):
@@ -165,7 +275,7 @@ class PlayerInfoCMD(commands.Cog):
 
     @_search.command(
         name="검색",
-        description="리그 오브 레전드 e스포츠의 선수 정보를 검색할 수 있어요.",
+        description="리그 오브 레전드 e스포츠의 선수 프로필을 검색할 수 있어요.",
     )
     @option("이름", description="검색할 e스포츠 선수를 입력해주세요.", required=True, autocomplete=search_player)
     async def _playerCMD(self, ctx: discord.AutocompleteContext, 이름: str):
@@ -177,7 +287,7 @@ class PlayerInfoCMD(commands.Cog):
         box_players = []
         player_id = ""
         player_displayed_nickname = ""
-        player_nationalty = ""
+        player_nationality = ""
         player_league_id = ""
         player_birth_day = ""
         banner_image_url = random.choice(config['banner_image_url'])
@@ -190,10 +300,10 @@ class PlayerInfoCMD(commands.Cog):
                 box_player = get_player_info_by_nickname(playerNickname=picked_player)
 
             except:
-                embed = discord.Embed(title="> 🔍 선수 정보", description="", color=colorMap['red'])
+                embed = discord.Embed(title="> 🔍 선수 프로필", description="", color=colorMap['red'])
                 embed.set_footer(text="TIP: 선수는 영문 닉네임으로만 검색할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
                 embed.set_image(url=banner_image_url)
-                embed.add_field(name=f"검색어: '{picked_player}'", value="> 선수 정보를 불러올 수 없습니다.\n> 검색어가 정확한지 다시 확인해주세요.", inline=False)
+                embed.add_field(name=f"검색어: '{picked_player}'", value="> 선수 프로필을 불러올 수 없습니다.\n> 검색어가 정확한지 다시 확인해주세요.", inline=False)
                 return await msg.edit_original_response(content="", embed=embed)
 
             try:
@@ -206,10 +316,10 @@ class PlayerInfoCMD(commands.Cog):
                     for i in range(len(box_player)):
                         player_id = box_player[i]['id']
                         player_displayed_nickname = box_player[i]['nickName']
-                        player_nationalty = box_player[i]['team_nationality']
+                        player_nationality = box_player[i]['team_nationality']
 
                         for z in range(16):
-                            if player_nationalty == leagues[z]['region']:
+                            if player_nationality == leagues[z]['region']:
                                 player_league_id = leagues[z]['tournamentId']
                                 break
 
@@ -237,7 +347,7 @@ class PlayerInfoCMD(commands.Cog):
                                         if box_player[i]['discord']: links = f"{links}[{emoji_discord}]({box_player[i]['discord']}) "
                                         links = links[:-1]
 
-                                        embed = discord.Embed(title=f"> 🔍 선수 정보", description="", color=colorMap['red'])
+                                        embed = discord.Embed(title=f"> 🔍 선수 프로필", description="", color=colorMap['red'])
                                         embed.set_footer(text="TIP: SNS 아이콘을 클릭하면 해당 선수의 SNS로 바로 이동할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
                                         # embed.set_image(url=banner_image_url)
                                         embed.set_thumbnail(url=box_player[i]['imageUrl'])
@@ -245,7 +355,7 @@ class PlayerInfoCMD(commands.Cog):
                                         embed.add_field(name="SNS 플랫폼", value=links, inline=True)
                                         embed.add_field(name="\u200b", value="", inline=False)
                                         embed.add_field(name="승률", value=f"__{box_players[j]['stat_winRate']}__% (__{box_players[j]['stat_wins']:,}__승 __{box_players[j]['stat_loses']:,}__패)", inline=False)
-                                        embed.add_field(name="KDA 정보", value=f"{box_players[j]['stat_kda']} 평점 `({box_players[j]['stat_kills']} / {box_players[j]['stat_deaths']} / {box_players[j]['stat_assists']})`", inline=False)
+                                        embed.add_field(name="KDA 정보", value=f"{box_players[j]['stat_kda']} 평점 `({box_players[j]['stat_kills']}/{box_players[j]['stat_deaths']}/{box_players[j]['stat_assists']})`", inline=False)
                                         embed.add_field(name="가한 피해량", value=f"분당 {box_players[j]['stat_dpm']:,}데미지", inline=True)
                                         embed.add_field(name="입은 피해량", value=f"분당 {box_players[j]['stat_dtpm']:,}데미지", inline=True)
                                         embed.add_field(name="골드 획득", value=f"분당 {box_players[j]['stat_gpm']:,}골드", inline=True)
@@ -262,8 +372,8 @@ class PlayerInfoCMD(commands.Cog):
 
                                 embed.add_field(name="최근 5경기", value=msg_recentMatches, inline=False)
 
-                    # await msg.edit_original_response(content="", embed=embed, view=DisabledButton(player_id=player_id, player_displayed_nickname=player_displayed_nickname, player_nationalty=player_nationalty))
-                    await msg.edit_original_response(content="", embed=embed, view=PlayerInfoView(bot=self.bot, ctx=ctx, msg=msg, box_player=box_player, box_players=box_players, box_recent_matches=box_recentMatches, player_id=player_id, player_displayed_nickname=player_displayed_nickname, player_nationalty=player_nationalty))
+                    # await msg.edit_original_response(content="", embed=embed, view=DisabledButton(player_id=player_id, player_displayed_nickname=player_displayed_nickname, player_nationality=player_nationality))
+                    await msg.edit_original_response(content="", embed=embed, view=PlayerInfoView(bot=self.bot, ctx=ctx, msg=msg, origin_embed=embed, picked_match=None, picked_set="1", box_player=box_player, box_players=box_players, box_recent_matches=box_recentMatches, player_id=player_id, player_displayed_nickname=player_displayed_nickname, player_nationality=player_nationality))
 
         except Exception as error:
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))

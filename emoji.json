@@ -1,12 +1,24 @@
 {
-    "Discord": "<:Discord:1091374154013483018>",
-    "Esports": "<:E_Sports:1091374161626140692>",
-    "Facebook": "<:Facebook:1091374156530065500>",
-    "Hyperlink": "<:Hyperlink:1095693824413667389>",
-    "Instagram": "<:Instagram:1091374158790787072>",
-    "LiveStream": "<:LiveStream:1093451374185947136>",
-    "Twitch": "<:Twitch:1093450612189962291>",
-    "Twitter": "<:Twitter:1091374163450658816>",
-    "Website": "<:Website:1091374166634139718>",
-    "YouTube": "<:YouTube:1091374168810979420>"
+    "Hyperlink": "<:Hyperlink:1099236419068772433>",
+    "LiveStream": "<:LiveStream:1099236324499795968>",
+    "Website": "<:Website:1099236333614026764>",
+
+    "Esports": "<:E_Sports:1099236326324322385>",
+
+    "Discord": "<:Discord:1099236317407236196>",
+    "Facebook": "<:Facebook:1099236320137728070>",
+    "Instagram": "<:Instagram:1099236321630879745>",
+    "Twitch": "<:Twitch:1099236328916398142>",
+    "Twitter": "<:Twitter:1099236331026124822>",
+    "YouTube": "<:YouTube:1099236335987982357>",
+
+    "Baron": "<:Baron:1099236501369405440>",
+    "Dragon": "<:Dragon:1099236504154419241>",
+    "ElderDrake": "<:ElderDrake:1099236505962168420>",
+    "Herald": "<:Herald:1099236509376331796>",
+    "Inhibitor": "<:Inhibitor:1099236511536382013>",
+    "Tower": "<:Tower:1099236514677919795>",
+
+    "BlueSide": "<:BlueSide:1099385159691804794>",
+    "RedSide": "<:RedSide:1099385163730911272>"
 }

@@ -158,14 +158,14 @@ class MvpView(discord.ui.View):
         k = 0
         for i in range(5):
             for j in range(len(self.box_player)):
-                self.msg_mvp_1 = f"{self.msg_mvp_1}> {i + 1}위 - [{self.box_player[k]['team_acronym']}]({esports_op_gg_team}{self.box_player[k]['team_id']}) [{self.box_player[k]['nickName']}]({esports_op_gg_player}{self.box_player[k]['id']})\n[{self.box_player[k]['position']}] {self.box_player[k]['kda']} 평점\n`({self.box_player[k]['kills']} / {self.box_player[k]['deaths']} / {self.box_player[k]['assists']})`\n"
+                self.msg_mvp_1 = f"{self.msg_mvp_1}> {i + 1}위 - [{self.box_player[k]['team_acronym']}]({esports_op_gg_team}{self.box_player[k]['team_id']}) [{self.box_player[k]['nickName']}]({esports_op_gg_player}{self.box_player[k]['id']})\n[{self.box_player[k]['position']}] {self.box_player[k]['kda']} 평점\n`({self.box_player[k]['kills']}/{self.box_player[k]['deaths']}/{self.box_player[k]['assists']})`\n"
                 k += 1
                 break
 
         k = 5
         for i in range(5, 10):
             for j in range(len(self.box_player)):
-                self.msg_mvp_2 = f"{self.msg_mvp_2}> {i + 1}위 - [{self.box_player[k]['team_acronym']}]({esports_op_gg_team}{self.box_player[k]['team_id']}) [{self.box_player[k]['nickName']}]({esports_op_gg_player}{self.box_player[k]['id']})\n[{self.box_player[k]['position']}] {self.box_player[k]['kda']} 평점\n`({self.box_player[k]['kills']} / {self.box_player[k]['deaths']} / {self.box_player[k]['assists']})`\n"
+                self.msg_mvp_2 = f"{self.msg_mvp_2}> {i + 1}위 - [{self.box_player[k]['team_acronym']}]({esports_op_gg_team}{self.box_player[k]['team_id']}) [{self.box_player[k]['nickName']}]({esports_op_gg_player}{self.box_player[k]['id']})\n[{self.box_player[k]['position']}] {self.box_player[k]['kda']} 평점\n`({self.box_player[k]['kills']}/{self.box_player[k]['deaths']}/{self.box_player[k]['assists']})`\n"
                 k += 1
                 break
 
@@ -218,11 +218,11 @@ class MvpView(discord.ui.View):
 
             for i in range(5):
                 if i >= len(self.box_player): break
-                self.msg_mvp_1 = f"{self.msg_mvp_1}> {i + 1}위 - [{self.box_player[i]['team_acronym']}]({esports_op_gg_team}{self.box_player[i]['team_id']}) [{self.box_player[i]['nickName']}]({esports_op_gg_player}{self.box_player[i]['id']})\n[{self.box_player[i]['position']}] {self.box_player[i]['kda']} 평점\n`({self.box_player[i]['kills']} / {self.box_player[i]['deaths']} / {self.box_player[i]['assists']})`\n"
+                self.msg_mvp_1 = f"{self.msg_mvp_1}> {i + 1}위 - [{self.box_player[i]['team_acronym']}]({esports_op_gg_team}{self.box_player[i]['team_id']}) [{self.box_player[i]['nickName']}]({esports_op_gg_player}{self.box_player[i]['id']})\n[{self.box_player[i]['position']}] {self.box_player[i]['kda']} 평점\n`({self.box_player[i]['kills']}/{self.box_player[i]['deaths']}/{self.box_player[i]['assists']})`\n"
 
             for i in range(5, 10):
                 if i >= len(self.box_player): break
-                self.msg_mvp_2 = f"{self.msg_mvp_2}> {i + 1}위 - [{self.box_player[i]['team_acronym']}]({esports_op_gg_team}{self.box_player[i]['team_id']}) [{self.box_player[i]['nickName']}]({esports_op_gg_player}{self.box_player[i]['id']})\n[{self.box_player[i]['position']}] {self.box_player[i]['kda']} 평점\n`({self.box_player[i]['kills']} / {self.box_player[i]['deaths']} / {self.box_player[i]['assists']})`\n"
+                self.msg_mvp_2 = f"{self.msg_mvp_2}> {i + 1}위 - [{self.box_player[i]['team_acronym']}]({esports_op_gg_team}{self.box_player[i]['team_id']}) [{self.box_player[i]['nickName']}]({esports_op_gg_player}{self.box_player[i]['id']})\n[{self.box_player[i]['position']}] {self.box_player[i]['kda']} 평점\n`({self.box_player[i]['kills']}/{self.box_player[i]['deaths']}/{self.box_player[i]['assists']})`\n"
 
             if self.msg_mvp_1 == "":
                 self.msg_mvp_1 = "> 플레이어 정보가 없습니다."
@@ -257,11 +257,11 @@ class MvpView(discord.ui.View):
 
             for i in range(5):
                 if i >= len(self.box_lane_data): break
-                self.msg_mvp_1 = f"{self.msg_mvp_1}> {i + 1}위 - [{self.box_lane_data[i]['team_acronym']}]({esports_op_gg_team}{self.box_lane_data[i]['team_id']}) [{self.box_lane_data[i]['nickName']}]({esports_op_gg_player}{self.box_lane_data[i]['id']})\n[{self.box_lane_data[i]['position']}] {self.box_lane_data[i]['kda']} 평점\n`({self.box_lane_data[i]['kills']} / {self.box_lane_data[i]['deaths']} / {self.box_lane_data[i]['assists']})`\n"
+                self.msg_mvp_1 = f"{self.msg_mvp_1}> {i + 1}위 - [{self.box_lane_data[i]['team_acronym']}]({esports_op_gg_team}{self.box_lane_data[i]['team_id']}) [{self.box_lane_data[i]['nickName']}]({esports_op_gg_player}{self.box_lane_data[i]['id']})\n[{self.box_lane_data[i]['position']}] {self.box_lane_data[i]['kda']} 평점\n`({self.box_lane_data[i]['kills']}/{self.box_lane_data[i]['deaths']}/{self.box_lane_data[i]['assists']})`\n"
 
             for i in range(5, 10):
                 if i >= len(self.box_lane_data): break
-                self.msg_mvp_2 = f"{self.msg_mvp_2}> {i + 1}위 - [{self.box_lane_data[i]['team_acronym']}]({esports_op_gg_team}{self.box_lane_data[i]['team_id']}) [{self.box_lane_data[i]['nickName']}]({esports_op_gg_player}{self.box_lane_data[i]['id']})\n[{self.box_lane_data[i]['position']}] {self.box_lane_data[i]['kda']} 평점\n`({self.box_lane_data[i]['kills']} / {self.box_lane_data[i]['deaths']} / {self.box_lane_data[i]['assists']})`\n"
+                self.msg_mvp_2 = f"{self.msg_mvp_2}> {i + 1}위 - [{self.box_lane_data[i]['team_acronym']}]({esports_op_gg_team}{self.box_lane_data[i]['team_id']}) [{self.box_lane_data[i]['nickName']}]({esports_op_gg_player}{self.box_lane_data[i]['id']})\n[{self.box_lane_data[i]['position']}] {self.box_lane_data[i]['kda']} 평점\n`({self.box_lane_data[i]['kills']}/{self.box_lane_data[i]['deaths']}/{self.box_lane_data[i]['assists']})`\n"
 
             if self.msg_mvp_1 == "":
                 self.msg_mvp_1 = "> 플레이어 정보가 없습니다."
@@ -434,11 +434,11 @@ class MvpCMD(commands.Cog):
 
                 for j in range(5):
                     if j >= len(box_player): break
-                    msg_mvp_1 = f"{msg_mvp_1}> {j + 1}위 - [{box_player[j]['team_acronym']}]({esports_op_gg_team}{box_player[j]['team_id']}) [{box_player[j]['nickName']}]({esports_op_gg_player}{box_player[j]['id']})\n[{box_player[j]['position']}] {box_player[j]['kda']} 평점\n`({box_player[j]['kills']} / {box_player[j]['deaths']} / {box_player[j]['assists']})`\n"
+                    msg_mvp_1 = f"{msg_mvp_1}> {j + 1}위 - [{box_player[j]['team_acronym']}]({esports_op_gg_team}{box_player[j]['team_id']}) [{box_player[j]['nickName']}]({esports_op_gg_player}{box_player[j]['id']})\n[{box_player[j]['position']}] {box_player[j]['kda']} 평점\n`({box_player[j]['kills']}/{box_player[j]['deaths']}/{box_player[j]['assists']})`\n"
 
                 for j in range(5, 10):
                     if j >= len(box_player): break
-                    msg_mvp_2 = f"{msg_mvp_2}> {j + 1}위 - [{box_player[j]['team_acronym']}]({esports_op_gg_team}{box_player[j]['team_id']}) [{box_player[j]['nickName']}]({esports_op_gg_player}{box_player[j]['id']})\n[{box_player[j]['position']}] {box_player[j]['kda']} 평점\n`({box_player[j]['kills']} / {box_player[j]['deaths']} / {box_player[j]['assists']})`\n"
+                    msg_mvp_2 = f"{msg_mvp_2}> {j + 1}위 - [{box_player[j]['team_acronym']}]({esports_op_gg_team}{box_player[j]['team_id']}) [{box_player[j]['nickName']}]({esports_op_gg_player}{box_player[j]['id']})\n[{box_player[j]['position']}] {box_player[j]['kda']} 평점\n`({box_player[j]['kills']}/{box_player[j]['deaths']}/{box_player[j]['assists']})`\n"
 
                 if msg_mvp_1 == "":
                     msg_mvp_1 = "> 플레이어 정보가 없습니다."

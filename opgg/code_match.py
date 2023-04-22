@@ -114,6 +114,13 @@ query {
         endAt
         length
         detailedStats
+        winner{
+            id
+            name
+            acronym
+            nationality
+            imageUrl
+        }
         teams{
             team{
                 id
@@ -143,6 +150,14 @@ query {
                 nationality
                 imageUrl
             }
+            team{
+                id
+                name
+                acronym
+                nationality
+                imageUrl
+            }
+            side
             kills
             deaths
             assists
@@ -163,13 +178,6 @@ query {
             tripleKills
             quadraKills
             pentaKills
-        }
-        winner{
-            id
-            name
-            acronym
-            nationality
-            imageUrl
         }
     }
 }

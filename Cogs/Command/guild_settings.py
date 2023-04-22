@@ -36,7 +36,7 @@ except Exception as error:
 
 prefix = config['prefix_normal']
 colorMap = config['colorMap']
-role_name_notice = config['role_name_league_notification']
+# role_name_notice = config['role_name_league_notification']
 
 
 class LeagueSelect(discord.ui.Select):
