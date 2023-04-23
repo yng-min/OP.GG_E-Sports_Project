@@ -418,7 +418,7 @@ class PlayerInfoCMD(commands.Cog):
 
                                 msg_recentMatches = ""
                                 for k in range(len(box_recentMatches)):
-                                    msg_recentMatches += f"[{emoji_hyperlink}]({esports_op_gg_match}{box_recentMatches[k]['id']}) **{box_recentMatches[k]['name']}** (__{box_recentMatches[k]['winner_name']}__ 승)\n"
+                                    msg_recentMatches += f"[{emoji_hyperlink}]({esports_op_gg_match}{box_recentMatches[k]['id']}) **{box_recentMatches[k]['name']}** (||__{box_recentMatches[k]['winner_name']}__|| 승)\n"
 
                                 embed.add_field(name="최근 5경기", value=msg_recentMatches, inline=False)
 
