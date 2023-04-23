@@ -106,12 +106,13 @@ class NotificationTASK(commands.Cog):
                             try:
                                 collecting_data = False
                                 team_1_id = match_data['data']['teamStats'][0]['team']['id']
+                                team_1_name = match_data['data']['teamStats'][0]['team']['name']
                                 team_1_acronym = match_data['data']['teamStats'][0]['team']['acronym']
                                 team_1_kda = ((match_data['data']['teamStats'][0]['kills'] + match_data['data']['teamStats'][0]['assists']) / match_data['data']['teamStats'][0]['deaths']).__round__(2)
                                 team_1_kills = match_data['data']['teamStats'][0]['kills'].__round__(2)
                                 team_1_deaths = match_data['data']['teamStats'][0]['deaths'].__round__(2)
                                 team_1_assists = match_data['data']['teamStats'][0]['assists'].__round__(2)
-                                team_1_kda_msg = f"{team_1_kda} 평점 `({team_1_kills} / {team_1_deaths} / {team_1_assists})`"
+                                team_1_kda_msg = f"{team_1_kda} 평점 `({team_1_kills}/{team_1_deaths}/{team_1_assists})`"
                                 team_1_winRate = f"{(match_data['data']['teamStats'][0]['winRate'] * 100).__round__(1)}"
                                 team_1_firstTower = f"{(match_data['data']['teamStats'][0]['firstTower'] * 100).__round__(1)}"
                                 team_1_firstBaron = f"{(match_data['data']['teamStats'][0]['firstBaron'] * 100).__round__(1)}"
@@ -120,12 +121,13 @@ class NotificationTASK(commands.Cog):
                                 team_1_goldEarned = f"{(match_data['data']['teamStats'][0]['goldEarned']).__round__().__str__()[0:2]}K"
 
                                 team_2_id = match_data['data']['teamStats'][1]['team']['id']
+                                team_2_name = match_data['data']['teamStats'][1]['team']['name']
                                 team_2_acronym = match_data['data']['teamStats'][1]['team']['acronym']
                                 team_2_kda = ((match_data['data']['teamStats'][1]['kills'] + match_data['data']['teamStats'][1]['assists']) / match_data['data']['teamStats'][1]['deaths']).__round__(2)
                                 team_2_kills = match_data['data']['teamStats'][1]['kills'].__round__(2)
                                 team_2_deaths = match_data['data']['teamStats'][1]['deaths'].__round__(2)
                                 team_2_assists = match_data['data']['teamStats'][1]['assists'].__round__(2)
-                                team_2_kda_msg = f"{team_2_kda} 평점 `({team_2_kills} / {team_2_deaths} / {team_2_assists})`"
+                                team_2_kda_msg = f"{team_2_kda} 평점 `({team_2_kills}/{team_2_deaths}/{team_2_assists})`"
                                 team_2_winRate = f"{(match_data['data']['teamStats'][1]['winRate'] * 100).__round__(1)}"
                                 team_2_firstTower = f"{(match_data['data']['teamStats'][1]['firstTower'] * 100).__round__(1)}"
                                 team_2_firstBaron = f"{(match_data['data']['teamStats'][1]['firstBaron'] * 100).__round__(1)}"
@@ -192,9 +194,9 @@ class NotificationTASK(commands.Cog):
                                                 embed.set_image(url=banner_image_url)
 
                                                 if collecting_data == True:
-                                                    embed.add_field(name="\u200b", value=f"**> __{team_1_acronym}__ 팀 정보**\n매치 데이터를 수집하고 있습니다.", inline=False)
+                                                    embed.add_field(name="\u200b", value=f"**> __{team_1_acronym} ({team_1_name})__ 팀 정보**\n매치 데이터를 수집하고 있습니다.", inline=False)
                                                 elif collecting_data == False:
-                                                    embed.add_field(name="\u200b", value=f"**> __{team_1_acronym}__ 팀 정보**", inline=False)
+                                                    embed.add_field(name="\u200b", value=f"**> __{team_1_acronym} ({team_2_name})__ 팀 정보**", inline=False)
                                                     embed.add_field(name="KDA 정보", value=team_1_kda_msg, inline=False)
                                                     embed.add_field(name="세트 승률", value=team_1_winRate + "%", inline=True)
                                                     embed.add_field(name="첫 킬률", value=team_1_firstBlood + "%", inline=True)
@@ -204,9 +206,9 @@ class NotificationTASK(commands.Cog):
                                                     embed.add_field(name="골드 획득량", value=team_1_goldEarned, inline=True)
 
                                                 if collecting_data == True:
-                                                    embed.add_field(name="\u200b", value=f"**> __{team_2_acronym}__ 팀 정보**\n매치 데이터를 수집하고 있습니다.", inline=False)
+                                                    embed.add_field(name="\u200b", value=f"**> __{team_2_acronym} ({team_1_name})__ 팀 정보**\n매치 데이터를 수집하고 있습니다.", inline=False)
                                                 elif collecting_data == False:
-                                                    embed.add_field(name="\u200b", value=f"**> __{team_2_acronym}__ 팀 정보**", inline=False)
+                                                    embed.add_field(name="\u200b", value=f"**> __{team_2_acronym} ({team_2_name})__ 팀 정보**", inline=False)
                                                     embed.add_field(name="KDA 정보", value=team_2_kda_msg, inline=False)
                                                     embed.add_field(name="세트 승률", value=team_2_winRate + "%", inline=True)
                                                     embed.add_field(name="첫 킬률", value=team_2_firstBlood + "%", inline=True)
