@@ -202,7 +202,7 @@ class MatchInfoSelect(discord.ui.Select):
         options.append(discord.SelectOption(emoji="↩️", label="선수 프로필로 돌아가기", value="back", description=""))
 
         super().__init__(
-            placeholder="자세히 볼 경기 선택하기",
+            placeholder="경기 선택하기",
             min_values=1,
             max_values=1,
             options=options,
@@ -301,7 +301,7 @@ class DisabledButton(discord.ui.View):
 
     def __init__(self, picked_match, picked_set, box_recent_matches, player_id, player_displayed_nickname, player_nationality):
         super().__init__(timeout=None)
-        self.add_item(discord.ui.Select(placeholder="자세히 볼 경기 선택하기", options=[discord.SelectOption(label="asdf", value="1", description="asdf")], disabled=True, row=0))
+        self.add_item(discord.ui.Select(placeholder="경기 선택하기", options=[discord.SelectOption(label="asdf", value="1", description="asdf")], disabled=True, row=0))
         if (picked_match == None) and (picked_set == None):
             self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=f"{esports_op_gg_player}{player_id}", row=2))
             self.add_item(discord.ui.Button(label="OP.GG에서 보기", url=f"{op_gg_player}{player_nationality.lower()}/{player_displayed_nickname}", disabled=True, row=2))
