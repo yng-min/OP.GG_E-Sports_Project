@@ -82,10 +82,10 @@ async def search_player(ctx: discord.AutocompleteContext):
 
 def make_game_info_embed(picked_match, picked_set, box_player, box_players, box_recent_matches, player_id, player_displayed_nickname, player_nationality):
 
-    picked_match = box_recent_matches[int(picked_match) - 1]
+    picked_match = box_recent_matches[picked_match - 1]
     match_date = datetime.datetime.strptime(picked_match['beginAt'].split("T")[0], "%Y-%m-%d").strftime("X%Y년 X%m월 X%d일").replace("X0", "").replace("X", "")
 
-    game_info = get_game_info_by_id(match_id=picked_match['id'], match_set=picked_set)
+    game_info = get_game_info_by_id(match_id=picked_match['id'], match_set=str(picked_set))
 
     # msg_ban_1 = f"🚫) {game_info['teams'][0]['bans'][0]} {game_info['teams'][0]['bans'][1]} {game_info['teams'][0]['bans'][2]} {game_info['teams'][0]['bans'][3]} {game_info['teams'][0]['bans'][4]}"
     msg_ban_1 = "🚫) ⬜ ⬜ ⬜ ⬜ ⬜" # 챔피언 이모티콘 적용될 때까지만 임시
@@ -188,8 +188,8 @@ class MatchInfoSelect(discord.ui.Select):
             self.picked_match = picked_match
             self.picked_set = picked_set
         else:
-            self.picked_match = "0"
-            self.picked_set = "1"
+            self.picked_match = None
+            self.picked_set = 1
 
         options = []
         for i in range(len(box_recent_matches)):
@@ -212,9 +212,12 @@ class MatchInfoSelect(discord.ui.Select):
     async def callback(self, interaction: discord.Interaction):
         if interaction.user.id != self.ctx.author.id: return await interaction.response.send_message("> 자신의 메시지에서만 이용할 수 있어요. 😢", ephemeral=True)
 
-        if self.values[0] != "back": self.picked_match = int(self.values[0]) + 1
+        if self.values[0] != "back":
+            self.picked_match = int(self.values[0]) + 1
+            self.picked_set = 1
         else:
             self.picked_match = None
+            self.picked_set = 1
             return await interaction.response.edit_message(content="", embed=self.origin_embed, view=PlayerInfoView(bot=self.bot, ctx=self.ctx, msg=self.msg, origin_embed=self.origin_embed, picked_match=self.picked_match, picked_set=self.picked_set, box_player=self.box_player, box_players=self.box_players, box_recent_matches=self.box_recent_matches, player_id=self.player_id, player_displayed_nickname=self.player_displayed_nickname, player_nationality=self.player_nationality))
 
         embed = make_game_info_embed(picked_match=self.picked_match, picked_set=self.picked_set, box_player=self.box_player, box_players=self.box_players, box_recent_matches=self.box_recent_matches, player_id=self.player_id, player_displayed_nickname=self.player_displayed_nickname, player_nationality=self.player_nationality)
@@ -239,18 +242,58 @@ class PlayerInfoView(discord.ui.View):
         self.player_displayed_nickname = player_displayed_nickname
         self.player_nationality = player_nationality
 
+        self.box_button = []
+
         self.add_item(MatchInfoSelect(bot=self.bot, ctx=self.ctx, msg=self.msg, origin_embed=self.origin_embed, picked_match=self.picked_match, picked_set=self.picked_set, box_player=self.box_player, box_players=self.box_players, box_recent_matches=self.box_recent_matches, player_id=self.player_id, player_displayed_nickname=self.player_displayed_nickname, player_nationality=self.player_nationality))
+        self.add_button()
 
         if picked_match == None:
-            self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=f"{esports_op_gg_player}{player_id}", row=2))
-            self.add_item(discord.ui.Button(label="OP.GG에서 보기", url=f"{op_gg_player}{player_nationality.lower()}/{player_displayed_nickname}", disabled=True, row=2))
+            self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=f"{esports_op_gg_player}{self.player_id}", row=2))
+            self.add_item(discord.ui.Button(label="OP.GG에서 보기", url=f"{op_gg_player}{self.player_nationality.lower()}/{self.player_displayed_nickname}", disabled=True, row=2))
         else:
-            self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=f"{esports_op_gg_match}{box_recent_matches[picked_match - 1]['id']}", row=2))
+            self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=f"{esports_op_gg_match}{self.box_recent_matches[self.picked_match - 1]['id']}", row=2))
+
+    def add_button(self):
+        if self.picked_match == None: return
+
+        for i in range(1, 6):
+            if i == 1: emoji = "1️⃣"
+            elif i == 2: emoji = "2️⃣"
+            elif i == 3: emoji = "3️⃣"
+            elif i == 4: emoji = "4️⃣"
+            elif i == 5: emoji = "5️⃣"
+
+            try:
+                get_game_info_by_id(match_id=self.box_recent_matches[self.picked_match - 1]['id'], match_set=str(i))
+ 
+                if self.picked_set == i:
+                    self.box_button.append(discord.ui.Button(emoji=emoji, style=discord.ButtonStyle.blurple, custom_id=f"{i}", row=1))
+                elif self.picked_set != i:
+                    self.box_button.append(discord.ui.Button(emoji=emoji, style=discord.ButtonStyle.gray, custom_id=f"{i}", row=1))
+
+            except:
+                self.box_button.append(discord.ui.Button(emoji=emoji, style=discord.ButtonStyle.gray, custom_id=f"{i}", row=1, disabled=True))
+
+        async def button_callback(interaction: discord.Interaction):
+            if interaction.user.id != self.ctx.author.id: return await interaction.response.send_message("> 자신의 메시지에서만 이용할 수 있어요. 😢", ephemeral=True)
+
+            self.picked_set = int(interaction.data['custom_id'])
+
+            embed = make_game_info_embed(picked_match=self.picked_match, picked_set=self.picked_set, box_player=self.box_player, box_players=self.box_players, box_recent_matches=self.box_recent_matches, player_id=self.player_id, player_displayed_nickname=self.player_displayed_nickname, player_nationality=self.player_nationality)
+
+            await interaction.response.edit_message(content="", embed=embed, view=PlayerInfoView(bot=self.bot, ctx=self.ctx, msg=self.msg, origin_embed=self.origin_embed, picked_match=self.picked_match, picked_set=self.picked_set, box_player=self.box_player, box_players=self.box_players, box_recent_matches=self.box_recent_matches, player_id=self.player_id, player_displayed_nickname=self.player_displayed_nickname, player_nationality=self.player_nationality))
+
+        for j in range(len(self.box_button)):
+            self.box_button[j].callback = button_callback
+            self.add_item(self.box_button[j])
+
 
     async def on_timeout(self):
         try:
-            await self.msg.edit_original_response(content="", view=DisabledButton(picked_match=self.picked_match, picked_set=self.picked_set, box_recent_matches=self.box_recent_matches, player_id=self.player_id, player_displayed_nickname=self.player_displayed_nickname, player_nationality=self.player_nationality))
+            return await self.msg.edit_original_response(content="", view=DisabledButton(picked_match=self.picked_match, picked_set=self.picked_set, box_recent_matches=self.box_recent_matches, player_id=self.player_id, player_displayed_nickname=self.player_displayed_nickname, player_nationality=self.player_nationality))
         except discord.NotFound:
+            pass
+        except TypeError:
             pass
 
 
@@ -259,9 +302,16 @@ class DisabledButton(discord.ui.View):
     def __init__(self, picked_match, picked_set, box_recent_matches, player_id, player_displayed_nickname, player_nationality):
         super().__init__(timeout=None)
         self.add_item(discord.ui.Select(placeholder="자세히 볼 경기 선택하기", options=[discord.SelectOption(label="asdf", value="1", description="asdf")], disabled=True, row=0))
-        if picked_match == None:
+        if (picked_match == None) and (picked_set == None):
             self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=f"{esports_op_gg_player}{player_id}", row=2))
             self.add_item(discord.ui.Button(label="OP.GG에서 보기", url=f"{op_gg_player}{player_nationality.lower()}/{player_displayed_nickname}", disabled=True, row=2))
+        elif picked_set != None:
+            self.add_item(discord.ui.Button(emoji="1️⃣", disabled=True, row=1))
+            self.add_item(discord.ui.Button(emoji="2️⃣", disabled=True, row=1))
+            self.add_item(discord.ui.Button(emoji="3️⃣", disabled=True, row=1))
+            self.add_item(discord.ui.Button(emoji="4️⃣", disabled=True, row=1))
+            self.add_item(discord.ui.Button(emoji="5️⃣", disabled=True, row=1))
+            self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=f"{esports_op_gg_match}{box_recent_matches[picked_match - 1]['id']}", row=2))
         else:
             self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=f"{esports_op_gg_match}{box_recent_matches[picked_match - 1]['id']}", row=2))
 
@@ -373,7 +423,7 @@ class PlayerInfoCMD(commands.Cog):
                                 embed.add_field(name="최근 5경기", value=msg_recentMatches, inline=False)
 
                     # await msg.edit_original_response(content="", embed=embed, view=DisabledButton(player_id=player_id, player_displayed_nickname=player_displayed_nickname, player_nationality=player_nationality))
-                    await msg.edit_original_response(content="", embed=embed, view=PlayerInfoView(bot=self.bot, ctx=ctx, msg=msg, origin_embed=embed, picked_match=None, picked_set="1", box_player=box_player, box_players=box_players, box_recent_matches=box_recentMatches, player_id=player_id, player_displayed_nickname=player_displayed_nickname, player_nationality=player_nationality))
+                    await msg.edit_original_response(content="", embed=embed, view=PlayerInfoView(bot=self.bot, ctx=ctx, msg=msg, origin_embed=embed, picked_match=None, picked_set=1, box_player=box_player, box_players=box_players, box_recent_matches=box_recentMatches, player_id=player_id, player_displayed_nickname=player_displayed_nickname, player_nationality=player_nationality))
 
         except Exception as error:
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
