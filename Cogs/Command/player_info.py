@@ -222,7 +222,10 @@ class MatchInfoSelect(discord.ui.Select):
 
         embed = make_game_info_embed(picked_match=self.picked_match, picked_set=self.picked_set, box_player=self.box_player, box_players=self.box_players, box_recent_matches=self.box_recent_matches, player_id=self.player_id, player_displayed_nickname=self.player_displayed_nickname, player_nationality=self.player_nationality)
 
-        await interaction.response.edit_message(content="", embed=embed, view=PlayerInfoView(bot=self.bot, ctx=self.ctx, msg=self.msg, origin_embed=self.origin_embed, picked_match=self.picked_match, picked_set=self.picked_set, box_player=self.box_player, box_players=self.box_players, box_recent_matches=self.box_recent_matches, player_id=self.player_id, player_displayed_nickname=self.player_displayed_nickname, player_nationality=self.player_nationality))
+        try:
+            await interaction.response.edit_message(content="", embed=embed, view=PlayerInfoView(bot=self.bot, ctx=self.ctx, msg=self.msg, origin_embed=self.origin_embed, picked_match=self.picked_match, picked_set=self.picked_set, box_player=self.box_player, box_players=self.box_players, box_recent_matches=self.box_recent_matches, player_id=self.player_id, player_displayed_nickname=self.player_displayed_nickname, player_nationality=self.player_nationality))
+        except discord.NotFound:
+            pass
 
 
 class PlayerInfoView(discord.ui.View):
@@ -281,7 +284,10 @@ class PlayerInfoView(discord.ui.View):
 
             embed = make_game_info_embed(picked_match=self.picked_match, picked_set=self.picked_set, box_player=self.box_player, box_players=self.box_players, box_recent_matches=self.box_recent_matches, player_id=self.player_id, player_displayed_nickname=self.player_displayed_nickname, player_nationality=self.player_nationality)
 
-            await interaction.response.edit_message(content="", embed=embed, view=PlayerInfoView(bot=self.bot, ctx=self.ctx, msg=self.msg, origin_embed=self.origin_embed, picked_match=self.picked_match, picked_set=self.picked_set, box_player=self.box_player, box_players=self.box_players, box_recent_matches=self.box_recent_matches, player_id=self.player_id, player_displayed_nickname=self.player_displayed_nickname, player_nationality=self.player_nationality))
+            try:
+                await interaction.response.edit_message(content="", embed=embed, view=PlayerInfoView(bot=self.bot, ctx=self.ctx, msg=self.msg, origin_embed=self.origin_embed, picked_match=self.picked_match, picked_set=self.picked_set, box_player=self.box_player, box_players=self.box_players, box_recent_matches=self.box_recent_matches, player_id=self.player_id, player_displayed_nickname=self.player_displayed_nickname, player_nationality=self.player_nationality))
+            except discord.NotFound:
+                pass
 
         for j in range(len(self.box_button)):
             self.box_button[j].callback = button_callback
