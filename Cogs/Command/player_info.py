@@ -35,6 +35,7 @@ except: print("emoji.json 파일이 로드되지 않음")
 esports_op_gg_player = "https://esports.op.gg/players/"
 esports_op_gg_team = "https://esports.op.gg/teams/"
 esports_op_gg_match = "https://esports.op.gg/matches/"
+esports_op_gg_champion = "https://esports.op.gg/champions/"
 op_gg_player = "https://www.op.gg/summoners/"
 time_difference = config['time_difference']
 colorMap = config['colorMap']
@@ -88,9 +89,9 @@ def make_game_info_embed(picked_match, picked_set, box_player, box_players, box_
     game_info = get_game_info_by_id(match_id=picked_match['id'], match_set=str(picked_set))
 
     # msg_ban_1 = f"🚫) {game_info['teams'][0]['bans'][0]} {game_info['teams'][0]['bans'][1]} {game_info['teams'][0]['bans'][2]} {game_info['teams'][0]['bans'][3]} {game_info['teams'][0]['bans'][4]}"
-    msg_ban_1 = "🚫) ⬜ ⬜ ⬜ ⬜ ⬜" # 챔피언 이모티콘 적용될 때까지만 임시
+    msg_ban_1 = f"🚫) [⬜]({esports_op_gg_champion}{game_info['teams'][0]['bans'][0]}) [⬜]({esports_op_gg_champion}{game_info['teams'][0]['bans'][1]}) [⬜]({esports_op_gg_champion}{game_info['teams'][0]['bans'][2]}) [⬜]({esports_op_gg_champion}{game_info['teams'][0]['bans'][3]}) [⬜]({esports_op_gg_champion}{game_info['teams'][0]['bans'][4]})" # 챔피언 이모티콘 적용될 때까지만 임시
     # msg_ban_2 = f"🚫) {game_info['teams'][1]['bans'][0]} {game_info['teams'][1]['bans'][1]} {game_info['teams'][1]['bans'][2]} {game_info['teams'][1]['bans'][3]} {game_info['teams'][1]['bans'][4]}"
-    msg_ban_2 = "🚫) ⬜ ⬜ ⬜ ⬜ ⬜" # 챔피언 이모티콘 적용될 때까지만 임시
+    msg_ban_2 = f"🚫) [⬜]({esports_op_gg_champion}{game_info['teams'][1]['bans'][0]}) [⬜]({esports_op_gg_champion}{game_info['teams'][1]['bans'][1]}) [⬜]({esports_op_gg_champion}{game_info['teams'][1]['bans'][2]}) [⬜]({esports_op_gg_champion}{game_info['teams'][1]['bans'][3]}) [⬜]({esports_op_gg_champion}{game_info['teams'][1]['bans'][4]})"  # 챔피언 이모티콘 적용될 때까지만 임시
 
     msg_object_1 = f"{emoji_tower} **{game_info['teams'][0]['towerKills']:,}** {emoji_inhibitor} **{game_info['teams'][0]['inhibitorKills']:,}** {emoji_herald} **{game_info['teams'][0]['heraldKills']:,}** {emoji_dragon} **{game_info['teams'][0]['dragonKills']:,}** {emoji_elder_drake} **{game_info['teams'][0]['elderDrakeKills']:,}** {emoji_baron} **{game_info['teams'][0]['baronKills']:,}**"
     msg_object_2 = f"{emoji_tower} **{game_info['teams'][1]['towerKills']:,}** {emoji_inhibitor} **{game_info['teams'][1]['inhibitorKills']:,}** {emoji_herald} **{game_info['teams'][1]['heraldKills']:,}** {emoji_dragon} **{game_info['teams'][1]['dragonKills']:,}** {emoji_elder_drake} **{game_info['teams'][1]['elderDrakeKills']:,}** {emoji_baron} **{game_info['teams'][1]['baronKills']:,}**"

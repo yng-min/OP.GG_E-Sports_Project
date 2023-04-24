@@ -217,7 +217,10 @@ query {
         teamStats{
             team{
                 id
+                name
                 acronym
+                nationality
+                imageUrl
             }
             kills
             deaths
