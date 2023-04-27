@@ -75,7 +75,7 @@ def get_league(ctx: discord.AutocompleteContext):
 class BanPickView(discord.ui.View):
 
     def __init__(self, bot, ctx, msg, banner, picked_league):
-        super().__init__(timeout=None)
+        super().__init__(timeout=60)
         self.bot = bot
         self.ctx = ctx
         self.msg = msg
