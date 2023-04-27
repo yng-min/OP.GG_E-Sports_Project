@@ -46,7 +46,7 @@ class LinkButton(discord.ui.View):
 
     def __init__(self, url: str):
         super().__init__()
-        self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=url))
+        self.add_item(discord.ui.Button(label="OP.GG Esports에서 보기", url=url))
 
 
 class MatchCompleteTASK(commands.Cog):

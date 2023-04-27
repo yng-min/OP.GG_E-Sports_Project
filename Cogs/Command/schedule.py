@@ -78,7 +78,7 @@ class ScheduleButton(discord.ui.View):
         self.check_all = False
         self.button = ""
         self.callback_select = False
-        self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=esports_op_gg_schedules, row=1))
+        self.add_item(discord.ui.Button(label="OP.GG Esports에서 보기", url=esports_op_gg_schedules, row=1))
 
     @discord.ui.select(
         placeholder="리그 선택하기",
@@ -397,7 +397,7 @@ class DisabledButton(discord.ui.View):
         self.add_item(discord.ui.Button(emoji="1️⃣", disabled=True, row=1))
         self.add_item(discord.ui.Button(emoji="2️⃣", disabled=True, row=1))
         self.add_item(discord.ui.Button(emoji="3️⃣", disabled=True, row=1))
-        self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=esports_op_gg_schedules, row=1))
+        self.add_item(discord.ui.Button(label="OP.GG Esports에서 보기", url=esports_op_gg_schedules, row=1))
 
 
 class ScheduleCMD(commands.Cog):

@@ -252,10 +252,10 @@ class PlayerInfoView(discord.ui.View):
         self.add_button()
 
         if picked_match == None:
-            self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=f"{esports_op_gg_player}{self.player_id}", row=2))
+            self.add_item(discord.ui.Button(label="OP.GG Esports에서 보기", url=f"{esports_op_gg_player}{self.player_id}", row=2))
             self.add_item(discord.ui.Button(label="OP.GG에서 보기", url=f"{op_gg_player}{self.player_nationality.lower()}/{self.player_displayed_nickname}", disabled=True, row=2))
         else:
-            self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=f"{esports_op_gg_match}{self.box_recent_matches[self.picked_match - 1]['id']}", row=2))
+            self.add_item(discord.ui.Button(label="OP.GG Esports에서 보기", url=f"{esports_op_gg_match}{self.box_recent_matches[self.picked_match - 1]['id']}", row=2))
 
     def add_button(self):
         if self.picked_match == None: return
@@ -310,7 +310,7 @@ class DisabledButton(discord.ui.View):
         super().__init__(timeout=None)
         self.add_item(discord.ui.Select(placeholder="경기 선택하기", options=[discord.SelectOption(label="asdf", value="1", description="asdf")], disabled=True, row=0))
         if (picked_match == None) and (picked_set == None):
-            self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=f"{esports_op_gg_player}{player_id}", row=2))
+            self.add_item(discord.ui.Button(label="OP.GG Esports에서 보기", url=f"{esports_op_gg_player}{player_id}", row=2))
             self.add_item(discord.ui.Button(label="OP.GG에서 보기", url=f"{op_gg_player}{player_nationality.lower()}/{player_displayed_nickname}", disabled=True, row=2))
         elif picked_set != None:
             self.add_item(discord.ui.Button(emoji="1️⃣", disabled=True, row=1))
@@ -318,9 +318,9 @@ class DisabledButton(discord.ui.View):
             self.add_item(discord.ui.Button(emoji="3️⃣", disabled=True, row=1))
             self.add_item(discord.ui.Button(emoji="4️⃣", disabled=True, row=1))
             self.add_item(discord.ui.Button(emoji="5️⃣", disabled=True, row=1))
-            self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=f"{esports_op_gg_match}{box_recent_matches[picked_match - 1]['id']}", row=2))
+            self.add_item(discord.ui.Button(label="OP.GG Esports에서 보기", url=f"{esports_op_gg_match}{box_recent_matches[picked_match - 1]['id']}", row=2))
         else:
-            self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=f"{esports_op_gg_match}{box_recent_matches[picked_match - 1]['id']}", row=2))
+            self.add_item(discord.ui.Button(label="OP.GG Esports에서 보기", url=f"{esports_op_gg_match}{box_recent_matches[picked_match - 1]['id']}", row=2))
 
 
 class PlayerInfoCMD(commands.Cog):

@@ -28,7 +28,7 @@ class LinkButton(discord.ui.View):
 
     def __init__(self, url: str):
         super().__init__()
-        self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=url))
+        self.add_item(discord.ui.Button(label="OP.GG Esports에서 보기", url=url))
 
 
 class BettingButton(discord.ui.View):
@@ -41,7 +41,7 @@ class BettingButton(discord.ui.View):
         self.match_id = match_id
         self.team_1 = team_1
         self.team_2 = team_2
-        self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=url, row=1))
+        self.add_item(discord.ui.Button(label="OP.GG Esports에서 보기", url=url, row=1))
         self.add_button()
 
     def add_button(self):
@@ -293,4 +293,4 @@ class DisabledButton(discord.ui.View):
         self.team_2 = team_2
         self.add_item(discord.ui.Button(label=f"'{self.team_1}' 팀 예측하기", style=discord.ButtonStyle.blurple, custom_id=f"{self.match_id}/{self.team_1}", disabled=True, row=0))
         self.add_item(discord.ui.Button(label=f"'{self.team_2}' 팀 예측하기", style=discord.ButtonStyle.blurple, custom_id=f"{self.match_id}/{self.team_2}", disabled=True, row=0))
-        self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=url, row=1))
+        self.add_item(discord.ui.Button(label="OP.GG Esports에서 보기", url=url, row=1))

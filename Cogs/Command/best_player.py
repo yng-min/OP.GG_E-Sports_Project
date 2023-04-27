@@ -92,7 +92,7 @@ class MvpView(discord.ui.View):
         self.msg_mvp_1 = ""
         self.msg_mvp_2 = ""
         self.button_select = button_select
-        self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=esports_op_gg_mvp, row=2))
+        self.add_item(discord.ui.Button(label="OP.GG Esports에서 보기", url=esports_op_gg_mvp, row=2))
         self.add_button()
 
     @discord.ui.select(
@@ -313,7 +313,7 @@ class DisabledButton(discord.ui.View):
         self.add_item(discord.ui.Button(label="미드", disabled=True, row=1))
         self.add_item(discord.ui.Button(label="원딜", disabled=True, row=1))
         self.add_item(discord.ui.Button(label="서포터", disabled=True, row=1))
-        self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=esports_op_gg_mvp, row=2))
+        self.add_item(discord.ui.Button(label="OP.GG Esports에서 보기", url=esports_op_gg_mvp, row=2))
 
 
 class MvpCMD(commands.Cog):

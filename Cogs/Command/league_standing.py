@@ -96,7 +96,7 @@ class StandingView(discord.ui.View):
 
         self.button_select = button_select
         self.button_select_index = button_select_index
-        self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=esports_op_gg_standing, row=3))
+        self.add_item(discord.ui.Button(label="OP.GG Esports에서 보기", url=esports_op_gg_standing, row=3))
         self.add_button()
 
     @discord.ui.select(
@@ -458,7 +458,7 @@ class DisabledButton(discord.ui.View):
         self.add_item(discord.ui.Button(emoji="8️⃣", disabled=True, row=2))
         self.add_item(discord.ui.Button(emoji="9️⃣", disabled=True, row=2))
         self.add_item(discord.ui.Button(emoji="🔟", disabled=True, row=2))
-        self.add_item(discord.ui.Button(label="OP.GG E-Sports에서 보기", url=esports_op_gg_standing, row=3))
+        self.add_item(discord.ui.Button(label="OP.GG Esports에서 보기", url=esports_op_gg_standing, row=3))
 
 
 class LeagueStandingCMD(commands.Cog):
