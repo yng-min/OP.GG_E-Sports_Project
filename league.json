@@ -3,6 +3,7 @@
         {
             "id": "85",
             "tournamentId": null,
+            "serieId": ["537"],
             "name": "League of Legends Circuit Oceania",
             "shortName": "LCO",
             "region": "OCE"
@@ -10,6 +11,7 @@
         {
             "id": "86",
             "tournamentId": ["1040"],
+            "serieId": ["534"],
             "name": "Pacific Championship Series",
             "shortName": "PCS",
             "region": "SEA"
@@ -17,6 +19,7 @@
         {
             "id": "87",
             "tournamentId": ["1021"],
+            "serieId": ["514"],
             "name": "Liga Latinoamérica",
             "shortName": "LLA",
             "region": "LAT"
@@ -24,6 +27,7 @@
         {
             "id": "88",
             "tournamentId": ["1017"],
+            "serieId": ["510"],
             "name": "League of Legends Championship Series",
             "shortName": "LCS",
             "region": "NA"
@@ -31,6 +35,7 @@
         {
             "id": "89",
             "tournamentId": ["1045"],
+            "serieId": ["536"],
             "name": "League of Legends European Championship",
             "shortName": "LEC",
             "region": "EU"
@@ -38,6 +43,7 @@
         {
             "id": "90",
             "tournamentId": ["1044"],
+            "serieId": ["535"],
             "name": "Vietnam Championship Series",
             "shortName": "VCS",
             "region": "VN"
@@ -45,6 +51,7 @@
         {
             "id": "91",
             "tournamentId": ["899"],
+            "serieId": ["445"],
             "name": "League of Legends Continental League",
             "shortName": "LCL",
             "region": "CIS"
@@ -52,6 +59,7 @@
         {
             "id": "92",
             "tournamentId": ["1039"],
+            "serieId": ["533"],
             "name": "League of Legends Japan League",
             "shortName": "LJL",
             "region": "JP"
@@ -59,6 +67,7 @@
         {
             "id": "93",
             "tournamentId": ["1013"],
+            "serieId": ["512"],
             "name": "Turkish Championship League",
             "shortName": "TCL",
             "region": "TR"
@@ -66,6 +75,7 @@
         {
             "id": "94",
             "tournamentId": ["1015"],
+            "serieId": ["509"],
             "name": "Campeonato Brasileiro de League of Legends",
             "shortName": "CBLOL",
             "region": "BR"
@@ -73,6 +83,7 @@
         {
             "id": "95",
             "tournamentId": ["None"],
+            "serieId": null,
             "name": "Oceanic Pro League",
             "shortName": "OPL",
             "region": "COE"
@@ -80,6 +91,7 @@
         {
             "id": "96",
             "tournamentId": ["None"],
+            "serieId": ["466"],
             "name": "League of Legends World Championship",
             "shortName": "Worlds",
             "region": "INT"
@@ -87,6 +99,7 @@
         {
             "id": "97",
             "tournamentId": ["None"],
+            "serieId": null,
             "name": "League of Legends Master Series",
             "shortName": "LMS",
             "region": "LMS"
@@ -94,6 +107,7 @@
         {
             "id": "98",
             "tournamentId": ["1019"],
+            "serieId": ["508"],
             "name": "League of Legends Pro League",
             "shortName": "LPL",
             "region": "CN"
@@ -101,6 +115,7 @@
         {
             "id": "99",
             "tournamentId": ["1018"],
+            "serieId": ["511"],
             "name": "League of Legends Champions Korea",
             "shortName": "LCK",
             "region": "KR"
@@ -109,6 +124,7 @@
             "id": "100",
             "name": "Mid-Season Invitational",
             "tournamentId": ["None"],
+            "serieId": ["454"],
             "shortName": "MSI",
             "region": "INT"
         }
