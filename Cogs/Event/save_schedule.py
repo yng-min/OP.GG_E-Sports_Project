@@ -79,8 +79,7 @@ class save_scheduleTASK(commands.Cog):
                         date_temp_originalScheduledAt = datetime.datetime.strptime(temp_originalScheduledAt[i], "%Y-%m-%d %H:%M:%S")
                         date_delta_originalScheduledAt = datetime.timedelta(hours=time_difference)
                         time_originalScheduledAt = date_temp_originalScheduledAt + date_delta_originalScheduledAt
-                        if (time_originalScheduledAt.strftime("%Y-%m-%d") == nowTime) or (time_originalScheduledAt.strftime("%Y-%m-%d") == yesterdayTime):
-                            box_originalScheduledAt.append(time_originalScheduledAt.strftime("%Y-%m-%d %H:%M:%S"))
+                        box_originalScheduledAt.append(time_originalScheduledAt.strftime("%Y-%m-%d %H:%M:%S"))
 
                         temp_scheduledAt.append(schedules['data'][i]['scheduledAt'].replace("T", " ").split(".000Z")[0])
                         date_temp_scheduledAt = datetime.datetime.strptime(temp_scheduledAt[i], "%Y-%m-%d %H:%M:%S")
@@ -117,12 +116,10 @@ class save_scheduleTASK(commands.Cog):
                         except: match_name = schedules['data'][i]['name']
                         for j in range(16):
                             if schedules['data'][i]['tournament']['serie']['league']['shortName'] == leagues[j]['shortName']:
-                                try:
-                                    match_scheduledAt = box_scheduledAt[i]
-                                    match_originalScheduledAt = box_originalScheduledAt[i]
-                                except:
-                                    match_scheduledAt = None
-                                    match_originalScheduledAt = None
+                                try: match_scheduledAt = box_scheduledAt[i]
+                                except: match_scheduledAt = None
+                                try: match_originalScheduledAt = box_originalScheduledAt[i]
+                                except: match_originalScheduledAt = None
                                 scheduleCURSOR.execute(f"INSERT INTO {leagues[j]['shortName']}(ID, TournamentID, Name, OriginalScheduledAt, ScheduledAt, NumberOfGames, Status) VALUES(?, ?, ?, ?, ?, ?, ?)", (schedules['data'][i]['id'], schedules['data'][i]['tournamentId'], match_name, match_originalScheduledAt, match_scheduledAt, schedules['data'][i]['numberOfGames'], schedules['data'][i]['status']))
                                 bettingCURSOR.execute(f"INSERT INTO {leagues[j]['shortName']}(ID, TournamentID, Name, TotalBet, TotalPoint, HomeBet, HomePoint, AwayBet, AwayPoint) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", (schedules['data'][i]['id'], schedules['data'][i]['tournamentId'], match_name, 0, 0, 0, 0, 0, 0))
                         print(f"- Saved match: [{schedules['data'][i]['tournament']['serie']['league']['shortName']}] {match_name} ({schedules['data'][i]['id']})")
