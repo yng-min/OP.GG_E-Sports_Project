@@ -52,7 +52,7 @@ query {
         return { "error": True, "code": "UNKNOWN", "message": f"알 수 없는 에러가 발생했습니다.\n{error}", "data": None }
 
 
-def save_schedule(league_id: str = "null", page: int = 0):
+def save_schedule(leagueId: str = "null", page: int = 0):
     """
     OP.GG E-Sports의 경기 일정 데이터 저장을 위해 호출되는 함수
     """
@@ -78,7 +78,7 @@ query {
         status
     }
 }
-""" % (league_id, now_year, now_month, page)
+""" % (leagueId, now_year, now_month, page)
         headers = {
             "Content-Type": "application/json",
         }
@@ -100,7 +100,7 @@ query {
         return { "error": True, "code": "UNKNOWN", "message": f"알 수 없는 에러가 발생했습니다.\n{error}", "data": None }
 
 
-def update_schedule(match_info: str): # null(js) -> None(py) 문법 변환을 위해 dict 대신 str로 받음
+def update_schedule(matchInfo: str): # null(js) -> None(py) 문법 변환을 위해 dict 대신 str로 받음
     """
     OP.GG E-Sports API에서 경기 일정이 업데이트 되었을 때 데이터 처리를 위해 호출되는 함수
 
@@ -133,7 +133,7 @@ def update_schedule(match_info: str): # null(js) -> None(py) 문법 변환을 �
     """
     try:
         # null(js) -> None(py) 문법 변환 작업 *데이터 자체는 OP.GG E-Sports API에서 직접 다이렉트로 보내주기 때문에 eval문 보안 이슈 X*
-        match = str(match_info).replace("null", "None")
+        match = str(matchInfo).replace("null", "None")
         match = eval(match)
 
         if match == None or match == "" or match == {} or match == []:

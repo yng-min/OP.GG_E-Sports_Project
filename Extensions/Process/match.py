@@ -4,9 +4,9 @@
 import opgg
 
 
-def get_recentMatches(recentMatches):
+def get_match_info_by_id(matchId: str):
 
-    box_recentMatches = {}
+    box_match_info = {}
     match_id = ""
     match_name = ""
     match_originalScheduledAt = ""
@@ -14,39 +14,107 @@ def get_recentMatches(recentMatches):
     match_beginAt = ""
     match_endAt = ""
     match_status = ""
-    match_numberOfGames = ""
-    match_liveSupported = ""
+    match_numberOfGames = 0
+    match_liveSupported = False
     match_liveOpensAt = ""
-    match_streams = ""
-    match_winnerTeam = ""
-    match_homeTeam = ""
-    match_homeScore = ""
-    match_awayTeam = ""
-    match_awayScore = ""
-    match_ranks = ""
+    match_streams_isMain = False
+    match_streams_isOfficial = False
+    match_streams_rawUrl = ""
+    match_homeTeam_id = ""
+    match_homeTeam_name = ""
+    match_homeTeam_acronym = ""
+    match_homeTeam_nationality = ""
+    match_homeTeam_foundedAt = ""
+    match_homeTeam_imageUrl = ""
+    match_homeTeam_youtube = ""
+    match_homeTeam_twitter = ""
+    match_homeTeam_instagram = ""
+    match_homeTeam_facebook = ""
+    match_homeTeam_discord = ""
+    match_homeTeam_website = ""
+    match_awayTeam_id = ""
+    match_awayTeam_name = ""
+    match_awayTeam_acronym = ""
+    match_awayTeam_nationality = ""
+    match_awayTeam_foundedAt = ""
+    match_awayTeam_imageUrl = ""
+    match_awayTeam_youtube = ""
+    match_awayTeam_twitter = ""
+    match_awayTeam_instagram = ""
+    match_awayTeam_facebook = ""
+    match_awayTeam_discord = ""
+    match_awayTeam_website = ""
+    match_homeTeamRank_position = 0
+    match_homeTeamRank_previously = 0
+    match_homeTeamRank_point = 0
+    match_homeTeamRank_setWin = 0
+    match_homeTeamRank_setLose = 0
+    match_homeTeamRank_win = 0
+    match_homeTeamRank_lose = 0
+    match_awayTeamRank_position = 0
+    match_awayTeamRank_previously = 0
+    match_awayTeamRank_point = 0
+    match_awayTeamRank_setWin = 0
+    match_awayTeamRank_setLose = 0
+    match_awayTeamRank_win = 0
+    match_awayTeamRank_lose = 0
 
-    for i in range(len(recentMatches)):
-        match_info = opgg.match_info_by_id(match_id=recentMatches[i]['id'])
+    match_info = opgg.match_info_by_id(matchId=matchId)
 
-        match_id = match_info['data'][0]['id']
-        match_name = match_info['data'][0]['name']
-        match_originalScheduledAt = match_info['data'][0]['originalScheduledAt']
-        match_scheduledAt = match_info['data'][0]['scheduledAt']
-        match_beginAt = match_info['data'][0]['beginAt']
-        match_endAt = match_info['data'][0]['endAt']
-        match_status = match_info['data'][0]['status']
-        match_numberOfGames = match_info['data'][0]['numberOfGames']
-        match_liveSupported = match_info['data'][0]['liveSupported']
-        match_liveOpensAt = match_info['data'][0]['liveOpensAt']
-        match_streams = match_info['data'][0]['streams']
-        match_winnerTeam = match_info['data'][0]['winnerTeam']
-        match_homeTeam = match_info['data'][0]['homeTeam']
-        match_homeScore = match_info['data'][0]['homeScore']
-        match_awayTeam = match_info['data'][0]['awayTeam']
-        match_awayScore = match_info['data'][0]['awayScore']
-        match_ranks = match_info['data'][0]['ranks']
+    if match_info['error'] == False:
+        match_id = match_info['data']['id']
+        match_name = match_info['data']['name']
+        match_originalScheduledAt = match_info['data']['originalScheduledAt']
+        match_scheduledAt = match_info['data']['scheduledAt']
+        match_beginAt = match_info['data']['beginAt']
+        match_endAt = match_info['data']['endAt']
+        match_status = match_info['data']['status']
+        match_numberOfGames = match_info['data']['numberOfGames']
+        match_liveSupported = match_info['data']['liveSupported']
+        match_liveOpensAt = match_info['data']['liveOpensAt']
+        match_streams_isMain = match_info['data']['streams']['isMain']
+        match_streams_isOfficial = match_info['data']['streams']['isOfficial']
+        match_streams_rawUrl = match_info['data']['streams']['rawUrl']
+        match_homeTeam_id = match_info['data']['homeTeam']['id']
+        match_homeTeam_name = match_info['data']['homeTeam']['name']
+        match_homeTeam_acronym = match_info['data']['homeTeam']['acronym']
+        match_homeTeam_nationality = match_info['data']['homeTeam']['nationality']
+        match_homeTeam_foundedAt = match_info['data']['homeTeam']['foundedAt']
+        match_homeTeam_imageUrl = match_info['data']['homeTeam']['imageUrl']
+        match_homeTeam_youtube = match_info['data']['homeTeam']['youtube']
+        match_homeTeam_twitter = match_info['data']['homeTeam']['twitter']
+        match_homeTeam_instagram = match_info['data']['homeTeam']['instagram']
+        match_homeTeam_facebook = match_info['data']['homeTeam']['facebook']
+        match_homeTeam_discord = match_info['data']['homeTeam']['discord']
+        match_homeTeam_website = match_info['data']['homeTeam']['website']
+        match_awayTeam_id = match_info['data']['awayTeam']['id']
+        match_awayTeam_name = match_info['data']['awayTeam']['name']
+        match_awayTeam_acronym = match_info['data']['awayTeam']['acronym']
+        match_awayTeam_nationality = match_info['data']['awayTeam']['nationality']
+        match_awayTeam_foundedAt = match_info['data']['awayTeam']['foundedAt']
+        match_awayTeam_imageUrl = match_info['data']['awayTeam']['imageUrl']
+        match_awayTeam_youtube = match_info['data']['awayTeam']['youtube']
+        match_awayTeam_twitter = match_info['data']['awayTeam']['twitter']
+        match_awayTeam_instagram = match_info['data']['awayTeam']['instagram']
+        match_awayTeam_facebook = match_info['data']['awayTeam']['facebook']
+        match_awayTeam_discord = match_info['data']['awayTeam']['discord']
+        match_awayTeam_website = match_info['data']['awayTeam']['website']
+        match_homeTeamRank_position = match_info['data']['homeTeam']['rank']['position']
+        match_homeTeamRank_previously = match_info['data']['homeTeam']['rank']['previously']
+        match_homeTeamRank_point = match_info['data']['homeTeam']['rank']['point']
+        match_homeTeamRank_setWin = match_info['data']['homeTeam']['rank']['setWin']
+        match_homeTeamRank_setLose = match_info['data']['homeTeam']['rank']['setLose']
+        match_homeTeamRank_win = match_info['data']['homeTeam']['rank']['win']
+        match_homeTeamRank_lose = match_info['data']['homeTeam']['rank']['lose']
+        match_awayTeamRank_position = match_info['data']['awayTeam']['rank']['position']
+        match_awayTeamRank_previously = match_info['data']['awayTeam']['rank']['previously']
+        match_awayTeamRank_point = match_info['data']['awayTeam']['rank']['point']
+        match_awayTeamRank_setWin = match_info['data']['awayTeam']['rank']['setWin']
+        match_awayTeamRank_setLose = match_info['data']['awayTeam']['rank']['setLose']
+        match_awayTeamRank_win = match_info['data']['awayTeam']['rank']['win']
+        match_awayTeamRank_lose = match_info['data']['awayTeam']['rank']['lose']
 
-        box_recentMatches[match_id] = {
+        box_match_info = {
             "id": match_id,
             "name": match_name,
             "originalScheduledAt": match_originalScheduledAt,
@@ -57,19 +125,66 @@ def get_recentMatches(recentMatches):
             "numberOfGames": match_numberOfGames,
             "liveSupported": match_liveSupported,
             "liveOpensAt": match_liveOpensAt,
-            "streams": match_streams,
-            "winnerTeam": match_winnerTeam,
-            "homeTeam": match_homeTeam,
-            "homeScore": match_homeScore,
-            "awayTeam": match_awayTeam,
-            "awayScore": match_awayScore,
-            "ranks": match_ranks
+            "streams": {
+                "isMain": match_streams_isMain,
+                "isOfficial": match_streams_isOfficial,
+                "rawUrl": match_streams_rawUrl
+            },
+            "homeTeam": {
+                "id": match_homeTeam_id,
+                "name": match_homeTeam_name,
+                "acronym": match_homeTeam_acronym,
+                "nationality": match_homeTeam_nationality,
+                "foundedAt": match_homeTeam_foundedAt,
+                "imageUrl": match_homeTeam_imageUrl,
+                "youtube": match_homeTeam_youtube,
+                "twitter": match_homeTeam_twitter,
+                "instagram": match_homeTeam_instagram,
+                "facebook": match_homeTeam_facebook,
+                "discord": match_homeTeam_discord,
+                "website": match_homeTeam_website,
+                "rank": {
+                    "position": match_homeTeamRank_position,
+                    "previously": match_homeTeamRank_previously,
+                    "point": match_homeTeamRank_point,
+                    "setWin": match_homeTeamRank_setWin,
+                    "setLose": match_homeTeamRank_setLose,
+                    "win": match_homeTeamRank_win,
+                    "lose": match_homeTeamRank_lose
+                }
+            },
+            "awayTeam": {
+                "id": match_awayTeam_id,
+                "name": match_awayTeam_name,
+                "acronym": match_awayTeam_acronym,
+                "nationality": match_awayTeam_nationality,
+                "foundedAt": match_awayTeam_foundedAt,
+                "imageUrl": match_awayTeam_imageUrl,
+                "youtube": match_awayTeam_youtube,
+                "twitter": match_awayTeam_twitter,
+                "instagram": match_awayTeam_instagram,
+                "facebook": match_awayTeam_facebook,
+                "discord": match_awayTeam_discord,
+                "website": match_awayTeam_website,
+                "rank": {
+                    "position": match_awayTeamRank_position,
+                    "previously": match_awayTeamRank_previously,
+                    "point": match_awayTeamRank_point,
+                    "setWin": match_awayTeamRank_setWin,
+                    "setLose": match_awayTeamRank_setLose,
+                    "win": match_awayTeamRank_win,
+                    "lose": match_awayTeamRank_lose
+                }
+            }
         }
 
-    return box_recentMatches
+    else:
+        return match_info
+
+    return box_match_info
 
 
-def get_game_info_by_id(match_id, match_set):
+def get_game_info_by_id(matchId: str, matchSet: str):
 
     box_game_info = {}
     box_team = []
@@ -148,7 +263,7 @@ def get_game_info_by_id(match_id, match_set):
     game_player_quadraKills = False
     game_player_pentaKills = False
 
-    game_info = opgg.game_info_by_id(match_id=match_id, match_set=match_set)
+    game_info = opgg.game_info_by_id(matchId=matchId, matchSet=matchSet)
 
     if game_info['error'] == False:
         game_id = game_info['data']['id']
@@ -335,3 +450,68 @@ def get_game_info_by_id(match_id, match_set):
         return game_info
 
     return box_game_info
+
+
+def get_recentMatches(recentMatches: list):
+
+    box_recentMatches = {}
+    match_id = ""
+    match_name = ""
+    match_originalScheduledAt = ""
+    match_scheduledAt = ""
+    match_beginAt = ""
+    match_endAt = ""
+    match_status = ""
+    match_numberOfGames = ""
+    match_liveSupported = ""
+    match_liveOpensAt = ""
+    match_streams = ""
+    match_winnerTeam = ""
+    match_homeTeam = ""
+    match_homeScore = ""
+    match_awayTeam = ""
+    match_awayScore = ""
+    match_ranks = ""
+
+    for i in range(len(recentMatches)):
+        match_info = opgg.match_info_by_id(matchId=recentMatches[i]['id'])
+
+        match_id = match_info['data'][0]['id']
+        match_name = match_info['data'][0]['name']
+        match_originalScheduledAt = match_info['data'][0]['originalScheduledAt']
+        match_scheduledAt = match_info['data'][0]['scheduledAt']
+        match_beginAt = match_info['data'][0]['beginAt']
+        match_endAt = match_info['data'][0]['endAt']
+        match_status = match_info['data'][0]['status']
+        match_numberOfGames = match_info['data'][0]['numberOfGames']
+        match_liveSupported = match_info['data'][0]['liveSupported']
+        match_liveOpensAt = match_info['data'][0]['liveOpensAt']
+        match_streams = match_info['data'][0]['streams']
+        match_winnerTeam = match_info['data'][0]['winnerTeam']
+        match_homeTeam = match_info['data'][0]['homeTeam']
+        match_homeScore = match_info['data'][0]['homeScore']
+        match_awayTeam = match_info['data'][0]['awayTeam']
+        match_awayScore = match_info['data'][0]['awayScore']
+        match_ranks = match_info['data'][0]['ranks']
+
+        box_recentMatches[match_id] = {
+            "id": match_id,
+            "name": match_name,
+            "originalScheduledAt": match_originalScheduledAt,
+            "scheduledAt": match_scheduledAt,
+            "beginAt": match_beginAt,
+            "endAt": match_endAt,
+            "status": match_status,
+            "numberOfGames": match_numberOfGames,
+            "liveSupported": match_liveSupported,
+            "liveOpensAt": match_liveOpensAt,
+            "streams": match_streams,
+            "winnerTeam": match_winnerTeam,
+            "homeTeam": match_homeTeam,
+            "homeScore": match_homeScore,
+            "awayTeam": match_awayTeam,
+            "awayScore": match_awayScore,
+            "ranks": match_ranks
+        }
+
+    return box_recentMatches

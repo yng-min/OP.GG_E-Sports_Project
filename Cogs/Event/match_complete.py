@@ -13,7 +13,7 @@ import traceback
 import os
 
 from Extensions.Prediction.deposit import DepositPoint
-from Extensions.Process.match import get_game_info_by_id
+from Extensions.Process.match import get_match_info_by_id
 
 # config.json 파일 불러오기
 try:
@@ -66,8 +66,8 @@ class MatchCompleteTASK(commands.Cog):
 
         match_input = eval(ctx.content)
 
-        match_data = opgg.match_completed(match_info=match_input)
-        game_info = get_game_info_by_id(match_id=match_input['matchId'], match_set=match_input['set'])
+        match_data = opgg.match_completed(matchInfo=match_input)
+        match_info = get_match_info_by_id(matchId=match_input['matchId'])
 
         if (match_data['error'] == False) and (match_data['data']['match_type'] == "complete"):
             match_id = match_data['data']['match_id']
@@ -79,23 +79,12 @@ class MatchCompleteTASK(commands.Cog):
             print(f"- Sending match: [{match_league}] {match_title} ({match_id})")
 
             try: # 셋업된 채널 불러오기
-                scheduleURL = f"https://qwer.gg/ko/matches/{match_id}"
+                scheduleURL = f"https://esports.op.gg/matches/{match_id}"
 
                 box_league = []
                 for i in range(16):
                     if leagues[i]['shortName'] == match_league:
                         box_league.append(f"{leagues[i]['shortName']}/{leagues[i]['region']}")
-
-                scheduleDB = sqlite3.connect(r"./Database/schedule.sqlite", isolation_level=None)
-                scheduleCURSOR = scheduleDB.cursor()
-                for i in range(16):
-                    try:
-                        numberOfGames = scheduleCURSOR.execute(f"SELECT NumberOfGames FROM {leagues[i]['shortName']} WHERE ID = {match_data['data']['match_id']}").fetchone()[0]
-                        scheduleCURSOR.execute(f"UPDATE {leagues[i]['shortName']} SET Status = ? WHERE ID = ?", (match_data['data']['match_type'], match_id))
-                    except:
-                        numberOfGames = None
-                        pass
-                scheduleDB.close()
 
                 # 현재 시간
                 time_nowDay = datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%Y-%m-%d")
@@ -152,7 +141,7 @@ class MatchCompleteTASK(commands.Cog):
                                 if match_data['data']['firstBlood'] == "": match_data['data']['firstBlood'] = "-"
                                 if match_data['data']['mvp'] == "": match_data['data']['mvp'] = "-"
 
-                                if game_info['data']['finished'] == True:
+                                if match_info['data']['status'] == "finished":
                                     bettingDB = sqlite3.connect(rf"./Database/betting.sqlite", isolation_level=None)
                                     bettingCURSOR = bettingDB.cursor()
 

@@ -4,7 +4,7 @@
 import opgg
 
 
-def get_league_standing(tournamentId):
+def get_league_standing(tournamentId: str):
 
     box_team = []
     team_id = ""
@@ -79,7 +79,7 @@ def get_league_standing(tournamentId):
     return box_team
 
 
-def get_player_mvp_rank(tournamentId):
+def get_player_mvp_rank(tournamentId: str):
 
     box_players = []
 

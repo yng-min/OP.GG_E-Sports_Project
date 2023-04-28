@@ -4,7 +4,7 @@
 import opgg
 
 
-def get_player_info_by_id(playerId):
+def get_player_info_by_id(playerId: str):
 
     box_player = []
     player_id = ""
@@ -80,7 +80,7 @@ def get_player_info_by_id(playerId):
     return box_player
 
 
-def get_player_info_by_nickname(playerNickname):
+def get_player_info_by_nickname(playerNickname: str):
 
     box_player = []
     player_id = ""
@@ -155,7 +155,7 @@ def get_player_info_by_nickname(playerNickname):
     return box_player
 
 
-def get_team_info_by_id(tournamentId, teamId):
+def get_team_info_by_id(tournamentId: str, teamId: str):
 
     box_player = []
     player_templete = {}
@@ -306,7 +306,7 @@ def get_team_info_by_id(tournamentId, teamId):
     return box_player
 
 
-def get_player_recent_matches_by_id(playerId):
+def get_player_recent_matches_by_id(playerId: str):
 
     box_recentMatches = []
     recentMatches_id = ""

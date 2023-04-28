@@ -86,7 +86,7 @@ def make_game_info_embed(picked_match, picked_set, box_player, box_players, box_
     picked_match = box_recent_matches[picked_match - 1]
     match_date = datetime.datetime.strptime(picked_match['beginAt'].split("T")[0], "%Y-%m-%d").strftime("X%Y년 X%m월 X%d일").replace("X0", "").replace("X", "")
 
-    game_info = get_game_info_by_id(match_id=picked_match['id'], match_set=str(picked_set))
+    game_info = get_game_info_by_id(matchId=picked_match['id'], matchSet=str(picked_set))
 
     # msg_ban_1 = f"🚫) {game_info['teams'][0]['bans'][0]} {game_info['teams'][0]['bans'][1]} {game_info['teams'][0]['bans'][2]} {game_info['teams'][0]['bans'][3]} {game_info['teams'][0]['bans'][4]}"
     msg_ban_1 = f"🚫) [⬜]({esports_op_gg_champion}{game_info['teams'][0]['bans'][0]}) [⬜]({esports_op_gg_champion}{game_info['teams'][0]['bans'][1]}) [⬜]({esports_op_gg_champion}{game_info['teams'][0]['bans'][2]}) [⬜]({esports_op_gg_champion}{game_info['teams'][0]['bans'][3]}) [⬜]({esports_op_gg_champion}{game_info['teams'][0]['bans'][4]})" # 챔피언 이모티콘 적용될 때까지만 임시
@@ -268,7 +268,7 @@ class PlayerInfoView(discord.ui.View):
             elif i == 5: emoji = "5️⃣"
 
             try:
-                get_game_info_by_id(match_id=self.box_recent_matches[self.picked_match - 1]['id'], match_set=str(i))
+                get_game_info_by_id(matchId=self.box_recent_matches[self.picked_match - 1]['id'], matchSet=str(i))
  
                 if self.picked_set == i:
                     self.box_button.append(discord.ui.Button(emoji=emoji, style=discord.ButtonStyle.blurple, custom_id=f"{i}", row=1))

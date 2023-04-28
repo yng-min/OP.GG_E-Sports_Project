@@ -4,7 +4,7 @@ import requests
 url = "https://esports.op.gg/matches/graphql" # OP.GG E-Sports API URL
 
 
-def match_info_by_id(match_id: str):
+def match_info_by_id(matchId: str):
     """
     OP.GG E-Sports에서 MatchID를 통한 경기 정보 데이터 처리를 위해 호출되는 함수
     """
@@ -77,7 +77,7 @@ query {
         }
     }
 }
-""" % (match_id)
+""" % (matchId)
         headers = {
             "Content-Type": "application/json",
         }
@@ -99,7 +99,7 @@ query {
         return { "error": True, "code": "UNKNOWN", "message": f"알 수 없는 에러가 발생했습니다.\n{error}", "data": None }
 
 
-def game_info_by_id(match_id: str, match_set: str):
+def game_info_by_id(matchId: str, match_set: str):
     """
     OP.GG E-Sports에서 MatchID와 MatchSet를 통한 경기 세부 정보 데이터 처리를 위해 호출되는 함수
     """
@@ -181,7 +181,7 @@ query {
         }
     }
 }
-""" % (match_id, match_set)
+""" % (matchId, match_set)
         headers = {
             "Content-Type": "application/json",
         }
@@ -203,7 +203,7 @@ query {
         return { "error": True, "code": "UNKNOWN", "message": f"알 수 없는 에러가 발생했습니다.\n{error}", "data": None }
 
 
-def match_started(match_id: str, tournament_id: str, status: str):
+def match_started(matchId: str, tournament_id: str, status: str):
     """
     OP.GG E-Sports API에서 경기가 시작되었을 때 데이터 처리를 위해 호출되는 함수
     """
@@ -234,7 +234,7 @@ query {
         }
     }
 }
-""" % (match_id, tournament_id)
+""" % (matchId, tournament_id)
         headers = {
             "Content-Type": "application/json",
         }
