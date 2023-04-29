@@ -51,7 +51,7 @@ class UpdateScheduleTASK(commands.Cog):
         if ctx.channel.id != channel_event:
             return
 
-        match_data = opgg.match_completed(match_info=eval(ctx.content))
+        match_data = opgg.match_completed(matchInfo=eval(ctx.content))
 
         if (match_data['error'] == False) and (match_data['data']['match_type'] == "reschedule"):
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))

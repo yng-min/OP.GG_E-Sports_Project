@@ -100,7 +100,7 @@ class NotificationTASK(commands.Cog):
 
                     # 경기 시작 알림
                     if date_detail == time_nowDetail:
-                        match_data = opgg.match_started(match_id=match_id, tournament_id=tournamentID, status="not_started")
+                        match_data = opgg.match_started(matchId=match_id, tournamentId=tournamentID, status="not_started")
 
                         if match_data['error'] == False:
                             try:
