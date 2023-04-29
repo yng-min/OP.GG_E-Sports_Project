@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 # 패키지 라이브러리 설정
-import opgg
 import discord
 from discord.ext import commands
 from discord.commands import SlashCommandGroup, option

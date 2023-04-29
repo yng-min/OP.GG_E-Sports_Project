@@ -99,7 +99,7 @@ query {
         return { "error": True, "code": "UNKNOWN", "message": f"알 수 없는 에러가 발생했습니다.\n{error}", "data": None }
 
 
-def game_info_by_id(matchId: str, match_set: str):
+def game_info_by_id(matchId: str, matchSet: str):
     """
     OP.GG E-Sports에서 MatchID와 MatchSet를 통한 경기 세부 정보 데이터 처리를 위해 호출되는 함수
     """
@@ -181,7 +181,7 @@ query {
         }
     }
 }
-""" % (matchId, match_set)
+""" % (matchId, matchSet)
         headers = {
             "Content-Type": "application/json",
         }
@@ -203,7 +203,7 @@ query {
         return { "error": True, "code": "UNKNOWN", "message": f"알 수 없는 에러가 발생했습니다.\n{error}", "data": None }
 
 
-def match_started(matchId: str, tournament_id: str, status: str):
+def match_started(matchId: str, tournamentId: str, status: str):
     """
     OP.GG E-Sports API에서 경기가 시작되었을 때 데이터 처리를 위해 호출되는 함수
     """
@@ -234,7 +234,7 @@ query {
         }
     }
 }
-""" % (matchId, tournament_id)
+""" % (matchId, tournamentId)
         headers = {
             "Content-Type": "application/json",
         }
@@ -256,7 +256,7 @@ query {
         return { "error": True, "code": "UNKNOWN", "message": f"알 수 없는 에러가 발생했습니다.\n{error}", "data": None }
 
 
-def match_finished(league_id: str = "null", page: int = 0):
+def match_finished(leagueId: str = "null", page: int = 0):
     """
     OP.GG E-Sports의 경기 종료 데이터 처리를 위해 호출되는 함수
     """
@@ -294,7 +294,7 @@ query {
         status
     }
 }
-""" % (league_id, page)
+""" % (leagueId, page)
         headers = {
             "Content-Type": "application/json",
         }
@@ -316,7 +316,7 @@ query {
         return { "error": True, "code": "UNKNOWN", "message": f"알 수 없는 에러가 발생했습니다.\n{error}", "data": None }
 
 
-def match_completed(match_info: dict):
+def match_completed(matchInfo: dict):
     """
     OP.GG E-Sports API에서 경기 결과 데이터 처리를 위해 호출되는 함수
 
@@ -362,7 +362,7 @@ def match_completed(match_info: dict):
     }
     """
     try:
-        match = match_info
+        match = matchInfo
 
         if match == None or match == "" or match == {} or match == []:
             return { "error": True, "code": "NOINPUT", "message": "호출된 함수에 대입할 데이터가 없습니다.", "data": None }

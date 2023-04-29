@@ -75,7 +75,7 @@ class NotificationTASK(commands.Cog):
             time_nowTime = datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("X%m월 X%d일").replace("X0", "").replace("X", "")
 
             time_nowDetail = datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%H:%M:00")
-            # time_nowDetail = "19:00:00" # 테스트용
+            # time_nowDetail = "15:00:00" # 테스트용
 
             for j in range(len(box_dates)):
                 date_day = box_dates[j].split(" ")[0]
