@@ -70,11 +70,12 @@ class save_scheduleTASK(commands.Cog):
                 schedules = opgg.save_schedule()
 
                 if schedules['error'] == False:
+                    temp_originalScheduledAt = []
+                    box_originalScheduledAt = []
+                    temp_scheduledAt = []
+                    box_scheduledAt = []
+
                     if schedules['data'] != None:
-                        temp_originalScheduledAt = []
-                        box_originalScheduledAt = []
-                        temp_scheduledAt = []
-                        box_scheduledAt = []
                         for i in range(len(schedules['data'])):
                             temp_originalScheduledAt.append(schedules['data'][i]['originalScheduledAt'].replace("T", " ").split(".000Z")[0])
                             date_temp_originalScheduledAt = datetime.datetime.strptime(temp_originalScheduledAt[i], "%Y-%m-%d %H:%M:%S")
@@ -112,7 +113,12 @@ class save_scheduleTASK(commands.Cog):
                     content_msg = ""
                     match_scheduledAt = ""
                     match_originalScheduledAt = ""
-                    try:
+
+                    if box_scheduledAt == []:
+                        print("- No matches.")
+                        content_msg += "- No matches."
+                    
+                    else:
                         for i in range(len(box_scheduledAt)):
                             try: match_name = schedules['data'][i]['name'].split(': ')[1]
                             except: match_name = schedules['data'][i]['name']
@@ -125,13 +131,7 @@ class save_scheduleTASK(commands.Cog):
                                     scheduleCURSOR.execute(f"INSERT INTO {leagues[j]['shortName']}(ID, TournamentID, Name, OriginalScheduledAt, ScheduledAt, NumberOfGames, Status) VALUES(?, ?, ?, ?, ?, ?, ?)", (schedules['data'][i]['id'], schedules['data'][i]['tournamentId'], match_name, match_originalScheduledAt, match_scheduledAt, schedules['data'][i]['numberOfGames'], schedules['data'][i]['status']))
                                     bettingCURSOR.execute(f"INSERT INTO {leagues[j]['shortName']}(ID, TournamentID, Name, TotalBet, TotalPoint, HomeBet, HomePoint, AwayBet, AwayPoint) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", (schedules['data'][i]['id'], schedules['data'][i]['tournamentId'], match_name, 0, 0, 0, 0, 0, 0))
                             print(f"- Saved match: [{schedules['data'][i]['tournament']['serie']['league']['shortName']}] {match_name} ({schedules['data'][i]['id']})")
-
                             content_msg += f"\n- Saved match: `[{schedules['data'][i]['tournament']['serie']['league']['shortName']}] {match_name} ({schedules['data'][i]['id']})` - Scheduled at: `{box_scheduledAt[i]}`"
-
-                    except:
-                        if content_msg == "": 
-                            print("- No matches.")
-                            content_msg = "- No matches."
 
                     webhook_data = {
                         "username": "OP.GG E-Sports Log",
