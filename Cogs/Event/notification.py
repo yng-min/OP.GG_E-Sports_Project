@@ -177,7 +177,7 @@ class NotificationTASK(commands.Cog):
                                         if (channel_id) and (notice_answer == 1):
                                             if ((box_league[j].split("/")[0] == "LCO") and (leagueLCO == 1)) or ((box_league[j].split("/")[0] == "PCS") and (leaguePCS == 1)) or ((box_league[j].split("/")[0] == "LLA") and (leagueLLA == 1)) or ((box_league[j].split("/")[0] == "LCS") and (leagueLCS == 1)) or ((box_league[j].split("/")[0] == "LEC") and (leagueLEC == 1)) or ((box_league[j].split("/")[0] == "VCS") and (leagueVCS == 1)) or ((box_league[j].split("/")[0] == "LCL") and (leagueLCL == 1)) or ((box_league[j].split("/")[0] == "LJL") and (leagueLJL == 1)) or ((box_league[j].split("/")[0] == "TCL") and (leagueTCL == 1)) or ((box_league[j].split("/")[0] == "CBLOL") and (leagueCBLOL == 1)) or ((box_league[j].split("/")[0] == "OPL") and (leagueOPL == 1)) or ((box_league[j].split("/")[0] == "Worlds") and (leagueWorlds == 1)) or ((box_league[j].split("/")[0] == "LMS") and (leagueLMS == 1)) or ((box_league[j].split("/")[0] == "LPL") and (leagueLPL == 1)) or ((box_league[j].split("/")[0] == "LCK") and (leagueLCK == 1)) or ((box_league[j].split("/")[0] == "MSI") and (leagueMSI == 1)):
 
-                                                # guild_notice = self.bot.get_guild(int(data_guild.split("_")[1].split(".")[0]))
+                                                guild_notice = self.bot.get_guild(int(data_guild.split("_")[1].split(".")[0]))
                                                 channel_notice = self.bot.get_channel(channel_id)
                                                 # role_notice = discord.utils.get(guild_notice.roles, id=role_id)
 
@@ -217,8 +217,13 @@ class NotificationTASK(commands.Cog):
                                                     embed.add_field(name="첫 바론 처치율", value=team_2_firstBaron + "%", inline=True)
                                                     embed.add_field(name="골드 획득량", value=team_2_goldEarned, inline=True)
 
-                                                # await msg.edit(msg_content, embed=embed, view=BettingButton(bot=self.bot, msg=msg, url=scheduleURL, match_id=match_id, team_1=team_1_acronym, team_2=team_2_acronym))
-                                                await msg.edit("", embed=embed, view=BettingButton(bot=self.bot, msg=msg, url=scheduleURL, match_id=match_id, team_1=team_1_acronym, team_2=team_2_acronym))
+                                                try:
+                                                    # await msg.edit(msg_content, embed=embed, view=BettingButton(bot=self.bot, msg=msg, url=scheduleURL, match_id=match_id, team_1=team_1_acronym, team_2=team_2_acronym))
+                                                    await msg.edit("", embed=embed, view=BettingButton(bot=self.bot, msg=msg, url=scheduleURL, match_id=match_id, team_1=team_1_acronym, team_2=team_2_acronym))
+                                                except:
+                                                    print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
+                                                    print("경기 시작 알림 전송 실패")
+                                                    print(f"{guild_notice.name} ({guild_notice.id}) | {channel_notice.name} ({channel_notice.id})")
 
                             except Exception as error:
                                 print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
@@ -269,7 +274,9 @@ class NotificationTASK(commands.Cog):
                                     if (channel_id) and (notice_answer == 1):
                                         if ((box_league[j].split("/")[0] == "LCO") and (leagueLCO == 1)) or ((box_league[j].split("/")[0] == "PCS") and (leaguePCS == 1)) or ((box_league[j].split("/")[0] == "LLA") and (leagueLLA == 1)) or ((box_league[j].split("/")[0] == "LCS") and (leagueLCS == 1)) or ((box_league[j].split("/")[0] == "LEC") and (leagueLEC == 1)) or ((box_league[j].split("/")[0] == "VCS") and (leagueVCS == 1)) or ((box_league[j].split("/")[0] == "LCL") and (leagueLCL == 1)) or ((box_league[j].split("/")[0] == "LJL") and (leagueLJL == 1)) or ((box_league[j].split("/")[0] == "TCL") and (leagueTCL == 1)) or ((box_league[j].split("/")[0] == "CBLOL") and (leagueCBLOL == 1)) or ((box_league[j].split("/")[0] == "OPL") and (leagueOPL == 1)) or ((box_league[j].split("/")[0] == "Worlds") and (leagueWorlds == 1)) or ((box_league[j].split("/")[0] == "LMS") and (leagueLMS == 1)) or ((box_league[j].split("/")[0] == "LPL") and (leagueLPL == 1)) or ((box_league[j].split("/")[0] == "LCK") and (leagueLCK == 1)) or ((box_league[j].split("/")[0] == "MSI") and (leagueMSI == 1)):
 
+                                            guild_notice = self.bot.get_guild(int(data_guild.split("_")[1].split(".")[0]))
                                             channel_notice = self.bot.get_channel(channel_id)
+                                            # role_notice = discord.utils.get(guild_notice.roles, id=role_id)
 
                                             # msg_content = f"{role_notice.mention}"
                                             msg_title = f"> 📢 {time_nowTime} 경기 알림"
@@ -279,8 +286,13 @@ class NotificationTASK(commands.Cog):
                                             embed = discord.Embed(title=msg_title, description=msg_description, color=colorMap['red'])
                                             # embed.set_footer(text="Powered by OP.GG", icon_url=self.bot.user.display_avatar.url)
                                             embed.set_image(url=banner_image_url)
-                                            # await channel_notice.send(msg_content, embed=embed, view=LinkButton(scheduleURL), delete_after=1800) # 30분 후 삭제
-                                            await channel_notice.send(embed=embed, view=LinkButton(scheduleURL), delete_after=1800) # 30분 후 삭제
+                                            try:
+                                                # await channel_notice.send(msg_content, embed=embed, view=LinkButton(scheduleURL), delete_after=1800) # 30분 후 삭제
+                                                await channel_notice.send(embed=embed, view=LinkButton(scheduleURL), delete_after=1800) # 30분 후 삭제
+                                            except:
+                                                print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
+                                                print("경기 시작 알림 전송 실패")
+                                                print(f"{guild_notice.name} ({guild_notice.id}) | {channel_notice.name} ({channel_notice.id})")
 
                         except Exception as error:
                             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))

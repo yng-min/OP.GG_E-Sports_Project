@@ -121,7 +121,7 @@ class MatchCompleteTASK(commands.Cog):
 
                         if (channel_id) and (notice_answer == 1):
                             if ((box_league[0].split("/")[0] == "LCO") and (leagueLCO == 1)) or ((box_league[0].split("/")[0] == "PCS") and (leaguePCS == 1)) or ((box_league[0].split("/")[0] == "LLA") and (leagueLLA == 1)) or ((box_league[0].split("/")[0] == "LCS") and (leagueLCS == 1)) or ((box_league[0].split("/")[0] == "LEC") and (leagueLEC == 1)) or ((box_league[0].split("/")[0] == "VCS") and (leagueVCS == 1)) or ((box_league[0].split("/")[0] == "LCL") and (leagueLCL == 1)) or ((box_league[0].split("/")[0] == "LJL") and (leagueLJL == 1)) or ((box_league[0].split("/")[0] == "TCL") and (leagueTCL == 1)) or ((box_league[0].split("/")[0] == "CBLOL") and (leagueCBLOL == 1)) or ((box_league[0].split("/")[0] == "OPL") and (leagueOPL == 1)) or ((box_league[0].split("/")[0] == "Worlds") and (leagueWorlds == 1)) or ((box_league[0].split("/")[0] == "LMS") and (leagueLMS == 1)) or ((box_league[0].split("/")[0] == "LPL") and (leagueLPL == 1)) or ((box_league[0].split("/")[0] == "LCK") and (leagueLCK == 1)) or ((box_league[0].split("/")[0] == "MSI") and (leagueMSI == 1)):
-                                # guild_notice = self.bot.get_guild(int(data_guild.split("_")[1].split(".")[0]))
+                                guild_notice = self.bot.get_guild(int(data_guild.split("_")[1].split(".")[0]))
                                 channel_notice = self.bot.get_channel(channel_id)
                                 # role_notice = discord.utils.get(guild_notice.roles, id=role_id)
 
@@ -199,10 +199,14 @@ class MatchCompleteTASK(commands.Cog):
                                         embed.add_field(name="\u200b", value=f"**> 리그 승부 예측 결과**", inline=False)
                                         embed.add_field(name=msg_team_1, value=f"{msg_user_1}\n{msg_point_1}", inline=True)
                                         embed.add_field(name=msg_team_2, value=f"{msg_user_2}\n{msg_point_2}", inline=True)
-                                        embed.add_field(
-                                            name="포인트 정산", value=f"__**{match_data['data']['match_winner_name']}**__ 팀에 베팅한 유저에게 각각 {msg_reward}가 지급됩니다.", inline=False)
-                                        # await channel_notice.send(msg_content, embed=embed, view=LinkButton(scheduleURL))
-                                        await channel_notice.send(embed=embed, view=LinkButton(scheduleURL))
+                                        embed.add_field(name="포인트 정산", value=f"__**{match_data['data']['match_winner_name']}**__ 팀에 베팅한 유저에게 각각 {msg_reward}가 지급됩니다.", inline=False)
+                                        try:
+                                            # await channel_notice.send(msg_content, embed=embed, view=LinkButton(scheduleURL))
+                                            await channel_notice.send(embed=embed, view=LinkButton(scheduleURL))
+                                        except:
+                                            print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
+                                            print("경기 결과 알림 전송 실패")
+                                            print(f"{guild_notice.name} ({guild_notice.id}) | {channel_notice.name} ({channel_notice.id})")
 
                                     except:
                                         embed = discord.Embed(title=msg_title, description=msg_description, color=colorMap['red'])
@@ -215,8 +219,13 @@ class MatchCompleteTASK(commands.Cog):
                                         embed.add_field(name="획득한 골드 1위", value=match_data['data']['gold'], inline=True)
                                         embed.add_field(name="CS 1위", value=match_data['data']['cs'], inline=True)
                                         embed.add_field(name="선취점", value=match_data['data']['firstBlood'], inline=True)
-                                        # await channel_notice.send(msg_content, embed=embed, view=LinkButton(scheduleURL))
-                                        await channel_notice.send(embed=embed, view=LinkButton(scheduleURL))
+                                        try:
+                                            # await channel_notice.send(msg_content, embed=embed, view=LinkButton(scheduleURL))
+                                            await channel_notice.send(embed=embed, view=LinkButton(scheduleURL))
+                                        except:
+                                            print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
+                                            print("경기 결과 알림 전송 실패")
+                                            print(f"{guild_notice.name} ({guild_notice.id}) | {channel_notice.name} ({channel_notice.id})")
 
                                         print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
                                         print(f"[{box_league[0]}] {match_title} ({match_id}) | 경기 베팅 데이터를 불러올 수 없습니다.")
@@ -232,8 +241,13 @@ class MatchCompleteTASK(commands.Cog):
                                     embed.add_field(name="획득한 골드 1위", value=match_data['data']['gold'], inline=True)
                                     embed.add_field(name="CS 1위", value=match_data['data']['cs'], inline=True)
                                     embed.add_field(name="선취점", value=match_data['data']['firstBlood'], inline=True)
-                                    # await channel_notice.send(msg_content, embed=embed, view=LinkButton(scheduleURL))
-                                    await channel_notice.send(embed=embed, view=LinkButton(scheduleURL))
+                                    try:
+                                        # await channel_notice.send(msg_content, embed=embed, view=LinkButton(scheduleURL))
+                                        await channel_notice.send(embed=embed, view=LinkButton(scheduleURL))
+                                    except:
+                                        print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
+                                        print("경기 결과 알림 전송 실패")
+                                        print(f"{guild_notice.name} ({guild_notice.id}) | {channel_notice.name} ({channel_notice.id})")
 
                 DepositPoint.deposit_point(match_data=match_data, bet_box=bet_box)
 
