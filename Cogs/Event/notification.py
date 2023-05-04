@@ -75,7 +75,7 @@ class NotificationTASK(commands.Cog):
             time_nowTime = datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("X%m월 X%d일").replace("X0", "").replace("X", "")
 
             time_nowDetail = datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%H:%M:00")
-            # time_nowDetail = "15:00:00" # 테스트용
+            # time_nowDetail = "21:00:00" # 테스트용
 
             for j in range(len(box_dates)):
                 date_day = box_dates[j].split(" ")[0]
@@ -187,7 +187,12 @@ class NotificationTASK(commands.Cog):
                                                 msg_description = f"```{match_title} ({box_league[j]})```"
 
                                                 early_embed = discord.Embed(title=msg_title, description="메시지 전송 중...", color=colorMap['red'])
-                                                msg = await channel_notice.send(embed=early_embed)
+                                                try:
+                                                    msg = await channel_notice.send(embed=early_embed)
+                                                except:
+                                                    print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
+                                                    print("경기 시작 알림 전송 실패")
+                                                    print(f"{guild_notice.name} ({guild_notice.id}) | {channel_notice.name} ({channel_notice.id})")
 
                                                 embed = discord.Embed(title=msg_title, description=msg_description, color=colorMap['red'])
                                                 embed.set_footer(text="TIP: 아래 버튼을 눌러 승부 예측 미니게임을 즐길 수 있어요.", icon_url=self.bot.user.display_avatar.url)
@@ -221,9 +226,7 @@ class NotificationTASK(commands.Cog):
                                                     # await msg.edit(msg_content, embed=embed, view=BettingButton(bot=self.bot, msg=msg, url=scheduleURL, match_id=match_id, team_1=team_1_acronym, team_2=team_2_acronym))
                                                     await msg.edit("", embed=embed, view=BettingButton(bot=self.bot, msg=msg, url=scheduleURL, match_id=match_id, team_1=team_1_acronym, team_2=team_2_acronym))
                                                 except:
-                                                    print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
-                                                    print("경기 시작 알림 전송 실패")
-                                                    print(f"{guild_notice.name} ({guild_notice.id}) | {channel_notice.name} ({channel_notice.id})")
+                                                    pass
 
                             except Exception as error:
                                 print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
