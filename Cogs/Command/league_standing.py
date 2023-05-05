@@ -223,43 +223,43 @@ class StandingView(discord.ui.View):
 
     def add_button(self):
         if (self.button_select == True) and (self.button_select_index == "0"):
-            team_1 = discord.ui.Button(emoji="1️⃣", style=discord.ButtonStyle.blurple, custom_id="0", row=1)
+            team_1 = discord.ui.Button(emoji="1️⃣", style=discord.ButtonStyle.gray, disabled=True, custom_id="0", row=1)
         else:
             team_1 = discord.ui.Button(emoji="1️⃣", style=discord.ButtonStyle.gray, custom_id="0", row=1)
         if (self.button_select == True) and (self.button_select_index == "1"):
-            team_2 = discord.ui.Button(emoji="2️⃣", style=discord.ButtonStyle.blurple, custom_id="1", row=1)
+            team_2 = discord.ui.Button(emoji="2️⃣", style=discord.ButtonStyle.gray, disabled=True, custom_id="1", row=1)
         else:
             team_2 = discord.ui.Button(emoji="2️⃣", style=discord.ButtonStyle.gray, custom_id="1", row=1)
         if (self.button_select == True) and (self.button_select_index == "2"):
-            team_3 = discord.ui.Button(emoji="3️⃣", style=discord.ButtonStyle.blurple, custom_id="2", row=1)
+            team_3 = discord.ui.Button(emoji="3️⃣", style=discord.ButtonStyle.gray, disabled=True, custom_id="2", row=1)
         else:
             team_3 = discord.ui.Button(emoji="3️⃣", style=discord.ButtonStyle.gray, custom_id="2", row=1)
         if (self.button_select == True) and (self.button_select_index == "3"):
-            team_4 = discord.ui.Button(emoji="4️⃣", style=discord.ButtonStyle.blurple, custom_id="3", row=1)
+            team_4 = discord.ui.Button(emoji="4️⃣", style=discord.ButtonStyle.gray, disabled=True, custom_id="3", row=1)
         else:
             team_4 = discord.ui.Button(emoji="4️⃣", style=discord.ButtonStyle.gray, custom_id="3", row=1)
         if (self.button_select == True) and (self.button_select_index == "4"):
-            team_5 = discord.ui.Button(emoji="5️⃣", style=discord.ButtonStyle.blurple, custom_id="4", row=1)
+            team_5 = discord.ui.Button(emoji="5️⃣", style=discord.ButtonStyle.gray, disabled=True, custom_id="4", row=1)
         else:
             team_5 = discord.ui.Button(emoji="5️⃣", style=discord.ButtonStyle.gray, custom_id="4", row=1)
         if (self.button_select == True) and (self.button_select_index == "5"):
-            team_6 = discord.ui.Button(emoji="6️⃣", style=discord.ButtonStyle.blurple, custom_id="5", row=2)
+            team_6 = discord.ui.Button(emoji="6️⃣", style=discord.ButtonStyle.gray, disabled=True, custom_id="5", row=2)
         else:
             team_6 = discord.ui.Button(emoji="6️⃣", style=discord.ButtonStyle.gray, custom_id="5", row=2)
         if (self.button_select == True) and (self.button_select_index == "6"):
-            team_7 = discord.ui.Button(emoji="7️⃣", style=discord.ButtonStyle.blurple, custom_id="6", row=2)
+            team_7 = discord.ui.Button(emoji="7️⃣", style=discord.ButtonStyle.gray, disabled=True, custom_id="6", row=2)
         else:
             team_7 = discord.ui.Button(emoji="7️⃣", style=discord.ButtonStyle.gray, custom_id="6", row=2)
         if (self.button_select == True) and (self.button_select_index == "7"):
-            team_8 = discord.ui.Button(emoji="8️⃣", style=discord.ButtonStyle.blurple, custom_id="7", row=2)
+            team_8 = discord.ui.Button(emoji="8️⃣", style=discord.ButtonStyle.gray, disabled=True, custom_id="7", row=2)
         else:
             team_8 = discord.ui.Button(emoji="8️⃣", style=discord.ButtonStyle.gray, custom_id="7", row=2)
         if (self.button_select == True) and (self.button_select_index == "8"):
-            team_9 = discord.ui.Button(emoji="9️⃣", style=discord.ButtonStyle.blurple, custom_id="8", row=2)
+            team_9 = discord.ui.Button(emoji="9️⃣", style=discord.ButtonStyle.gray, disabled=True, custom_id="8", row=2)
         else:
             team_9 = discord.ui.Button(emoji="9️⃣", style=discord.ButtonStyle.gray, custom_id="8", row=2)
         if (self.button_select == True) and (self.button_select_index == "9"):
-            team_10 = discord.ui.Button(emoji="🔟", style=discord.ButtonStyle.blurple, custom_id="9", row=2)
+            team_10 = discord.ui.Button(emoji="🔟", style=discord.ButtonStyle.gray, disabled=True, custom_id="9", row=2)
         else:
             team_10 = discord.ui.Button(emoji="🔟", style=discord.ButtonStyle.gray, custom_id="9", row=2)
 

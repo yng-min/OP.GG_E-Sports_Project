@@ -271,7 +271,7 @@ class PlayerInfoView(discord.ui.View):
                 get_game_info_by_id(matchId=self.box_recent_matches[self.picked_match - 1]['id'], matchSet=str(i))
  
                 if self.picked_set == i:
-                    self.box_button.append(discord.ui.Button(emoji=emoji, style=discord.ButtonStyle.blurple, custom_id=f"{i}", row=1))
+                    self.box_button.append(discord.ui.Button(emoji=emoji, style=discord.ButtonStyle.blurple, disabled=True, custom_id=f"{i}", row=1))
                 elif self.picked_set != i:
                     self.box_button.append(discord.ui.Button(emoji=emoji, style=discord.ButtonStyle.gray, custom_id=f"{i}", row=1))
 
@@ -429,7 +429,6 @@ class PlayerInfoCMD(commands.Cog):
 
                                 embed.add_field(name="최근 5경기", value=msg_recentMatches, inline=False)
 
-                    # await msg.edit_original_response(content="", embed=embed, view=DisabledButton(player_id=player_id, player_displayed_nickname=player_displayed_nickname, player_nationality=player_nationality))
                     await msg.edit_original_response(content="", embed=embed, view=PlayerInfoView(bot=self.bot, ctx=ctx, msg=msg, origin_embed=embed, picked_match=None, picked_set=1, box_player=box_player, box_players=box_players, box_recent_matches=box_recentMatches, player_id=player_id, player_displayed_nickname=player_displayed_nickname, player_nationality=player_nationality))
 
         except Exception as error:
