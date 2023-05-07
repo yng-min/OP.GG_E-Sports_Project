@@ -11,6 +11,8 @@ import pytz
 import traceback
 import os
 
+import requests
+
 # config.json 파일 불러오기
 try:
     with open(r"./config.json", "rt", encoding="UTF8") as configJson:
@@ -28,6 +30,7 @@ except Exception as error:
     print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
     print(traceback.format_exc())
 
+webhook_url = config['all_log_webhook_url']
 colorMap = config['colorMap']
 
 
@@ -89,6 +92,14 @@ class UserSettingCMD(commands.Cog):
 
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
             print(f"{ctx.author}({ctx.author.id}) | 서비스 가입")
+            webhook_headers = { "Content-Type": "application/json" }
+            webhook_data = {
+                "username": "OP.GG E-Sports Log",
+                "content": f"``` ```\n>>> `({datetime.datetime.now(pytz.timezone('Asia/Seoul')).strftime('%y/%m/%d %H:%M:%S')})`\n{ctx.author}({ctx.author.id}) | 서비스 가입"
+            }
+            webhook_result = requests.post(url=webhook_url, json=webhook_data, headers=webhook_headers)
+            if 200 <= webhook_result.status_code < 300: pass
+            else: print(f'- [LOG] Not sent with {webhook_result.status_code}, response:\n{webhook_result.json()}')
             embed = discord.Embed(title="> ✅ 가입 완료", description="서비스 가입이 완료되었어요.", color=colorMap['red'])
             await msg.edit_original_response(content="", embed=embed)
 
@@ -120,6 +131,14 @@ class UserSettingCMD(commands.Cog):
 
                 print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
                 print(f"{ctx.author}({ctx.author.id}) | 서비스 탈퇴")
+                webhook_headers = { "Content-Type": "application/json" }
+                webhook_data = {
+                    "username": "OP.GG E-Sports Log",
+                    "content": f"``` ```\n>>> `({datetime.datetime.now(pytz.timezone('Asia/Seoul')).strftime('%y/%m/%d %H:%M:%S')})`\n{ctx.author}({ctx.author.id}) | 서비스 탈퇴"
+                }
+                webhook_result = requests.post(url=webhook_url, json=webhook_data, headers=webhook_headers)
+                if 200 <= webhook_result.status_code < 300: pass
+                else: print(f'- [LOG] Not sent with {webhook_result.status_code}, response:\n{webhook_result.json()}')
                 embed = discord.Embed(title="> ✅ 탈퇴 완료", description="아쉽지만 서비스 탈퇴가 완료되었어요. 나중에 또 볼 수 있었으면 좋겠네요 :smiling_face_with_tear:", color=colorMap['red'])
                 await msg.edit_original_response(content="", embed=embed)
 

@@ -11,6 +11,8 @@ import pytz
 import traceback
 import os
 
+import requests
+
 # config.json 파일 불러오기
 try:
     with open(r"./config.json", "rt", encoding="UTF8") as configJson:
@@ -35,6 +37,7 @@ except Exception as error:
     print(traceback.format_exc())
 
 prefix = config['prefix_normal']
+webhook_url = config['all_log_webhook_url']
 colorMap = config['colorMap']
 # role_name_notice = config['role_name_league_notification']
 
@@ -231,6 +234,14 @@ class LeagueSelect(discord.ui.Select):
 
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
             print(f"{self.ctx.author}({self.ctx.author.id}) | 리그 알림 설정 변경")
+            webhook_headers = { "Content-Type": "application/json" }
+            webhook_data = {
+                "username": "OP.GG E-Sports Log",
+                "content": f"``` ```\n>>> `({datetime.datetime.now(pytz.timezone('Asia/Seoul')).strftime('%y/%m/%d %H:%M:%S')})`\n{self.ctx.author}({self.ctx.author.id}) | 리그 알림 설정 변경"
+            }
+            webhook_result = requests.post(url=webhook_url, json=webhook_data, headers=webhook_headers)
+            if 200 <= webhook_result.status_code < 300: pass
+            else: print(f'- [LOG] Not sent with {webhook_result.status_code}, response:\n{webhook_result.json()}')
             embed = discord.Embed(title="> ✅ 설정 완료", description=f"리그 알림 설정 변경을 완료했어요.\n\n(설정한 리그 : `{leagueContent}`)", color=colorMap['red'])
             await interaction.response.edit_message(content="", embed=embed, view=None)
 
@@ -349,6 +360,14 @@ class GuildSettingCMD(commands.Cog):
 
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
             print(f"{ctx.author}({ctx.author.id}) | 서버 셋업")
+            webhook_headers = { "Content-Type": "application/json" }
+            webhook_data = {
+                "username": "OP.GG E-Sports Log",
+                "content": f"``` ```\n>>> `({datetime.datetime.now(pytz.timezone('Asia/Seoul')).strftime('%y/%m/%d %H:%M:%S')})`\n{ctx.author}({ctx.author.id}) | 서버 셋업"
+            }
+            webhook_result = requests.post(url=webhook_url, json=webhook_data, headers=webhook_headers)
+            if 200 <= webhook_result.status_code < 300: pass
+            else: print(f'- [LOG] Not sent with {webhook_result.status_code}, response:\n{webhook_result.json()}')
             embed = discord.Embed(title="> ✅ 설정 완료", description="서비스 이용을 위한 설정을 완료했어요.", color=colorMap['red'])
             await msg.edit_original_response(content="", embed=embed)
 
@@ -458,6 +477,14 @@ class GuildSettingCMD(commands.Cog):
                 os.remove(rf"./Database/Guild/guild_{ctx.guild.id}.sqlite")
                 print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
                 print(f"{ctx.author}({ctx.author.id}) | 서버 설정 초기화")
+                webhook_headers = { "Content-Type": "application/json" }
+                webhook_data = {
+                    "username": "OP.GG E-Sports Log",
+                    "content": f"``` ```\n>>> `({datetime.datetime.now(pytz.timezone('Asia/Seoul')).strftime('%y/%m/%d %H:%M:%S')})`\n{ctx.author}({ctx.author.id}) | 서버 설정 초기화"
+                }
+                webhook_result = requests.post(url=webhook_url, json=webhook_data, headers=webhook_headers)
+                if 200 <= webhook_result.status_code < 300: pass
+                else: print(f'- [LOG] Not sent with {webhook_result.status_code}, response:\n{webhook_result.json()}')
                 embed = discord.Embed(title="> ✅ 설정 초기화 완료", description="서버 설정을 모두 초기화했어요.", color=colorMap['red'])
                 return await msg.edit_original_response(content="", embed=embed)
             elif reset_mode == 0:
@@ -478,6 +505,14 @@ class GuildSettingCMD(commands.Cog):
 
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
             print(f"{ctx.author}({ctx.author.id}) | 서버 설정 변경")
+            webhook_headers = { "Content-Type": "application/json" }
+            webhook_data = {
+                "username": "OP.GG E-Sports Log",
+                "content": f"``` ```\n>>> `({datetime.datetime.now(pytz.timezone('Asia/Seoul')).strftime('%y/%m/%d %H:%M:%S')})`\n{ctx.author}({ctx.author.id}) | 서버 설정 변경"
+            }
+            webhook_result = requests.post(url=webhook_url, json=webhook_data, headers=webhook_headers)
+            if 200 <= webhook_result.status_code < 300: pass
+            else: print(f'- [LOG] Not sent with {webhook_result.status_code}, response:\n{webhook_result.json()}')
             embed = discord.Embed(title="> ✅ 설정 완료", description="서버 설정 변경을 완료했어요.", color=colorMap['red'])
             await msg.edit_original_response(content="", embed=embed)
 

@@ -12,6 +12,8 @@ import pytz
 import traceback
 import os
 
+import requests
+
 from Extensions.Prediction.betting import BettingButton
 
 # config.json 파일 불러오기
@@ -28,6 +30,7 @@ try:
 except: print("league.json이 로드되지 않음")
 
 time_difference = config['time_difference']
+webhook_url = config['all_log_webhook_url']
 colorMap = config['colorMap']
 
 
@@ -143,6 +146,14 @@ class NotificationTASK(commands.Cog):
                             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
                             print("경기 일정 알림 전송 중...")
                             print(f"- Sending match: [{match_league}] {match_title} ({match_id})")
+                            webhook_headers = { "Content-Type": "application/json" }
+                            webhook_data = {
+                                "username": "OP.GG E-Sports Log",
+                                "content": f"``` ```\n>>> `({datetime.datetime.now(pytz.timezone('Asia/Seoul')).strftime('%y/%m/%d %H:%M:%S')})`\n경기 일정 알림 전송 중...\n- Sending match: [{match_league}] {match_title} ({match_id})"
+                            }
+                            webhook_result = requests.post(url=webhook_url, json=webhook_data, headers=webhook_headers)
+                            if 200 <= webhook_result.status_code < 300: pass
+                            else: print(f'- [LOG] Not sent with {webhook_result.status_code}, response:\n{webhook_result.json()}')
 
                             try: # 셋업된 채널 불러오기
                                 scheduleURL = f"https://esports.op.gg/ko/matches/{match_id}"
@@ -193,6 +204,14 @@ class NotificationTASK(commands.Cog):
                                                     print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
                                                     print("경기 시작 알림 전송 실패")
                                                     print(f"{guild_notice.name} ({guild_notice.id}) | {channel_notice.name} ({channel_notice.id})")
+                                                    webhook_headers = { "Content-Type": "application/json" }
+                                                    webhook_data = {
+                                                        "username": "OP.GG E-Sports Log",
+                                                        "content": f"``` ```\n>>> `({datetime.datetime.now(pytz.timezone('Asia/Seoul')).strftime('%y/%m/%d %H:%M:%S')})`\n경기 시작 알림 전송 실패\n{guild_notice.name} ({guild_notice.id}) | {channel_notice.name} ({channel_notice.id})"
+                                                    }
+                                                    webhook_result = requests.post(url=webhook_url, json=webhook_data, headers=webhook_headers)
+                                                    if 200 <= webhook_result.status_code < 300: pass
+                                                    else: print(f'- [LOG] Not sent with {webhook_result.status_code}, response:\n{webhook_result.json()}')
 
                                                 embed = discord.Embed(title=msg_title, description=msg_description, color=colorMap['red'])
                                                 embed.set_footer(text="TIP: 아래 버튼을 눌러 승부 예측 미니게임을 즐길 수 있어요.", icon_url=self.bot.user.display_avatar.url)
@@ -234,6 +253,14 @@ class NotificationTASK(commands.Cog):
 
                             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
                             print("경기 일정 알림 전송 완료")
+                            webhook_headers = { "Content-Type": "application/json" }
+                            webhook_data = {
+                                "username": "OP.GG E-Sports Log",
+                                "content": f"``` ```\n>>> `({datetime.datetime.now(pytz.timezone('Asia/Seoul')).strftime('%y/%m/%d %H:%M:%S')})`\n경기 일정 알림 전송 완료"
+                            }
+                            webhook_result = requests.post(url=webhook_url, json=webhook_data, headers=webhook_headers)
+                            if 200 <= webhook_result.status_code < 300: pass
+                            else: print(f'- [LOG] Not sent with {webhook_result.status_code}, response:\n{webhook_result.json()}')
 
                         else:
                             print(f"{match_data['code']}: {match_data['message']}")
@@ -243,6 +270,14 @@ class NotificationTASK(commands.Cog):
                         print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
                         print("경기 일정(30분 전) 알림 전송 중...")
                         print(f"- Sending match: [{match_league}] {match_title} ({match_id})")
+                        webhook_headers = { "Content-Type": "application/json" }
+                        webhook_data = {
+                            "username": "OP.GG E-Sports Log",
+                            "content": f"``` ```\n>>> `({datetime.datetime.now(pytz.timezone('Asia/Seoul')).strftime('%y/%m/%d %H:%M:%S')})`\n경기 일정(30분 전) 알림 전송 중...\n- Sending match: [{match_league}] {match_title} ({match_id})"
+                        }
+                        webhook_result = requests.post(url=webhook_url, json=webhook_data, headers=webhook_headers)
+                        if 200 <= webhook_result.status_code < 300: pass
+                        else: print(f'- [LOG] Not sent with {webhook_result.status_code}, response:\n{webhook_result.json()}')
 
                         try: # 셋업된 채널 불러오기
                             scheduleURL = f"https://esports.op.gg/ko/matches/{match_id}"
@@ -296,6 +331,14 @@ class NotificationTASK(commands.Cog):
                                                 print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
                                                 print("경기 시작 알림 전송 실패")
                                                 print(f"{guild_notice.name} ({guild_notice.id}) | {channel_notice.name} ({channel_notice.id})")
+                                                webhook_headers = { "Content-Type": "application/json" }
+                                                webhook_data = {
+                                                    "username": "OP.GG E-Sports Log",
+                                                    "content": f"``` ```\n>>> `({datetime.datetime.now(pytz.timezone('Asia/Seoul')).strftime('%y/%m/%d %H:%M:%S')})`\n경기 시작 알림 전송 실패\n{guild_notice.name} ({guild_notice.id}) | {channel_notice.name} ({channel_notice.id})"
+                                                }
+                                                webhook_result = requests.post(url=webhook_url, json=webhook_data, headers=webhook_headers)
+                                                if 200 <= webhook_result.status_code < 300: pass
+                                                else: print(f'- [LOG] Not sent with {webhook_result.status_code}, response:\n{webhook_result.json()}')
 
                         except Exception as error:
                             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
@@ -303,6 +346,14 @@ class NotificationTASK(commands.Cog):
 
                         print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
                         print("경기 일정(30분 전) 알림 전송 완료")
+                        webhook_headers = { "Content-Type": "application/json" }
+                        webhook_data = {
+                            "username": "OP.GG E-Sports Log",
+                            "content": f"``` ```\n>>> `({datetime.datetime.now(pytz.timezone('Asia/Seoul')).strftime('%y/%m/%d %H:%M:%S')})`\n경기 일정(30분 전) 알림 전송 중...\n- Sending match: [{match_league}] {match_title} ({match_id})"
+                        }
+                        webhook_result = requests.post(url=webhook_url, json=webhook_data, headers=webhook_headers)
+                        if 200 <= webhook_result.status_code < 300: pass
+                        else: print(f'- [LOG] Not sent with {webhook_result.status_code}, response:\n{webhook_result.json()}')
 
         except Exception as error:
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
