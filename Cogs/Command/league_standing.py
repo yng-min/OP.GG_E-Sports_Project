@@ -10,6 +10,8 @@ import datetime
 import pytz
 import traceback
 
+import requests
+
 from Extensions.Process.league import get_league_standing
 from Extensions.Process.player import get_team_info_by_id
 
@@ -35,6 +37,7 @@ esports_op_gg_standing = "https://esports.op.gg/standing"
 esports_op_gg_player = "https://esports.op.gg/players/"
 esports_op_gg_team = "https://esports.op.gg/teams/"
 time_difference = config['time_difference']
+webhook_url = config['all_log_webhook_url']
 colorMap = config['colorMap']
 emoji_website = emoji['Website']
 emoji_esports = emoji['Esports']
@@ -554,6 +557,14 @@ class LeagueStandingCMD(commands.Cog):
         except Exception as error:
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
             print(traceback.format_exc())
+            webhook_headers = { "Content-Type": "application/json" }
+            webhook_data = {
+                "username": "OP.GG E-Sports Log",
+                "content": f"``` ```\n>>> `({datetime.datetime.now(pytz.timezone('Asia/Seoul')).strftime('%y/%m/%d %H:%M:%S')})`\n{traceback.format_exc()}"
+            }
+            webhook_result = requests.post(url=webhook_url, json=webhook_data, headers=webhook_headers)
+            if 200 <= webhook_result.status_code < 300: pass
+            else: print(f'- [LOG] Not sent with {webhook_result.status_code}, response:\n{webhook_result.json()}')
 
 
 

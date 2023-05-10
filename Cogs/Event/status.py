@@ -9,6 +9,17 @@ import datetime
 import pytz
 import traceback
 
+import json
+import requests
+
+# config.json 파일 불러오기
+try:
+    with open(r"./config.json", "rt", encoding="UTF8") as configJson:
+        config = json.load(configJson)
+    print("config.json 로드 됨")
+except: print("config.json 파일이 로드되지 않음")
+
+webhook_url = config['all_log_webhook_url']
 
 class StatusEVENT(commands.Cog):
 
@@ -33,7 +44,6 @@ class StatusEVENT(commands.Cog):
 
         try:
             if ("00:00" == time_nowDetail) or (self.firstData == True): # 매일 자정에 실행
-
                 self.status_content = None
                 self.firstData = False
 
@@ -70,8 +80,16 @@ class StatusEVENT(commands.Cog):
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
             print("status_TASK function error.")
             print(traceback.format_exc())
-            print("*" * 10)
+            print("=" * 10)
             print(self.status_content)
+            webhook_headers = { "Content-Type": "application/json" }
+            webhook_data = {
+                "username": "OP.GG E-Sports Log",
+                "content": f"``` ```\n>>> `({datetime.datetime.now(pytz.timezone('Asia/Seoul')).strftime('%y/%m/%d %H:%M:%S')})`\n{traceback.format_exc()}\n``` ```\n{self.status_content}"
+            }
+            webhook_result = requests.post(url=webhook_url, json=webhook_data, headers=webhook_headers)
+            if 200 <= webhook_result.status_code < 300: pass
+            else: print(f'- [LOG] Not sent with {webhook_result.status_code}, response:\n{webhook_result.json()}')
 
         status_msg = [guide, description, kills, deaths, assists, baronKills, dragonKills, elderDragonKills, heraldKills, pentaKills, towerKills]
 

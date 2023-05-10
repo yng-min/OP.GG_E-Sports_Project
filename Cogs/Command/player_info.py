@@ -10,6 +10,8 @@ import datetime
 import pytz
 import traceback
 
+import requests
+
 from Extensions.Process.match import get_game_info_by_id
 from Extensions.Process.player import get_player_info_by_nickname, get_team_info_by_id, get_player_recent_matches_by_id
 from Extensions.Process.search import get_search_player
@@ -38,6 +40,7 @@ esports_op_gg_match = "https://esports.op.gg/matches/"
 esports_op_gg_champion = "https://esports.op.gg/champions/"
 op_gg_player = "https://www.op.gg/summoners/"
 time_difference = config['time_difference']
+webhook_url = config['all_log_webhook_url']
 colorMap = config['colorMap']
 emoji_hyperlink = emoji['Hyperlink']
 emoji_stream = emoji['LiveStream']
@@ -434,6 +437,14 @@ class PlayerInfoCMD(commands.Cog):
         except Exception as error:
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
             print(traceback.format_exc())
+            webhook_headers = { "Content-Type": "application/json" }
+            webhook_data = {
+                "username": "OP.GG E-Sports Log",
+                "content": f"``` ```\n>>> `({datetime.datetime.now(pytz.timezone('Asia/Seoul')).strftime('%y/%m/%d %H:%M:%S')})`\n{traceback.format_exc()}"
+            }
+            webhook_result = requests.post(url=webhook_url, json=webhook_data, headers=webhook_headers)
+            if 200 <= webhook_result.status_code < 300: pass
+            else: print(f'- [LOG] Not sent with {webhook_result.status_code}, response:\n{webhook_result.json()}')
 
 
 

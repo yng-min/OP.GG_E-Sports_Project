@@ -10,6 +10,8 @@ import datetime
 import pytz
 import traceback
 
+import requests
+
 from Extensions.Process.season import get_bans_info, get_picks_info
 
 # config.json 파일 불러오기
@@ -33,6 +35,7 @@ except: print("emoji.json 파일이 로드되지 않음")
 esports_op_gg_champion = "https://esports.op.gg/champions/"
 esports_op_gg_banpick = "https://esports.op.gg/banpick/"
 time_difference = config['time_difference']
+webhook_url = config['all_log_webhook_url']
 colorMap = config['colorMap']
 
 
@@ -290,6 +293,14 @@ class BanPickInfoCMD(commands.Cog):
         except Exception as error:
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
             print(traceback.format_exc())
+            webhook_headers = { "Content-Type": "application/json" }
+            webhook_data = {
+                "username": "OP.GG E-Sports Log",
+                "content": f"``` ```\n>>> `({datetime.datetime.now(pytz.timezone('Asia/Seoul')).strftime('%y/%m/%d %H:%M:%S')})`\n{traceback.format_exc()}"
+            }
+            webhook_result = requests.post(url=webhook_url, json=webhook_data, headers=webhook_headers)
+            if 200 <= webhook_result.status_code < 300: pass
+            else: print(f'- [LOG] Not sent with {webhook_result.status_code}, response:\n{webhook_result.json()}')
 
 
 

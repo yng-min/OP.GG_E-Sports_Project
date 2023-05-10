@@ -147,10 +147,26 @@ class save_scheduleTASK(commands.Cog):
 
                 else:
                     print(f"{schedules['code']}: {schedules['message']}")
+                    webhook_headers = { "Content-Type": "application/json" }
+                    webhook_data = {
+                        "username": "OP.GG E-Sports Log",
+                        "content": f"``` ```\n>>> `({datetime.datetime.now(pytz.timezone('Asia/Seoul')).strftime('%y/%m/%d %H:%M:%S')})`\n{schedules['code']}: {schedules['message']}"
+                    }
+                    webhook_result = requests.post(url=webhook_url, json=webhook_data, headers=webhook_headers)
+                    if 200 <= webhook_result.status_code < 300: pass
+                    else: print(f'- [LOG] Not sent with {webhook_result.status_code}, response:\n{webhook_result.json()}')
 
         except Exception as error:
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
             print(traceback.format_exc())
+            webhook_headers = { "Content-Type": "application/json" }
+            webhook_data = {
+                "username": "OP.GG E-Sports Log",
+                "content": f"``` ```\n>>> `({datetime.datetime.now(pytz.timezone('Asia/Seoul')).strftime('%y/%m/%d %H:%M:%S')})`\n{traceback.format_exc()}"
+            }
+            webhook_result = requests.post(url=webhook_url, json=webhook_data, headers=webhook_headers)
+            if 200 <= webhook_result.status_code < 300: pass
+            else: print(f'- [LOG] Not sent with {webhook_result.status_code}, response:\n{webhook_result.json()}')
 
 
 
