@@ -15,7 +15,7 @@ import os
 import requests
 
 from Extensions.Prediction.deposit import DepositPoint
-from Extensions.Process.match import get_match_info_by_id
+from Extensions.Process.match import get_game_info_by_id
 
 # config.json 파일 불러오기
 try:
@@ -70,7 +70,7 @@ class MatchCompleteTASK(commands.Cog):
         match_input = eval(ctx.content)
 
         match_data = opgg.match_completed(matchInfo=match_input)
-        match_info = get_match_info_by_id(matchId=match_input['matchId'])
+        match_info = get_game_info_by_id(matchId=match_input['matchId'], matchSet=match_input['set'])
 
         if (match_data['error'] == False) and (match_data['data']['match_type'] == "complete"):
             match_id = match_data['data']['match_id']
@@ -152,7 +152,7 @@ class MatchCompleteTASK(commands.Cog):
                                 if match_data['data']['firstBlood'] == "": match_data['data']['firstBlood'] = "-"
                                 if match_data['data']['mvp'] == "": match_data['data']['mvp'] = "-"
 
-                                if match_info['data']['status'] == "finished":
+                                if match_info['status'] == "finished":
                                     bettingDB = sqlite3.connect(rf"./Database/betting.sqlite", isolation_level=None)
                                     bettingCURSOR = bettingDB.cursor()
 

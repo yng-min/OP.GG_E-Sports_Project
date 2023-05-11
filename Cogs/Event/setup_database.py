@@ -73,7 +73,9 @@ class DatabaseSETUP(commands.Cog):
                 OriginalScheduledAt TEXT,
                 ScheduledAt TEXT,
                 NumberOfGames INTEGER,
-                Status TEXT
+                Status TEXT,
+                HomeTeamName TEXT,
+                AwayTeamName TEXT
                 )
             """)
         scheduleDB.close()

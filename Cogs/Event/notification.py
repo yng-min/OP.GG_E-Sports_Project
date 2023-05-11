@@ -63,6 +63,8 @@ class NotificationTASK(commands.Cog):
             box_info = []
             box_teams = []
             box_league = []
+            box_home_teams = []
+            box_away_teams = []
             for i in range(16):
                 result = scheduleCURSOR.execute(f"SELECT * FROM {leagues[i]['shortName']}").fetchall()
                 box_schedule.append(result)
@@ -72,6 +74,8 @@ class NotificationTASK(commands.Cog):
                         box_info.append(f"{box_schedule[i][j][0]} {box_schedule[i][j][1]}")
                         box_teams.append(box_schedule[i][j][2])
                         box_league.append(f"{leagues[i]['shortName']}/{leagues[i]['region']}")
+                        box_home_teams.append(box_schedule[i][j][7])
+                        box_away_teams.append(box_schedule[i][j][8])
 
             # 현재 시간
             time_nowDay = datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%Y-%m-%d")
@@ -141,7 +145,9 @@ class NotificationTASK(commands.Cog):
                             except IndexError:
                                 collecting_data = True
                                 team_1_acronym = f"{match_title.split(' vs ')[0]}"
+                                team_1_name = f"{box_home_teams[j]}"
                                 team_2_acronym = f"{match_title.split(' vs ')[1]}"
+                                team_2_name = f"{box_away_teams[j]}"
 
                             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
                             print("경기 일정 알림 전송 중...")
@@ -220,7 +226,7 @@ class NotificationTASK(commands.Cog):
                                                 if collecting_data == True:
                                                     embed.add_field(name="\u200b", value=f"**> __{team_1_acronym} ({team_1_name})__ 팀 정보**\n매치 데이터를 수집하고 있습니다.", inline=False)
                                                 elif collecting_data == False:
-                                                    embed.add_field(name="\u200b", value=f"**> __{team_1_acronym} ({team_2_name})__ 팀 정보**", inline=False)
+                                                    embed.add_field(name="\u200b", value=f"**> __{team_1_acronym} ({team_1_name})__ 팀 정보**", inline=False)
                                                     embed.add_field(name="KDA 정보", value=team_1_kda_msg, inline=False)
                                                     embed.add_field(name="세트 승률", value=team_1_winRate + "%", inline=True)
                                                     embed.add_field(name="첫 킬률", value=team_1_firstBlood + "%", inline=True)
@@ -230,7 +236,7 @@ class NotificationTASK(commands.Cog):
                                                     embed.add_field(name="골드 획득량", value=team_1_goldEarned, inline=True)
 
                                                 if collecting_data == True:
-                                                    embed.add_field(name="\u200b", value=f"**> __{team_2_acronym} ({team_1_name})__ 팀 정보**\n매치 데이터를 수집하고 있습니다.", inline=False)
+                                                    embed.add_field(name="\u200b", value=f"**> __{team_2_acronym} ({team_2_name})__ 팀 정보**\n매치 데이터를 수집하고 있습니다.", inline=False)
                                                 elif collecting_data == False:
                                                     embed.add_field(name="\u200b", value=f"**> __{team_2_acronym} ({team_2_name})__ 팀 정보**", inline=False)
                                                     embed.add_field(name="KDA 정보", value=team_2_kda_msg, inline=False)

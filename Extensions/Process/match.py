@@ -62,57 +62,108 @@ def get_match_info_by_id(matchId: str):
     match_info = opgg.match_info_by_id(matchId=matchId)
 
     if match_info['error'] == False:
-        match_id = match_info['data']['id']
-        match_name = match_info['data']['name']
-        match_originalScheduledAt = match_info['data']['originalScheduledAt']
-        match_scheduledAt = match_info['data']['scheduledAt']
-        match_beginAt = match_info['data']['beginAt']
-        match_endAt = match_info['data']['endAt']
-        match_status = match_info['data']['status']
-        match_numberOfGames = match_info['data']['numberOfGames']
-        match_liveSupported = match_info['data']['liveSupported']
-        match_liveOpensAt = match_info['data']['liveOpensAt']
-        match_streams_isMain = match_info['data']['streams']['isMain']
-        match_streams_isOfficial = match_info['data']['streams']['isOfficial']
-        match_streams_rawUrl = match_info['data']['streams']['rawUrl']
-        match_homeTeam_id = match_info['data']['homeTeam']['id']
-        match_homeTeam_name = match_info['data']['homeTeam']['name']
-        match_homeTeam_acronym = match_info['data']['homeTeam']['acronym']
-        match_homeTeam_nationality = match_info['data']['homeTeam']['nationality']
-        match_homeTeam_foundedAt = match_info['data']['homeTeam']['foundedAt']
-        match_homeTeam_imageUrl = match_info['data']['homeTeam']['imageUrl']
-        match_homeTeam_youtube = match_info['data']['homeTeam']['youtube']
-        match_homeTeam_twitter = match_info['data']['homeTeam']['twitter']
-        match_homeTeam_instagram = match_info['data']['homeTeam']['instagram']
-        match_homeTeam_facebook = match_info['data']['homeTeam']['facebook']
-        match_homeTeam_discord = match_info['data']['homeTeam']['discord']
-        match_homeTeam_website = match_info['data']['homeTeam']['website']
-        match_awayTeam_id = match_info['data']['awayTeam']['id']
-        match_awayTeam_name = match_info['data']['awayTeam']['name']
-        match_awayTeam_acronym = match_info['data']['awayTeam']['acronym']
-        match_awayTeam_nationality = match_info['data']['awayTeam']['nationality']
-        match_awayTeam_foundedAt = match_info['data']['awayTeam']['foundedAt']
-        match_awayTeam_imageUrl = match_info['data']['awayTeam']['imageUrl']
-        match_awayTeam_youtube = match_info['data']['awayTeam']['youtube']
-        match_awayTeam_twitter = match_info['data']['awayTeam']['twitter']
-        match_awayTeam_instagram = match_info['data']['awayTeam']['instagram']
-        match_awayTeam_facebook = match_info['data']['awayTeam']['facebook']
-        match_awayTeam_discord = match_info['data']['awayTeam']['discord']
-        match_awayTeam_website = match_info['data']['awayTeam']['website']
-        match_homeTeamRank_position = match_info['data']['homeTeam']['rank']['position']
-        match_homeTeamRank_previously = match_info['data']['homeTeam']['rank']['previously']
-        match_homeTeamRank_point = match_info['data']['homeTeam']['rank']['point']
-        match_homeTeamRank_setWin = match_info['data']['homeTeam']['rank']['setWin']
-        match_homeTeamRank_setLose = match_info['data']['homeTeam']['rank']['setLose']
-        match_homeTeamRank_win = match_info['data']['homeTeam']['rank']['win']
-        match_homeTeamRank_lose = match_info['data']['homeTeam']['rank']['lose']
-        match_awayTeamRank_position = match_info['data']['awayTeam']['rank']['position']
-        match_awayTeamRank_previously = match_info['data']['awayTeam']['rank']['previously']
-        match_awayTeamRank_point = match_info['data']['awayTeam']['rank']['point']
-        match_awayTeamRank_setWin = match_info['data']['awayTeam']['rank']['setWin']
-        match_awayTeamRank_setLose = match_info['data']['awayTeam']['rank']['setLose']
-        match_awayTeamRank_win = match_info['data']['awayTeam']['rank']['win']
-        match_awayTeamRank_lose = match_info['data']['awayTeam']['rank']['lose']
+        try: match_id = match_info['data']['id']
+        except: pass
+        try: match_name = match_info['data']['name']
+        except: pass
+        try: match_originalScheduledAt = match_info['data']['originalScheduledAt']
+        except: pass
+        try: match_scheduledAt = match_info['data']['scheduledAt']
+        except: pass
+        try: match_beginAt = match_info['data']['beginAt']
+        except: pass
+        try: match_endAt = match_info['data']['endAt']
+        except: pass
+        try: match_status = match_info['data']['status']
+        except: pass
+        try: match_numberOfGames = match_info['data']['numberOfGames']
+        except: pass
+        try: match_liveSupported = match_info['data']['liveSupported']
+        except: pass
+        try: match_liveOpensAt = match_info['data']['liveOpensAt']
+        except: pass
+        try: match_streams_isMain = match_info['data']['streams']['isMain']
+        except: pass
+        try: match_streams_isOfficial = match_info['data']['streams']['isOfficial']
+        except: pass
+        try: match_streams_rawUrl = match_info['data']['streams']['rawUrl']
+        except: pass
+        try: match_homeTeam_id = match_info['data']['homeTeam']['id']
+        except: pass
+        try: match_homeTeam_name = match_info['data']['homeTeam']['name']
+        except: pass
+        try: match_homeTeam_acronym = match_info['data']['homeTeam']['acronym']
+        except: pass
+        try: match_homeTeam_nationality = match_info['data']['homeTeam']['nationality']
+        except: pass
+        try: match_homeTeam_foundedAt = match_info['data']['homeTeam']['foundedAt']
+        except: pass
+        try: match_homeTeam_imageUrl = match_info['data']['homeTeam']['imageUrl']
+        except: pass
+        try: match_homeTeam_youtube = match_info['data']['homeTeam']['youtube']
+        except: pass
+        try: match_homeTeam_twitter = match_info['data']['homeTeam']['twitter']
+        except: pass
+        try: match_homeTeam_instagram = match_info['data']['homeTeam']['instagram']
+        except: pass
+        try: match_homeTeam_facebook = match_info['data']['homeTeam']['facebook']
+        except: pass
+        try: match_homeTeam_discord = match_info['data']['homeTeam']['discord']
+        except: pass
+        try: match_homeTeam_website = match_info['data']['homeTeam']['website']
+        except: pass
+        try: match_awayTeam_id = match_info['data']['awayTeam']['id']
+        except: pass
+        try: match_awayTeam_name = match_info['data']['awayTeam']['name']
+        except: pass
+        try: match_awayTeam_acronym = match_info['data']['awayTeam']['acronym']
+        except: pass
+        try: match_awayTeam_nationality = match_info['data']['awayTeam']['nationality']
+        except: pass
+        try: match_awayTeam_foundedAt = match_info['data']['awayTeam']['foundedAt']
+        except: pass
+        try: match_awayTeam_imageUrl = match_info['data']['awayTeam']['imageUrl']
+        except: pass
+        try: match_awayTeam_youtube = match_info['data']['awayTeam']['youtube']
+        except: pass
+        try: match_awayTeam_twitter = match_info['data']['awayTeam']['twitter']
+        except: pass
+        try: match_awayTeam_instagram = match_info['data']['awayTeam']['instagram']
+        except: pass
+        try: match_awayTeam_facebook = match_info['data']['awayTeam']['facebook']
+        except: pass
+        try: match_awayTeam_discord = match_info['data']['awayTeam']['discord']
+        except: pass
+        try: match_awayTeam_website = match_info['data']['awayTeam']['website']
+        except: pass
+        try: match_homeTeamRank_position = match_info['data']['homeTeam']['rank']['position']
+        except: pass
+        try: match_homeTeamRank_previously = match_info['data']['homeTeam']['rank']['previously']
+        except: pass
+        try: match_homeTeamRank_point = match_info['data']['homeTeam']['rank']['point']
+        except: pass
+        try: match_homeTeamRank_setWin = match_info['data']['homeTeam']['rank']['setWin']
+        except: pass
+        try: match_homeTeamRank_setLose = match_info['data']['homeTeam']['rank']['setLose']
+        except: pass
+        try: match_homeTeamRank_win = match_info['data']['homeTeam']['rank']['win']
+        except: pass
+        try: match_homeTeamRank_lose = match_info['data']['homeTeam']['rank']['lose']
+        except: pass
+        try: match_awayTeamRank_position = match_info['data']['awayTeam']['rank']['position']
+        except: pass
+        try: match_awayTeamRank_previously = match_info['data']['awayTeam']['rank']['previously']
+        except: pass
+        try: match_awayTeamRank_point = match_info['data']['awayTeam']['rank']['point']
+        except: pass
+        try: match_awayTeamRank_setWin = match_info['data']['awayTeam']['rank']['setWin']
+        except: pass
+        try: match_awayTeamRank_setLose = match_info['data']['awayTeam']['rank']['setLose']
+        except: pass
+        try: match_awayTeamRank_win = match_info['data']['awayTeam']['rank']['win']
+        except: pass
+        try: match_awayTeamRank_lose = match_info['data']['awayTeam']['rank']['lose']
+        except: pass
 
         box_match_info = {
             "id": match_id,
@@ -266,39 +317,68 @@ def get_game_info_by_id(matchId: str, matchSet: str):
     game_info = opgg.game_info_by_id(matchId=matchId, matchSet=matchSet)
 
     if game_info['error'] == False:
-        game_id = game_info['data']['id']
-        game_status = game_info['data']['status']
-        game_finished = game_info['data']['finished']
-        game_beginAt = game_info['data']['beginAt']
-        game_endAt = game_info['data']['endAt']
-        game_length = game_info['data']['length']
-        game_detailedStats = game_info['data']['detailedStats']
+        try: game_id = game_info['data']['id']
+        except: pass
+        try: game_status = game_info['data']['status']
+        except: pass
+        try: game_finished = game_info['data']['finished']
+        except: pass
+        try: game_beginAt = game_info['data']['beginAt']
+        except: pass
+        try: game_endAt = game_info['data']['endAt']
+        except: pass
+        try: game_length = game_info['data']['length']
+        except: pass
+        try: game_detailedStats = game_info['data']['detailedStats']
+        except: pass
 
-        game_winner_id = game_info['data']['winner']['id']
-        game_winner_name = game_info['data']['winner']['name']
-        game_winner_acronym = game_info['data']['winner']['acronym']
-        game_winner_nationality = game_info['data']['winner']['nationality']
-        game_winner_imageUrl = game_info['data']['winner']['imageUrl']
+        try: game_winner_id = game_info['data']['winner']['id']
+        except: pass
+        try: game_winner_name = game_info['data']['winner']['name']
+        except: pass
+        try: game_winner_acronym = game_info['data']['winner']['acronym']
+        except: pass
+        try: game_winner_nationality = game_info['data']['winner']['nationality']
+        except: pass
+        try: game_winner_imageUrl = game_info['data']['winner']['imageUrl']
+        except: pass
 
         for z in range(len(game_info['data']['teams'])):
             for i in range(len(game_info['data']['teams'])):
-                game_team_id = game_info['data']['teams'][i]['team']['id']
-                game_team_name = game_info['data']['teams'][i]['team']['name']
-                game_team_acronym = game_info['data']['teams'][i]['team']['acronym']
-                game_team_nationality = game_info['data']['teams'][i]['team']['nationality']
-                game_team_imageUrl = game_info['data']['teams'][i]['team']['imageUrl']
-                game_team_kills = game_info['data']['teams'][i]['kills']
-                game_team_deaths = game_info['data']['teams'][i]['deaths']
-                game_team_assists = game_info['data']['teams'][i]['assists']
-                game_team_side = game_info['data']['teams'][i]['side'].replace("blue", "블루").replace("red", "레드")
-                game_team_towerKills = game_info['data']['teams'][i]['towerKills']
-                game_team_dragonKills = game_info['data']['teams'][i]['dragonKills']
-                game_team_elderDrakeKills = game_info['data']['teams'][i]['elderDrakeKills']
-                game_team_baronKills = game_info['data']['teams'][i]['baronKills']
-                game_team_inhibitorKills = game_info['data']['teams'][i]['inhibitorKills']
-                game_team_heraldKills = game_info['data']['teams'][i]['heraldKills']
-                game_team_goldEarned = game_info['data']['teams'][i]['goldEarned']
-                game_team_bans = game_info['data']['teams'][i]['bans']
+                try: game_team_id = game_info['data']['teams'][i]['team']['id']
+                except: pass
+                try: game_team_name = game_info['data']['teams'][i]['team']['name']
+                except: pass
+                try: game_team_acronym = game_info['data']['teams'][i]['team']['acronym']
+                except: pass
+                try: game_team_nationality = game_info['data']['teams'][i]['team']['nationality']
+                except: pass
+                try: game_team_imageUrl = game_info['data']['teams'][i]['team']['imageUrl']
+                except: pass
+                try: game_team_kills = game_info['data']['teams'][i]['kills']
+                except: pass
+                try: game_team_deaths = game_info['data']['teams'][i]['deaths']
+                except: pass
+                try: game_team_assists = game_info['data']['teams'][i]['assists']
+                except: pass
+                try: game_team_side = game_info['data']['teams'][i]['side'].replace("blue", "블루").replace("red", "레드")
+                except: pass
+                try: game_team_towerKills = game_info['data']['teams'][i]['towerKills']
+                except: pass
+                try: game_team_dragonKills = game_info['data']['teams'][i]['dragonKills']
+                except: pass
+                try: game_team_elderDrakeKills = game_info['data']['teams'][i]['elderDrakeKills']
+                except: pass
+                try: game_team_baronKills = game_info['data']['teams'][i]['baronKills']
+                except: pass
+                try: game_team_inhibitorKills = game_info['data']['teams'][i]['inhibitorKills']
+                except: pass
+                try: game_team_heraldKills = game_info['data']['teams'][i]['heraldKills']
+                except: pass
+                try: game_team_goldEarned = game_info['data']['teams'][i]['goldEarned']
+                except: pass
+                try: game_team_bans = game_info['data']['teams'][i]['bans']
+                except: pass
 
                 team_templete = {
                     "id": game_team_id,
@@ -330,37 +410,68 @@ def get_game_info_by_id(matchId: str, matchSet: str):
 
         for x in range(len(game_info['data']['players'])):
             for j in range(len(game_info['data']['players'])):
-                game_player_id = game_info['data']['players'][j]['player']['id']
-                game_player_nickName = game_info['data']['players'][j]['player']['nickName']
-                game_player_position = game_info['data']['players'][j]['player']['position'].replace("top", "탑").replace("jun", "정글").replace("mid", "미드").replace("adc", "원딜").replace("sup", "서포터")
-                game_player_nationality = game_info['data']['players'][j]['player']['nationality']
-                game_player_imageUrl = game_info['data']['players'][j]['player']['imageUrl']
-                game_player_team_id = game_info['data']['players'][j]['team']['id']
-                game_player_team_name = game_info['data']['players'][j]['team']['name']
-                game_player_team_acronym = game_info['data']['players'][j]['team']['acronym']
-                game_player_team_nationality = game_info['data']['players'][j]['team']['nationality']
-                game_player_team_imageUrl = game_info['data']['players'][j]['team']['imageUrl']
-                game_player_side = game_info['data']['players'][j]['side'].replace("blue", "블루").replace("red", "레드")
-                game_player_kills = game_info['data']['players'][j]['kills']
-                game_player_deaths = game_info['data']['players'][j]['deaths']
-                game_player_assists = game_info['data']['players'][j]['assists']
+                try: game_player_id = game_info['data']['players'][j]['player']['id']
+                except: pass
+                try: game_player_nickName = game_info['data']['players'][j]['player']['nickName']
+                except: pass
+                try: game_player_position = game_info['data']['players'][j]['player']['position'].replace("top", "탑").replace("jun", "정글").replace("mid", "미드").replace("adc", "원딜").replace("sup", "서포터")
+                except: pass
+                try: game_player_nationality = game_info['data']['players'][j]['player']['nationality']
+                except: pass
+                try: game_player_imageUrl = game_info['data']['players'][j]['player']['imageUrl']
+                except: pass
+                try: game_player_team_id = game_info['data']['players'][j]['team']['id']
+                except: pass
+                try: game_player_team_name = game_info['data']['players'][j]['team']['name']
+                except: pass
+                try: game_player_team_acronym = game_info['data']['players'][j]['team']['acronym']
+                except: pass
+                try: game_player_team_nationality = game_info['data']['players'][j]['team']['nationality']
+                except: pass
+                try: game_player_team_imageUrl = game_info['data']['players'][j]['team']['imageUrl']
+                except: pass
+                try: game_player_side = game_info['data']['players'][j]['side'].replace("blue", "블루").replace("red", "레드")
+                except: pass
+                try: game_player_kills = game_info['data']['players'][j]['kills']
+                except: pass
+                try: game_player_deaths = game_info['data']['players'][j]['deaths']
+                except: pass
+                try: game_player_assists = game_info['data']['players'][j]['assists']
+                except: pass
+
                 try: game_player_kda = ((game_player_kills + game_player_assists) / game_player_deaths).__round__(2)
                 except: game_player_kda = "Perfect"
-                game_player_championId = game_info['data']['players'][j]['championId']
-                game_player_spells = game_info['data']['players'][j]['spells']
-                game_player_runes_primary = game_info['data']['players'][j]['runes']['primary']
-                game_player_runes_sub = game_info['data']['players'][j]['runes']['sub']
-                game_player_items = game_info['data']['players'][j]['items']
-                game_player_level = game_info['data']['players'][j]['level']
-                game_player_creepScore = game_info['data']['players'][j]['creepScore']
-                game_player_goldEarned = game_info['data']['players'][j]['goldEarned']
-                game_player_visionWardsBought = game_info['data']['players'][j]['visionWardsBought']
-                game_player_totalDamageDealtToChampions = game_info['data']['players'][j]['totalDamageDealtToChampions']
-                game_player_totalDamageTaken = game_info['data']['players'][j]['totalDamageTaken']
-                game_player_doubleKills = game_info['data']['players'][j]['doubleKills']
-                game_player_tripleKills = game_info['data']['players'][j]['tripleKills']
-                game_player_quadraKills = game_info['data']['players'][j]['quadraKills']
-                game_player_pentaKills = game_info['data']['players'][j]['pentaKills']
+
+                try: game_player_championId = game_info['data']['players'][j]['championId']
+                except: pass
+                try: game_player_spells = game_info['data']['players'][j]['spells']
+                except: pass
+                try: game_player_runes_primary = game_info['data']['players'][j]['runes']['primary']
+                except: pass
+                try: game_player_runes_sub = game_info['data']['players'][j]['runes']['sub']
+                except: pass
+                try: game_player_items = game_info['data']['players'][j]['items']
+                except: pass
+                try: game_player_level = game_info['data']['players'][j]['level']
+                except: pass
+                try: game_player_creepScore = game_info['data']['players'][j]['creepScore']
+                except: pass
+                try: game_player_goldEarned = game_info['data']['players'][j]['goldEarned']
+                except: pass
+                try: game_player_visionWardsBought = game_info['data']['players'][j]['visionWardsBought']
+                except: pass
+                try: game_player_totalDamageDealtToChampions = game_info['data']['players'][j]['totalDamageDealtToChampions']
+                except: pass
+                try: game_player_totalDamageTaken = game_info['data']['players'][j]['totalDamageTaken']
+                except: pass
+                try: game_player_doubleKills = game_info['data']['players'][j]['doubleKills']
+                except: pass
+                try: game_player_tripleKills = game_info['data']['players'][j]['tripleKills']
+                except: pass
+                try: game_player_quadraKills = game_info['data']['players'][j]['quadraKills']
+                except: pass
+                try: game_player_pentaKills = game_info['data']['players'][j]['pentaKills']
+                except: pass
 
                 player_templete = {
                     "id": game_player_id,
@@ -476,23 +587,40 @@ def get_recentMatches(recentMatches: list):
     for i in range(len(recentMatches)):
         match_info = opgg.match_info_by_id(matchId=recentMatches[i]['id'])
 
-        match_id = match_info['data'][0]['id']
-        match_name = match_info['data'][0]['name']
-        match_originalScheduledAt = match_info['data'][0]['originalScheduledAt']
-        match_scheduledAt = match_info['data'][0]['scheduledAt']
-        match_beginAt = match_info['data'][0]['beginAt']
-        match_endAt = match_info['data'][0]['endAt']
-        match_status = match_info['data'][0]['status']
-        match_numberOfGames = match_info['data'][0]['numberOfGames']
-        match_liveSupported = match_info['data'][0]['liveSupported']
-        match_liveOpensAt = match_info['data'][0]['liveOpensAt']
-        match_streams = match_info['data'][0]['streams']
-        match_winnerTeam = match_info['data'][0]['winnerTeam']
-        match_homeTeam = match_info['data'][0]['homeTeam']
-        match_homeScore = match_info['data'][0]['homeScore']
-        match_awayTeam = match_info['data'][0]['awayTeam']
-        match_awayScore = match_info['data'][0]['awayScore']
-        match_ranks = match_info['data'][0]['ranks']
+        try: match_id = match_info['data'][0]['id']
+        except: pass
+        try: match_name = match_info['data'][0]['name']
+        except: pass
+        try: match_originalScheduledAt = match_info['data'][0]['originalScheduledAt']
+        except: pass
+        try: match_scheduledAt = match_info['data'][0]['scheduledAt']
+        except: pass
+        try: match_beginAt = match_info['data'][0]['beginAt']
+        except: pass
+        try: match_endAt = match_info['data'][0]['endAt']
+        except: pass
+        try: match_status = match_info['data'][0]['status']
+        except: pass
+        try: match_numberOfGames = match_info['data'][0]['numberOfGames']
+        except: pass
+        try: match_liveSupported = match_info['data'][0]['liveSupported']
+        except: pass
+        try: match_liveOpensAt = match_info['data'][0]['liveOpensAt']
+        except: pass
+        try: match_streams = match_info['data'][0]['streams']
+        except: pass
+        try: match_winnerTeam = match_info['data'][0]['winnerTeam']
+        except: pass
+        try: match_homeTeam = match_info['data'][0]['homeTeam']
+        except: pass
+        try: match_homeScore = match_info['data'][0]['homeScore']
+        except: pass
+        try: match_awayTeam = match_info['data'][0]['awayTeam']
+        except: pass
+        try: match_awayScore = match_info['data'][0]['awayScore']
+        except: pass
+        try: match_ranks = match_info['data'][0]['ranks']
+        except: pass
 
         box_recentMatches[match_id] = {
             "id": match_id,

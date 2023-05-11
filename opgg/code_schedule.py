@@ -28,6 +28,22 @@ query {
         originalScheduledAt
         scheduledAt
         status
+        homeTeam{
+            id
+            name
+            acronym
+            nationality
+            foundedAt
+            imageUrl
+        }
+        awayTeam{
+            id
+            name
+            acronym
+            nationality
+            foundedAt
+            imageUrl
+        }
     }
 }
 """ % (date)
@@ -76,6 +92,22 @@ query {
         scheduledAt
         numberOfGames
         status
+        homeTeam{
+            id
+            name
+            acronym
+            nationality
+            foundedAt
+            imageUrl
+        }
+        awayTeam{
+            id
+            name
+            acronym
+            nationality
+            foundedAt
+            imageUrl
+        }
     }
 }
 """ % (leagueId, now_year, now_month, page)
