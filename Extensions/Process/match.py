@@ -62,108 +62,57 @@ def get_match_info_by_id(matchId: str):
     match_info = opgg.match_info_by_id(matchId=matchId)
 
     if match_info['error'] == False:
-        try: match_id = match_info['data']['id']
-        except: pass
-        try: match_name = match_info['data']['name']
-        except: pass
-        try: match_originalScheduledAt = match_info['data']['originalScheduledAt']
-        except: pass
-        try: match_scheduledAt = match_info['data']['scheduledAt']
-        except: pass
-        try: match_beginAt = match_info['data']['beginAt']
-        except: pass
-        try: match_endAt = match_info['data']['endAt']
-        except: pass
-        try: match_status = match_info['data']['status']
-        except: pass
-        try: match_numberOfGames = match_info['data']['numberOfGames']
-        except: pass
-        try: match_liveSupported = match_info['data']['liveSupported']
-        except: pass
-        try: match_liveOpensAt = match_info['data']['liveOpensAt']
-        except: pass
-        try: match_streams_isMain = match_info['data']['streams']['isMain']
-        except: pass
-        try: match_streams_isOfficial = match_info['data']['streams']['isOfficial']
-        except: pass
-        try: match_streams_rawUrl = match_info['data']['streams']['rawUrl']
-        except: pass
-        try: match_homeTeam_id = match_info['data']['homeTeam']['id']
-        except: pass
-        try: match_homeTeam_name = match_info['data']['homeTeam']['name']
-        except: pass
-        try: match_homeTeam_acronym = match_info['data']['homeTeam']['acronym']
-        except: pass
-        try: match_homeTeam_nationality = match_info['data']['homeTeam']['nationality']
-        except: pass
-        try: match_homeTeam_foundedAt = match_info['data']['homeTeam']['foundedAt']
-        except: pass
-        try: match_homeTeam_imageUrl = match_info['data']['homeTeam']['imageUrl']
-        except: pass
-        try: match_homeTeam_youtube = match_info['data']['homeTeam']['youtube']
-        except: pass
-        try: match_homeTeam_twitter = match_info['data']['homeTeam']['twitter']
-        except: pass
-        try: match_homeTeam_instagram = match_info['data']['homeTeam']['instagram']
-        except: pass
-        try: match_homeTeam_facebook = match_info['data']['homeTeam']['facebook']
-        except: pass
-        try: match_homeTeam_discord = match_info['data']['homeTeam']['discord']
-        except: pass
-        try: match_homeTeam_website = match_info['data']['homeTeam']['website']
-        except: pass
-        try: match_awayTeam_id = match_info['data']['awayTeam']['id']
-        except: pass
-        try: match_awayTeam_name = match_info['data']['awayTeam']['name']
-        except: pass
-        try: match_awayTeam_acronym = match_info['data']['awayTeam']['acronym']
-        except: pass
-        try: match_awayTeam_nationality = match_info['data']['awayTeam']['nationality']
-        except: pass
-        try: match_awayTeam_foundedAt = match_info['data']['awayTeam']['foundedAt']
-        except: pass
-        try: match_awayTeam_imageUrl = match_info['data']['awayTeam']['imageUrl']
-        except: pass
-        try: match_awayTeam_youtube = match_info['data']['awayTeam']['youtube']
-        except: pass
-        try: match_awayTeam_twitter = match_info['data']['awayTeam']['twitter']
-        except: pass
-        try: match_awayTeam_instagram = match_info['data']['awayTeam']['instagram']
-        except: pass
-        try: match_awayTeam_facebook = match_info['data']['awayTeam']['facebook']
-        except: pass
-        try: match_awayTeam_discord = match_info['data']['awayTeam']['discord']
-        except: pass
-        try: match_awayTeam_website = match_info['data']['awayTeam']['website']
-        except: pass
-        try: match_homeTeamRank_position = match_info['data']['homeTeam']['rank']['position']
-        except: pass
-        try: match_homeTeamRank_previously = match_info['data']['homeTeam']['rank']['previously']
-        except: pass
-        try: match_homeTeamRank_point = match_info['data']['homeTeam']['rank']['point']
-        except: pass
-        try: match_homeTeamRank_setWin = match_info['data']['homeTeam']['rank']['setWin']
-        except: pass
-        try: match_homeTeamRank_setLose = match_info['data']['homeTeam']['rank']['setLose']
-        except: pass
-        try: match_homeTeamRank_win = match_info['data']['homeTeam']['rank']['win']
-        except: pass
-        try: match_homeTeamRank_lose = match_info['data']['homeTeam']['rank']['lose']
-        except: pass
-        try: match_awayTeamRank_position = match_info['data']['awayTeam']['rank']['position']
-        except: pass
-        try: match_awayTeamRank_previously = match_info['data']['awayTeam']['rank']['previously']
-        except: pass
-        try: match_awayTeamRank_point = match_info['data']['awayTeam']['rank']['point']
-        except: pass
-        try: match_awayTeamRank_setWin = match_info['data']['awayTeam']['rank']['setWin']
-        except: pass
-        try: match_awayTeamRank_setLose = match_info['data']['awayTeam']['rank']['setLose']
-        except: pass
-        try: match_awayTeamRank_win = match_info['data']['awayTeam']['rank']['win']
-        except: pass
-        try: match_awayTeamRank_lose = match_info['data']['awayTeam']['rank']['lose']
-        except: pass
+        match_id = match_info['data'][0]['id']
+        match_name = match_info['data'][0]['name']
+        match_originalScheduledAt = match_info['data'][0]['originalScheduledAt']
+        match_scheduledAt = match_info['data'][0]['scheduledAt']
+        match_beginAt = match_info['data'][0]['beginAt']
+        match_endAt = match_info['data'][0]['endAt']
+        match_status = match_info['data'][0]['status']
+        match_numberOfGames = match_info['data'][0]['numberOfGames']
+        match_liveSupported = match_info['data'][0]['liveSupported']
+        match_liveOpensAt = match_info['data'][0]['liveOpensAt']
+        match_streams_isMain = match_info['data'][0]['streams'][0]['isMain']
+        match_streams_isOfficial = match_info['data'][0]['streams'][0]['isOfficial']
+        match_streams_rawUrl = match_info['data'][0]['streams'][0]['rawUrl']
+        match_homeTeam_id = match_info['data'][0]['homeTeam']['id']
+        match_homeTeam_name = match_info['data'][0]['homeTeam']['name']
+        match_homeTeam_acronym = match_info['data'][0]['homeTeam']['acronym']
+        match_homeTeam_nationality = match_info['data'][0]['homeTeam']['nationality']
+        match_homeTeam_foundedAt = match_info['data'][0]['homeTeam']['foundedAt']
+        match_homeTeam_imageUrl = match_info['data'][0]['homeTeam']['imageUrl']
+        match_homeTeam_youtube = match_info['data'][0]['homeTeam']['youtube']
+        match_homeTeam_twitter = match_info['data'][0]['homeTeam']['twitter']
+        match_homeTeam_instagram = match_info['data'][0]['homeTeam']['instagram']
+        match_homeTeam_facebook = match_info['data'][0]['homeTeam']['facebook']
+        match_homeTeam_discord = match_info['data'][0]['homeTeam']['discord']
+        match_homeTeam_website = match_info['data'][0]['homeTeam']['website']
+        match_awayTeam_id = match_info['data'][0]['awayTeam']['id']
+        match_awayTeam_name = match_info['data'][0]['awayTeam']['name']
+        match_awayTeam_acronym = match_info['data'][0]['awayTeam']['acronym']
+        match_awayTeam_nationality = match_info['data'][0]['awayTeam']['nationality']
+        match_awayTeam_foundedAt = match_info['data'][0]['awayTeam']['foundedAt']
+        match_awayTeam_imageUrl = match_info['data'][0]['awayTeam']['imageUrl']
+        match_awayTeam_youtube = match_info['data'][0]['awayTeam']['youtube']
+        match_awayTeam_twitter = match_info['data'][0]['awayTeam']['twitter']
+        match_awayTeam_instagram = match_info['data'][0]['awayTeam']['instagram']
+        match_awayTeam_facebook = match_info['data'][0]['awayTeam']['facebook']
+        match_awayTeam_discord = match_info['data'][0]['awayTeam']['discord']
+        match_awayTeam_website = match_info['data'][0]['awayTeam']['website']
+        match_homeTeamRank_position = match_info['data'][0]['ranks']['homeTeamRank']['position']
+        match_homeTeamRank_previously = match_info['data'][0]['ranks']['homeTeamRank']['previously']
+        match_homeTeamRank_point = match_info['data'][0]['ranks']['homeTeamRank']['point']
+        match_homeTeamRank_setWin = match_info['data'][0]['ranks']['homeTeamRank']['setWin']
+        match_homeTeamRank_setLose = match_info['data'][0]['ranks']['homeTeamRank']['setLose']
+        match_homeTeamRank_win = match_info['data'][0]['ranks']['homeTeamRank']['win']
+        match_homeTeamRank_lose = match_info['data'][0]['ranks']['homeTeamRank']['lose']
+        match_awayTeamRank_position = match_info['data'][0]['ranks']['awayTeamRank']['position']
+        match_awayTeamRank_previously = match_info['data'][0]['ranks']['awayTeamRank']['previously']
+        match_awayTeamRank_point = match_info['data'][0]['ranks']['awayTeamRank']['point']
+        match_awayTeamRank_setWin = match_info['data'][0]['ranks']['awayTeamRank']['setWin']
+        match_awayTeamRank_setLose = match_info['data'][0]['ranks']['awayTeamRank']['setLose']
+        match_awayTeamRank_win = match_info['data'][0]['ranks']['awayTeamRank']['win']
+        match_awayTeamRank_lose = match_info['data'][0]['ranks']['awayTeamRank']['lose']
 
         box_match_info = {
             "id": match_id,

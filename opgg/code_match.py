@@ -11,7 +11,7 @@ def match_info_by_id(matchId: str):
     try:
         query = """
 query {
-    matchesByIds(ids: %s) {
+    matchesByIds(ids: [%s]) {
         id
         name
         originalScheduledAt
