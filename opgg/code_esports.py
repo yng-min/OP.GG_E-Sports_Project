@@ -45,6 +45,3 @@ query {
 
     except Exception as error:
         return { "error": True, "code": "UNKNOWN", "message": f"알 수 없는 에러가 발생했습니다.\n{error}", "data": None }
-
-
-print(series_tournaments_by_league_shortname("lck"))
