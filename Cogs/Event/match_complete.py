@@ -15,7 +15,7 @@ import os
 import requests
 
 from Extensions.Prediction.deposit import DepositPoint
-from Extensions.Process.match import get_match_info_by_id
+from Extensions.Process.match import get_match_winner_by_id, get_match_info_by_id
 
 # config.json 파일 불러오기
 try:
@@ -70,6 +70,7 @@ class MatchCompleteTASK(commands.Cog):
         match_input = eval(ctx.content)
 
         match_data = opgg.match_completed(matchInfo=match_input)
+        match_winner = get_match_winner_by_id(matchId=match_input['matchId'])
         match_finished = get_match_info_by_id(matchId=match_input['matchId'])
 
         if (match_data['error'] == False) and (match_data['data']['match_type'] == "complete"):
@@ -184,10 +185,10 @@ class MatchCompleteTASK(commands.Cog):
                                         team_point_1 = data_bet[1]
                                         team_point_2 = data_bet[3]
 
-                                        if (match_data['data']['match_winner_shortName'] == match_title.split(' vs ')[0]):
+                                        if (match_winner['winnerTeam']['acronym'] == match_title.split(' vs ')[0]):
                                             try: reward = (bet_box[0] / bet_box[1]).__round__()
                                             except ZeroDivisionError: reward = 0
-                                        elif (match_data['data']['match_winner_shortName'] == match_title.split(' vs ')[1]):
+                                        elif (match_winner['winnerTeam']['acronym'] == match_title.split(' vs ')[1]):
                                             try: reward = (bet_box[0] / bet_box[2]).__round__()
                                             except ZeroDivisionError: reward = 0
 
@@ -210,7 +211,7 @@ class MatchCompleteTASK(commands.Cog):
                                         embed.add_field(name="\u200b", value=f"**> 리그 승부 예측 결과**", inline=False)
                                         embed.add_field(name=msg_team_1, value=f"{msg_user_1}\n{msg_point_1}", inline=True)
                                         embed.add_field(name=msg_team_2, value=f"{msg_user_2}\n{msg_point_2}", inline=True)
-                                        embed.add_field(name="포인트 정산", value=f"__**{match_data['data']['match_winner_name']}**__ 팀에 베팅한 유저에게 각각 {msg_reward}가 지급됩니다.", inline=False)
+                                        embed.add_field(name="포인트 정산", value=f"__**{match_winner['winnerTeam']['acronym']}**__ 팀에 베팅한 유저에게 각각 {msg_reward}가 지급됩니다.", inline=False)
                                         try:
                                             # await channel_notice.send(msg_content, embed=embed, view=LinkButton(scheduleURL))
                                             await channel_notice.send(embed=embed, view=LinkButton(scheduleURL))
@@ -292,7 +293,7 @@ class MatchCompleteTASK(commands.Cog):
                                         if 200 <= webhook_result.status_code < 300: pass
                                         else: print(f'- [LOG] Not sent with {webhook_result.status_code}, response:\n{webhook_result.json()}')
 
-                DepositPoint.deposit_point(match_data=match_data, bet_box=bet_box)
+                DepositPoint.deposit_point(match_data=match_data, winner_data=match_winner, bet_box=bet_box)
 
             except Exception as error:
                 print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))

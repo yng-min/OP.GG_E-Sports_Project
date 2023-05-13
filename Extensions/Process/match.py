@@ -4,6 +4,67 @@
 import opgg
 
 
+def get_match_winner_by_id(matchId: str):
+
+    box_match_info = {}
+    match_id = ""
+    match_name = ""
+    match_originalScheduledAt = ""
+    match_scheduledAt = ""
+    match_beginAt = ""
+    match_endAt = ""
+    match_status = ""
+    match_numberOfGames = 0
+    match_winner_id = ""
+    match_winner_name = ""
+    match_winner_acronym = ""
+    match_winner_nationality = ""
+    match_winner_foundedAt = ""
+    match_winner_imageUrl = ""
+
+    match_info = opgg.match_winner_by_id(matchId=matchId)
+
+    if match_info['error'] == False:
+        match_id = match_info['data'][0]['id']
+        match_name = match_info['data'][0]['name']
+        match_originalScheduledAt = match_info['data'][0]['originalScheduledAt']
+        match_scheduledAt = match_info['data'][0]['scheduledAt']
+        match_beginAt = match_info['data'][0]['beginAt']
+        match_endAt = match_info['data'][0]['endAt']
+        match_status = match_info['data'][0]['status']
+        match_numberOfGames = match_info['data'][0]['numberOfGames']
+        match_winner_id = match_info['data'][0]['winnerTeam']['id']
+        match_winner_name = match_info['data'][0]['winnerTeam']['name']
+        match_winner_acronym = match_info['data'][0]['winnerTeam']['acronym']
+        match_winner_nationality = match_info['data'][0]['winnerTeam']['nationality']
+        match_winner_foundedAt = match_info['data'][0]['winnerTeam']['foundedAt']
+        match_winner_imageUrl = match_info['data'][0]['winnerTeam']['imageUrl']
+
+        box_match_info = {
+            "id": match_id,
+            "name": match_name,
+            "originalScheduledAt": match_originalScheduledAt,
+            "scheduledAt": match_scheduledAt,
+            "beginAt": match_beginAt,
+            "endAt": match_endAt,
+            "status": match_status,
+            "numberOfGames": match_numberOfGames,
+            "winnerTeam": {
+                "id": match_winner_id,
+                "name": match_winner_name,
+                "acronym": match_winner_acronym,
+                "nationality": match_winner_nationality,
+                "foundedAt": match_winner_foundedAt,
+                "imageUrl": match_winner_imageUrl
+            }
+        }
+
+    else:
+        return match_info
+
+    return box_match_info
+
+
 def get_match_info_by_id(matchId: str):
 
     box_match_info = {}
