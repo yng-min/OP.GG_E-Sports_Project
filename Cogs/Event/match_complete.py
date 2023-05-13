@@ -70,7 +70,8 @@ class MatchCompleteTASK(commands.Cog):
         match_input = eval(ctx.content)
 
         match_data = opgg.match_completed(matchInfo=match_input)
-        match_winner = get_match_winner_by_id(matchId=match_input['matchId'])
+        try: match_winner = get_match_winner_by_id(matchId=match_input['matchId']) # 경기 승리팀 확인
+        except: match_winner = {} # 경기가 끝나지 않았을 경우 승리팀이 없기 때문에 예외 처리
         match_finished = get_match_info_by_id(matchId=match_input['matchId'])
 
         if (match_data['error'] == False) and (match_data['data']['match_type'] == "complete"):
@@ -293,7 +294,8 @@ class MatchCompleteTASK(commands.Cog):
                                         if 200 <= webhook_result.status_code < 300: pass
                                         else: print(f'- [LOG] Not sent with {webhook_result.status_code}, response:\n{webhook_result.json()}')
 
-                DepositPoint.deposit_point(match_data=match_data, winner_data=match_winner, bet_box=bet_box)
+                if match_winner != {}: DepositPoint.deposit_point(match_data=match_data, winner_data=match_winner, bet_box=bet_box)
+                else: pass
 
             except Exception as error:
                 print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
