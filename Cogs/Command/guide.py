@@ -45,7 +45,7 @@ def embed_setup(language, bot, banner, page):
         embed_field_3_name = language['guide.py']['output']['embed-page_1']['field_3']['name']
         embed_field_3_value = language['guide.py']['output']['embed-page_1']['field_3']['value']
         embed_field_4_name = language['guide.py']['output']['embed-page_1']['field_4']['name']
-        embed_field_4_value = language['guide.py']['output']['embed-page_1']['field_4']['value'].format(inviteURL)
+        embed_field_4_value = language['guide.py']['output']['embed-page_1']['field_4']['value'].format(url=inviteURL)
 
         embed = discord.Embed(title=embed_title, description=embed_description, color=colorMap['red'])
         embed.add_field(name=embed_field_1_name, value=embed_field_1_value, inline=False)

@@ -11,11 +11,25 @@ import pytz
 import traceback
 import os
 
+from Extensions.i18n.substitution import Substitution
+
 # config.json 파일 불러오기
 try:
     with open(r"./config.json", "rt", encoding="UTF8") as configJson:
         config = json.load(configJson)
 except: print("config.json이 로드되지 않음")
+
+# en.json 파일 불러오기
+try:
+    with open(r"./Languages/en.json", "rt", encoding="UTF8") as enJson:
+        lang_en = json.load(enJson)
+except: print("en.json이 로드되지 않음")
+
+# ko.json 파일 불러오기
+try:
+    with open(r"./Languages/ko.json", "rt", encoding="UTF8") as koJson:
+        lang_ko = json.load(koJson)
+except: print("ko.json이 로드되지 않음")
 
 colorMap = config['colorMap']
 
@@ -26,13 +40,24 @@ class ProfileCMD(commands.Cog):
         self.bot = bot
 
     @slash_command(
-        name="프로필",
-        description="프로필 정보를 조회할 수 있어요.",
+        name=lang_en['profile.py']['command']['name'],
+        name_localizations={
+            "ko": lang_ko['profile.py']['command']['name']
+        },
+        description=lang_en['profile.py']['command']['description'],
+        description_localizations={
+            "ko": lang_ko['profile.py']['command']['description']
+        }
     )
     async def _profileCMD(self, ctx):
 
+        language = Substitution.substitution(ctx)
+
         if not os.path.isfile(rf"./Database/User/user_{ctx.author.id}.sqlite"):
-            embed = discord.Embed(title="> ⛔ 프로필 조회 불가", description="서비스에 가입하셔야 이용할 수 있는 기능입니다.", color=colorMap['red'])
+            embed_title = language['profile.py']['output']['embed-not_register']['title']
+            embed_description = language['profile.py']['output']['embed-not_register']['description']
+
+            embed = discord.Embed(title=embed_title, description=embed_description, color=colorMap['red'])
             return await ctx.respond(embed=embed, ephemeral=True)
 
         try:
@@ -44,15 +69,26 @@ class ProfileCMD(commands.Cog):
             try: winRatio = ((resultData[4] / resultData[3]) * 100).__round__(1)
             except ZeroDivisionError: winRatio = 0.0
 
-            embed = discord.Embed(title="> 📋 프로필 정보", description=f"<@{ctx.author.id}> 님의 정보예요.", color=colorMap['red'])
-            embed.add_field(name="포인트 통계", value=f"_**{resultData[2]:,}**_포인트\n(누적 _**{resultData[1]:,}**_포인트)", inline=True)
-            embed.add_field(name="승부 예측 통계", value=f"성공 : _**{resultData[4]:,}**_번 | 실패 : _**{resultData[5]:,}**_번\n승률 : _**{winRatio}**_% (누적 _**{resultData[3]:,}**_번)", inline=True)
+            embed_title = language['profile.py']['output']['embed-profile']['title']
+            embed_description = language['profile.py']['output']['embed-profile']['description'].format(ctx.author.id)
+            embed_field_1_name = language['profile.py']['output']['embed-profile']['field_1']['name']
+            embed_field_1_value = language['profile.py']['output']['embed-profile']['field_1']['value'].format(point=resultData[2], total_point=resultData[1])
+            embed_field_2_name = language['profile.py']['output']['embed-profile']['field_2']['name']
+            embed_field_2_value = language['profile.py']['output']['embed-profile']['field_2']['value'].format(success=resultData[4], fail=resultData[5], win_ratio=winRatio, total_prediction=resultData[3])
+
+            embed = discord.Embed(title=embed_title, description=embed_description, color=colorMap['red'])
+            embed.add_field(name=embed_field_1_name, value=embed_field_1_value, inline=True)
+            embed.add_field(name=embed_field_2_name, value=embed_field_2_value, inline=True)
             await ctx.respond(embed=embed, ephemeral=True)
 
         except Exception as error:
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))
             print(traceback.format_exc())
-            embed = discord.Embed(title="> ⚠️ 프로필 조회 실패", description=f"아래의 오류로 인해 프로필 조회에 실패했어요. 해당 문제가 지속된다면 개발자에게 문의해주세요.\n`{error}`", color=colorMap['red'])
+
+            embed_title = language['profile.py']['output']['embed-error']['title']
+            embed_description = language['profile.py']['output']['embed-error']['description'].format(error=error)
+
+            embed = discord.Embed(title=embed_title, description=embed_description, color=colorMap['red'])
             return await ctx.respond(embed=embed, ephemeral=True)
 
         try: userDB.close()

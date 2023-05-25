@@ -15,15 +15,15 @@
                 },
                 "field_2": {
                     "name": "▫️ Functions",
-                    "value": "Basically, it provides e-sports schedule inquiry and game notification of League of Legends, but you can enjoy the league more through the match prediction mini-game."
+                    "value": "Basically, it provides Esports schedule inquiry and game notification of League of Legends, but you can enjoy the league more through the match prediction minigame."
                 },
                 "field_3": {
                     "name": "▫️ Support Server",
-                    "value": "[OP.GG Server](https://discord.com/invite/opgg/) to communicate with users and check out information on OP.GG eSports bots and other services!"
+                    "value": "[OP.GG Server](https://discord.com/invite/opgg/) to communicate with users and check out information on OP.GG Esports bots and other services!"
                 },
                 "field_4": {
                     "name": "▫️ Invite Bot",
-                    "value": "Try the OP.GG eSports bot [RIGHT NOW!]({}) 😆"
+                    "value": "Try the OP.GG Esports bot [RIGHT NOW!]({url}) 😆"
                 }
             },
             "embed-page_2": {
@@ -105,6 +105,35 @@
                     "name": "▫️ How can I enjoy it?",
                     "value": "The betting field opens at the start of each game, and the betting closes 15 minutes later.\n\nAnd the results of the match prediction will be sent along with the results of the match after the match."
                 }
+            }
+        }
+    },
+
+    "profile.py": {
+        "command": {
+            "name": "profile",
+            "description": "Check out the your profile info."
+        },
+        "output": {
+            "embed-not_register": {
+                "title": "> ⛔ Profile lookup not possible",
+                "description": "This function can only be used if you sign up for the service."
+            },
+            "embed-profile": {
+                "title": "> 📋 Profile Info",
+                "description": "<@{}>'s profile infomaion.",
+                "field_1": {
+                    "name": "Point Stats",
+                    "value": "_**{point:,}**_ Points\n(Total _**{total_point:,}**_ Points)"
+                },
+                "field_2": {
+                    "name": "Match Prediction Stats",
+                    "value": "Success : _**{success:,}**_ | Failure : _**{fail:,}**_\nWin Ratio : _**{win_ratio}**_% (Total _**{total_prediction:,}**_)"
+                }
+            },
+            "embed-error": {
+                "title": "> ⚠️ Profile lookup failed",
+                "description": "The profile lookup failed due to the error below. If the problem persists, please contact the developer.\n`{error}`"
             }
         }
     }
