@@ -1,1 +1,111 @@
-{}
+{
+    "guide.py": {
+        "command": {
+            "name": "guide",
+            "description": "Check out the guide for the OP.GG Esports bot."
+        },
+        "output": {
+            "embed-page_1": {
+                "title": "> 📌 OP.GG Esports Discord Bot Guide",
+                "description": "```Service Introduction Page```",
+                "footer": "TIP: You can turn the page by clicking the button below.",
+                "field_1": {
+                    "name": "▫️ Infomations",
+                    "value": "This bot is the official bot for the [OP.GG Esports](https://esports.op.gg/) service and provides Esports League-related features of **League of Legends**."
+                },
+                "field_2": {
+                    "name": "▫️ Functions",
+                    "value": "Basically, it provides e-sports schedule inquiry and game notification of League of Legends, but you can enjoy the league more through the match prediction mini-game."
+                },
+                "field_3": {
+                    "name": "▫️ Support Server",
+                    "value": "[OP.GG Server](https://discord.com/invite/opgg/) to communicate with users and check out information on OP.GG eSports bots and other services!"
+                },
+                "field_4": {
+                    "name": "▫️ Invite Bot",
+                    "value": "Try the OP.GG eSports bot [RIGHT NOW!]({}) 😆"
+                }
+            },
+            "embed-page_2": {
+                "title": "> 📌 OP.GG Esports Discord Bot Guide",
+                "description": "```League Commands Page```",
+                "footer": "TIP: You can turn the page by clicking the button below.",
+                "field_1": {
+                    "name": "/schedule",
+                    "value": "Check the league schedule of League of Legends Esports."
+                },
+                "field_2": {
+                    "name": "/standing",
+                    "value": "Check the season team rankings of League of Legends Esports."
+                },
+                "field_3": {
+                    "name": "/banpick",
+                    "value": "Check out the ban/pick rankings of League of Legends Esports."
+                },
+                "field_4": {
+                    "name": "/bestplayer",
+                    "value": "Check out who is the season MVP of League of Legends Esports."
+                },
+                "field_5": {
+                    "name": "/player",
+                    "value": "Search for player information in League of Legends Esports."
+                }
+            },
+            "embed-page_3": {
+                "title": "> 📌 OP.GG Esports Discord Bot Guide",
+                "description": "```Default Command Page```",
+                "footer": "TIP: You can turn the page by clicking the button below.",
+                "field_1": {
+                    "name": "/guide",
+                    "value": "Send a guide for using OP.GG Esports bot."
+                },
+                "field_2": {
+                    "name": "/service-register",
+                    "value": "Let's proceed with the basic settings for using the service."
+                },
+                "field_3": {
+                    "name": "/service-quit",
+                    "value": "Leave the service and delete the data."
+                },
+                "field_4": {
+                    "name": "/profile",
+                    "value": "Check the user profile information in the service."
+                },
+                "field_5": {
+                    "name": "/feedback",
+                    "value": "[Beta] You can submit feedback or suggestions for OP.GG Esports bots."
+                }
+            },
+            "embed-page_4": {
+                "title": "> 📌 OP.GG Esports Discord Bot Guide",
+                "description": "```Administrator Command Page```",
+                "footer": "TIP: You can turn the page by clicking the button below.",
+                "field_1": {
+                    "name": "/settings-setup",
+                    "value": "Let's proceed with the initial server setup for using the service."
+                },
+                "field_2": {
+                    "name": "/settings-change",
+                    "value": "Change the options in the service settings."
+                },
+                "field_3": {
+                    "name": "/settings-league",
+                    "value": "Set only the league you want to receive notifications."
+                }
+            },
+            "embed-page_5": {
+                "title": "> 📌 OP.GG Esports Discord Bot Guide",
+                "description": "```Prediction Minigame Page```",
+                "footer": "TIP: You can turn the page by clicking the button below.",
+                "field_1": {
+                    "name": "▫️ What's the Prediction Minigame?",
+                    "value": "You can enjoy the league more by betting on your points by predicting the victory or defeat of the league match."
+                },
+                "field_2": {
+                    "name": "▫️ How can I enjoy it?",
+                    "value": "The betting field opens at the start of each game, and the betting closes 15 minutes later.\n\nAnd the results of the match prediction will be sent along with the results of the match after the match."
+                }
+            }
+        }
+    }
+}

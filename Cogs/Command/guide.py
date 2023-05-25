@@ -14,8 +14,20 @@ from Extensions.i18n.substitution import Substitution
 try:
     with open(r"./config.json", "rt", encoding="UTF8") as configJson:
         config = json.load(configJson)
-except:
-    print("config.json이 로드되지 않음")
+except: print("config.json이 로드되지 않음")
+
+# en.json 파일 불러오기
+try:
+    with open(r"./Languages/en.json", "rt", encoding="UTF8") as enJson:
+        lang_en = json.load(enJson)
+except: print("en.json이 로드되지 않음")
+
+# ko.json 파일 불러오기
+try:
+    with open(r"./Languages/ko.json", "rt", encoding="UTF8") as koJson:
+        lang_ko = json.load(koJson)
+except: print("ko.json이 로드되지 않음")
+
 
 colorMap = config['colorMap']
 inviteURL = config['invite_code']
@@ -177,8 +189,14 @@ class GuideCMD(commands.Cog):
         self.page = 1
 
     @slash_command(
-        name="가이드",
-        description="OP.GG e스포츠 봇의 가이드를 확인해보세요.",
+        name=lang_en['guide.py']['command']['name'],
+        name_localizations={
+            "ko": lang_ko['guide.py']['command']['name'],
+        },
+        description=lang_en['guide.py']['command']['description'],
+        description_localizations={
+            "ko": lang_ko['guide.py']['command']['description'],
+        }
     )
     async def _helpCMD(self, ctx):
 
