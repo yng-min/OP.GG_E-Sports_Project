@@ -8,6 +8,8 @@ import random
 import json
 import uuid
 
+from Extensions.i18n.substitution import Substitution
+
 # config.json 파일 불러오기
 try:
     with open(r"./config.json", "rt", encoding="UTF8") as configJson:
@@ -19,51 +21,106 @@ colorMap = config['colorMap']
 inviteURL = config['invite_code']
 
 
-def embed_setup(bot, banner, page):
+def embed_setup(language, bot, banner, page):
 
     if page == 1:
-        embed = discord.Embed(title="> 📌 OP.GG e스포츠 봇 서비스 가이드", description="```서비스 소개 페이지```", color=colorMap['red'])
-        embed.add_field(name="▫️ 소개", value=" 본 디스코드 봇은 [OP.GG e스포츠](https://esports.op.gg/) 서비스의 공식 디스코드 봇이며, **리그 오브 레전드**의 e스포츠 리그 관련 기능을 제공합니다.", inline=False)
-        embed.add_field(name="▫️ 기능", value=" 기본적으로 리그 오브 레전드의 e스포츠 일정 조회, 경기 알림 등을 제공하지만 더욱 재밌게 승부 예측 미니게임도 즐길 수 있어요.", inline=False)
-        embed.add_field(name="▫️ 서포트 서버", value=" [OP.GG 서비스 서포트 서버](https://discord.com/invite/opgg/)에 입장하여 유저들과 소통하고 OP.GG e스포츠 봇과 다른 서비스들의 정보를 확인해보세요!", inline=False)
-        embed.add_field(name="▫️ 봇 초대", value=f" 지금 바로 OP.GG e스포츠 봇을 [초대]({inviteURL})해서 사용해보세요. 😆", inline=False)
+        embed_title = language['guide.py']['output']['embed-page_1']['title']
+        embed_description = language['guide.py']['output']['embed-page_1']['description']
+        embed_field_1_name = language['guide.py']['output']['embed-page_1']['field_1']['name']
+        embed_field_1_value = language['guide.py']['output']['embed-page_1']['field_1']['value']
+        embed_field_2_name = language['guide.py']['output']['embed-page_1']['field_2']['name']
+        embed_field_2_value = language['guide.py']['output']['embed-page_1']['field_2']['value']
+        embed_field_3_name = language['guide.py']['output']['embed-page_1']['field_3']['name']
+        embed_field_3_value = language['guide.py']['output']['embed-page_1']['field_3']['value']
+        embed_field_4_name = language['guide.py']['output']['embed-page_1']['field_4']['name']
+        embed_field_4_value = language['guide.py']['output']['embed-page_1']['field_4']['value'].format(inviteURL)
+
+        embed = discord.Embed(title=embed_title, description=embed_description, color=colorMap['red'])
+        embed.add_field(name=embed_field_1_name, value=embed_field_1_value, inline=False)
+        embed.add_field(name=embed_field_2_name, value=embed_field_2_value, inline=False)
+        embed.add_field(name=embed_field_3_name, value=embed_field_3_value, inline=False)
+        embed.add_field(name=embed_field_4_name, value=embed_field_4_value, inline=False)
 
     elif page == 2:
-        embed = discord.Embed(title="> 📌 OP.GG e스포츠 봇 서비스 가이드", description="```리그 명령어 페이지```", color=colorMap['red'])
-        embed.add_field(name="/경기 일정", value="리그 오브 레전드 e스포츠의 경기 일정을 확인할 수 있어요.", inline=False)
-        embed.add_field(name="/리그 순위", value="리그 오브 레전드 e스포츠의 시즌 팀 순위를 보여줘요.", inline=False)
-        embed.add_field(name="/밴픽 순위", value="리그 오브 레전드 e스포츠의 밴/픽 순위를 불러와요.", inline=False)
-        embed.add_field(name="/베스트 플레이어", value="리그 오브 레전드 e스포츠의 시즌 MVP는 누구인지 찾아보세요!", inline=False)
-        embed.add_field(name="/선수 검색", value="리그 오브 레전드 e스포츠의 선수 정보를 검색해요.", inline=False)
+        embed_title = language['guide.py']['output']['embed-page_2']['title']
+        embed_description = language['guide.py']['output']['embed-page_2']['description']
+        embed_field_1_name = language['guide.py']['output']['embed-page_2']['field_1']['name']
+        embed_field_1_value = language['guide.py']['output']['embed-page_2']['field_1']['value']
+        embed_field_2_name = language['guide.py']['output']['embed-page_2']['field_2']['name']
+        embed_field_2_value = language['guide.py']['output']['embed-page_2']['field_2']['value']
+        embed_field_3_name = language['guide.py']['output']['embed-page_2']['field_3']['name']
+        embed_field_3_value = language['guide.py']['output']['embed-page_2']['field_3']['value']
+        embed_field_4_name = language['guide.py']['output']['embed-page_2']['field_4']['name']
+        embed_field_4_value = language['guide.py']['output']['embed-page_2']['field_4']['value']
+        embed_field_5_name = language['guide.py']['output']['embed-page_2']['field_5']['name']
+        embed_field_5_value = language['guide.py']['output']['embed-page_2']['field_5']['value']
+
+        embed = discord.Embed(title=embed_title, description=embed_description, color=colorMap['red'])
+        embed.add_field(name=embed_field_1_name, value=embed_field_1_value, inline=False)
+        embed.add_field(name=embed_field_2_name, value=embed_field_2_value, inline=False)
+        embed.add_field(name=embed_field_3_name, value=embed_field_3_value, inline=False)
+        embed.add_field(name=embed_field_4_name, value=embed_field_4_value, inline=False)
+        embed.add_field(name=embed_field_5_name, value=embed_field_5_value, inline=False)
 
     elif page == 3:
-        embed = discord.Embed(title="> 📌 OP.GG e스포츠 봇 서비스 가이드", description="```기본 명령어 페이지```", color=colorMap['red'])
-        embed.add_field(name="/가이드", value="OP.GG e스포츠 봇의 가이드를 전송해요.", inline=False)
-        embed.add_field(name="/서비스 가입", value="서비스를 이용을 위한 기본 설정을 진행해요.", inline=False)
-        embed.add_field(name="/서비스 탈퇴", value="서비스를 탈퇴하고 데이터를 삭제해요.", inline=False)
-        embed.add_field(name="/프로필", value="서비스 내의 유저 프로필 정보를 조회해요.", inline=False)
-        embed.add_field(name="/피드백", value="[Beta] OP.GG e스포츠 봇의 피드백 또는 의견 제안을 제출할 수 있어요.", inline=False)
+        embed_title = language['guide.py']['output']['embed-page_3']['title']
+        embed_description = language['guide.py']['output']['embed-page_3']['description']
+        embed_field_1_name = language['guide.py']['output']['embed-page_3']['field_1']['name']
+        embed_field_1_value = language['guide.py']['output']['embed-page_3']['field_1']['value']
+        embed_field_2_name = language['guide.py']['output']['embed-page_3']['field_2']['name']
+        embed_field_2_value = language['guide.py']['output']['embed-page_3']['field_2']['value']
+        embed_field_3_name = language['guide.py']['output']['embed-page_3']['field_3']['name']
+        embed_field_3_value = language['guide.py']['output']['embed-page_3']['field_3']['value']
+        embed_field_4_name = language['guide.py']['output']['embed-page_3']['field_4']['name']
+        embed_field_4_value = language['guide.py']['output']['embed-page_3']['field_4']['value']
+        embed_field_5_name = language['guide.py']['output']['embed-page_3']['field_5']['name']
+        embed_field_5_value = language['guide.py']['output']['embed-page_3']['field_5']['value']
+
+        embed = discord.Embed(title=embed_title, description=embed_description, color=colorMap['red'])
+        embed.add_field(name=embed_field_1_name, value=embed_field_1_value, inline=False)
+        embed.add_field(name=embed_field_2_name, value=embed_field_2_value, inline=False)
+        embed.add_field(name=embed_field_3_name, value=embed_field_3_value, inline=False)
+        embed.add_field(name=embed_field_4_name, value=embed_field_4_value, inline=False)
+        embed.add_field(name=embed_field_5_name, value=embed_field_5_value, inline=False)
 
     elif page == 4:
-        embed = discord.Embed(title="> 📌 OP.GG e스포츠 봇 서비스 가이드", description="```관리자 명령어 페이지```", color=colorMap['red'])
-        embed.add_field(name="/설정 셋업", value="서비스를 이용을 위한 기본 서버 설정을 진행해요.", inline=False)
-        embed.add_field(name="/설정 변경", value="서비스 설정의 옵션을 변경할 수 있어요.", inline=False)
-        embed.add_field(name="/설정 리그", value="원하는 리그만 알림을 받도록 설정할 수 있어요.", inline=False)
+        embed_title = language['guide.py']['output']['embed-page_4']['title']
+        embed_description = language['guide.py']['output']['embed-page_4']['description']
+        embed_field_1_name = language['guide.py']['output']['embed-page_4']['field_1']['name']
+        embed_field_1_value = language['guide.py']['output']['embed-page_4']['field_1']['value']
+        embed_field_2_name = language['guide.py']['output']['embed-page_4']['field_2']['name']
+        embed_field_2_value = language['guide.py']['output']['embed-page_4']['field_2']['value']
+        embed_field_3_name = language['guide.py']['output']['embed-page_4']['field_3']['name']
+        embed_field_3_value = language['guide.py']['output']['embed-page_4']['field_3']['value']
+
+        embed = discord.Embed(title=embed_title, description=embed_description, color=colorMap['red'])
+        embed.add_field(name=embed_field_1_name, value=embed_field_1_value, inline=False)
+        embed.add_field(name=embed_field_2_name, value=embed_field_2_value, inline=False)
+        embed.add_field(name=embed_field_3_name, value=embed_field_3_value, inline=False)
 
     elif page == 5:
-        embed = discord.Embed(title="> 📌 OP.GG e스포츠 봇 서비스 가이드", description="```승부 예측 미니게임 페이지```", color=colorMap['red'])
-        embed.add_field(name="▫️ 승부 예측 게임이 뭔가요?", value=" 리그 경기의 승패를 예측하여 자신의 포인트를 베팅하여 리그를 더욱 즐길 수 있어요.\n\n자신이 좋아하는 팀을 응원하고 있다는 걸 엄청난 베팅을 통해 표현하거나, 냉정하게 분석하여 유리한 베팅 등을 진행해보세요!", inline=False)
-        embed.add_field(name="▫️ 어떻게 즐길 수 있나요?", value=" 승부 예측은 각 경기가 시작되면 베팅 필드가 열리고, 15분 뒤 베팅이 마감돼요.\n\n그리고 해당 경기 종료 후 경기 결과와 함께 승부 예측 결과도 전송됩니다.", inline=False)
+        embed_title = language['guide.py']['output']['embed-page_5']['title']
+        embed_description = language['guide.py']['output']['embed-page_5']['description']
+        embed_field_1_name = language['guide.py']['output']['embed-page_5']['field_1']['name']
+        embed_field_1_value = language['guide.py']['output']['embed-page_5']['field_1']['value']
+        embed_field_2_name = language['guide.py']['output']['embed-page_5']['field_2']['name']
+        embed_field_2_value = language['guide.py']['output']['embed-page_5']['field_2']['value']
 
-    embed.set_footer(text="TIP: 아래 버튼을 눌러 페이지를 넘길 수 있어요.", icon_url=bot.user.display_avatar.url)
+        embed = discord.Embed(title=embed_title, description=embed_description, color=colorMap['red'])
+        embed.add_field(name=embed_field_1_name, value=embed_field_1_value, inline=False)
+        embed.add_field(name=embed_field_2_name, value=embed_field_2_value, inline=False)
+
+    embed_footer = language['guide.py']['output'][f'embed-page_{page}']['footer']
+    embed.set_footer(text=embed_footer, icon_url=bot.user.display_avatar.url)
     embed.set_image(url=banner)
     return embed
 
 
 class HelpBUTTON(discord.ui.View):
 
-    def __init__(self, bot, banner, page):
+    def __init__(self, language, bot, banner, page):
         super().__init__(timeout=None)
+        self.language = language
         self.bot = bot
         self.banner = banner
         self.page = page
@@ -87,7 +144,7 @@ class HelpBUTTON(discord.ui.View):
             if self.page < self.min_page:
                 self.page = self.max_page
 
-            embed = embed_setup(self.bot, self.banner, self.page)
+            embed = embed_setup(language=self.language, bot=self.bot, banner=self.banner, page=self.page)
 
             self.remove_item(_prev)
             self.remove_item(_page)
@@ -101,7 +158,7 @@ class HelpBUTTON(discord.ui.View):
             if self.page > self.max_page:
                 self.page = self.min_page
 
-            embed = embed_setup(self.bot, self.banner, self.page)
+            embed = embed_setup(language=self.language, bot=self.bot, banner=self.banner, page=self.page)
 
             self.remove_item(_prev)
             self.remove_item(_page)
@@ -125,9 +182,10 @@ class GuideCMD(commands.Cog):
     )
     async def _helpCMD(self, ctx):
 
+        language = Substitution.substitution(ctx)
         banner_image_url = random.choice(config['banner_image_url'])
-        embed = embed_setup(self.bot, banner_image_url, self.page)
-        await ctx.respond(embed=embed, view=HelpBUTTON(bot=self.bot, banner=banner_image_url, page=self.page))
+        embed = embed_setup(language=language, bot=self.bot, banner=banner_image_url, page=self.page)
+        await ctx.respond(embed=embed, view=HelpBUTTON(language=language, bot=self.bot, banner=banner_image_url, page=self.page))
 
 
 
