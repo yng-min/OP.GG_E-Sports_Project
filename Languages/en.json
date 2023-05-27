@@ -1,4 +1,8 @@
 {
+    "global": {
+        "timezone": "America/New_York"
+    },
+
     "guide.py": {
         "command": {
             "name": "guide",
@@ -134,6 +138,201 @@
             "embed-error": {
                 "title": "> ⚠️ Profile lookup failed",
                 "description": "The profile lookup failed due to the error below. If the problem persists, please contact the developer.\n`{error}`"
+            }
+        }
+    },
+
+    "schedule.py": {
+        "command": {
+            "name": "schedule",
+            "description": "Check out the game schedule of League of Legends Esports."
+        },
+        "output": {
+            "string-no_schedule": "No upcoming matches.",
+            "string-match_schedule": "X%Y. X%m. X%d.",
+            "srting-only_author_can_use": "> It's only available in your own command. 😢",
+            
+            "button-jump_esports": "View from OP.GG Esports",
+
+            "select-pick_league": {
+                "placeholder": "Select a league",
+                "options": {
+                    "option_all": {
+                        "label": "All Leagues",
+                        "description": "I want to see all the league information."
+                    }
+                }
+            },
+
+            "embed-loading": {
+                "title": "",
+                "description": "⏳ Loading..."
+            },
+            "embed-no_data": {
+                "title": "> ⚠️ Error",
+                "description": "Code: `{code}`\nMessage: {message}"
+            },
+            "embed-schedule_1": {
+                "title": "> 📅 Match Schedules",
+                "description": "",
+                "footer": "TIP: Check the other days by clicking the button below.",
+                "field_1": {
+                    "name": "{match_schedule} Matches",
+                    "value": "└ (Page **1** of **3**)\n```{schedule_info}```"
+                }
+            },
+            "embed-schedule_2": {
+                "title": "> 📅 Match Schedules",
+                "description": "",
+                "footer": "TIP: Check the other days by clicking the button below.",
+                "field_1": {
+                    "name": "{match_schedule} Matches",
+                    "value": "└ (Page **2** of **3**)\n```{schedule_info}```"
+                }
+            },
+            "embed-schedule_3": {
+                "title": "> 📅 Match Schedules",
+                "description": "",
+                "footer": "TIP: Check the other days by clicking the button below.",
+                "field_1": {
+                    "name": "{match_schedule} Matches",
+                    "value": "└ (Page **3** of **3**)\n```{schedule_info}```"
+                }
+            }
+        }
+    },
+
+    "player_info.py": {
+        "command": {
+            "name": "search-player",
+            "description": "Search the player profile of League of Legends Esports.",
+            "options": {
+                "player": {
+                    "name": "player",
+                    "description": "Please enter an Esports player to search."
+                }
+            }
+        },
+        "output": {
+            "srting-only_author_can_use": "> It's only available in your own command. 😢",
+            "string-match_schedule": "X%Y. X%m. X%d.",
+            "string-no_player_birthday": "None",
+            "string-recent_matches": "[{emoji_hyperlink}]({esports_match}{match_id}) **{match_name}** (||__{match_winner}__|| Won)\n",
+            "string-kda_1": "\n`{kills}/{deaths}/{assists}` _{kda}_ KDA",
+            "string-kda_2": "\n`{kills}/{deaths}/{assists}` __**{kda}**__ KDA",
+            "string-kda_3": "\n`{kills}/{deaths}/{assists}` **{kda}** KDA",
+            "string-kda_4": "\n`{kills}/{deaths}/{assists}` {kda} KDA",
+
+            "button-jump_esports": "View from OP.GG Esports",
+            "button-jump_opgg": "View from OP.GG",
+
+            "select-pick_match": {
+                "placeholder": "Select a match",
+                "options": {
+                    "back": {
+                        "label": "Return to the player info."
+                    }
+                }
+            },
+
+            "embed-loading": {
+                "title": "",
+                "description": "⏳ Loading..."
+            },
+            "embed-no_player": {
+                "title": "> 🔍 Player Info",
+                "footer": "TIP: Players can only be searched with English nicknames.",
+                "field_1": {
+                    "name": "Search: '{picked_player}'",
+                    "value": "> Unable to retrieve player profile.\n> Please check again if the searched player is correct."
+                }
+            },
+            "embed-no_data": {
+                "title": "> ⚠️ Error",
+                "description": "Code: `{code}`\nMessage: {message}"
+            },
+            "embed-player": {
+                "title": "> 🔍 Player Info",
+                "footer": "TIP: If you click the SNS icon, you can go directly to the player's SNS.",
+                "field_1": {
+                    "name": "Personal Info",
+                    "value": "Nickname: [{team_acronym}]({esports_team_url}{team_id}) [{nickname}]({esports_player_url}{player_id})\nReal Name: {firstname} {lastname}\nPosition: {position}"
+                },
+                "field_2": {
+                    "name": "SNS Info"
+                },
+                "field_3": {
+                    "name": "Game Statistics",
+                    "value": "__{win_ratio}__% (__{wins:,}__ Wins __{loses:,}__ Loses)"
+                },
+                "field_4": {
+                    "name": "KDA Info",
+                    "value": "{kda} KDA `({kills}/{deaths}/{assists})`"
+                },
+                "field_5": {
+                    "name": "Inflict Damage",
+                    "value": "{dpm:,} Per Minute"
+                },
+                "field_6": {
+                    "name": "Damage Taken",
+                    "value": "{dtpm:,} Per Minute"
+                },
+                "field_7": {
+                    "name": "Gold Earned",
+                    "value": "{gpm:,} Per Minute"
+                },
+                "field_8": {
+                    "name": "CS",
+                    "value": "{cspm:,} Per Minute"
+                },
+                "field_9": {
+                    "name": "First Blood Rate",
+                    "value": "{first_blood}%"
+                },
+                "field_10": {
+                    "name": "First Tower Rate",
+                    "value": "{first_tower}%"
+                },
+                "field_11": {
+                    "name": "Recent Matches"
+                }
+            },
+            "embed-match_info": {
+                "title": "> 📊 Match Info",
+                "field_1": {
+                    "name": "{match_name} ({picked_set} Set)",
+                    "value": "└ (Match played on **{match_date}**)"
+                },
+                "field_2": {
+                    "name": "> {emoji_blueside} {team} (Victory)"
+                },
+                "field_else_2": {
+                    "name": "> {emoji_blueside} {team} (Defeat)"
+                },
+                "field_3": {
+                    "name": "Champion"
+                },
+                "field_4": {
+                    "name": "KDA Info"
+                },
+                "field_5": {
+                    "name": "Inflict Damage"
+                },
+                "field_6": {
+                    "name": "> {emoji_redside} {team} (Defeat)"
+                },
+                "field_else_6": {
+                    "name": "> {emoji_redside} {team} (Victory)"
+                },
+                "field_7": {
+                    "name": "Champion"
+                },
+                "field_8": {
+                    "name": "KDA Info"
+                },
+                "field_9": {
+                    "name": "Inflict Damage"
+                }
             }
         }
     }

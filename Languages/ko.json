@@ -1,4 +1,8 @@
 {
+    "global": {
+        "timezone": "Asia/Seoul"
+    },
+
     "guide.py": {
         "command": {
             "name": "가이드",
@@ -134,6 +138,197 @@
             "embed-error": {
                 "title": "> ⚠️ 프로필 조회 실패",
                 "description": "아래의 오류로 인해 프로필 조회에 실패했어요. 해당 문제가 지속된다면 개발자에게 문의해주세요.\n`{error}`"
+            }
+        }
+    },
+
+    "schedule.py": {
+        "command": {
+            "name": "경기-일정",
+            "description": "리그 오브 레전드 e스포츠의 경기 일정을 불러와요."
+        },
+        "output": {
+            "srting-only_author_can_use": "> 자신의 메시지에서만 이용할 수 있어요. 😢",
+            "string-match_schedule": "X%Y년 X%m월 X%d일",
+            "string-no_schedule": "해당 일자의 경기 일정이 없습니다.",
+
+            "button-jump_esports": "OP.GG Esports에서 보기",
+
+            "select-pick_league": {
+                "placeholder": "리그 선택하기",
+                "options": {
+                    "option_all": {
+                        "label": "모든 리그",
+                        "description": "모든 리그의 정보를 보고 싶어요!"
+                    }
+                }
+            },
+
+            "embed-loading": {
+                "description": "⏳ 정보를 불러오는 중..."
+            },
+            "embed-no_data": {
+                "title": "> ⚠️ 오류",
+                "description": "Code: `{code}`\nMessage: {message}"
+            },
+            "embed-schedule_1": {
+                "title": "> 📅 경기 일정",
+                "footer": "TIP: 아래 버튼을 눌러 다른 일자의 일정도 살펴볼 수 있어요.",
+                "field_1": {
+                    "name": "{match_schedule} 일정",
+                    "value": "└ (총 **3**페이지 중 **1**번째 페이지)\n```{schedule_info}```"
+                }
+            },
+            "embed-schedule_2": {
+                "title": "> 📅 경기 일정",
+                "footer": "TIP: 아래 버튼을 눌러 다른 일자의 일정도 살펴볼 수 있어요.",
+                "field_1": {
+                    "name": "{match_schedule} 일정",
+                    "value": "└ (총 **3**페이지 중 **2**번째 페이지)\n```{schedule_info}```"
+                }
+            },
+            "embed-schedule_3": {
+                "title": "> 📅 경기 일정",
+                "footer": "TIP: 아래 버튼을 눌러 다른 일자의 일정도 살펴볼 수 있어요.",
+                "field_1": {
+                    "name": "{match_schedule} 일정",
+                    "value": "└ (총 **3**페이지 중 **3**번째 페이지)\n```{schedule_info}```"
+                }
+            }
+        }
+    },
+
+    "player_info.py": {
+        "command": {
+            "name": "선수-검색",
+            "description": "리그 오브 레전드 e스포츠의 선수 프로필을 검색할 수 있어요.",
+            "options": {
+                "player": {
+                    "name": "이름",
+                    "description": "검색할 e스포츠 선수를 입력해주세요."
+                }
+            }
+        },
+        "output": {
+            "srting-only_author_can_use": "> 자신의 메시지에서만 이용할 수 있어요. 😢",
+            "string-match_schedule": "X%Y년 X%m월 X%d일",
+            "string-no_player_birthday": "정보 없음",
+            "string-recent_matches": "[{emoji_hyperlink}]({esports_match}{match_id}) **{match_name}** (||__{match_winner}__|| 승)\n",
+            "string-kda_1": "\n`{kills}/{deaths}/{assists}` _{kda}_ 평점",
+            "string-kda_2": "\n`{kills}/{deaths}/{assists}` __**{kda}**__ 평점",
+            "string-kda_3": "\n`{kills}/{deaths}/{assists}` **{kda}** 평점",
+            "string-kda_4": "\n`{kills}/{deaths}/{assists}` {kda} 평점",
+
+            "button-jump_esports": "OP.GG Esports에서 보기",
+            "button-jump_opgg": "OP.GG에서 보기",
+
+            "select-pick_match": {
+                "placeholder": "경기 선택하기",
+                "options": {
+                    "back": {
+                        "label": "선수 프로필로 돌아가기"
+                    }
+                }
+            },
+
+            "embed-loading": {
+                "title": "",
+                "description": "⏳ 정보를 불러오는 중..."
+            },
+            "embed-no_player": {
+                "title": "> 🔍 선수 프로필",
+                "footer": "TIP: 선수는 영문 닉네임으로만 검색할 수 있어요.",
+                "field_1": {
+                    "name": "검색어: '{picked_player}'",
+                    "value": "> 선수 프로필을 불러올 수 없습니다.\n> 검색어가 정확한지 다시 확인해주세요."
+                }
+            },
+            "embed-no_data": {
+                "title": "> ⚠️ 오류",
+                "description": "Code: `{code}`\nMessage: {message}"
+            },
+            "embed-player": {
+                "title": "> 🔍 선수 프로필",
+                "footer": "TIP: SNS 아이콘을 클릭하면 해당 선수의 SNS로 바로 이동할 수 있어요.",
+                "field_1": {
+                    "name": "인적 정보",
+                    "value": "닉네임: [{team_acronym}]({esports_team_url}{team_id}) [{nickname}]({esports_player_url}{player_id})\n본명: {firstname} {lastname}\n포지션: {position}"
+                },
+                "field_2": {
+                    "name": "SNS 플랫폼"
+                },
+                "field_3": {
+                    "name": "승률",
+                    "value": "__{win_ratio}__% (__{wins:,}__승 __{loses:,}__패)"
+                },
+                "field_4": {
+                    "name": "KDA 정보",
+                    "value": "{kda} 평점 `({kills}/{deaths}/{assists})`"
+                },
+                "field_5": {
+                    "name": "가한 피해량",
+                    "value": "분당 {dpm:,}데미지"
+                },
+                "field_6": {
+                    "name": "입은 피해량",
+                    "value": "분당 {dtpm:,}데미지"
+                },
+                "field_7": {
+                    "name": "골드 획득",
+                    "value": "분당 {gpm:,}골드"
+                },
+                "field_8": {
+                    "name": "CS",
+                    "value": "분당 {cspm:,}개"
+                },
+                "field_9": {
+                    "name": "첫 킬률",
+                    "value": "{first_blood}%"
+                },
+                "field_10": {
+                    "name": "첫 타워 파괴율",
+                    "value": "{first_tower}%"
+                },
+                "field_11": {
+                    "name": "최근 5경기"
+                }
+            },
+            "embed-match_info": {
+                "title": "> 📊 경기 정보",
+                "field_1": {
+                    "name": "{match_name} ({picked_set}세트)",
+                    "value": "└ (**{match_date}**에 진행된 경기)"
+                },
+                "field_2": {
+                    "name": "> {emoji_blueside} {team} (승리)"
+                },
+                "field_else_2": {
+                    "name": "> {emoji_blueside} {team} (패배)"
+                },
+                "field_3": {
+                    "name": "챔피언"
+                },
+                "field_4": {
+                    "name": "KDA 정보"
+                },
+                "field_5": {
+                    "name": "가한 피해량"
+                },
+                "field_6": {
+                    "name": "> {emoji_redside} {team} (패배)"
+                },
+                "field_else_6": {
+                    "name": "> {emoji_redside} {team} (승리)"
+                },
+                "field_7": {
+                    "name": "챔피언"
+                },
+                "field_8": {
+                    "name": "KDA 정보"
+                },
+                "field_9": {
+                    "name": "가한 피해량"
+                }
             }
         }
     }
