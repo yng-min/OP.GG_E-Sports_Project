@@ -10,11 +10,25 @@ import datetime
 import pytz
 import traceback
 
+from Extensions.i18n.substitution import Substitution
+
 # config.json 파일 불러오기
 try:
     with open(r"./config.json", "rt", encoding="UTF8") as configJson:
         config = json.load(configJson)
 except: print("config.json이 로드되지 않음")
+
+# en.json 파일 불러오기
+try:
+    with open(r"./Languages/en.json", "rt", encoding="UTF8") as enJson:
+        lang_en = json.load(enJson)
+except: print("en.json이 로드되지 않음")
+
+# ko.json 파일 불러오기
+try:
+    with open(r"./Languages/ko.json", "rt", encoding="UTF8") as koJson:
+        lang_ko = json.load(koJson)
+except: print("ko.json이 로드되지 않음")
 
 # bot.sqlite 파일 불러오기
 try:
@@ -31,19 +45,20 @@ colorMap = config['colorMap']
 
 class FeedbackModal(discord.ui.Modal):
 
-    def __init__(self, bot, *args, **kwargs) -> None:
+    def __init__(self, language, bot, *args, **kwargs) -> None:
+        self.language = language
         self.bot = bot
         super().__init__(*args, **kwargs)
-        self.add_item(discord.ui.InputText(label="간략한 주제나 제목을 입력해 주세요.", placeholder="(피드백은 개발에 큰 도움이 됩니다.)", style=discord.InputTextStyle.singleline))
-        self.add_item(discord.ui.InputText(label="피드백 내용을 자세히 서술해 주세요.", placeholder="(비속어와 인종차별 등 혐오 발언은 처벌 대상이 될 수 있습니다.)", style=discord.InputTextStyle.long))
+        self.add_item(discord.ui.InputText(label=self.language['feedback.py']['output']['modal-feedback']['item-1']['label'], placeholder=self.language['feedback.py']['output']['modal-feedback']['item-1']['placeholder'], style=discord.InputTextStyle.singleline))
+        self.add_item(discord.ui.InputText(label=self.language['feedback.py']['output']['modal-feedback']['item-2']['label'], placeholder=self.language['feedback.py']['output']['modal-feedback']['item-2']['placeholder'], style=discord.InputTextStyle.long))
 
     async def callback(self, interaction: discord.Interaction):
         user = interaction.user
-        feedbackChannel = self.bot.get_channel(channel_feedback)
+        feedback_channel = self.bot.get_channel(channel_feedback)
 
-        embed = discord.Embed(title="> 💌 피드백", description="아래와 같이 피드백/제안을 전송하였습니다. 이용 감사드립니다. 🙏", color=colorMap['red'])
-        embed.add_field(name="> 제목", value=self.children[0].value, inline=False)
-        embed.add_field(name="> 내용", value=self.children[1].value, inline=False)
+        embed = discord.Embed(title=self.language['feedback.py']['output']['embed-user']['title'], description=self.language['feedback.py']['output']['embed-user']['description'], color=colorMap['red'])
+        embed.add_field(name=self.language['feedback.py']['output']['embed-user']['field_1']['name'], value=self.children[0].value, inline=False)
+        embed.add_field(name=self.language['feedback.py']['output']['embed-user']['field_1']['name'], value=self.children[1].value, inline=False)
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
         staffEmbed = discord.Embed(title="> 📪 피드백", description="아래와 같은 피드백/제안이 제출되었습니다.", color=colorMap['red'], timestamp=datetime.datetime.now(pytz.timezone("Asia/Seoul")))
@@ -53,7 +68,7 @@ class FeedbackModal(discord.ui.Modal):
         except: staffEmbed.add_field(name="> 발송 서버", value="(DM에서 전송된 메시지)", inline=True)
         staffEmbed.add_field(name="> 제목", value=self.children[0].value, inline=False)
         staffEmbed.add_field(name="> 내용", value=self.children[1].value, inline=False)
-        await feedbackChannel.send(embed=staffEmbed)
+        await feedback_channel.send(embed=staffEmbed)
 
 
 class FeedbackCMD(commands.Cog):
@@ -62,12 +77,19 @@ class FeedbackCMD(commands.Cog):
         self.bot = bot
 
     @slash_command(
-        name="피드백",
-        description="[Beta] 서비스 개선을 위한 피드백을 제출할 수 있어요.",
+        name=lang_en['feedback.py']['command']['name'],
+        name_localizations={
+            "ko": lang_ko['feedback.py']['command']['name']
+        },
+        description=lang_en['feedback.py']['command']['description'],
+        description_localizations={
+            "ko": lang_ko['feedback.py']['command']['description']
+        }
     )
     async def _feedbackCMD(self, ctx):
 
-        modal = FeedbackModal(self.bot, title="OP.GG E-Sports 디스코드 봇 피드백")
+        language = Substitution.substitution(ctx)
+        modal = FeedbackModal(language=language, bot=self.bot, title=language['feedback.py']['output']['modal-feedback']['title'])
         await ctx.send_modal(modal)
 
 

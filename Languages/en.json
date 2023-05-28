@@ -3,6 +3,36 @@
         "timezone": "America/New_York"
     },
 
+    "feedback.py": {
+        "command": {
+            "name": "feedback",
+            "description": "[Beta] You can submit feedback for improving service."
+        },
+        "output": {
+            "modal-feedback": {
+                "title": "OP.GG Esports Discord Bot Feedback",
+                "item-1": {
+                    "label": "Please enter a brief topic or title.",
+                    "placeholder": "(Feedback is very helpful for development.)"
+                },
+                "item-2": {
+                    "label": "Please describe the feedback in detail.",
+                    "placeholder": "(Hate speech such as slang and racism can be punished.)"
+                }
+            },
+            "embed-user": {
+                "title": "> 💌 Feedback",
+                "description": "Sent you feedback/suggestion as below. Thank you for using it. 🙏",
+                "field_1": {
+                    "name": "> Title"
+                },
+                "field_2": {
+                    "name": "> Content"
+                }
+            }
+        }
+    },
+
     "guide.py": {
         "command": {
             "name": "guide",
@@ -108,95 +138,6 @@
                 "field_2": {
                     "name": "▫️ How can I enjoy it?",
                     "value": "The betting field opens at the start of each game, and the betting closes 15 minutes later.\n\nAnd the results of the match prediction will be sent along with the results of the match after the match."
-                }
-            }
-        }
-    },
-
-    "profile.py": {
-        "command": {
-            "name": "profile",
-            "description": "Check out the your profile info."
-        },
-        "output": {
-            "embed-not_register": {
-                "title": "> ⛔ Profile lookup not possible",
-                "description": "This function can only be used if you sign up for the service."
-            },
-            "embed-profile": {
-                "title": "> 📋 Profile Info",
-                "description": "<@{}>'s profile infomaion.",
-                "field_1": {
-                    "name": "Point Stats",
-                    "value": "_**{point:,}**_ Points\n(Total _**{total_point:,}**_ Points)"
-                },
-                "field_2": {
-                    "name": "Match Prediction Stats",
-                    "value": "Success : _**{success:,}**_ | Failure : _**{fail:,}**_\nWin Ratio : _**{win_ratio}**_% (Total _**{total_prediction:,}**_)"
-                }
-            },
-            "embed-error": {
-                "title": "> ⚠️ Profile lookup failed",
-                "description": "The profile lookup failed due to the error below. If the problem persists, please contact the developer.\n`{error}`"
-            }
-        }
-    },
-
-    "schedule.py": {
-        "command": {
-            "name": "schedule",
-            "description": "Check out the game schedule of League of Legends Esports."
-        },
-        "output": {
-            "string-no_schedule": "No upcoming matches.",
-            "string-match_schedule": "X%Y. X%m. X%d.",
-            "srting-only_author_can_use": "> It's only available in your own command. 😢",
-            
-            "button-jump_esports": "View from OP.GG Esports",
-
-            "select-pick_league": {
-                "placeholder": "Select a league",
-                "options": {
-                    "option_all": {
-                        "label": "All Leagues",
-                        "description": "I want to see all the league information."
-                    }
-                }
-            },
-
-            "embed-loading": {
-                "title": "",
-                "description": "⏳ Loading..."
-            },
-            "embed-no_data": {
-                "title": "> ⚠️ Error",
-                "description": "Code: `{code}`\nMessage: {message}"
-            },
-            "embed-schedule_1": {
-                "title": "> 📅 Match Schedules",
-                "description": "",
-                "footer": "TIP: Check the other days by clicking the button below.",
-                "field_1": {
-                    "name": "{match_schedule} Matches",
-                    "value": "└ (Page **1** of **3**)\n```{schedule_info}```"
-                }
-            },
-            "embed-schedule_2": {
-                "title": "> 📅 Match Schedules",
-                "description": "",
-                "footer": "TIP: Check the other days by clicking the button below.",
-                "field_1": {
-                    "name": "{match_schedule} Matches",
-                    "value": "└ (Page **2** of **3**)\n```{schedule_info}```"
-                }
-            },
-            "embed-schedule_3": {
-                "title": "> 📅 Match Schedules",
-                "description": "",
-                "footer": "TIP: Check the other days by clicking the button below.",
-                "field_1": {
-                    "name": "{match_schedule} Matches",
-                    "value": "└ (Page **3** of **3**)\n```{schedule_info}```"
                 }
             }
         }
@@ -335,5 +276,91 @@
                 }
             }
         }
+    },
+
+    "profile.py": {
+        "command": {
+            "name": "profile",
+            "description": "Check out the your profile info."
+        },
+        "output": {
+            "embed-not_register": {
+                "title": "> ⛔ Profile lookup not possible",
+                "description": "This function can only be used if you sign up for the service."
+            },
+            "embed-profile": {
+                "title": "> 📋 Profile Info",
+                "description": "<@{}>'s profile infomaion.",
+                "field_1": {
+                    "name": "Point Stats",
+                    "value": "_**{point:,}**_ Points\n(Total _**{total_point:,}**_ Points)"
+                },
+                "field_2": {
+                    "name": "Match Prediction Stats",
+                    "value": "Success : _**{success:,}**_ | Failure : _**{fail:,}**_\nWin Ratio : _**{win_ratio}**_% (Total _**{total_prediction:,}**_)"
+                }
+            },
+            "embed-error": {
+                "title": "> ⚠️ Profile lookup failed",
+                "description": "The profile lookup failed due to the error below. If the problem persists, please contact the developer.\n`{error}`"
+            }
+        }
+    },
+    "schedule.py": {
+        "command": {
+            "name": "schedule",
+            "description": "Check out the game schedule of League of Legends Esports."
+        },
+        "output": {
+            "string-no_schedule": "No upcoming matches.",
+            "string-match_schedule": "X%Y. X%m. X%d.",
+            "srting-only_author_can_use": "> It's only available in your own command. 😢",
+            "button-jump_esports": "View from OP.GG Esports",
+            "select-pick_league": {
+                "placeholder": "Select a league",
+                "options": {
+                    "option_all": {
+                        "label": "All Leagues",
+                        "description": "I want to see all the league information."
+                    }
+                }
+            },
+            "embed-loading": {
+                "title": "",
+                "description": "⏳ Loading..."
+            },
+            "embed-no_data": {
+                "title": "> ⚠️ Error",
+                "description": "Code: `{code}`\nMessage: {message}"
+            },
+            "embed-schedule_1": {
+                "title": "> 📅 Match Schedules",
+                "description": "",
+                "footer": "TIP: Check the other days by clicking the button below.",
+                "field_1": {
+                    "name": "{match_schedule} Matches",
+                    "value": "└ (Page **1** of **3**)\n```{schedule_info}```"
+                }
+            },
+            "embed-schedule_2": {
+                "title": "> 📅 Match Schedules",
+                "description": "",
+                "footer": "TIP: Check the other days by clicking the button below.",
+                "field_1": {
+                    "name": "{match_schedule} Matches",
+                    "value": "└ (Page **2** of **3**)\n```{schedule_info}```"
+                }
+            },
+            "embed-schedule_3": {
+                "title": "> 📅 Match Schedules",
+                "description": "",
+                "footer": "TIP: Check the other days by clicking the button below.",
+                "field_1": {
+                    "name": "{match_schedule} Matches",
+                    "value": "└ (Page **3** of **3**)\n```{schedule_info}```"
+                }
+            }
+        }
     }
+
 }
