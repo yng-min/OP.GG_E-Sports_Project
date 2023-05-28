@@ -77,10 +77,8 @@ async def search_player(ctx: discord.AutocompleteContext):
 
     language = Substitution.substitution(ctx.interaction)
     player_displayed_nickname = ""
-    try:
-        keyword = ctx.options['{}'.format(language['player_info.py']['command']['options']['player']['name'])].split(" ")[1]
-    except:
-        keyword = ctx.options['{}'.format(language['player_info.py']['command']['options']['player']['name'])]
+    try: keyword = ctx.options['{}'.format(lang_en['player_info.py']['command']['options']['player']['name'])].split(" ")[1]
+    except: keyword = ctx.options['{}'.format(lang_en['player_info.py']['command']['options']['player']['name'])]
 
     try:
         box_search_data = get_search_player(keyword=keyword)
@@ -407,7 +405,7 @@ class PlayerInfoCMD(commands.Cog):
         player_birth_day = ""
         banner_image_url = random.choice(config['banner_image_url'])
 
-        embed = discord.Embed(title=language['player_info.py']['output']['embed-loading']['title'], description=language['player_info.py']['output']['embed-loading']['description'], color=colorMap['red'])
+        embed = discord.Embed(title="", description=language['player_info.py']['output']['embed-loading']['description'], color=colorMap['red'])
         msg = await ctx.respond(embed=embed)
 
         try:

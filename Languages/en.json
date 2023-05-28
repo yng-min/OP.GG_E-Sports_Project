@@ -3,6 +3,60 @@
         "timezone": "America/New_York"
     },
 
+    "ban_pick.py": {
+        "command": {
+            "name": "ban-pick",
+            "description": "Check out the League of Legends Esports's Ban/Pick Rankings",
+            "options": {
+                "league": {
+                    "name": "league",
+                    "description": "Please select the league."
+                }
+            }
+        },
+        "output": {
+            "srting-only_author_can_use": "> It's only available in your own command. 😢",
+            "string-ban": "\n[⬜]({esports_champion}{ban_id}) {ban_count:,} Bans ({ban_rate}%)",
+            "string-pick": "\n[⬜]({esports_champion}{pick_id}) {pick_count:,} Picks ({pick_rate}%)",
+
+            "button-jump_esports": "View from OP.GG Esports",
+
+            "select-pick_league": {
+                "placeholder": "Select a league"
+            },
+
+            "embed-loading": {
+                "description": "⌛ Loading..."
+            },
+            "embed-no_data": {
+                "title": "> ⚠️ Error",
+                "description": "Code: `{code}`\nMessage: {message}"
+            },
+            "embed-no_statistics": {
+                "title": "> 📈 Ban/Pick Statistics",
+                "description": "**'{picked_league}' League**",
+                "field_1": {
+                    "name": "Pick Info",
+                    "value": "> No statistics."
+                },
+                "field_2": {
+                    "name": "Ban Info",
+                    "value": "> No statistics."
+                }
+            },
+            "embed-banpick": {
+                "title": "> 📈 Ban/Pick Statistics",
+                "description": "**'{picked_league}' League**",
+                "field_1": {
+                    "name": "Pick Info"
+                },
+                "field_2": {
+                    "name": "Ban Info"
+                }
+            }
+        }
+    },
+
     "feedback.py": {
         "command": {
             "name": "feedback",
@@ -20,6 +74,7 @@
                     "placeholder": "(Hate speech such as slang and racism can be punished.)"
                 }
             },
+
             "embed-user": {
                 "title": "> 💌 Feedback",
                 "description": "Sent you feedback/suggestion as below. Thank you for using it. 🙏",
@@ -315,7 +370,9 @@
             "string-no_schedule": "No upcoming matches.",
             "string-match_schedule": "X%Y. X%m. X%d.",
             "srting-only_author_can_use": "> It's only available in your own command. 😢",
+
             "button-jump_esports": "View from OP.GG Esports",
+
             "select-pick_league": {
                 "placeholder": "Select a league",
                 "options": {
@@ -325,6 +382,7 @@
                     }
                 }
             },
+
             "embed-loading": {
                 "title": "",
                 "description": "⏳ Loading..."

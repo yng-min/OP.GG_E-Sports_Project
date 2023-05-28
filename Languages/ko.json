@@ -3,6 +3,60 @@
         "timezone": "Asia/Seoul"
     },
 
+    "ban_pick.py": {
+        "command": {
+            "name": "밴픽-순위",
+            "description": "리그 오브 레전드 e스포츠의 밴/픽 순위를 불러와요.",
+            "options": {
+                "league": {
+                    "name": "리그",
+                    "description": "리그를 선택해주세요."
+                }
+            }
+        },
+        "output": {
+            "srting-only_author_can_use": "> 자신의 메시지에서만 이용할 수 있어요. 😢",
+            "string-ban": "\n[⬜]({esports_champion}{ban_id}) {ban_count:,}회 밴 ({ban_rate}% 밴률)",
+            "string-pick": "\n[⬜]({esports_champion}{pick_id}) {pick_count:,}회 픽 ({pick_rate}% 픽률)",
+
+            "button-jump_esports": "OP.GG Esports에서 보기",
+
+            "select-pick_league": {
+                "placeholder": "리그 선택하기"
+            },
+
+            "embed-loading": {
+                "description": "⌛ 정보를 불러오는 중..."
+            },
+            "embed-no_data": {
+                "title": "> ⚠️ 오류",
+                "description": "Code: `{code}`\nMessage: {message}"
+            },
+            "embed-no_statistics": {
+                "title": "> 📈 밴/픽 통계 정보",
+                "description": "**'{picked_league}' 리그**",
+                "field_1": {
+                    "name": "픽 통계",
+                    "value": "> 통계 정보가 없습니다."
+                },
+                "field_2": {
+                    "name": "밴 통계",
+                    "value": "> 통계 정보가 없습니다."
+                }
+            },
+            "embed-banpick": {
+                "title": "> 📈 밴/픽 통계 정보",
+                "description": "**'{picked_league}' 리그**",
+                "field_1": {
+                    "name": "픽 통계"
+                },
+                "field_2": {
+                    "name": "밴 통계"
+                }
+            }
+        }
+    },
+
     "feedback.py": {
         "command": {
             "name": "피드백",
@@ -178,7 +232,6 @@
             },
 
             "embed-loading": {
-                "title": "",
                 "description": "⏳ 정보를 불러오는 중..."
             },
             "embed-no_player": {
@@ -317,7 +370,9 @@
             "srting-only_author_can_use": "> 자신의 메시지에서만 이용할 수 있어요. 😢",
             "string-match_schedule": "X%Y년 X%m월 X%d일",
             "string-no_schedule": "해당 일자의 경기 일정이 없습니다.",
+
             "button-jump_esports": "OP.GG Esports에서 보기",
+
             "select-pick_league": {
                 "placeholder": "리그 선택하기",
                 "options": {
@@ -327,6 +382,7 @@
                     }
                 }
             },
+
             "embed-loading": {
                 "description": "⏳ 정보를 불러오는 중..."
             },
