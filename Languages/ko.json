@@ -57,6 +57,51 @@
         }
     },
 
+    "best_player.py": {
+        "command": {
+            "name": "베스트-플레이어",
+            "description": "리그 오브 레전드 e스포츠의 시즌 베스트 플레이어 정보를 보여줘요.",
+            "options": {
+                "league": {
+                    "name": "리그",
+                    "description": "리그를 선택해주세요."
+                }
+            }
+        },
+        "output": {
+            "srting-only_author_can_use": "> 자신의 메시지에서만 이용할 수 있어요. 😢",
+            "string-all_lane": "모든 라인",
+            "string-mvp": "{msg}> {index}위 - [{team_acronym}]({esports_team}{team_id}) [{nickname}]({esports_player}{id})\n[{position}] {kda} 평점\n`({kills}/{deaths}/{assists})`\n",
+            "string-no_mvp": "> 플레이어 정보가 없습니다.",
+
+            "button-jump_esports": "OP.GG Esports에서 보기",
+            "button-top": "탑",
+            "button-jun": "정글",
+            "button-mid": "미드",
+            "button-adc": "원딜",
+            "button-sup": "서포터",
+
+            "select-pick_league": {
+                "placeholder": "리그 선택하기"
+            },
+
+            "embed-loading": {
+                "description": "⌛ 정보를 불러오는 중..."
+            },
+            "embed-no_data": {
+                "title": "> ⚠️ 오류",
+                "description": "Code: `{code}`\nMessage: {message}"
+            },
+            "embed-mvp": {
+                "title": "> 🏆 시즌 베스트 플레이어",
+                "footer": "TIP: 아래 버튼을 눌러 다른 포지션의 랭킹도 확인할 수 있어요.",
+                "field_1": {
+                    "name": "'{picked_lane}' 포지션 ({picked_league})"
+                }
+            }
+        }
+    },
+
     "feedback.py": {
         "command": {
             "name": "피드백",
@@ -120,23 +165,23 @@
                 "description": "```리그 명령어 페이지```",
                 "footer": "TIP: 아래 버튼을 눌러 페이지를 넘길 수 있어요.",
                 "field_1": {
-                    "name": "/경기일정",
+                    "name": "/경기-일정",
                     "value": "리그 오브 레전드 e스포츠의 경기 일정을 확인할 수 있어요."
                 },
                 "field_2": {
-                    "name": "/리그순위",
+                    "name": "/리그-순위",
                     "value": "리그 오브 레전드 e스포츠의 시즌 팀 순위를 보여줘요."
                 },
                 "field_3": {
-                    "name": "/밴픽순위",
+                    "name": "/밴픽-순위",
                     "value": "리그 오브 레전드 e스포츠의 밴/픽 순위를 불러와요."
                 },
                 "field_4": {
-                    "name": "/베스트플레이어",
+                    "name": "/베스트-플레이어",
                     "value": "리그 오브 레전드 e스포츠의 시즌 MVP는 누구인지 찾아보세요!"
                 },
                 "field_5": {
-                    "name": "/선수검색",
+                    "name": "/선수-검색",
                     "value": "리그 오브 레전드 e스포츠의 선수 정보를 검색해요."
                 }
             },

@@ -3,7 +3,7 @@
 # 패키지 라이브러리 설정
 import discord
 from discord.ext import commands
-from discord.commands import SlashCommandGroup, option
+from discord.commands import slash_command, Option
 import random
 import json
 import datetime
@@ -12,6 +12,7 @@ import traceback
 
 import requests
 
+from Extensions.i18n.substitution import Substitution
 from Extensions.Process.league import get_player_mvp_rank
 
 # config.json 파일 불러오기
@@ -26,6 +27,18 @@ try:
         leagues = json.load(leagueJson)['leagues']
 except: print("league.json이 로드되지 않음")
 
+# en.json 파일 불러오기
+try:
+    with open(r"./Languages/en.json", "rt", encoding="UTF8") as enJson:
+        lang_en = json.load(enJson)
+except: print("en.json이 로드되지 않음")
+
+# ko.json 파일 불러오기
+try:
+    with open(r"./Languages/ko.json", "rt", encoding="UTF8") as koJson:
+        lang_ko = json.load(koJson)
+except: print("ko.json이 로드되지 않음")
+
 esports_op_gg_mvp = "https://esports.op.gg/players"
 esports_op_gg_player = "https://esports.op.gg/players/"
 esports_op_gg_team = "https://esports.op.gg/teams/"
@@ -36,7 +49,7 @@ colorMap = config['colorMap']
 
 def get_league(ctx: discord.AutocompleteContext):
 
-    picked_league = ctx.options['리그']
+    picked_league = ctx.options['{}'.format(lang_en['best_player.py']['command']['options']['league']['name'])]
 
     if picked_league == "LCK":
         return ["LCK"]
@@ -66,10 +79,133 @@ def get_league(ctx: discord.AutocompleteContext):
         return ["LCK", "LPL", "LEC", "LCS", "CBLOL", "VCS", "LCL", "TCL", "PCS", "LLA", "LJL", "LCO"]
 
 
+class MvpSelect(discord.ui.Select):
+
+    def __init__(self, language, bot, ctx, msg, banner, picked_league, picked_lane, button_select, box_LCK, box_LPL, box_LEC, box_LCS, box_CBLOL, box_VCS, box_LCL, box_TCL, box_PCS, box_LLA, box_LJL, box_LCO):
+        self.language = language
+        self.bot = bot
+        self.ctx = ctx
+        self.msg = msg
+        self.banner = banner
+        self.picked_league = picked_league
+        self.picked_lane = self.language['best_player.py']['output']['string-all_lane']
+        self.box_LCK = box_LCK
+        self.box_LPL = box_LPL
+        self.box_LEC = box_LEC
+        self.box_LCS = box_LCS
+        self.box_CBLOL = box_CBLOL
+        self.box_VCS = box_VCS
+        self.box_LCL = box_LCL
+        self.box_TCL = box_TCL
+        self.box_PCS = box_PCS
+        self.box_LLA = box_LLA
+        self.box_LJL = box_LJL
+        self.box_LCO = box_LCO
+
+        self.box_player = {}
+        self.box_lane_data = []
+        self.msg_mvp_1 = ""
+        self.msg_mvp_2 = ""
+        self.button_select = button_select
+
+        super().__init__(
+            placeholder=self.language['best_player.py']['output']['select-pick_league']['placeholder'],
+            min_values=1,
+            max_values=1,
+            options=[
+                discord.SelectOption(label="LCK / KR", value="0", description="League of Legends Champions Korea"),
+                discord.SelectOption(label="LPL / CN ", value="1", description="League of Legends Pro League"),
+                discord.SelectOption(label="LEC / EU", value="2", description="League of Legends European Championship"),
+                discord.SelectOption(label="LCS / NA", value="3", description="League of Legends Championship Series"),
+                discord.SelectOption(label="CBLOL / BR", value="4", description="Campeonato Brasileiro de League of Legends"),
+                discord.SelectOption(label="VCS / VN", value="5", description="Vietnam Championship Series"),
+                discord.SelectOption(label="LCL / CIS", value="6", description="League of Legends Continental League"),
+                discord.SelectOption(label="TCL / TR", value="7", description="Turkish Championship League"),
+                discord.SelectOption(label="PCS / SEA", value="8", description="Pacific Championship Series"),
+                discord.SelectOption(label="LLA / LAT", value="9", description="Liga Latinoamérica"),
+                discord.SelectOption(label="LJL / JP", value="10", description="League of Legends Japan League"),
+                discord.SelectOption(label="LCO / OCE", value="11", description="League of Legends Circuit Oceania")
+            ],
+            row=0
+        )
+
+    async def callback(self, interaction: discord.Interaction):
+        if interaction.user.id != self.ctx.author.id: return await interaction.response.send_message(self.language['best_player.py']['output']['string-only_author_can_use'], ephemeral=True)
+
+        if self.values[0] == "0":
+            self.picked_league = "LCK"
+            self.box_player = self.box_LCK
+        elif self.values[0] == "1":
+            self.picked_league = "LPL"
+            self.box_player = self.box_LPL
+        elif self.values[0] == "2":
+            self.picked_league = "LEC"
+            self.box_player = self.box_LEC
+        elif self.values[0] == "3":
+            self.picked_league = "LCS"
+            self.box_player = self.box_LCS
+        elif self.values[0] == "4":
+            self.picked_league = "CBLOL"
+            self.box_player = self.box_CBLOL
+        elif self.values[0] == "5":
+            self.picked_league = "VCS"
+            self.box_player = self.box_VCS
+        elif self.values[0] == "6":
+            self.picked_league = "LCL"
+            self.box_player = self.box_LCL
+        elif self.values[0] == "7":
+            self.picked_league = "TCL"
+            self.box_player = self.box_TCL
+        elif self.values[0] == "8":
+            self.picked_league = "PCS"
+            self.box_player = self.box_PCS
+        elif self.values[0] == "9":
+            self.picked_league = "LLA"
+            self.box_player = self.box_LLA
+        elif self.values[0] == "10":
+            self.picked_league = "LJL"
+            self.box_player = self.box_LJL
+        elif self.values[0] == "11":
+            self.picked_league = "LCO"
+            self.box_player = self.box_LCO
+
+        k = 0
+        for i in range(5):
+            for j in range(len(self.box_player)):
+                if self.ctx.locale != "ko":
+                    self.msg_mvp_1 = self.language['best_player.py']['output']['string-mvp'].format(msg=self.msg_mvp_1, index=i + 1, team_acronym=self.box_player[k]['team_acronym'], esports_team=esports_op_gg_team, team_id=self.box_player[k]['team_id'], nickname=self.box_player[k]['nickName'], esports_player=esports_op_gg_player, id=self.box_player[k]['id'], position=self.box_player[k]['position'].replace("탑", "Top").replace("정글", "Jungle").replace("미드", "Mid").replace("원딜", "ADC").replace("서포터", "Support"), kda=self.box_player[k]['kda'], kills=self.box_player[k]['kills'], deaths=self.box_player[k]['deaths'], assists=self.box_player[k]['assists'])
+                else:
+                    self.msg_mvp_1 = self.language['best_player.py']['output']['string-mvp'].format(msg=self.msg_mvp_1, index=i + 1, team_acronym=self.box_player[k]['team_acronym'], esports_team=esports_op_gg_team, team_id=self.box_player[k]['team_id'], nickname=self.box_player[k]['nickName'], esports_player=esports_op_gg_player, id=self.box_player[k]['id'], position=self.box_player[k]['position'], kda=self.box_player[k]['kda'], kills=self.box_player[k]['kills'], deaths=self.box_player[k]['deaths'], assists=self.box_player[k]['assists'])
+                k += 1
+                break
+
+        k = 5
+        for i in range(5, 10):
+            for j in range(len(self.box_player)):
+                if self.ctx.locale != "ko":
+                    self.msg_mvp_2 = self.language['best_player.py']['output']['string-mvp'].format(msg=self.msg_mvp_2, index=i + 1, team_acronym=self.box_player[k]['team_acronym'], esports_team=esports_op_gg_team, team_id=self.box_player[k]['team_id'], nickname=self.box_player[k]['nickName'], esports_player=esports_op_gg_player, id=self.box_player[k]['id'], position=self.box_player[k]['position'].replace("탑", "Top").replace("정글", "Jungle").replace("미드", "Mid").replace("원딜", "ADC").replace("서포터", "Support"), kda=self.box_player[k]['kda'], kills=self.box_player[k]['kills'], deaths=self.box_player[k]['deaths'], assists=self.box_player[k]['assists'])
+                else:
+                    self.msg_mvp_2 = self.language['best_player.py']['output']['string-mvp'].format(msg=self.msg_mvp_2, index=i + 1, team_acronym=self.box_player[k]['team_acronym'], esports_team=esports_op_gg_team, team_id=self.box_player[k]['team_id'], nickname=self.box_player[k]['nickName'], esports_player=esports_op_gg_player, id=self.box_player[k]['id'], position=self.box_player[k]['position'], kda=self.box_player[k]['kda'], kills=self.box_player[k]['kills'], deaths=self.box_player[k]['deaths'], assists=self.box_player[k]['assists'])
+                k += 1
+                break
+
+        if self.msg_mvp_1 == "":
+            self.msg_mvp_1 = self.language['best_player.py']['output']['string-no_mvp']
+
+        self.button_select = False
+        embed = discord.Embed(title=self.language['best_player.py']['output']['embed-mvp']['title'], description="", color=colorMap['red'])
+        embed.set_footer(text=self.language['best_player.py']['output']['embed-mvp']['footer'], icon_url=self.bot.user.display_avatar.url)
+        embed.set_image(url=self.banner)
+        embed.add_field(name=self.language['best_player.py']['output']['embed-mvp']['field_1']['name'].format(picked_lane=self.picked_lane, picked_league=self.picked_league), value=self.msg_mvp_1, inline=True)
+        embed.add_field(name="\u200b", value=self.msg_mvp_2, inline=True)
+        await interaction.response.edit_message(content="", embed=embed, view=MvpView(language=self.language, bot=self.bot, ctx=self.ctx, msg=self.msg, banner=self.banner, picked_league=self.picked_league, picked_lane=self.picked_lane, button_select=self.button_select, box_LCK=self.box_LCK, box_LPL=self.box_LPL, box_LEC=self.box_LEC, box_LCS=self.box_LCS, box_CBLOL=self.box_CBLOL, box_VCS=self.box_VCS, box_LCL=self.box_LCL, box_TCL=self.box_TCL, box_PCS=self.box_PCS, box_LLA=self.box_LLA, box_LJL=self.box_LJL, box_LCO=self.box_LCO))
+
+
 class MvpView(discord.ui.View):
 
-    def __init__(self, bot, ctx, msg, banner, picked_league, picked_lane, button_select, box_LCK, box_LPL, box_LEC, box_LCS, box_CBLOL, box_VCS, box_LCL, box_TCL, box_PCS, box_LLA, box_LJL, box_LCO):
+    def __init__(self, language, bot, ctx, msg, banner, picked_league, picked_lane, button_select, box_LCK, box_LPL, box_LEC, box_LCS, box_CBLOL, box_VCS, box_LCL, box_TCL, box_PCS, box_LLA, box_LJL, box_LCO):
         super().__init__(timeout=60)
+        self.language = language
         self.bot = bot
         self.ctx = ctx
         self.msg = msg
@@ -94,116 +230,33 @@ class MvpView(discord.ui.View):
         self.msg_mvp_1 = ""
         self.msg_mvp_2 = ""
         self.button_select = button_select
-        self.add_item(discord.ui.Button(label="OP.GG Esports에서 보기", url=esports_op_gg_mvp, row=2))
+
+        self.add_item(MvpSelect(language=self.language, bot=self.bot, ctx=self.ctx, msg=self.msg, banner=self.banner, picked_league=self.picked_league, picked_lane=self.picked_lane, button_select=self.button_select, box_LCK=self.box_LCK, box_LPL=self.box_LPL, box_LEC=self.box_LEC, box_LCS=self.box_LCS, box_CBLOL=self.box_CBLOL, box_VCS=self.box_VCS, box_LCL=self.box_LCL, box_TCL=self.box_TCL, box_PCS=self.box_PCS, box_LLA=self.box_LLA, box_LJL=self.box_LJL, box_LCO=self.box_LCO))
+        self.add_item(discord.ui.Button(label=self.language['best_player.py']['output']['button-jump_esports'], url=esports_op_gg_mvp, row=2))
         self.add_button()
-
-    @discord.ui.select(
-        placeholder="리그 선택하기",
-        min_values=1,
-        max_values=1,
-        options=[
-            discord.SelectOption(label="LCK / KR", value="0", description="League of Legends Champions Korea"),
-            discord.SelectOption(label="LPL / CN ", value="1", description="League of Legends Pro League"),
-            discord.SelectOption(label="LEC / EU", value="2", description="League of Legends European Championship"),
-            discord.SelectOption(label="LCS / NA", value="3", description="League of Legends Championship Series"),
-            discord.SelectOption(label="CBLOL / BR", value="4", description="Campeonato Brasileiro de League of Legends"),
-            discord.SelectOption(label="VCS / VN", value="5", description="Vietnam Championship Series"),
-            discord.SelectOption(label="LCL / CIS", value="6", description="League of Legends Continental League"),
-            discord.SelectOption(label="TCL / TR", value="7", description="Turkish Championship League"),
-            discord.SelectOption(label="PCS / SEA", value="8", description="Pacific Championship Series"),
-            discord.SelectOption(label="LLA / LAT", value="9", description="Liga Latinoamérica"),
-            discord.SelectOption(label="LJL / JP", value="10", description="League of Legends Japan League"),
-            discord.SelectOption(label="LCO / OCE", value="11", description="League of Legends Circuit Oceania")
-        ],
-        row=0
-    )
-    async def select_callback(self, select: discord.ui.Select, interaction):
-        if interaction.user.id != self.ctx.author.id: return await interaction.response.send_message("> 자신의 메시지에서만 이용할 수 있어요. 😢", ephemeral=True)
-
-        if select.values[0] == "0":
-            self.picked_league = "LCK"
-            self.box_player = self.box_LCK
-        elif select.values[0] == "1":
-            self.picked_league = "LPL"
-            self.box_player = self.box_LPL
-        elif select.values[0] == "2":
-            self.picked_league = "LEC"
-            self.box_player = self.box_LEC
-        elif select.values[0] == "3":
-            self.picked_league = "LCS"
-            self.box_player = self.box_LCS
-        elif select.values[0] == "4":
-            self.picked_league = "CBLOL"
-            self.box_player = self.box_CBLOL
-        elif select.values[0] == "5":
-            self.picked_league = "VCS"
-            self.box_player = self.box_VCS
-        elif select.values[0] == "6":
-            self.picked_league = "LCL"
-            self.box_player = self.box_LCL
-        elif select.values[0] == "7":
-            self.picked_league = "TCL"
-            self.box_player = self.box_TCL
-        elif select.values[0] == "8":
-            self.picked_league = "PCS"
-            self.box_player = self.box_PCS
-        elif select.values[0] == "9":
-            self.picked_league = "LLA"
-            self.box_player = self.box_LLA
-        elif select.values[0] == "10":
-            self.picked_league = "LJL"
-            self.box_player = self.box_LJL
-        elif select.values[0] == "11":
-            self.picked_league = "LCO"
-            self.box_player = self.box_LCO
-
-        k = 0
-        for i in range(5):
-            for j in range(len(self.box_player)):
-                self.msg_mvp_1 = f"{self.msg_mvp_1}> {i + 1}위 - [{self.box_player[k]['team_acronym']}]({esports_op_gg_team}{self.box_player[k]['team_id']}) [{self.box_player[k]['nickName']}]({esports_op_gg_player}{self.box_player[k]['id']})\n[{self.box_player[k]['position']}] {self.box_player[k]['kda']} 평점\n`({self.box_player[k]['kills']}/{self.box_player[k]['deaths']}/{self.box_player[k]['assists']})`\n"
-                k += 1
-                break
-
-        k = 5
-        for i in range(5, 10):
-            for j in range(len(self.box_player)):
-                self.msg_mvp_2 = f"{self.msg_mvp_2}> {i + 1}위 - [{self.box_player[k]['team_acronym']}]({esports_op_gg_team}{self.box_player[k]['team_id']}) [{self.box_player[k]['nickName']}]({esports_op_gg_player}{self.box_player[k]['id']})\n[{self.box_player[k]['position']}] {self.box_player[k]['kda']} 평점\n`({self.box_player[k]['kills']}/{self.box_player[k]['deaths']}/{self.box_player[k]['assists']})`\n"
-                k += 1
-                break
-
-        if self.msg_mvp_1 == "":
-            self.msg_mvp_1 = "> 플레이어 정보가 없습니다."
-
-        self.button_select = False
-        embed = discord.Embed(title="> 🏆 시즌 베스트 플레이어", description="", color=colorMap['red'])
-        embed.set_footer(text="TIP: 아래 버튼을 눌러 다른 포지션의 랭킹도 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
-        embed.set_image(url=self.banner)
-        embed.add_field(name=f"'{self.picked_lane}' 포지션 ({self.picked_league})", value=self.msg_mvp_1, inline=True)
-        embed.add_field(name="\u200b", value=self.msg_mvp_2, inline=True)
-        await interaction.response.edit_message(content="", embed=embed, view=MvpView(bot=self.bot, ctx=self.ctx, msg=self.msg, banner=self.banner, picked_league=self.picked_league, picked_lane=self.picked_lane, button_select=self.button_select, box_LCK=self.box_LCK, box_LPL=self.box_LPL, box_LEC=self.box_LEC, box_LCS=self.box_LCS, box_CBLOL=self.box_CBLOL, box_VCS=self.box_VCS, box_LCL=self.box_LCL, box_TCL=self.box_TCL, box_PCS=self.box_PCS, box_LLA=self.box_LLA, box_LJL=self.box_LJL, box_LCO=self.box_LCO))
 
 
     def add_button(self):
-        if (self.button_select == True) and (self.picked_lane == "탑"): button_top = discord.ui.Button(label="탑", style=discord.ButtonStyle.blurple, custom_id="탑", row=1)
-        else: button_top = discord.ui.Button(label="탑", style=discord.ButtonStyle.gray, custom_id="탑", row=1)
-        if (self.button_select == True) and (self.picked_lane == "정글"): button_jun = discord.ui.Button(label="정글", style=discord.ButtonStyle.blurple, custom_id="정글", row=1)
-        else: button_jun = discord.ui.Button(label="정글", style=discord.ButtonStyle.gray, custom_id="정글", row=1)
-        if (self.button_select == True) and (self.picked_lane == "미드"): button_mid = discord.ui.Button(label="미드", style=discord.ButtonStyle.blurple, custom_id="미드", row=1)
-        else: button_mid = discord.ui.Button(label="미드", style=discord.ButtonStyle.gray, custom_id="미드", row=1)
-        if (self.button_select == True) and (self.picked_lane == "원딜"): button_adc = discord.ui.Button(label="원딜", style=discord.ButtonStyle.blurple, custom_id="원딜", row=1)
-        else: button_adc = discord.ui.Button(label="원딜", style=discord.ButtonStyle.gray, custom_id="원딜", row=1)
-        if (self.button_select == True) and (self.picked_lane == "서포터"): button_sup = discord.ui.Button(label="서포터", style=discord.ButtonStyle.blurple, custom_id="서포터", row=1)
-        else: button_sup = discord.ui.Button(label="서포터", style=discord.ButtonStyle.gray, custom_id="서포터", row=1)
+        if (self.button_select == True) and (self.picked_lane == self.language['best_player.py']['output']['button-top']): button_top = discord.ui.Button(label=self.language['best_player.py']['output']['button-top'], style=discord.ButtonStyle.blurple, custom_id=self.language['best_player.py']['output']['button-top'], row=1)
+        else: button_top = discord.ui.Button(label=self.language['best_player.py']['output']['button-top'], style=discord.ButtonStyle.gray, custom_id=self.language['best_player.py']['output']['button-top'], row=1)
+        if (self.button_select == True) and (self.picked_lane == self.language['best_player.py']['output']['button-jun']): button_jun = discord.ui.Button(label=self.language['best_player.py']['output']['button-jun'], style=discord.ButtonStyle.blurple, custom_id=self.language['best_player.py']['output']['button-jun'], row=1)
+        else: button_jun = discord.ui.Button(label=self.language['best_player.py']['output']['button-jun'], style=discord.ButtonStyle.gray, custom_id=self.language['best_player.py']['output']['button-jun'], row=1)
+        if (self.button_select == True) and (self.picked_lane == self.language['best_player.py']['output']['button-mid']): button_mid = discord.ui.Button(label=self.language['best_player.py']['output']['button-mid'], style=discord.ButtonStyle.blurple, custom_id=self.language['best_player.py']['output']['button-mid'], row=1)
+        else: button_mid = discord.ui.Button(label=self.language['best_player.py']['output']['button-mid'], style=discord.ButtonStyle.gray, custom_id=self.language['best_player.py']['output']['button-mid'], row=1)
+        if (self.button_select == True) and (self.picked_lane == self.language['best_player.py']['output']['button-adc']): button_adc = discord.ui.Button(label=self.language['best_player.py']['output']['button-adc'], style=discord.ButtonStyle.blurple, custom_id=self.language['best_player.py']['output']['button-adc'], row=1)
+        else: button_adc = discord.ui.Button(label=self.language['best_player.py']['output']['button-adc'], style=discord.ButtonStyle.gray, custom_id=self.language['best_player.py']['output']['button-adc'], row=1)
+        if (self.button_select == True) and (self.picked_lane == self.language['best_player.py']['output']['button-sup']): button_sup = discord.ui.Button(label=self.language['best_player.py']['output']['button-sup'], style=discord.ButtonStyle.blurple, custom_id=self.language['best_player.py']['output']['button-sup'], row=1)
+        else: button_sup = discord.ui.Button(label=self.language['best_player.py']['output']['button-sup'], style=discord.ButtonStyle.gray, custom_id=self.language['best_player.py']['output']['button-sup'], row=1)
 
-        embed = discord.Embed(title="> 🏆 시즌 베스트 플레이어", description="", color=colorMap['red'])
-        embed.set_footer(text="TIP: 아래 버튼을 눌러 다른 포지션의 랭킹도 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
+        embed = discord.Embed(title=self.language['best_player.py']['output']['embed-mvp']['title'], description="", color=colorMap['red'])
+        embed.set_footer(text=self.language['best_player.py']['output']['embed-mvp']['footer'], icon_url=self.bot.user.display_avatar.url)
         embed.set_image(url=self.banner)
 
 
         async def callback_all(interaction: discord.Interaction):
-            if interaction.user.id != self.ctx.author.id: return await interaction.response.send_message("> 자신의 메시지에서만 이용할 수 있어요. 😢", ephemeral=True)
+            if interaction.user.id != self.ctx.author.id: return await interaction.response.send_message(self.language['best_player.py']['output']['string-only_author_can_use'], ephemeral=True)
 
-            self.picked_lane = "모든 라인"
+            self.picked_lane = self.language['best_player.py']['output']['string-all_lane']
 
             if self.picked_league == "LCK": self.box_player = self.box_LCK
             elif self.picked_league == "LPL": self.box_player = self.box_LPL
@@ -220,23 +273,29 @@ class MvpView(discord.ui.View):
 
             for i in range(5):
                 if i >= len(self.box_player): break
-                self.msg_mvp_1 = f"{self.msg_mvp_1}> {i + 1}위 - [{self.box_player[i]['team_acronym']}]({esports_op_gg_team}{self.box_player[i]['team_id']}) [{self.box_player[i]['nickName']}]({esports_op_gg_player}{self.box_player[i]['id']})\n[{self.box_player[i]['position']}] {self.box_player[i]['kda']} 평점\n`({self.box_player[i]['kills']}/{self.box_player[i]['deaths']}/{self.box_player[i]['assists']})`\n"
+                if self.ctx.locale != "ko":
+                    self.msg_mvp_1 = self.language['best_player.py']['output']['string-mvp'].format(msg=self.msg_mvp_1, index=i + 1, team_acronym=self.box_player[i]['team_acronym'], esports_team=esports_op_gg_team, team_id=self.box_player[i]['team_id'], nickname=self.box_player[i]['nickName'], esports_player=esports_op_gg_player, id=self.box_player[i]['id'], position=self.box_player[i]['position'].replace("탑", "Top").replace("정글", "Jungle").replace("미드", "Mid").replace("원딜", "ADC").replace("서포터", "Support"), kda=self.box_player[i]['kda'], kills=self.box_player[i]['kills'], deaths=self.box_player[i]['deaths'], assists=self.box_player[i]['assists'])
+                else:
+                    self.msg_mvp_1 = self.language['best_player.py']['output']['string-mvp'].format(msg=self.msg_mvp_1, index=i + 1, team_acronym=self.box_player[i]['team_acronym'], esports_team=esports_op_gg_team, team_id=self.box_player[i]['team_id'], nickname=self.box_player[i]['nickName'], esports_player=esports_op_gg_player, id=self.box_player[i]['id'], position=self.box_player[i]['position'], kda=self.box_player[i]['kda'], kills=self.box_player[i]['kills'], deaths=self.box_player[i]['deaths'], assists=self.box_player[i]['assists'])
 
             for i in range(5, 10):
                 if i >= len(self.box_player): break
-                self.msg_mvp_2 = f"{self.msg_mvp_2}> {i + 1}위 - [{self.box_player[i]['team_acronym']}]({esports_op_gg_team}{self.box_player[i]['team_id']}) [{self.box_player[i]['nickName']}]({esports_op_gg_player}{self.box_player[i]['id']})\n[{self.box_player[i]['position']}] {self.box_player[i]['kda']} 평점\n`({self.box_player[i]['kills']}/{self.box_player[i]['deaths']}/{self.box_player[i]['assists']})`\n"
+                if self.ctx.locale != "ko":
+                    self.msg_mvp_2 = self.language['best_player.py']['output']['string-mvp'].format(msg=self.msg_mvp_2, index=i + 1, team_acronym=self.box_player[i]['team_acronym'], esports_team=esports_op_gg_team, team_id=self.box_player[i]['team_id'], nickname=self.box_player[i]['nickName'], esports_player=esports_op_gg_player, id=self.box_player[i]['id'], position=self.box_player[i]['position'].replace("탑", "Top").replace("정글", "Jungle").replace("미드", "Mid").replace("원딜", "ADC").replace("서포터", "Support"), kda=self.box_player[i]['kda'], kills=self.box_player[i]['kills'], deaths=self.box_player[i]['deaths'], assists=self.box_player[i]['assists'])
+                else:
+                    self.msg_mvp_2 = self.language['best_player.py']['output']['string-mvp'].format(msg=self.msg_mvp_2, index=i + 1, team_acronym=self.box_player[i]['team_acronym'], esports_team=esports_op_gg_team, team_id=self.box_player[i]['team_id'], nickname=self.box_player[i]['nickName'], esports_player=esports_op_gg_player, id=self.box_player[i]['id'], position=self.box_player[i]['position'], kda=self.box_player[i]['kda'], kills=self.box_player[i]['kills'], deaths=self.box_player[i]['deaths'], assists=self.box_player[i]['assists'])
 
             if self.msg_mvp_1 == "":
-                self.msg_mvp_1 = "> 플레이어 정보가 없습니다."
+                self.msg_mvp_1 = self.language['best_player.py']['output']['string-no_mvp']
 
             self.button_select = False
-            embed.add_field(name=f"'{self.picked_lane}' 포지션 ({self.picked_league})", value=self.msg_mvp_1, inline=True)
+            embed.add_field(name=self.language['best_player.py']['output']['embed-mvp']['field_1']['name'].format(picked_lane=self.picked_lane, picked_league=self.picked_league), value=self.msg_mvp_1, inline=True)
             embed.add_field(name="\u200b", value=self.msg_mvp_2, inline=True)
-            await interaction.response.edit_message(content="", embed=embed, view=MvpView(bot=self.bot, ctx=self.ctx, msg=self.msg, banner=self.banner, picked_league=self.picked_league, picked_lane=self.picked_lane, button_select=self.button_select, box_LCK=self.box_LCK, box_LPL=self.box_LPL, box_LEC=self.box_LEC, box_LCS=self.box_LCS, box_CBLOL=self.box_CBLOL, box_VCS=self.box_VCS, box_LCL=self.box_LCL, box_TCL=self.box_TCL, box_PCS=self.box_PCS, box_LLA=self.box_LLA, box_LJL=self.box_LJL, box_LCO=self.box_LCO))
+            await interaction.response.edit_message(content="", embed=embed, view=MvpView(language=self.language, bot=self.bot, ctx=self.ctx, msg=self.msg, banner=self.banner, picked_league=self.picked_league, picked_lane=self.picked_lane, button_select=self.button_select, box_LCK=self.box_LCK, box_LPL=self.box_LPL, box_LEC=self.box_LEC, box_LCS=self.box_LCS, box_CBLOL=self.box_CBLOL, box_VCS=self.box_VCS, box_LCL=self.box_LCL, box_TCL=self.box_TCL, box_PCS=self.box_PCS, box_LLA=self.box_LLA, box_LJL=self.box_LJL, box_LCO=self.box_LCO))
 
 
         async def callback_lane(interaction: discord.Interaction):
-            if interaction.user.id != self.ctx.author.id: return await interaction.response.send_message("> 자신의 메시지에서만 이용할 수 있어요. 😢", ephemeral=True)
+            if interaction.user.id != self.ctx.author.id: return await interaction.response.send_message(self.language['best_player.py']['output']['string-only_author_can_use'], ephemeral=True)
 
             self.picked_lane = interaction.custom_id
 
@@ -254,35 +313,46 @@ class MvpView(discord.ui.View):
             elif self.picked_league == "LCO": self.box_player = self.box_LCO
 
             for i in range(len(self.box_player)):
-                if self.box_player[i]['position'] == self.picked_lane:
+                position = ""
+                if self.ctx.locale != "ko":
+                    position = self.box_player[i]['position'].replace("탑", "Top").replace("정글", "Jungle").replace("미드", "Mid").replace("원딜", "ADC").replace("서포터", "Support")
+                else:
+                    position = self.box_player[i]['position']
+                if position == self.picked_lane:
                     self.box_lane_data.append(self.box_player[i])
 
             for i in range(5):
                 if i >= len(self.box_lane_data): break
-                self.msg_mvp_1 = f"{self.msg_mvp_1}> {i + 1}위 - [{self.box_lane_data[i]['team_acronym']}]({esports_op_gg_team}{self.box_lane_data[i]['team_id']}) [{self.box_lane_data[i]['nickName']}]({esports_op_gg_player}{self.box_lane_data[i]['id']})\n[{self.box_lane_data[i]['position']}] {self.box_lane_data[i]['kda']} 평점\n`({self.box_lane_data[i]['kills']}/{self.box_lane_data[i]['deaths']}/{self.box_lane_data[i]['assists']})`\n"
+                if self.ctx.locale != "ko":
+                    self.msg_mvp_1 = self.language['best_player.py']['output']['string-mvp'].format(msg=self.msg_mvp_1, index=i + 1, team_acronym=self.box_lane_data[i]['team_acronym'], esports_team=esports_op_gg_team, team_id=self.box_lane_data[i]['team_id'], nickname=self.box_lane_data[i]['nickName'], esports_player=esports_op_gg_player, id=self.box_lane_data[i]['id'], position=self.box_lane_data[i]['position'].replace("탑", "Top").replace("정글", "Jungle").replace("미드", "Mid").replace("원딜", "ADC").replace("서포터", "Support"), kda=self.box_lane_data[i]['kda'], kills=self.box_lane_data[i]['kills'], deaths=self.box_lane_data[i]['deaths'], assists=self.box_lane_data[i]['assists'])
+                else:
+                    self.msg_mvp_1 = self.language['best_player.py']['output']['string-mvp'].format(msg=self.msg_mvp_1, index=i + 1, team_acronym=self.box_lane_data[i]['team_acronym'], esports_team=esports_op_gg_team, team_id=self.box_lane_data[i]['team_id'], nickname=self.box_lane_data[i]['nickName'], esports_player=esports_op_gg_player, id=self.box_lane_data[i]['id'], position=self.box_lane_data[i]['position'], kda=self.box_lane_data[i]['kda'], kills=self.box_lane_data[i]['kills'], deaths=self.box_lane_data[i]['deaths'], assists=self.box_lane_data[i]['assists'])
 
             for i in range(5, 10):
                 if i >= len(self.box_lane_data): break
-                self.msg_mvp_2 = f"{self.msg_mvp_2}> {i + 1}위 - [{self.box_lane_data[i]['team_acronym']}]({esports_op_gg_team}{self.box_lane_data[i]['team_id']}) [{self.box_lane_data[i]['nickName']}]({esports_op_gg_player}{self.box_lane_data[i]['id']})\n[{self.box_lane_data[i]['position']}] {self.box_lane_data[i]['kda']} 평점\n`({self.box_lane_data[i]['kills']}/{self.box_lane_data[i]['deaths']}/{self.box_lane_data[i]['assists']})`\n"
+                if self.ctx.locale != "ko":
+                    self.msg_mvp_2 = self.language['best_player.py']['output']['string-mvp'].format(msg=self.msg_mvp_2, index=i + 1, team_acronym=self.box_lane_data[i]['team_acronym'], esports_team=esports_op_gg_team, team_id=self.box_lane_data[i]['team_id'], nickname=self.box_lane_data[i]['nickName'], esports_player=esports_op_gg_player, id=self.box_lane_data[i]['id'], position=self.box_lane_data[i]['position'].replace("탑", "Top").replace("정글", "Jungle").replace("미드", "Mid").replace("원딜", "ADC").replace("서포터", "Support"), kda=self.box_lane_data[i]['kda'], kills=self.box_lane_data[i]['kills'], deaths=self.box_lane_data[i]['deaths'], assists=self.box_lane_data[i]['assists'])
+                else:
+                    self.msg_mvp_2 = self.language['best_player.py']['output']['string-mvp'].format(msg=self.msg_mvp_2, index=i + 1, team_acronym=self.box_lane_data[i]['team_acronym'], esports_team=esports_op_gg_team, team_id=self.box_lane_data[i]['team_id'], nickname=self.box_lane_data[i]['nickName'], esports_player=esports_op_gg_player, id=self.box_lane_data[i]['id'], position=self.box_lane_data[i]['position'], kda=self.box_lane_data[i]['kda'], kills=self.box_lane_data[i]['kills'], deaths=self.box_lane_data[i]['deaths'], assists=self.box_lane_data[i]['assists'])
 
             if self.msg_mvp_1 == "":
-                self.msg_mvp_1 = "> 플레이어 정보가 없습니다."
+                self.msg_mvp_1 = self.language['best_player.py']['output']['string-no_mvp']
 
             self.button_select = True
-            embed.add_field(name=f"'{self.picked_lane}' 포지션 ({self.picked_league})", value=self.msg_mvp_1, inline=True)
+            embed.add_field(name=self.language['best_player.py']['output']['embed-mvp']['field_1']['name'].format(picked_lane=self.picked_lane, picked_league=self.picked_league), value=self.msg_mvp_1, inline=True)
             embed.add_field(name="\u200b", value=self.msg_mvp_2, inline=True)
-            await interaction.response.edit_message(content="", embed=embed, view=MvpView(bot=self.bot, ctx=self.ctx, msg=self.msg, banner=self.banner, picked_league=self.picked_league, picked_lane=self.picked_lane, button_select=self.button_select, box_LCK=self.box_LCK, box_LPL=self.box_LPL, box_LEC=self.box_LEC, box_LCS=self.box_LCS, box_CBLOL=self.box_CBLOL, box_VCS=self.box_VCS, box_LCL=self.box_LCL, box_TCL=self.box_TCL, box_PCS=self.box_PCS, box_LLA=self.box_LLA, box_LJL=self.box_LJL, box_LCO=self.box_LCO))
+            await interaction.response.edit_message(content="", embed=embed, view=MvpView(language=self.language, bot=self.bot, ctx=self.ctx, msg=self.msg, banner=self.banner, picked_league=self.picked_league, picked_lane=self.picked_lane, button_select=self.button_select, box_LCK=self.box_LCK, box_LPL=self.box_LPL, box_LEC=self.box_LEC, box_LCS=self.box_LCS, box_CBLOL=self.box_CBLOL, box_VCS=self.box_VCS, box_LCL=self.box_LCL, box_TCL=self.box_TCL, box_PCS=self.box_PCS, box_LLA=self.box_LLA, box_LJL=self.box_LJL, box_LCO=self.box_LCO))
 
         if self.button_select == True:
-            if self.picked_lane == "탑": button_top.callback = callback_all
+            if self.picked_lane == self.language['best_player.py']['output']['button-top']: button_top.callback = callback_all
             else: button_top.callback = callback_lane
-            if self.picked_lane == "정글": button_jun.callback = callback_all
+            if self.picked_lane == self.language['best_player.py']['output']['button-jun']: button_jun.callback = callback_all
             else: button_jun.callback = callback_lane
-            if self.picked_lane == "미드": button_mid.callback = callback_all
+            if self.picked_lane == self.language['best_player.py']['output']['button-mid']: button_mid.callback = callback_all
             else: button_mid.callback = callback_lane
-            if self.picked_lane == "원딜": button_adc.callback = callback_all
+            if self.picked_lane == self.language['best_player.py']['output']['button-adc']: button_adc.callback = callback_all
             else: button_adc.callback = callback_lane
-            if self.picked_lane == "서포터": button_sup.callback = callback_all
+            if self.picked_lane == self.language['best_player.py']['output']['button-sup']: button_sup.callback = callback_all
             else: button_sup.callback = callback_lane
         else:
             button_top.callback = callback_lane
@@ -300,22 +370,22 @@ class MvpView(discord.ui.View):
 
     async def on_timeout(self):
         try:
-            await self.msg.edit_original_response(content="", view=DisabledButton())
+            await self.msg.edit_original_response(content="", view=DisabledButton(language=self.language))
         except discord.NotFound:
             pass
 
 
 class DisabledButton(discord.ui.View):
 
-    def __init__(self):
+    def __init__(self, language):
         super().__init__(timeout=None)
-        self.add_item(discord.ui.Select(placeholder="리그 선택하기", options=[discord.SelectOption(label="asdf", value="1", description="asdf")], disabled=True, row=0))
-        self.add_item(discord.ui.Button(label="탑", disabled=True, row=1))
-        self.add_item(discord.ui.Button(label="정글", disabled=True, row=1))
-        self.add_item(discord.ui.Button(label="미드", disabled=True, row=1))
-        self.add_item(discord.ui.Button(label="원딜", disabled=True, row=1))
-        self.add_item(discord.ui.Button(label="서포터", disabled=True, row=1))
-        self.add_item(discord.ui.Button(label="OP.GG Esports에서 보기", url=esports_op_gg_mvp, row=2))
+        self.add_item(discord.ui.Select(placeholder=language['best_player.py']['output']['select-pick_league']['placeholder'], options=[discord.SelectOption(label="asdf", value="1", description="asdf")], disabled=True, row=0))
+        self.add_item(discord.ui.Button(label=language['best_player.py']['output']['button-top'], disabled=True, row=1))
+        self.add_item(discord.ui.Button(label=language['best_player.py']['output']['button-jun'], disabled=True, row=1))
+        self.add_item(discord.ui.Button(label=language['best_player.py']['output']['button-mid'], disabled=True, row=1))
+        self.add_item(discord.ui.Button(label=language['best_player.py']['output']['button-adc'], disabled=True, row=1))
+        self.add_item(discord.ui.Button(label=language['best_player.py']['output']['button-sup'], disabled=True, row=1))
+        self.add_item(discord.ui.Button(label=language['best_player.py']['output']['button-jump_esports'], url=esports_op_gg_mvp, row=2))
 
 
 class MvpCMD(commands.Cog):
@@ -323,17 +393,34 @@ class MvpCMD(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    _mvp = SlashCommandGroup(name="베스트", description="MVP 명령어", guild_only=False)
-
-    @_mvp.command(
-        name="플레이어",
-        description="리그 오브 레전드 e스포츠의 시즌 베스트 플레이어 정보를 보여줘요.",
+    @slash_command(
+        name=lang_en['best_player.py']['command']['name'],
+        name_localizations={
+            "ko": lang_ko['best_player.py']['command']['name']
+        },
+        description=lang_en['best_player.py']['command']['description'],
+        description_localizations={
+            "ko": lang_ko['best_player.py']['command']['description']
+        },
+        options=[
+            Option(
+                name=lang_en['best_player.py']['command']['options']['league']['name'],
+                name_localizations={
+                    "ko": lang_ko['best_player.py']['command']['options']['league']['name']
+                },
+                description=lang_en['best_player.py']['command']['options']['league']['description'],
+                description_localizations={
+                    "ko": lang_ko['best_player.py']['command']['options']['league']['description']
+                },
+                required=True,
+                autocomplete=discord.utils.basic_autocomplete(get_league)
+            )
+        ]
     )
-    @option("리그", description="리그를 선택해주세요.", required=True, autocomplete=get_league)
-    async def _mvpCMD(self, ctx: discord.AutocompleteContext, 리그: str):
+    async def _mvpCMD(self, ctx: discord.AutocompleteContext, picked_league: str):
 
-        picked_lane = "모든 라인"
-        picked_league = 리그
+        language = Substitution.substitution(ctx)
+        picked_lane = language['best_player.py']['output']['string-all_lane']
         button_select = False
         banner_image_url = random.choice(config['banner_image_url'])
 
@@ -350,7 +437,7 @@ class MvpCMD(commands.Cog):
         box_LJL = []
         box_LCO = []
 
-        embed = discord.Embed(title="", description="⌛ 정보를 불러오는 중...", color=colorMap['red'])
+        embed = discord.Embed(title="", description=language['best_player.py']['output']['embed-loading']['description'], color=colorMap['red'])
         msg = await ctx.respond(embed=embed)
 
         try:
@@ -427,7 +514,7 @@ class MvpCMD(commands.Cog):
 
             try:
                 print(f"[best_player.py] {box_player['code']}: {box_player['message']}")
-                embed = discord.Embed(title="> ⚠️ 오류", description=f"Code: `{box_player['code']}`\nMessage: {box_player['message']}", color=colorMap['red'])
+                embed = discord.Embed(title=language['best_player.py']['output']['embed-no_data']['title'], description=language['best_player.py']['output']['embed-no_data']['description'].format(code=box_player['code'], message=box_player['message']), color=colorMap['red'])
                 return await msg.edit_original_response(content="", embed=embed)
 
             except:
@@ -436,21 +523,27 @@ class MvpCMD(commands.Cog):
 
                 for j in range(5):
                     if j >= len(box_player): break
-                    msg_mvp_1 = f"{msg_mvp_1}> {j + 1}위 - [{box_player[j]['team_acronym']}]({esports_op_gg_team}{box_player[j]['team_id']}) [{box_player[j]['nickName']}]({esports_op_gg_player}{box_player[j]['id']})\n[{box_player[j]['position']}] {box_player[j]['kda']} 평점\n`({box_player[j]['kills']}/{box_player[j]['deaths']}/{box_player[j]['assists']})`\n"
+                    if ctx.locale != "ko":
+                        msg_mvp_1 = language['best_player.py']['output']['string-mvp'].format(msg=msg_mvp_1, index=j + 1, team_acronym=box_player[j]['team_acronym'], esports_team=esports_op_gg_team, team_id=box_player[j]['team_id'], nickname=box_player[j]['nickName'], esports_player=esports_op_gg_player, id=box_player[j]['id'], position=box_player[j]['position'].replace("탑", "Top").replace("정글", "Jungle").replace("미드", "Mid").replace("원딜", "ADC").replace("서포터", "Support"), kda=box_player[j]['kda'], kills=box_player[j]['kills'], deaths=box_player[j]['deaths'], assists=box_player[j]['assists'])
+                    else:
+                        msg_mvp_1 = language['best_player.py']['output']['string-mvp'].format(msg=msg_mvp_1, index=j + 1, team_acronym=box_player[j]['team_acronym'], esports_team=esports_op_gg_team, team_id=box_player[j]['team_id'], nickname=box_player[j]['nickName'], esports_player=esports_op_gg_player, id=box_player[j]['id'], position=box_player[j]['position'], kda=box_player[j]['kda'], kills=box_player[j]['kills'], deaths=box_player[j]['deaths'], assists=box_player[j]['assists'])
 
                 for j in range(5, 10):
                     if j >= len(box_player): break
-                    msg_mvp_2 = f"{msg_mvp_2}> {j + 1}위 - [{box_player[j]['team_acronym']}]({esports_op_gg_team}{box_player[j]['team_id']}) [{box_player[j]['nickName']}]({esports_op_gg_player}{box_player[j]['id']})\n[{box_player[j]['position']}] {box_player[j]['kda']} 평점\n`({box_player[j]['kills']}/{box_player[j]['deaths']}/{box_player[j]['assists']})`\n"
+                    if ctx.locale != "ko":
+                        msg_mvp_2 = language['best_player.py']['output']['string-mvp'].format(msg=msg_mvp_2, index=j + 1, team_acronym=box_player[j]['team_acronym'], esports_team=esports_op_gg_team, team_id=box_player[j]['team_id'], nickname=box_player[j]['nickName'], esports_player=esports_op_gg_player, id=box_player[j]['id'], position=box_player[j]['position'].replace("탑", "Top").replace("정글", "Jungle").replace("미드", "Mid").replace("원딜", "ADC").replace("서포터", "Support"), kda=box_player[j]['kda'], kills=box_player[j]['kills'], deaths=box_player[j]['deaths'], assists=box_player[j]['assists'])
+                    else:
+                        msg_mvp_2 = language['best_player.py']['output']['string-mvp'].format(msg=msg_mvp_2, index=j + 1, team_acronym=box_player[j]['team_acronym'], esports_team=esports_op_gg_team, team_id=box_player[j]['team_id'], nickname=box_player[j]['nickName'], esports_player=esports_op_gg_player, id=box_player[j]['id'], position=box_player[j]['position'], kda=box_player[j]['kda'], kills=box_player[j]['kills'], deaths=box_player[j]['deaths'], assists=box_player[j]['assists'])
 
                 if msg_mvp_1 == "":
-                    msg_mvp_1 = "> 플레이어 정보가 없습니다."
+                    msg_mvp_1 = language['best_player.py']['output']['string-no_mvp']
 
-                embed = discord.Embed(title="> 🏆 시즌 베스트 플레이어", description="", color=colorMap['red'])
-                embed.set_footer(text="TIP: 아래 버튼을 눌러 다른 포지션의 랭킹도 확인할 수 있어요.", icon_url=self.bot.user.display_avatar.url)
+                embed = discord.Embed(title=language['best_player.py']['output']['embed-mvp']['title'], description="", color=colorMap['red'])
+                embed.set_footer(text=language['best_player.py']['output']['embed-mvp']['footer'], icon_url=self.bot.user.display_avatar.url)
                 embed.set_image(url=banner_image_url)
-                embed.add_field(name=f"'{picked_lane}' 포지션 ({picked_league})", value=msg_mvp_1, inline=True)
+                embed.add_field(name=language['best_player.py']['output']['embed-mvp']['field_1']['name'].format(picked_lane=picked_lane, picked_league=picked_league), value=msg_mvp_1, inline=True)
                 embed.add_field(name="\u200b", value=msg_mvp_2, inline=True)
-                await msg.edit_original_response(content="", embed=embed, view=MvpView(bot=self.bot, ctx=ctx, msg=msg, banner=banner_image_url, picked_league=picked_league, picked_lane=picked_lane, button_select=button_select, box_LCK=box_LCK, box_LPL=box_LPL, box_LEC=box_LEC, box_LCS=box_LCS, box_CBLOL=box_CBLOL, box_VCS=box_VCS, box_LCL=box_LCL, box_TCL=box_TCL, box_PCS=box_PCS, box_LLA=box_LLA, box_LJL=box_LJL, box_LCO=box_LCO))
+                await msg.edit_original_response(content="", embed=embed, view=MvpView(language=language, bot=self.bot, ctx=ctx, msg=msg, banner=banner_image_url, picked_league=picked_league, picked_lane=picked_lane, button_select=button_select, box_LCK=box_LCK, box_LPL=box_LPL, box_LEC=box_LEC, box_LCS=box_LCS, box_CBLOL=box_CBLOL, box_VCS=box_VCS, box_LCL=box_LCL, box_TCL=box_TCL, box_PCS=box_PCS, box_LLA=box_LLA, box_LJL=box_LJL, box_LCO=box_LCO))
 
         except Exception as error:
             print("\n({})".format(datetime.datetime.now(pytz.timezone("Asia/Seoul")).strftime("%y/%m/%d %H:%M:%S")))

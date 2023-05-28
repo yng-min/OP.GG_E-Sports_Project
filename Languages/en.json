@@ -6,7 +6,7 @@
     "ban_pick.py": {
         "command": {
             "name": "ban-pick",
-            "description": "Check out the League of Legends Esports's Ban/Pick Rankings",
+            "description": "Check out League of Legends Esports's Ban/Pick Rankings.",
             "options": {
                 "league": {
                     "name": "league",
@@ -52,6 +52,51 @@
                 },
                 "field_2": {
                     "name": "Ban Info"
+                }
+            }
+        }
+    },
+
+    "best_player.py": {
+        "command": {
+            "name": "best-player",
+            "description": "Check out League of Legends Esports's Best Player Info.",
+            "options": {
+                "league": {
+                    "name": "league",
+                    "description": "Please select the league."
+                }
+            }
+        },
+        "output": {
+            "srting-only_author_can_use": "> It's only available in your own command. 😢",
+            "string-all_lane": "All Lane",
+            "string-mvp": "{msg}> Rank.{index} - [{team_acronym}]({esports_team}{team_id}) [{nickname}]({esports_player}{id})\n[{position}] {kda} KDA\n`({kills}/{deaths}/{assists})`\n",
+            "string-no_mvp": "> No player info.",
+
+            "button-jump_esports": "View from OP.GG Esports",
+            "button-top": "Top",
+            "button-jun": "Jungle",
+            "button-mid": "Mid",
+            "button-adc": "ADC",
+            "button-sup": "Support",
+
+            "select-pick_league": {
+                "placeholder": "Select a league"
+            },
+
+            "embed-loading": {
+                "description": "⌛ Loading..."
+            },
+            "embed-no_data": {
+                "title": "> ⚠️ Error",
+                "description": "Code: `{code}`\nMessage: {message}"
+            },
+            "embed-mvp": {
+                "title": "> 🏆 Season Best Player",
+                "footer": "TIP: Check the other positions by clicking the button below.",
+                "field_1": {
+                    "name": "'{picked_lane}' Position ({picked_league})"
                 }
             }
         }
@@ -361,6 +406,7 @@
             }
         }
     },
+
     "schedule.py": {
         "command": {
             "name": "schedule",
