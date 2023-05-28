@@ -75,7 +75,6 @@ emoji_redside = emoji['RedSide']
 
 async def search_player(ctx: discord.AutocompleteContext):
 
-    language = Substitution.substitution(ctx.interaction)
     player_displayed_nickname = ""
     try: keyword = ctx.options['{}'.format(lang_en['player_info.py']['command']['options']['player']['name'])].split(" ")[1]
     except: keyword = ctx.options['{}'.format(lang_en['player_info.py']['command']['options']['player']['name'])]

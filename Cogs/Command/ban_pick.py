@@ -54,7 +54,6 @@ colorMap = config['colorMap']
 
 async def get_league(ctx: discord.AutocompleteContext):
 
-    language = Substitution.substitution(ctx.interaction)
     picked_league = ctx.options['{}'.format(lang_en['ban_pick.py']['command']['options']['league']['name'])]
 
     if picked_league == "LCK":
