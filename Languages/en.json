@@ -202,7 +202,7 @@
                     "value": "Leave the service and delete the data."
                 },
                 "field_4": {
-                    "name": "/profile",
+                    "name": "/my-profile",
                     "value": "Check the user profile information in the service."
                 },
                 "field_5": {
@@ -238,6 +238,70 @@
                 "field_2": {
                     "name": "▫️ How can I enjoy it?",
                     "value": "The betting field opens at the start of each game, and the betting closes 15 minutes later.\n\nAnd the results of the match prediction will be sent along with the results of the match after the match."
+                }
+            }
+        }
+    },
+
+    "league_standing.py": {
+        "command": {
+            "name": "league-standing",
+            "description": "Check out the season team ranking info for League of Legends Esports.",
+            "options": {
+                "league": {
+                    "name": "league",
+                    "description": "Please select the league."
+                }
+            }
+        },
+        "output": {
+            "srting-only_author_can_use": "> It's only available in your own command. 😢",
+            "string-player_msg": "{msg}> [{team_acronym}]({esports_team}{team_id}) [{nickname}]({esports_player}{id}) ({position})\n**{kda}** KDA `({kills}/{deaths}/{assists})`\nWin Ratio: __{win_ratio}__% (__{wins:,}__ Wins, __{loses:,}__ Loses)\n",
+
+            "button-jump_esports": "View from OP.GG Esports",
+
+            "select-pick_league": {
+                "placeholder": "Select a league"
+            },
+
+            "embed-loading": {
+                "description": "⏳ Loading..."
+            },
+            "embed-no_data": {
+                "title": "> ⚠️ Error",
+                "description": "Code: `{code}`\nMessage: {message}"
+            },
+            "embed-no_standing": {
+                "title": "> 🏅 League Standings",
+                "field_1": {
+                    "name": "'{picked_league}' Info",
+                    "value": "> No standing info."
+                }
+            },
+            "embed-standing": {
+                "title": "> 🏅 League Standings",
+                "footer": "TIP: Check the info of each team by clicking the button below.",
+                "field_1": {
+                    "name": "'{picked_league}' Info"
+                },
+                "field_2": {
+                    "name": "> Rank.{index} - {acronym} ({name})",
+                    "value": "[__{point:,}__ Points] __{wins:,}__ Wins, __{loses:,}__ Loses (Set Score: __{set_wins:,}__ Wins, __{set_loses:,}__ Loses)\n{links}"
+                }
+            },
+            "embed-no_team": {
+                "title": "> 📊 Team Info",
+                "footer": "TIP: Check the info of each team by clicking the button below.",
+                "field_1": {
+                    "name": "[{picked_league}]",
+                    "value": "> No team info."
+                }
+            },
+            "embed-team": {
+                "title": "> 📊 Team Info",
+                "footer": "TIP: Check the info of each team by clicking the button below.",
+                "field_1": {
+                    "name": "{acronym} ({name}) [{picked_league}]"
                 }
             }
         }
@@ -280,6 +344,10 @@
                 "title": "",
                 "description": "⏳ Loading..."
             },
+            "embed-no_data": {
+                "title": "> ⚠️ Error",
+                "description": "Code: `{code}`\nMessage: {message}"
+            },
             "embed-no_player": {
                 "title": "> 🔍 Player Info",
                 "footer": "TIP: Players can only be searched with English nicknames.",
@@ -287,10 +355,6 @@
                     "name": "Search: '{picked_player}'",
                     "value": "> Unable to retrieve player profile.\n> Please check again if the searched player is correct."
                 }
-            },
-            "embed-no_data": {
-                "title": "> ⚠️ Error",
-                "description": "Code: `{code}`\nMessage: {message}"
             },
             "embed-player": {
                 "title": "> 🔍 Player Info",
@@ -380,7 +444,7 @@
 
     "profile.py": {
         "command": {
-            "name": "profile",
+            "name": "my-profile",
             "description": "Check out the your profile info."
         },
         "output": {
