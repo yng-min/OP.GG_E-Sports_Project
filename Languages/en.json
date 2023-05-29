@@ -368,7 +368,7 @@
                 },
                 "field_3": {
                     "name": "Game Statistics",
-                    "value": "__{win_ratio}__% (__{wins:,}__ Wins __{loses:,}__ Loses)"
+                    "value": "__{win_ratio}__% (__{wins:,}__ Wins, __{loses:,}__ Loses)"
                 },
                 "field_4": {
                     "name": "KDA Info",
@@ -461,7 +461,7 @@
                 },
                 "field_2": {
                     "name": "Match Prediction Stats",
-                    "value": "Success : _**{success:,}**_ | Failure : _**{fail:,}**_\nWin Ratio : _**{win_ratio}**_% (Total _**{total_prediction:,}**_)"
+                    "value": "Success: _**{success:,}**_ | Failure: _**{fail:,}**_\nWin Ratio: _**{win_ratio}**_% (Total _**{total_prediction:,}**_)"
                 }
             },
             "embed-error": {
